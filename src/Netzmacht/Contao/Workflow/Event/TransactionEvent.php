@@ -16,4 +16,4 @@ use Symfony\Component\EventDispatcher\Event;
 
 class TransactionEvent extends Event
 {
-} 
+}

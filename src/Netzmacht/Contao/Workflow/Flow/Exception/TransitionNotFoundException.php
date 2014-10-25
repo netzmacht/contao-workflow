@@ -19,9 +19,8 @@ class TransitionNotFoundException extends \Exception
     /**
      * @param string $transitionName
      */
-    function __construct($transitionName)
+    public function __construct($transitionName)
     {
         parent::__construct(sprintf('Transition "%s" not found', $transitionName));
     }
-
 }

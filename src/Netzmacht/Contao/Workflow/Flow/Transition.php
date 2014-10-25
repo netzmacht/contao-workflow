@@ -236,8 +236,7 @@ class Transition
                 foreach ($this->actions as $action) {
                     $action->transit($this, $entity, $context);
                 }
-            }
-            catch (TransactionActionFailed $e) {
+            } catch (TransactionActionFailed $e) {
                 $success = false;
                 $params  = array('exception' => $e->getMessage());
 

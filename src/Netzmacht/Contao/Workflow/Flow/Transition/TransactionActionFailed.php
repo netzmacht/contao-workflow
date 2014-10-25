@@ -15,4 +15,4 @@ namespace Netzmacht\Contao\Workflow\Flow\Transition;
 class TransactionActionFailed extends \Exception
 {
 
-} 
+}

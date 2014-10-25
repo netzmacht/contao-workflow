@@ -19,7 +19,7 @@ class Context
      * @param array $properties
      * @param array $params
      */
-    function __construct(array $properties=array(), array $params=array())
+    public function __construct(array $properties = array(), array $params = array())
     {
         $this->properties = $properties;
         $this->params     = $params;

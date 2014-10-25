@@ -25,7 +25,7 @@ class EntityRepository
     /**
      * @param DataProviderInterface $provider
      */
-    function __construct(DataProviderInterface $provider)
+    public function __construct(DataProviderInterface $provider)
     {
         $this->provider = $provider;
     }
@@ -37,6 +37,4 @@ class EntityRepository
     {
         $this->provider->save($entity);
     }
-
-
-} 
+}

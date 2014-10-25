@@ -19,5 +19,4 @@ interface TransactionHandler
     public function commit();
 
     public function rollback();
-
-} 
+}

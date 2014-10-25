@@ -11,12 +11,10 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Transition;
 
-
 use Netzmacht\Contao\Workflow\Data\Data;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
-
 
 interface Condition
 {
@@ -27,4 +25,4 @@ interface Condition
      * @return bool
      */
     public function match(Entity $entity, Context $context, ErrorCollection $errorCollection);
-} 
+}

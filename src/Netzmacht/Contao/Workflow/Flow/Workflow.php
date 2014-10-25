@@ -11,7 +11,6 @@ use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
-use Prophecy\Argument;
 
 class Workflow
 {
@@ -46,9 +45,9 @@ class Workflow
      * @param $startTransitionName
      * @param \Netzmacht\Contao\Workflow\Flow\Workflow\Condition $condition
      *
-*@throws TransitionNotFoundException
+     * @throws TransitionNotFoundException
      */
-    public function __construct(array $steps, array $transitions, $startTransitionName, Condition $condition=null)
+    public function __construct(array $steps, array $transitions, $startTransitionName, Condition $condition = null)
     {
         Assertion::allIsInstanceOf($steps, 'Netzmacht\Contao\Workflow\Flow\Step');
         Assertion::allIsInstanceOf($transitions, 'Netzmacht\Contao\Workflow\Flow\Transition');
@@ -137,13 +136,13 @@ class Workflow
      * @param $transitionName
      * @param ErrorCollection $errorCollection
      *
-*@throws StepNotFoundException
+     * @throws StepNotFoundException
      * @throws TransitionNotAllowedException
      * @throws TransitionNotFoundException
      * @throws ProcessNotStartedException
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function transit(Entity $entity, $transitionName , ErrorCollection $errorCollection)
+    public function transit(Entity $entity, $transitionName, ErrorCollection $errorCollection)
     {
         $this->guardWorkflowStarted($entity);
 
@@ -179,7 +178,7 @@ class Workflow
     /**
      * @param Entity $entity
      *
-*@throws ProcessNotStartedException
+     * @throws ProcessNotStartedException
      */
     private function guardWorkflowStarted(Entity $entity)
     {
@@ -201,5 +200,4 @@ class Workflow
             throw new TransitionNotAllowedException($currentStep->getName(), $transitionName);
         }
     }
-
 }

@@ -76,7 +76,7 @@ class TransitionHandler
      * @param StateRepository $stateRepository
      * @param TransactionHandler $transactionHandler
      */
-    function __construct(
+    public function __construct(
         Entity $entity,
         Workflow $workflow,
         $transitionName,
@@ -84,12 +84,13 @@ class TransitionHandler
         StateRepository $stateRepository,
         TransactionHandler $transactionHandler
     ) {
-        $this->entity           = $entity;
-        $this->workflow         = $workflow;
-        $this->transitionName   = $transitionName;
-        $this->entityRepository = $entityRepository;
-        $this->stateRepository  = $stateRepository;
-        $this->errors           = new ErrorCollection();
+        $this->entity             = $entity;
+        $this->workflow           = $workflow;
+        $this->transitionName     = $transitionName;
+        $this->entityRepository   = $entityRepository;
+        $this->stateRepository    = $stateRepository;
+        $this->transactionHandler = $transactionHandler;
+        $this->errors             = new ErrorCollection();
     }
 
 
@@ -194,8 +195,7 @@ class TransitionHandler
         try {
             if ($this->isStartTransition()) {
                 $state = $this->workflow->start($this->entity, $this->errors);
-            }
-            else {
+            } else {
                 $state = $this->workflow->transit($this->entity, $this->transitionName, $this->errors);
             }
 
@@ -204,8 +204,7 @@ class TransitionHandler
             if ($this->entity->getMeta(Entity::IS_CHANGED)) {
                 $this->entityRepository->add($this->entity);
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->transactionHandler->rollback();
 
             throw $e;

@@ -16,7 +16,7 @@ class Factory
 {
     public function createManager($type)
     {
-
+        if ($type) {
+        }
     }
-
-} 
+}

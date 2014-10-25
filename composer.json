@@ -29,9 +29,11 @@
         "beberlei/assert": "~2.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.1.*@dev"
+        "phpspec/phpspec": "2.1.*@dev",
+        "netzmacht/contao-build-tools": "dev-master"
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-0": { "Netzmacht\\Contao\\Workflow\\": "src/" }
     },

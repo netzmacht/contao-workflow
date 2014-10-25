@@ -27,5 +27,4 @@ interface Entity extends ModelInterface
      * @return mixed
      */
     public function transit(State $state);
-
-} 
+}

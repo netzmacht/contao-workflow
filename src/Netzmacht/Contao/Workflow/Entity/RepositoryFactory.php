@@ -19,5 +19,4 @@ interface RepositoryFactory
      * @return EntityRepository
      */
     public function createRepository($providerName);
-
-} 
+}

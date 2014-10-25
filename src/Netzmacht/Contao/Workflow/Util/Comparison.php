@@ -156,4 +156,4 @@ class Comparison
     {
         return $valueA <= $valueB;
     }
-} 
+}

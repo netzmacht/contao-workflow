@@ -21,5 +21,4 @@ interface Condition
      * @return bool
      */
     public function match(Entity $entity);
-
-} 
+}

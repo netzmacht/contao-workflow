@@ -20,5 +20,4 @@ interface NotificationFactory
      * @return Notification
      */
     public function create($identifier);
-
-} 
+}

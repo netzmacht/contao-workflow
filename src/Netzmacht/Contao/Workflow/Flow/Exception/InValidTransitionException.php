@@ -21,5 +21,4 @@ class InValidTransitionException extends \Exception
         $message = sprintf('Transition "%s" is not validated', $transitionName);
         parent::__construct($message, $code, $previous);
     }
-
-} 
+}

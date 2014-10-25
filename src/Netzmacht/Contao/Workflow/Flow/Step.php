@@ -107,7 +107,7 @@ class Step
         $key = array_search($transitionName, $this->allowedTransitions);
 
         if ($key !== false) {
-           unset($this->allowedTransitions[$key]);
+            unset($this->allowedTransitions[$key]);
             $this->allowedTransitions = array_values($this->allowedTransitions);
         }
 
@@ -119,7 +119,7 @@ class Step
      */
     public function getAllowedTransitions()
     {
-        if($this->isFinal()) {
+        if ($this->isFinal()) {
             return array();
         }
 
@@ -138,5 +138,4 @@ class Step
 
         return in_array($transitionName, $this->allowedTransitions);
     }
-
 }

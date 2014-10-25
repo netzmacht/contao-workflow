@@ -120,7 +120,7 @@ class ModifyEntityAction extends AbstractAction
      */
     public function transit(Transition $transition, Entity $entity, Context $context)
     {
-        foreach($this->dataMapping as $name) {
+        foreach ($this->dataMapping as $name) {
             $entity->setProperty($name, $context->getProperty($name));
         }
 
@@ -129,5 +129,4 @@ class ModifyEntityAction extends AbstractAction
         }
 
     }
-
-} 
+}

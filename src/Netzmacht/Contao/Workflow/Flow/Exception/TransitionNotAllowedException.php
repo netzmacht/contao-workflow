@@ -27,6 +27,4 @@ class TransitionNotAllowedException extends \Exception
         $message = sprintf('Transiton "%s" is not allowed at step "%s"', $transitionName, $currentStep);
         parent::__construct($message, $code, $previous);
     }
-
-
-} 
+}

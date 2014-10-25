@@ -49,7 +49,7 @@ class Workflow
         $value    = deserialize($value, true);
         $value = array_filter(
             $value,
-            function($item) {
+            function ($item) {
                 return $item['step'] && $item['stepTo'] && $item['transition'];
             }
         );
@@ -93,8 +93,7 @@ class Workflow
 
         if (!$count) {
             throw new \Exception('Start transition is required.');
-        }
-        elseif ($count > 1) {
+        } elseif ($count > 1) {
             throw new \Exception('There must be exactly one start transition.');
         }
 

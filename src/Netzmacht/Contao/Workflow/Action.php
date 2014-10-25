@@ -37,5 +37,4 @@ interface Action
      * @return void
      */
     public function transit(Transition $transition, Entity $entity, Context $context);
-
-} 
+}

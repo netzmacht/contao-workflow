@@ -15,4 +15,4 @@ namespace Netzmacht\Contao\Workflow\Contao\Model;
 class StepModel extends \Model
 {
     protected static $strTable = 'tl_workflow_step';
-} 
+}

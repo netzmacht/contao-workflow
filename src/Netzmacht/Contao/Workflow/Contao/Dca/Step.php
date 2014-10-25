@@ -23,5 +23,4 @@ class Step
             $row['description']
         );
     }
-
-} 
+}

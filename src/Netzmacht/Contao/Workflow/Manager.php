@@ -41,7 +41,7 @@ class Manager
         StateRepository $stateRepository,
         RepositoryFactory $repositoryFactory,
         TransactionHandler $transactionHandler,
-        array $workflows=array()
+        array $workflows = array()
     ) {
         Assertion::allIsInstanceOf($workflows, 'Netzmacht\Contao\Workflow\Flow\Workflow');
 
@@ -60,7 +60,7 @@ class Manager
      *
      * @return  bool|\Netzmacht\Contao\Workflow\TransitionHandler
      */
-    public function handle(Entity $entity, $transitionName=null)
+    public function handle(Entity $entity, $transitionName = null)
     {
         $workflow = $this->getWorkflow($entity);
 
@@ -88,7 +88,7 @@ class Manager
     /**
      * @param Workflow $workflow
      *
-*@return $this
+     * @return $this
      */
     public function addWorkflow(Workflow $workflow)
     {
@@ -153,8 +153,7 @@ class Manager
             $entity->transit($state);
 
             return true;
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

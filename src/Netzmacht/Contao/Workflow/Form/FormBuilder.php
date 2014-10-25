@@ -16,5 +16,4 @@ interface FormBuilder
 {
 
     public function build(Form $form);
-
-} 
+}

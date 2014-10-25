@@ -26,7 +26,7 @@ abstract class AbstractAction implements Action
     /**
      * @param $formBuilder
      */
-    function __construct(FormBuilder $formBuilder=null)
+    public function __construct(FormBuilder $formBuilder = null)
     {
         $this->formBuilder = $formBuilder;
     }
@@ -51,5 +51,4 @@ abstract class AbstractAction implements Action
     {
         $this->formBuilder->build($form);
     }
-
-} 
+}

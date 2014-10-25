@@ -18,5 +18,4 @@ interface EntityManager
      * @param Entity $entity
      */
     public function save(Entity $entity);
-
-} 
+}

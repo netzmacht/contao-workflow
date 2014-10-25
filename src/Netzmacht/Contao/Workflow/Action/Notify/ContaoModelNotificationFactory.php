@@ -36,5 +36,4 @@ class ContaoModelNotificationFactory implements NotificationFactory
 
         return $notification;
     }
-
-} 
+}

@@ -20,4 +20,4 @@ class NoWorkflowFoundException extends Exception
         $message = sprintf('No workflow found for entity "%s::%s"', $providerName, $entityId);
         parent::__construct($message, $code, $previous);
     }
-} 
+}

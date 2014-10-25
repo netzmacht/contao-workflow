@@ -23,7 +23,9 @@ class StateRepository
      */
     public function find($providerName, $entityId)
     {
+        if ($providerName && $entityId) {
 
+        }
     }
 
     /**
@@ -31,7 +33,8 @@ class StateRepository
      */
     public function add(State $state)
     {
+        if ($state) {
 
+        }
     }
-
-} 
+}

@@ -23,7 +23,7 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     /**
      * @param \Contao\Database $database
      */
-    function __construct(\Contao\Database $database)
+    public function __construct(\Contao\Database $database)
     {
         $this->database = $database;
     }
@@ -63,5 +63,4 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     {
         $this->database->rollbackTransaction();
     }
-
-} 
+}

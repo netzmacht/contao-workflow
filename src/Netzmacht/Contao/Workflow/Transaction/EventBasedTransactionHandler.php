@@ -25,7 +25,7 @@ class EventBasedTransactionHandler implements TransactionHandler
     /**
      * @param EventDispatcherInterface $dispatcher
      */
-    function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -57,5 +57,4 @@ class EventBasedTransactionHandler implements TransactionHandler
         $event = new TransactionEvent();
         $this->dispatcher->dispatch(Events::TRANSACTION_ROLLBACK, $event);
     }
-
 }

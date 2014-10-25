@@ -40,7 +40,7 @@ class NotifyAction extends AbstractAction
      * @param NotificationFactory $notificationFactory
      * @param FormBuilder $formBuilder
      */
-    function __construct(NotificationFactory $notificationFactory, FormBuilder $formBuilder = null)
+    public function __construct(NotificationFactory $notificationFactory, FormBuilder $formBuilder = null)
     {
         parent::__construct($formBuilder);
 
@@ -52,7 +52,7 @@ class NotifyAction extends AbstractAction
      * @param bool $mapToData
      * @return $this
      */
-    public function setNotificationId($idOrName, $mapToData=false)
+    public function setNotificationId($idOrName, $mapToData = false)
     {
         if ($mapToData) {
             $this->notificationIdMapping = $idOrName;
@@ -138,5 +138,4 @@ class NotifyAction extends AbstractAction
 
         return $tokens;
     }
-
 }

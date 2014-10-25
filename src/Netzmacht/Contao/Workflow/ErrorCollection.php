@@ -26,7 +26,7 @@ class ErrorCollection
     /**
      * @param $errors
      */
-    function __construct(array $errors=array())
+    public function __construct(array $errors = array())
     {
         $this->addErrors($errors);
     }
@@ -36,7 +36,7 @@ class ErrorCollection
      * @param array $params
      * @return $this
      */
-    public function addError($message, array $params=array())
+    public function addError($message, array $params = array())
     {
         $this->errors[] = array($message, $params);
 
@@ -104,8 +104,11 @@ class ErrorCollection
      * @param string $domain
      * @return string
      */
-    public function getTranslated($index, TranslatorInterface $translator, $domain = ErrorCollection::TRANSLATION_DOMAIN)
-    {
+    public function getTranslated(
+        $index,
+        TranslatorInterface $translator,
+        $domain = ErrorCollection::TRANSLATION_DOMAIN
+    ) {
         $error = $this->getError($index);
 
         return $translator->translate($error[0], $domain, $error[1]);

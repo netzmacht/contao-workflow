@@ -49,7 +49,7 @@ class State
      * @param array $data
      * @param DateTime $reachedAt
      */
-    function __construct($transitionName, $stepToName, $successful, array $data, DateTime $reachedAt)
+    public function __construct($transitionName, $stepToName, $successful, array $data, DateTime $reachedAt)
     {
         $this->transitionName = $transitionName;
         $this->stepName       = $stepToName;
@@ -112,11 +112,10 @@ class State
      * @param array $data
      * @return static
      */
-    public function transit(Transition $transition, $success=true, array $data=array())
+    public function transit(Transition $transition, $success = true, array $data = array())
     {
         $dateTime = new DateTime();
 
         return new static($transition->getName(), $transition->getStepTo()->getName(), $success, $data, $dateTime);
     }
-
-} 
+}

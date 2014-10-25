@@ -19,4 +19,4 @@ class Events
     const TRANSACTION_COMMIT   = 'workflow.transaction.commit';
 
     const TRANSACTION_ROLLBACK = 'workflow.transaction.rollback';
-} 
+}

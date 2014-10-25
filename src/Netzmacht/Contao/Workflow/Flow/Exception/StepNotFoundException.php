@@ -19,7 +19,7 @@ class StepNotFoundException extends \Exception
     /**
      * @param string $stepName
      */
-    function __construct($stepName)
+    public function __construct($stepName)
     {
         parent::__construct(sprintf('Step "%s" not found', $stepName));
     }
