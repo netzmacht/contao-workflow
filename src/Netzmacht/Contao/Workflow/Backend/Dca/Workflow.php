@@ -9,14 +9,19 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Contao\Dca;
+namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 
 class Workflow
 {
+    /**
+     * Get names of workflow types
+     *
+     * @return array
+     */
     public function getTypes()
     {
-        return array();
+        return array_keys($GLOBALS['WORKFLOW_TYPES']);
     }
 
 } 

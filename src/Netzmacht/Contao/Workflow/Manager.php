@@ -100,7 +100,7 @@ class Manager
     /**
      * @param Entity $entity
      *
-*@return Workflow|bool
+     *@return Workflow|bool
      */
     public function getWorkflow(Entity $entity)
     {
@@ -158,5 +158,4 @@ class Manager
             return false;
         }
     }
-
 }

@@ -13,3 +13,5 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         )
     )
 ));
+
+$GLOBALS['WORKFLOW_TYPES']['empty'] = '';
