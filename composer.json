@@ -1,0 +1,49 @@
+{
+    "name":"netzmacht/contao-workflow",
+    "description":"Library for supporting customized Contao form rendering",
+    "keywords":["contao", "form", "helper"],
+    "type":"contao-module",
+    "license":"LGPL-3.0+",
+    "authors":[
+        {
+            "name":"David Molineus",
+            "email":"mail@netzmacht.de",
+            "homepage":"http://www.netzmacht.de",
+            "role":"Project leader"
+        }
+    ],
+    "support":{
+        "email":"mail@netzmacht.de",
+        "issues":"https://github.com/netzmacht/contao-workflow/issues",
+        "source":"https://github.com/netzmacht/contao-workflow"
+    },
+    "require":{
+        "php":">=5.3",
+        "contao/core":">=3.1,<3.4",
+        "contao-community-alliance/dependency-container":"~1.0",
+        "contao-community-alliance/event-dispatcher":"~1.0",
+        "contao-community-alliance/composer-plugin": "~2.0",
+        "contao-community-alliance/dc-general": "2.0.*@dev",
+        "beberlei/assert": "~2.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.1.*@dev"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { "Netzmacht\\Contao\\Workflow\\": "src/" }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra":{
+        "branch-alias": {
+            "dev-master": "0.2.*@dev"
+        },
+        "contao": {
+            "sources":{
+                "module": "system/modules/workflow"
+            }
+        }
+    }
+}
