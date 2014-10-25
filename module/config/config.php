@@ -1,6 +1,15 @@
 <?php
 
-$GLOBALS['BE_MOD']['workflow']['workflow_process'] = array
+array_insert($GLOBALS['BE_MOD'], 1, array
 (
-
-);
+    'workflow' => array(
+        'workflow' => array(
+            'tables' => array(
+                'tl_workflow',
+                'tl_workflow_step',
+                'tl_workflow_transition',
+                'tl_workflow_action'
+            ),
+        )
+    )
+));

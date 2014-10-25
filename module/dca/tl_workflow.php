@@ -5,14 +5,13 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
     'config' => array
     (
         'dataContainer' => 'Table',
-
-    ),
-    'sql'           => array
-    (
-        'keys' => array
+        'sql'           => array
         (
-            'id' => 'primary',
-        )
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     'list' => array
