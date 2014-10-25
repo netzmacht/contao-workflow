@@ -10,7 +10,7 @@ use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
-use Netzmacht\Contao\Workflow\Flow\Process\Condition;
+use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
 use Prophecy\Argument;
 
 class Workflow
@@ -44,7 +44,7 @@ class Workflow
      * @param array $steps
      * @param array $transitions
      * @param $startTransitionName
-     * @param \Netzmacht\Contao\Workflow\Flow\Process\Condition $condition
+     * @param \Netzmacht\Contao\Workflow\Flow\Workflow\Condition $condition
      *
 *@throws TransitionNotFoundException
      */

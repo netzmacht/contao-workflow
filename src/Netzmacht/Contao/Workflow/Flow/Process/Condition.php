@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Process;
+namespace Netzmacht\Contao\Workflow\Flow\Workflow;
 
 
 use Netzmacht\Contao\Workflow\Entity\Entity;

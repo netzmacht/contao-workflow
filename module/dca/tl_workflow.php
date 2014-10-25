@@ -5,6 +5,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
     'config' => array
     (
         'dataContainer' => 'Table',
+        'ctable'        => array(
+            'tl_workflow_step',
+            'tl_workflow_transition'
+        ),
         'sql'           => array
         (
             'keys' => array
@@ -20,6 +24,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         (
             'mode'   => 1,
             'fields' => array('type', 'name'),
+            'panelLayout' => 'sorting,filter,search'
         ),
         'label' => array
         (
@@ -34,6 +39,18 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
+            ),
+            'steps' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['steps'],
+                'href'  => 'table=tl_workflow_step',
+                'icon'  => 'system/modules/workflow/assets/img/step.png',
+            ),
+            'transitions' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['transitions'],
+                'href'  => 'table=tl_workflow_transition',
+                'icon'  => 'system/modules/workflow/assets/img/transition.png',
             ),
             'delete' => array
             (
@@ -54,9 +71,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
     (
         'default' => array
         (
-            'name'    => array('name', 'type', 'description'),
-            'config'  => array(),
-            'publish' => array('published')
+            'name'       => array('name', 'type', 'description'),
+            'process'    => array('start', 'process'),
+            'config'     => array(),
+            'activation' => array('active')
         ),
     ),
 
@@ -74,6 +92,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['name'],
             'inputType' => 'text',
+            'search'    => true,
             'exclude'   => true,
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -85,9 +104,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['type'],
             'inputType' => 'select',
+            'filter'    => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
+                'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
                 'getTypes'
             ),
             'exclude'   => true,
@@ -112,6 +132,9 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['process'],
             'inputType' => 'multiColumnWizard',
             'exclude'   => true,
+            'save_callback' => array(
+                array('Netzmacht\Contao\Workflow\Contao\Dca\Workflow', 'validateProcess'),
+            ),
             'eval'      => array(
                 'tl_class'           => 'clr',
                 'columnFields' => array
@@ -122,12 +145,15 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
-                            'getSteps'
+                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                            'getStartSteps'
                         ),
+                        'reference' => &$GLOBALS['TL_LANG']['tl_workflow']['process'],
                         'eval'      => array
                         (
-                            'style' => 'width:200px'
+                            'style' => 'width:200px',
+                            'includeBlankOption' => true,
+                            'chosen' => true,
                         ),
                     ),
                     'transition' => array
@@ -136,21 +162,39 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
-                            'getSteps'
+                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                            'getTransitions',
                         ),
                         'eval'      => array
                         (
-                            'style' => 'width:200px'
+                            'style' => 'width:200px',
+                            'includeBlankOption' => true,
+                            'chosen' => true,
+                        ),
+                    ),
+                    'stepTo' => array
+                    (
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['stepTo'],
+                        'inputType' => 'select',
+                        'options_callback' => array
+                        (
+                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                            'getEndSteps'
+                        ),
+                        'eval'      => array
+                        (
+                            'style' => 'width:200px',
+                            'includeBlankOption' => true,
+                            'chosen' => true,
                         ),
                     ),
                 )
             ),
-            'sql'       => "varchar(64) NOT NULL default ''",
+            'sql'       => "mediumblob NULL",
         ),
-        'published'      => array
+        'active'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['published'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['active'],
             'inputType' => 'checkbox',
             'eval'      => array(
                 'tl_class'       => 'clr w50',

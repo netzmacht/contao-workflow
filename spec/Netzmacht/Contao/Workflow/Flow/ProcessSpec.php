@@ -7,7 +7,7 @@ use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\State;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Process\Condition;
+use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
