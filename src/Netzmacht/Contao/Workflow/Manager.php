@@ -3,6 +3,8 @@
 namespace Netzmacht\Contao\Workflow;
 
 use Assert\Assertion;
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
@@ -32,6 +34,11 @@ class Manager
     private $transactionHandler;
 
     /**
+     * @var InputProvider
+     */
+    private $inputProvider;
+
+    /**
      * @param StateRepository $stateRepository
      * @param RepositoryFactory $repositoryFactory
      * @param TransactionHandler $transactionHandler
@@ -41,6 +48,7 @@ class Manager
         StateRepository $stateRepository,
         RepositoryFactory $repositoryFactory,
         TransactionHandler $transactionHandler,
+        InputProvider $inputProvider,
         array $workflows = array()
     ) {
         Assertion::allIsInstanceOf($workflows, 'Netzmacht\Contao\Workflow\Flow\Workflow');
@@ -49,6 +57,7 @@ class Manager
         $this->stateRepository    = $stateRepository;
         $this->repositoryFactory  = $repositoryFactory;
         $this->transactionHandler = $transactionHandler;
+        $this->inputProvider      = $inputProvider;
     }
 
     /**
@@ -78,7 +87,8 @@ class Manager
             $transitionName,
             $this->repositoryFactory->createRepository($entity->getProviderName()),
             $this->stateRepository,
-            $this->transactionHandler
+            $this->transactionHandler,
+            $this->inputProvider
         );
 
         return $handler;

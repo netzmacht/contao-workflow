@@ -2,9 +2,16 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
+use Netzmacht\Contao\Workflow\Flow\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * Class ContextSpec
+ * @package spec\Netzmacht\Contao\Workflow\Flow
+ * @mixin Context
+ */
 class ContextSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -12,38 +19,22 @@ class ContextSpec extends ObjectBehavior
         $this->shouldHaveType('Netzmacht\Contao\Workflow\Flow\Context');
     }
 
-    function it_accepts_initial_properties()
+    function let(InputProviderInterface $inputProvider)
+    {
+        $this->beConstructedWith($inputProvider);
+    }
+
+    function it_accepts_initial_properties(InputProviderInterface $inputProvider)
     {
         $data = array('foo' => 'bar');
-        $this->beConstructedWith($data);
+        $this->beConstructedWith($inputProvider, $data);
 
         $this->getProperties()->shouldBe($data);
     }
 
-    function it_accepts_initial_params()
+    function it_has_an_input_provider(InputProviderInterface $inputProvider)
     {
-        $data = array('foo' => 'bar');
-        $this->beConstructedWith(array(), $data);
-
-        $this->getParams()->shouldBe($data);
-    }
-
-    function it_sets_a_param()
-    {
-        $this->setParam('test', 'value')->shouldReturn($this);
-        $this->getParam('test')->shouldReturn('value');
-    }
-
-    function it_knows_if_param_exists()
-    {
-        $this->hasParam('test')->shouldReturn(false);
-        $this->setParam('test', 'value');
-        $this->hasParam('test')->shouldReturn(true);
-    }
-
-    function it_gets_params_as_array()
-    {
-        $this->getParams()->shouldBeArray();
+        $this->getInputProvider()->shouldReturn($inputProvider);
     }
 
     function it_sets_property()

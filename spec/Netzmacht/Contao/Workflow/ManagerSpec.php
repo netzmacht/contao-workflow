@@ -2,6 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow;
 
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
@@ -29,9 +30,14 @@ class ManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Netzmacht\Contao\Workflow\Manager');
     }
 
-    function let(StateRepository $stateRepository, Workflow $workflow, RepositoryFactory $repositoryFactory, TransactionHandler $transactionHandler)
-    {
-        $this->beConstructedWith($stateRepository, $repositoryFactory, $transactionHandler, array($workflow));
+    function let(
+        StateRepository $stateRepository,
+        Workflow $workflow,
+        RepositoryFactory $repositoryFactory,
+        TransactionHandler $transactionHandler,
+        InputProviderInterface $inputProvider
+    ) {
+        $this->beConstructedWith($stateRepository, $repositoryFactory, $transactionHandler, $inputProvider, array($workflow));
     }
 
     function it_gets_workflow(Workflow $workflow, Entity $entity)

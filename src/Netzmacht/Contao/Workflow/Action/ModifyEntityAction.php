@@ -127,6 +127,5 @@ class ModifyEntityAction extends AbstractAction
         foreach ($this->values as $name => $value) {
             $entity->setProperty($name, $value);
         }
-
     }
 }

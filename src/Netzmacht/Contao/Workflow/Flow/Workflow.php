@@ -132,17 +132,18 @@ class Workflow
     }
 
     /**
-     * @param Entity $entity
-     * @param $transitionName
+     * @param Entity          $entity
+     * @param                 $transitionName
+     * @param Context         $context
      * @param ErrorCollection $errorCollection
      *
+     * @throws ProcessNotStartedException
      * @throws StepNotFoundException
      * @throws TransitionNotAllowedException
      * @throws TransitionNotFoundException
-     * @throws ProcessNotStartedException
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function transit(Entity $entity, $transitionName, ErrorCollection $errorCollection)
+    public function transit(Entity $entity, $transitionName, Context $context, ErrorCollection $errorCollection)
     {
         $this->guardWorkflowStarted($entity);
 
@@ -153,15 +154,17 @@ class Workflow
 
         $transition = $this->getTransition($transitionName);
 
-        return $transition->transit($entity, new Context(), $errorCollection);
+        return $transition->transit($entity, $context, $errorCollection);
     }
 
     /**
-     * @param $entity
+     * @param Entity          $entity
+     * @param Context         $context
      * @param ErrorCollection $errorCollection
+     *
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function start(Entity $entity, ErrorCollection $errorCollection)
+    public function start(Entity $entity, Context $context, ErrorCollection $errorCollection)
     {
         if ($entity->getState()) {
             return $entity->getState();
@@ -172,7 +175,7 @@ class Workflow
 
         $transition = $this->getStartTransition();
 
-        return $transition->transit($entity, new Context(), $errorCollection);
+        return $transition->transit($entity, $context, $errorCollection);
     }
 
     /**

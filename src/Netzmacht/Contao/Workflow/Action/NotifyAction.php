@@ -124,7 +124,6 @@ class NotifyAction extends AbstractAction
 
         $tokens['entity']     = $entity->getPropertiesAsArray();
         $tokens['properites'] = $context->getProperties();
-        $tokens['params']     = $context->getParams();
 
         $tokens['transition'] = array(
             'name'  => $transition->getName(),

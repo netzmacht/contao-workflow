@@ -2,74 +2,36 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
+
 class Context
 {
     /**
      * @var array
      */
-    private $params = array();
-
-    /**
-     * @var array
-     */
     private $properties = array();
 
+    /**
+     * @var InputProvider
+     */
+    private $inputProvider;
+
 
     /**
-     * @param array $properties
-     * @param array $params
+     * @param InputProvider $inputProvider
+     * @param array         $properties
+     *
      */
-    public function __construct(array $properties = array(), array $params = array())
+    public function __construct(InputProvider $inputProvider, array $properties = array())
     {
-        $this->properties = $properties;
-        $this->params     = $params;
+        $this->inputProvider = $inputProvider;
+        $this->properties    = $properties;
     }
 
     /**
      * @param $name
      * @param $value
-     * @return $this
-     */
-    public function setParam($name, $value)
-    {
-        $this->params[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @return null
-     */
-    public function getParam($name)
-    {
-        if ($this->hasParam($name)) {
-            return $this->params[$name];
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasParam($name)
-    {
-        return isset($this->params[$name]);
-    }
-
-    /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * @param $name
-     * @param $value
+     *
      * @return $this
      */
     public function setProperty($name, $value)
@@ -81,6 +43,7 @@ class Context
 
     /**
      * @param $name
+     *
      * @return null
      */
     public function getProperty($name)
@@ -94,6 +57,7 @@ class Context
 
     /**
      * @param $name
+     *
      * @return bool
      */
     public function hasProperty($name)
@@ -107,5 +71,13 @@ class Context
     public function getProperties()
     {
         return $this->properties;
+    }
+
+    /**
+     * @return InputProvider
+     */
+    public function getInputProvider()
+    {
+        return $this->inputProvider;
     }
 }

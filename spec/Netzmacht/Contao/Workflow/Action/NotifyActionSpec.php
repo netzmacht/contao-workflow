@@ -3,6 +3,7 @@
 namespace spec\Netzmacht\Contao\Workflow\Action;
 
 use Netzmacht\Contao\Workflow\Action\Notify\NotificationFactory;
+use Netzmacht\Contao\Workflow\Action\NotifyAction;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Step;
@@ -15,6 +16,12 @@ interface MockNotification
     public function send($tokens, $language=null);
 }
 
+/**
+ * Class NotifyActionSpec
+ * @package spec\Netzmacht\Contao\Workflow\Action
+ *
+ * @mixin NotifyAction
+ */
 class NotifyActionSpec extends ObjectBehavior
 {
     function it_is_initializable()

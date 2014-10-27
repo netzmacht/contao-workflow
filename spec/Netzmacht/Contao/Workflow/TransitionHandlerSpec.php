@@ -2,6 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow;
 
+use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\State;
@@ -28,9 +29,18 @@ class TransitionHandlerSpec extends ObjectBehavior
         Workflow $workflow,
         StateRepository $stateRepository,
         EntityRepository $entityRepository,
-        TransactionHandler $transactionHandler
+        TransactionHandler $transactionHandler,
+        InputProviderInterface $inputProvider
     )  {
-        $this->beConstructedWith($entity, $workflow, static::TRANSITION_NAME, $entityRepository, $stateRepository, $transactionHandler);
+        $this->beConstructedWith(
+            $entity,
+            $workflow,
+            static::TRANSITION_NAME,
+            $entityRepository,
+            $stateRepository,
+            $transactionHandler,
+            $inputProvider
+        );
     }
 
     function it_gets_workflow(Workflow $workflow)
