@@ -26,14 +26,14 @@ class Common
 
     /**
      * @param $value
-     * @param $dc
+     * @param $dataContainer
      *
      * @return string
      */
-    public function createName($value, $dc)
+    public function createName($value, $dataContainer)
     {
         if (!$value) {
-            $value = $dc->activeRecord->label;
+            $value = $dataContainer->activeRecord->label;
         }
 
         return standardize($value);

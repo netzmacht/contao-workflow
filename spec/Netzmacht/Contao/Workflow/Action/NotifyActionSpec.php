@@ -2,6 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Action;
 
+use Netzmacht\Contao\Workflow\Acl\AclManager;
 use Netzmacht\Contao\Workflow\Action\Notify\NotificationFactory;
 use Netzmacht\Contao\Workflow\Action\NotifyAction;
 use Netzmacht\Contao\Workflow\Entity\Entity;
@@ -30,9 +31,9 @@ class NotifyActionSpec extends ObjectBehavior
         $this->shouldbeAnInstanceOf('Netzmacht\Contao\Workflow\Action');
     }
 
-    function let(NotificationFactory $notificationFactory)
+    function let(NotificationFactory $notificationFactory, AclManager $aclManager)
     {
-        $this->beConstructedWith($notificationFactory);
+        $this->beConstructedWith($notificationFactory, $aclManager);
     }
 
     function it_accepts_a_language()

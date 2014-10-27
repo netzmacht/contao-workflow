@@ -25,14 +25,9 @@ class GetWorkflowTypesEvent extends Event
     private $types = array();
 
     /**
-     * @var WorkflowModel
-     */
-    private $workflowModel;
-
-    /**
      * @param WorkflowModel $workflowModel
      */
-    function __construct(WorkflowModel $workflowModel)
+    public function __construct(WorkflowModel $workflowModel)
     {
         $this->workflowModel = $workflowModel;
     }

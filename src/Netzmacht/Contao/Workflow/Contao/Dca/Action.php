@@ -15,6 +15,7 @@ namespace Netzmacht\Contao\Workflow\Contao\Dca;
 use Netzmacht\Contao\Workflow\Contao\Dca\Event\GetWorkflowTypesEvent;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
+use NotificationCenter\Model\Notification;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Action
@@ -39,6 +40,18 @@ class Action
 
         while ($collection && $collection->next()) {
             $options[$collection->id] = $collection->label;
+        }
+
+        return $options;
+    }
+
+    public function getNotifications()
+    {
+        $collection = Notification::findByType('workflow_notify');
+        $options    = array();
+
+        while ($collection && $collection->next()) {
+            $options[$collection->id] = $collection->title;
         }
 
         return $options;

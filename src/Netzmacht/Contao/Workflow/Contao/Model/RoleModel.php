@@ -15,9 +15,4 @@ namespace Netzmacht\Contao\Workflow\Contao\Model;
 class RoleModel extends \Model
 {
     protected static $strTable = 'tl_workflow_role';
-
-    public function getRelatedUsers()
-    {
-        $users = deserialize($this->users, true);
-    }
 }
