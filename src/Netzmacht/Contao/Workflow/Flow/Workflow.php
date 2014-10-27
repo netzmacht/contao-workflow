@@ -39,6 +39,11 @@ class Workflow
     private $name;
 
     /**
+     * @var int
+     */
+    private $workflowId;
+
+    /**
      * @param array $steps
      * @param array $transitions
      * @param $startTransitionName
@@ -200,5 +205,10 @@ class Workflow
         if (!$currentStep->isTransitionAllowed($transitionName)) {
             throw new TransitionNotAllowedException($currentStep->getName(), $transitionName);
         }
+    }
+
+    public function getId()
+    {
+        return $this->workflowId;
     }
 }

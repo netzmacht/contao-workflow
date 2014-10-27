@@ -4,7 +4,6 @@ namespace Netzmacht\Contao\Workflow;
 
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
-use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Flow\Context;
@@ -40,10 +39,11 @@ class Manager
     private $inputProvider;
 
     /**
-     * @param StateRepository $stateRepository
-     * @param RepositoryFactory $repositoryFactory
+     * @param StateRepository    $stateRepository
+     * @param RepositoryFactory  $repositoryFactory
      * @param TransactionHandler $transactionHandler
-     * @param Workflow[] $workflows
+     * @param InputProvider      $inputProvider
+     * @param Workflow[]         $workflows
      */
     public function __construct(
         StateRepository $stateRepository,

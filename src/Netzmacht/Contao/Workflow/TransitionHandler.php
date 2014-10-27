@@ -181,7 +181,7 @@ class TransitionHandler
     public function validate()
     {
         if (!$this->validated) {
-            $this->validated = $this->getForm()->validate();
+            $this->validated = $this->getForm()->validate($this->context);
         }
 
         return $this->validated;

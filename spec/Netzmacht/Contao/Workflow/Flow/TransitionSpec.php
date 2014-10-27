@@ -80,7 +80,7 @@ class TransitionSpec extends ObjectBehavior
 
     function it_checks_a_precondition(Condition $condition, Entity $entity, Context $context)
     {
-        $condition->match($entity, $context)->willReturn(true);
+        $condition->match($this, $entity, $context)->willReturn(true);
 
         $this->setPreCondition($condition)->shouldReturn($this);
         $this->checkPreCondition($entity, $context)->shouldReturn(true);
@@ -91,7 +91,7 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(false);
+        $condition->match($this, $entity, $context)->willReturn(false);
 
         $this->setPreCondition($condition)->shouldReturn($this);
         $this->checkPreCondition($entity, $context)->shouldReturn(false);
@@ -99,7 +99,7 @@ class TransitionSpec extends ObjectBehavior
 
     function it_checks_a_condition(Condition $condition, Entity $entity, Context $context)
     {
-        $condition->match($entity, $context)->willReturn(true);
+        $condition->match($this, $entity, $context)->willReturn(true);
 
         $this->setCondition($condition)->shouldReturn($this);
         $this->checkCondition($entity, $context)->shouldReturn(true);
@@ -110,7 +110,7 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(false);
+        $condition->match($this, $entity, $context)->willReturn(false);
 
         $this->setCondition($condition)->shouldReturn($this);
         $this->checkCondition($entity, $context)->shouldReturn(false);
@@ -122,8 +122,8 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(true);
-        $preCondition->match($entity, $context)->willReturn(true);
+        $condition->match($this, $entity, $context)->willReturn(true);
+        $preCondition->match($this, $entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($condition);
@@ -137,8 +137,8 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(true);
-        $preCondition->match($entity, $context)->willReturn(false);
+        $condition->match($this, $entity, $context)->willReturn(true);
+        $preCondition->match($this, $entity, $context)->willReturn(false);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
@@ -152,8 +152,8 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(false);
-        $preCondition->match($entity, $context)->willReturn(true);
+        $condition->match($this, $entity, $context)->willReturn(false);
+        $preCondition->match($this, $entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
@@ -167,8 +167,8 @@ class TransitionSpec extends ObjectBehavior
         Entity $entity,
         Context $context
     ) {
-        $condition->match($entity, $context)->willReturn(true);
-        $preCondition->match($entity, $context)->willReturn(true);
+        $condition->match($this, $entity, $context)->willReturn(true);
+        $preCondition->match($this, $entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
@@ -183,11 +183,11 @@ class TransitionSpec extends ObjectBehavior
         Context $context
     ) {
         $condition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(false);
 
         $preCondition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(true);
 
         $this->setCondition($condition);
@@ -205,11 +205,11 @@ class TransitionSpec extends ObjectBehavior
         Context $context
     ) {
         $condition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(true);
 
         $preCondition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(false);
 
         $this->setCondition($condition);
@@ -228,11 +228,11 @@ class TransitionSpec extends ObjectBehavior
         Action $action
     ) {
         $preCondition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(true);
 
         $condition
-            ->match($entity, $context)
+            ->match($this, $entity, $context)
             ->willReturn(false);
 
         $action->requiresInputData()->willReturn(true);

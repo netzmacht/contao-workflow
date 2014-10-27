@@ -2,6 +2,7 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
+use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
@@ -42,9 +43,14 @@ class Transition
     private $condition;
 
     /**
-     * @var array
+     * @var Role[]
      */
     private $roles = array();
+
+    /**
+     * @var Workflow
+     */
+    private $workflow;
 
     /**
      * @return string
@@ -282,6 +288,24 @@ class Transition
     }
 
     /**
+     * @param Role $role
+     *
+     * @return $this
+     */
+    public function addRole(Role $role)
+    {
+        foreach ($this->roles as $assignedRole) {
+            if ($assignedRole->equals($role)) {
+                return $this;
+            }
+        }
+
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getRoles()
@@ -290,14 +314,10 @@ class Transition
     }
 
     /**
-     * @param $role
-     *
-     * @return $this
+     * @return Workflow
      */
-    public function grantAccess($role)
+    public function getWorkflow()
     {
-        $this->roles[] = $role;
-
-        return $this;
+        return $this->workflow;
     }
 }

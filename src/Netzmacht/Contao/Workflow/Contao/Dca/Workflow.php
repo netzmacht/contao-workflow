@@ -13,6 +13,7 @@ namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
 
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
+use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
 
 class Workflow
 {
@@ -26,6 +27,9 @@ class Workflow
         return array_keys($GLOBALS['WORKFLOW_TYPES']);
     }
 
+    /**
+     * @return array
+     */
     public function getStartSteps()
     {
         return array(
@@ -34,16 +38,40 @@ class Workflow
         );
     }
 
+    /**
+     * @return array
+     */
     public function getEndSteps()
     {
         return $this->getSteps();
     }
 
-    public function getTransitions()
+    /**
+     * @return array
+     */
+    public function getTransitions($dataContainer)
     {
-        return array(1 => 'transition');
+        $options = array();
+
+        if ($dataContainer->activeRecord) {
+            $collection = TransitionModel::findBy('pid', $dataContainer->activeRecord->id);
+
+            if ($collection) {
+                while ($collection->next()) {
+                    $options[$collection->id] = sprintf('%s [%s]', $collection->label, $collection->name);
+                }
+            }
+        }
+
+        return $options;
     }
 
+    /**
+     * @param $value
+     *
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function validateProcess($value)
     {
         $value    = deserialize($value, true);
@@ -59,6 +87,9 @@ class Workflow
         return $value;
     }
 
+    /**
+     * @return array
+     */
     private function getSteps()
     {
         $steps = array();
@@ -69,7 +100,7 @@ class Workflow
                 $steps[$collection->id] = $collection->label;
 
                 if ($collection->final) {
-                    $steps[$collection->id] .= ' (final)';
+                    $steps[$collection->id] .= ' [final]';
                 }
             }
         }
@@ -77,6 +108,11 @@ class Workflow
         return $steps;
     }
 
+    /**
+     * @param $process
+     *
+     * @throws \Exception
+     */
     private function guardStartStepDefined($process)
     {
         if (!$process) {

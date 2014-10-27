@@ -10,8 +10,8 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
-                'pid'=>'index'
+                'id'  => 'primary',
+                'pid' => 'index'
             )
         ),
     ),
@@ -20,8 +20,15 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
     (
         'sorting' => array
         (
-            'mode'   => 1,
+            'mode'   => 4,
+            'flag'   => 1,
+            'headerFields' => array('name', 'type', 'description'),
             'fields' => array('name'),
+            'disableGrouping' => true,
+            'child_record_callback' => array(
+                'Netzmacht\Contao\Workflow\Contao\Dca\Common',
+                'generateRow'
+            )
         ),
         'label' => array
         (
@@ -33,19 +40,25 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         (
             'edit' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ),
+            'actions' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
+                'href'  => 'table=tl_workflow_action',
+                'icon'  => 'system/modules/workflow/assets/img/action.png',
+            ),
             'delete' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
                 'href'  => 'act=delete',
                 'icon'  => 'delete.gif',
             ),
             'show' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['show'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
             ),
@@ -56,11 +69,16 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
     (
         'default' => array
         (
-            'name'    => array('name', 'label', 'description'),
-            'process' => array('start', 'process'),
-            'config'  => array(),
-            'publish' => array('published')
+            'name'        => array('label', 'name', 'description'),
+            'config'      => array(),
+            'permissions' => array('limitPermissions')
         ),
+    ),
+
+    'metasubpalettes' => array
+    (
+        'limitPermissions' => array('roles'),
+
     ),
 
     'fields' => array
@@ -71,6 +89,8 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         ),
         'pid'         => array
         (
+            'relation' => array('type' => 'hasOne', 'load' => 'lazy'),
+            'foreignKey' => 'tl_workflow.name',
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp'         => array
@@ -79,19 +99,21 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         ),
         'name'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['name'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['name'],
             'inputType' => 'text',
             'exclude'   => true,
+            'save_callback' => array(
+                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+            ),
             'eval'      => array(
-                'tl_class'           => 'w50',
-                'mandatory' => true,
+                'tl_class'  => 'w50',
                 'maxlength' => 64,
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),
         'label'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['label'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['label'],
             'inputType' => 'text',
             'exclude'   => true,
             'eval'      => array(
@@ -103,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         ),
         'description'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['description'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['description'],
             'inputType' => 'text',
             'exclude'   => true,
             'eval'      => array(
@@ -112,5 +134,32 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             ),
             'sql'       => "varchar(255) NOT NULL default ''",
         ),
+        'limitPermissions'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermissions'],
+            'inputType' => 'checkbox',
+            'eval'      => array(
+                'tl_class'       => 'clr w50',
+                'submitOnChange' => true,
+            ),
+            'sql'       => "char(1) NOT NULL default ''"
+        ),
+        'roles' => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['roles'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Transition',
+                'getUserRoles',
+            ),
+            'eval'      => array(
+                'tl_class'           => 'clr',
+                'multiple' => true,
+                'chosen'   => true,
+            ),
+            'sql'       => "mediumblob NULL",
+        )
     ),
 );

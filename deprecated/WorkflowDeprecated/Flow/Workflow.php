@@ -39,6 +39,11 @@ class Workflow
     private $startTransition;
 
     /**
+     * @var int
+     */
+    private $workflowId;
+
+    /**
      * @param $entity
      * @return bool
      */
@@ -155,4 +160,11 @@ class Workflow
         }
     }
 
-} 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->workflowId;
+    }
+}

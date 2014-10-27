@@ -9,10 +9,12 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Contao\Dca;
+namespace Netzmacht\Contao\Workflow\Factory\Event;
 
 
-class Step
+use Symfony\Component\EventDispatcher\Event;
+
+class CreateWorkflowEvent extends Event
 {
 
 }

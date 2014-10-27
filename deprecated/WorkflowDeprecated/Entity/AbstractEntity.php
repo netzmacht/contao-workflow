@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\Contao\WorkflowDeprecated\Entity;
 
 use ContaoCommunityAlliance\DcGeneral\Data\AbstractModel;
 use Netzmacht\Contao\Workflow\Entity;

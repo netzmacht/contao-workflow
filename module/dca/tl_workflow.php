@@ -52,6 +52,12 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'href'  => 'table=tl_workflow_transition',
                 'icon'  => 'system/modules/workflow/assets/img/transition.png',
             ),
+            'roles' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['roles'],
+                'href'  => 'table=tl_workflow_role',
+                'icon'  => 'system/modules/workflow/assets/img/role.png',
+            ),
             'delete' => array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],
@@ -94,9 +100,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'inputType' => 'text',
             'search'    => true,
             'exclude'   => true,
+            'save_callback' => array(
+                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+            ),
             'eval'      => array(
                 'tl_class'           => 'w50',
-                'mandatory' => true,
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),

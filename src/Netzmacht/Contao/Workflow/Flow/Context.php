@@ -167,4 +167,16 @@ class Context
 
         return null;
     }
+
+    /**
+     * @param array $params
+     *
+     * @return $this
+     */
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+
+        return $this;
+    }
 }

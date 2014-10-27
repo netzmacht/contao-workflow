@@ -12,6 +12,8 @@
 namespace Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 
 
+use Netzmacht\Contao\Workflow\Acl\AclManager;
+use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
@@ -20,16 +22,50 @@ use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 class PermissionCondition implements Condition
 {
     /**
-     * @var \BackendUser
+     * @var AclManager
      */
-    private $user;
+    private $aclManager;
 
     /**
-     * @param $user
+     * @var bool
      */
-    function __construct(\BackendUser $user)
+    private $ignoreAdmin = false;
+
+    /**
+     * @var Role[]
+     */
+    private $transitionRoles = array();
+
+    /**
+     * @param AclManager $aclManager
+     * @param bool       $ignoreAdmin
+     *
+     * @internal param \BackendUser $user
+     */
+    public function __construct(AclManager $aclManager, $ignoreAdmin = false)
     {
-        $this->user = $user;
+        $this->aclManager  = $aclManager;
+        $this->ignoreAdmin = $ignoreAdmin;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAdminPermissionIgnored()
+    {
+        return $this->ignoreAdmin;
+    }
+
+    /**
+     * @param boolean $ignoreAdmin
+     *
+     * @return $this
+     */
+    public function ignoreAdminPermission($ignoreAdmin)
+    {
+        $this->ignoreAdmin = $ignoreAdmin;
+
+        return $this;
     }
 
     /**
@@ -41,8 +77,14 @@ class PermissionCondition implements Condition
      */
     public function match(Transition $transition, Entity $entity, Context $context)
     {
-        if (array_intersect($transition->getRoles(), $this->user->groups)) {
+        if (!$this->ignoreAdmin && $this->aclManager->hasAdminPermissions()) {
             return true;
+        }
+
+        foreach ($this->transitionRoles as $role) {
+            if ($this->aclManager->hasPermission($role)) {
+                return true;
+            }
         }
 
         return false;

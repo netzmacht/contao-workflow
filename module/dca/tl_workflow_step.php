@@ -21,11 +21,12 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
         'sorting' => array
         (
             'mode'   => 4,
+            'flag'   => 1,
             'headerFields' => array('name', 'type', 'description'),
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Contao\Dca\Step',
+                'Netzmacht\Contao\Workflow\Contao\Dca\Common',
                 'generateRow'
             )
         ),
@@ -86,9 +87,11 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['name'],
             'inputType' => 'text',
             'exclude'   => true,
+            'save_callback' => array(
+                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+            ),
             'eval'      => array(
                 'tl_class'           => 'w50',
-                'mandatory' => true,
                 'maxlength' => 64,
             ),
             'sql'       => "varchar(64) NOT NULL default ''",

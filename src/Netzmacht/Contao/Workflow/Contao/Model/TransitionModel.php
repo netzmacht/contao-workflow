@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Contao\Dca;
+namespace Netzmacht\Contao\Workflow\Contao\Model;
 
 
-class Step
+class TransitionModel extends \Model
 {
-
+    protected static $strTable = 'tl_workflow_transition';
 }

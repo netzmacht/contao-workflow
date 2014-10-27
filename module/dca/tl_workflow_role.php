@@ -1,11 +1,11 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_workflow_action'] = array
+$GLOBALS['TL_DCA']['tl_workflow_role'] = array
 (
     'config' => array
     (
         'dataContainer' => 'Table',
-        'ptable' => 'tl_workflow_transition',
+        'ptable' => 'tl_workflow',
         'sql'           => array
         (
             'keys' => array
@@ -40,41 +40,32 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         (
             'edit' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_role']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ),
             'delete' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['delete'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_role']['delete'],
                 'href'  => 'act=delete',
                 'icon'  => 'delete.gif',
             ),
             'show' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['show'],
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_role']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
             ),
         ),
     ),
 
-    'palettes' => array(
-        '__selector__' => array('type'),
-    ),
-
     'metapalettes' => array
     (
         'default' => array
         (
-            'name'        => array('label', 'name', 'type'),
-            'description' => array(':hide', 'description'),
-            'config'      => array(),
-            'activation'  => array('active'),
-        ),
-        'core_notify extends default' => array
-        (
-            '+config' => array('notify_role'),
+            'name'       => array('label', 'name'),
+            'user'       => array('users', 'userGroups'),
+            'member'     => array('members', 'memberGroups'),
         ),
     ),
 
@@ -86,8 +77,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         ),
         'pid'         => array
         (
-            'relation' => array('type' => 'hasOne', 'load' => 'lazy'),
-            'foreignKey' => 'tl_workflow_transition.name',
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp'         => array
@@ -96,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         ),
         'label'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['name'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['name'],
             'inputType' => 'text',
             'exclude'   => true,
             'eval'      => array(
@@ -108,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         ),
         'name'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['name'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['name'],
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
@@ -120,24 +109,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),
-        'type'           => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
-            'inputType' => 'select',
-            'exclude'   => true,
-            'options_callback' => array('Netzmacht\Contao\Workflow\Contao\Dca\Action', 'getTypes'),
-            'eval'      => array(
-                'tl_class'           => 'w50',
-                'mandatory' => true,
-                'includeBlankOption' => true,
-                'submitOnChange' => true,
-                'chosen' => true,
-            ),
-            'sql'       => "varchar(32) NOT NULL default ''",
-        ),
         'description'           => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['description'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['description'],
             'inputType' => 'text',
             'exclude'   => true,
             'eval'      => array(
@@ -146,29 +120,71 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             ),
             'sql'       => "varchar(255) NOT NULL default ''",
         ),
-        'active'      => array
+        'users' => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['active'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['roles'],
             'inputType' => 'checkbox',
-            'eval'      => array(
-                'tl_class'       => 'clr w50',
-                'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-
-        'notify_role' => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['notify_role'],
-            'inputType' => 'select',
             'exclude'   => true,
-            'options_callback' => array('Netzmacht\Contao\Workflow\Contao\Dca\Action', 'getRoles'),
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'getUsers',
+            ),
             'eval'      => array(
-                'tl_class'           => 'w50',
-                'mandatory' => true,
-                'includeBlankOption' => true,
+                'tl_class'           => 'clr',
                 'multiple' => true,
-                'chosen' => true,
+                'tl_style' => 'height:auto;',
+            ),
+            'sql'       => "mediumblob NULL",
+        ),
+        'userGroups' => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['userGroups'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'getUserGroups',
+            ),
+            'eval'      => array(
+                'tl_class'           => 'clr',
+                'multiple' => true,
+                'tl_style' => 'height:auto;',
+            ),
+            'sql'       => "mediumblob NULL",
+        ),
+        'members' => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['roles'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'getMembers',
+            ),
+            'eval'      => array(
+                'tl_class'           => 'clr',
+                'multiple' => true,
+                'tl_style' => 'height:auto;',
+            ),
+            'sql'       => "mediumblob NULL",
+        ),
+        'memberGroups' => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_role']['memberGroups'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'getMemberGroups',
+            ),
+            'eval'      => array(
+                'tl_class'           => 'clr',
+                'multiple' => true,
+                'tl_style' => 'height:auto;',
             ),
             'sql'       => "mediumblob NULL",
         ),
