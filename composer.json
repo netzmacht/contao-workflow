@@ -24,6 +24,7 @@
         "contao-community-alliance/event-dispatcher":"~1.0",
         "contao-community-alliance/composer-plugin": "~2.0",
         "contao-community-alliance/dc-general": "2.0.*@dev",
+        "terminal42/notification_center": "~1.1",
         "bit3/contao-meta-palettes": "~1.5",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "beberlei/assert": "~2.0"
