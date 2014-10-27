@@ -33,6 +33,14 @@ class ContextSpec extends ObjectBehavior
         $this->getProperties()->shouldBe($data);
     }
 
+    function it_accepts_initial_params(InputProviderInterface $inputProvider)
+    {
+        $data = array('foo' => 'bar');
+        $this->beConstructedWith($inputProvider, array(), $data);
+
+        $this->getParams()->shouldBe($data);
+    }
+
     function it_has_an_input_provider(InputProviderInterface $inputProvider)
     {
         $this->getInputProvider()->shouldReturn($inputProvider);
@@ -54,6 +62,24 @@ class ContextSpec extends ObjectBehavior
     function it_gets_properties_as_array()
     {
         $this->getProperties()->shouldBeArray();
+    }
+
+    function it_sets_param()
+    {
+        $this->setParam('param', 'val')->shouldReturn($this);
+        $this->getParam('param')->shouldReturn('val');
+    }
+
+    function it_knows_if_param_exists()
+    {
+        $this->hasParam('param')->shouldReturn(false);
+        $this->setParam('param', 'val');
+        $this->hasParam('param')->shouldReturn(true);
+    }
+
+    function it_gets_params_as_array()
+    {
+        $this->getParams()->shouldBeArray();
     }
 
     function it_add_an_errors()
