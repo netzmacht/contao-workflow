@@ -78,130 +78,123 @@ class TransitionSpec extends ObjectBehavior
         $this->requiresInputData()->shouldReturn(true);
     }
 
-    function it_checks_a_precondition(Condition $condition, Entity $entity, Context $context, ErrorCollection $errorCollection)
+    function it_checks_a_precondition(Condition $condition, Entity $entity, Context $context)
     {
-        $condition->match($entity, $context, $errorCollection)->willReturn(true);
+        $condition->match($entity, $context)->willReturn(true);
 
         $this->setPreCondition($condition)->shouldReturn($this);
-        $this->checkPreCondition($entity, $context, $errorCollection)->shouldReturn(true);
+        $this->checkPreCondition($entity, $context)->shouldReturn(true);
     }
 
     function it_checks_a_precondition_failing(
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(false);
+        $condition->match($entity, $context)->willReturn(false);
 
         $this->setPreCondition($condition)->shouldReturn($this);
-        $this->checkPreCondition($entity, $context, $errorCollection)->shouldReturn(false);
+        $this->checkPreCondition($entity, $context)->shouldReturn(false);
     }
 
-    function it_checks_a_condition(Condition $condition, Entity $entity, Context $context, ErrorCollection $errorCollection)
+    function it_checks_a_condition(Condition $condition, Entity $entity, Context $context)
     {
-        $condition->match($entity, $context, $errorCollection)->willReturn(true);
+        $condition->match($entity, $context)->willReturn(true);
 
         $this->setCondition($condition)->shouldReturn($this);
-        $this->checkCondition($entity, $context, $errorCollection)->shouldReturn(true);
+        $this->checkCondition($entity, $context)->shouldReturn(true);
     }
 
     function it_checks_a_condition_failing(
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(false);
+        $condition->match($entity, $context)->willReturn(false);
 
         $this->setCondition($condition)->shouldReturn($this);
-        $this->checkCondition($entity, $context, $errorCollection)->shouldReturn(false);
+        $this->checkCondition($entity, $context)->shouldReturn(false);
     }
 
     function it_is_allowed_by_conditions(
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(true);
-        $preCondition->match($entity, $context, $errorCollection)->willReturn(true);
+        $condition->match($entity, $context)->willReturn(true);
+        $preCondition->match($entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($condition);
 
-        $this->isAllowed($entity, $context, $errorCollection)->shouldReturn(true);
+        $this->isAllowed($entity, $context)->shouldReturn(true);
     }
 
     function it_is_not_allowed_by_failing_pre_condition(
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(true);
-        $preCondition->match($entity, $context, $errorCollection)->willReturn(false);
+        $condition->match($entity, $context)->willReturn(true);
+        $preCondition->match($entity, $context)->willReturn(false);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
-        $this->isAllowed($entity, $context, $errorCollection)->shouldReturn(false);
+        $this->isAllowed($entity, $context)->shouldReturn(false);
     }
 
     function it_is_not_allowed_by_failing_condition(
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(false);
-        $preCondition->match($entity, $context, $errorCollection)->willReturn(true);
+        $condition->match($entity, $context)->willReturn(false);
+        $preCondition->match($entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
-        $this->isAllowed($entity, $context, $errorCollection)->shouldReturn(false);
+        $this->isAllowed($entity, $context)->shouldReturn(false);
     }
 
     function it_is_available_when_passing_conditions(
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
-        $condition->match($entity, $context, $errorCollection)->willReturn(true);
-        $preCondition->match($entity, $context, $errorCollection)->willReturn(true);
+        $condition->match($entity, $context)->willReturn(true);
+        $preCondition->match($entity, $context)->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
-        $this->isAvailable($entity, $context, $errorCollection)->shouldReturn(true);
+        $this->isAvailable($entity, $context)->shouldReturn(true);
     }
 
     function it_is_not_available_when_condition_fails(
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
         $condition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(false);
 
         $preCondition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(true);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
         $this
-            ->isAvailable($entity, $context, $errorCollection)
+            ->isAvailable($entity, $context)
             ->shouldReturn(false);
     }
 
@@ -209,22 +202,21 @@ class TransitionSpec extends ObjectBehavior
         Condition $preCondition,
         Condition $condition,
         Entity $entity,
-        Context $context,
-        ErrorCollection $errorCollection
+        Context $context
     ) {
         $condition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(true);
 
         $preCondition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(false);
 
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
         $this
-            ->isAvailable($entity, $context, $errorCollection)
+            ->isAvailable($entity, $context)
             ->shouldReturn(false);
     }
 
@@ -233,15 +225,14 @@ class TransitionSpec extends ObjectBehavior
         Condition $condition,
         Entity $entity,
         Context $context,
-        Action $action,
-        ErrorCollection $errorCollection
+        Action $action
     ) {
         $preCondition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(true);
 
         $condition
-            ->match($entity, $context, $errorCollection)
+            ->match($entity, $context)
             ->willReturn(false);
 
         $action->requiresInputData()->willReturn(true);
@@ -251,21 +242,20 @@ class TransitionSpec extends ObjectBehavior
         $this->setCondition($condition);
         $this->setPreCondition($preCondition);
 
-        $this->isAvailable($entity, $context, $errorCollection)->shouldReturn(true);
+        $this->isAvailable($entity, $context)->shouldReturn(true);
     }
 
     function it_transits_an_entity(
         Entity $entity,
         Context $context,
         State $state,
-        State $newState,
-        ErrorCollection $errorCollection
+        State $newState
     ) {
         $entity->getState()->willReturn($state);
         $state->transit($this, true, array())->willReturn($newState);
 
         $context->getProperties()->willReturn(array());
 
-        $this->transit($entity, $context, $errorCollection)->shouldBe($newState);
+        $this->transit($entity, $context)->shouldBe($newState);
     }
 }

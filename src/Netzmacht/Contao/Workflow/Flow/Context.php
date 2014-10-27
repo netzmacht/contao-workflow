@@ -3,6 +3,7 @@
 namespace Netzmacht\Contao\Workflow\Flow;
 
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
+use Netzmacht\Contao\Workflow\ErrorCollection;
 
 class Context
 {
@@ -16,6 +17,11 @@ class Context
      */
     private $inputProvider;
 
+    /**
+     * @var ErrorCollection
+     */
+    private $errorCollection;
+
 
     /**
      * @param InputProvider $inputProvider
@@ -24,8 +30,9 @@ class Context
      */
     public function __construct(InputProvider $inputProvider, array $properties = array())
     {
-        $this->inputProvider = $inputProvider;
-        $this->properties    = $properties;
+        $this->inputProvider   = $inputProvider;
+        $this->properties      = $properties;
+        $this->errorCollection = new ErrorCollection();
     }
 
     /**
@@ -79,5 +86,34 @@ class Context
     public function getInputProvider()
     {
         return $this->inputProvider;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return $this->errorCollection->hasErrors();
+    }
+
+    /**
+     * @param       $message
+     * @param array $params
+     *
+     * @return $this
+     */
+    public function addError($message, array $params = array())
+    {
+        $this->errorCollection->addError($message, $params);
+
+        return $this;
+    }
+
+    /**
+     * @return ErrorCollection
+     */
+    public function getErrorCollection()
+    {
+        return $this->errorCollection;
     }
 }

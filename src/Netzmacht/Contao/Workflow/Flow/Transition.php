@@ -4,7 +4,6 @@ namespace Netzmacht\Contao\Workflow\Flow;
 
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
@@ -190,13 +189,13 @@ class Transition
     /**
      * @param Entity $entity
      * @param Context $context
-     * @param ErrorCollection $errorCollection
+     *
      * @return bool
      */
-    public function isAllowed(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function isAllowed(Entity $entity, Context $context)
     {
-        if ($this->checkPreCondition($entity, $context, $errorCollection)) {
-            return $this->checkCondition($entity, $context, $errorCollection);
+        if ($this->checkPreCondition($entity, $context)) {
+            return $this->checkCondition($entity, $context);
         }
 
         return false;
@@ -205,30 +204,30 @@ class Transition
     /**
      * @param Entity $entity
      * @param Context $context
-     * @param ErrorCollection $errorCollection
+     *
      * @return bool
      */
-    public function isAvailable(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function isAvailable(Entity $entity, Context $context)
     {
         if ($this->requiresInputData()) {
-            return $this->checkPreCondition($entity, $context, $errorCollection);
+            return $this->checkPreCondition($entity, $context);
         }
 
-        return $this->isAllowed($entity, $context, $errorCollection);
+        return $this->isAllowed($entity, $context);
     }
 
     /**
      * @param Entity $entity
      * @param Context $context
-     * @param ErrorCollection $errorCollection
      *
-*@throws ProcessNotStartedException
+     * @throws ProcessNotStartedException
+     *
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function transit(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function transit(Entity $entity, Context $context)
     {
         $state   = $entity->getState();
-        $success = $this->isAllowed($entity, $context, $errorCollection);
+        $success = $this->isAllowed($entity, $context);
 
 
         if ($success) {
@@ -240,7 +239,7 @@ class Transition
                 $success = false;
                 $params  = array('exception' => $e->getMessage());
 
-                $errorCollection->addError('transition.action.failed', $params);
+                $context->addError('transition.action.failed', $params);
             }
         }
 
@@ -250,30 +249,30 @@ class Transition
     /**
      * @param Entity $entity
      * @param Context $context
-     * @param ErrorCollection $errorCollection
+     *
      * @return bool
      */
-    public function checkPreCondition(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function checkPreCondition(Entity $entity, Context $context)
     {
         if (!$this->preCondition) {
             return true;
         }
 
-        return $this->preCondition->match($entity, $context, $errorCollection);
+        return $this->preCondition->match($entity, $context);
     }
 
     /**
      * @param Entity $entity
      * @param Context $context
-     * @param ErrorCollection $errorCollection
+     *
      * @return bool
      */
-    public function checkCondition(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function checkCondition(Entity $entity, Context $context)
     {
         if (!$this->condition) {
             return true;
         }
 
-        return $this->condition->match($entity, $context, $errorCollection);
+        return $this->condition->match($entity, $context);
     }
 }

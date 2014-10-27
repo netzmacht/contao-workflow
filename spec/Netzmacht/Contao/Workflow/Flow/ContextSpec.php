@@ -3,6 +3,7 @@
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
+use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -53,5 +54,17 @@ class ContextSpec extends ObjectBehavior
     function it_gets_properties_as_array()
     {
         $this->getProperties()->shouldBeArray();
+    }
+
+    function it_add_an_errors()
+    {
+        $this->hasErrors()->shouldReturn(false);
+        $this->addError('error', array('param' => 'foo'))->shouldReturn($this);
+        $this->hasErrors()->shouldReturn(true);
+    }
+
+    function it_gets_error_collection()
+    {
+        $this->getErrorCollection()->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\ErrorCollection');
     }
 }

@@ -7,6 +7,7 @@ use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
+use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
@@ -88,7 +89,7 @@ class Manager
             $this->repositoryFactory->createRepository($entity->getProviderName()),
             $this->stateRepository,
             $this->transactionHandler,
-            $this->inputProvider
+            new Context($this->inputProvider)
         );
 
         return $handler;

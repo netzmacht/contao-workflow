@@ -37,11 +37,10 @@ class EntityPropertyCondition implements Condition
     /**
      * @param Entity          $entity
      * @param Context         $context
-     * @param ErrorCollection $errorCollection
      *
      * @return bool
      */
-    public function match(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function match(Entity $entity, Context $context)
     {
         return Comparison::compare(
             $entity->getProperty($this->property),

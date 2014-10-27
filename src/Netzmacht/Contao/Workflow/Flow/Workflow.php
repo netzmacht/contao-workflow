@@ -5,7 +5,6 @@ namespace Netzmacht\Contao\Workflow\Flow;
 
 use Assert\Assertion;
 use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
@@ -135,15 +134,15 @@ class Workflow
      * @param Entity          $entity
      * @param                 $transitionName
      * @param Context         $context
-     * @param ErrorCollection $errorCollection
      *
      * @throws ProcessNotStartedException
      * @throws StepNotFoundException
      * @throws TransitionNotAllowedException
      * @throws TransitionNotFoundException
+     *
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function transit(Entity $entity, $transitionName, Context $context, ErrorCollection $errorCollection)
+    public function transit(Entity $entity, $transitionName, Context $context)
     {
         $this->guardWorkflowStarted($entity);
 
@@ -154,17 +153,16 @@ class Workflow
 
         $transition = $this->getTransition($transitionName);
 
-        return $transition->transit($entity, $context, $errorCollection);
+        return $transition->transit($entity, $context);
     }
 
     /**
      * @param Entity          $entity
      * @param Context         $context
-     * @param ErrorCollection $errorCollection
      *
      * @return \Netzmacht\Contao\Workflow\Flow\State
      */
-    public function start(Entity $entity, Context $context, ErrorCollection $errorCollection)
+    public function start(Entity $entity, Context $context)
     {
         if ($entity->getState()) {
             return $entity->getState();
@@ -175,7 +173,7 @@ class Workflow
 
         $transition = $this->getStartTransition();
 
-        return $transition->transit($entity, $context, $errorCollection);
+        return $transition->transit($entity, $context);
     }
 
     /**

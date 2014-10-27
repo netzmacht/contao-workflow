@@ -5,6 +5,7 @@ namespace spec\Netzmacht\Contao\Workflow;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
+use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\State;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
@@ -30,7 +31,7 @@ class TransitionHandlerSpec extends ObjectBehavior
         StateRepository $stateRepository,
         EntityRepository $entityRepository,
         TransactionHandler $transactionHandler,
-        InputProviderInterface $inputProvider
+        Context $context
     )  {
         $this->beConstructedWith(
             $entity,
@@ -39,7 +40,7 @@ class TransitionHandlerSpec extends ObjectBehavior
             $entityRepository,
             $stateRepository,
             $transactionHandler,
-            $inputProvider
+            $context
         );
     }
 
@@ -103,9 +104,9 @@ class TransitionHandlerSpec extends ObjectBehavior
         $this->requiresInputData()->shouldReturn(false);
     }
 
-    function it_get_errors()
+    function it_gets_the_context(Context $context)
     {
-        $this->getErrors()->shouldHaveType('Netzmacht\Contao\Workflow\ErrorCollection');
+        $this->getContext()->shouldReturn($context);
     }
 
 

@@ -50,11 +50,6 @@ class TransitionHandler
     private $validated;
 
     /**
-     * @var ErrorCollection
-     */
-    private $errors;
-
-    /**
      * @var EntityRepository
      */
     private $entityRepository;
@@ -82,7 +77,7 @@ class TransitionHandler
      * @param EntityRepository   $entityRepository
      * @param StateRepository    $stateRepository
      * @param TransactionHandler $transactionHandler
-     * @param InputProvider      $inputProvider
+     * @param Context            $context
      */
     public function __construct(
         Entity $entity,
@@ -91,7 +86,7 @@ class TransitionHandler
         EntityRepository $entityRepository,
         StateRepository $stateRepository,
         TransactionHandler $transactionHandler,
-        InputProvider $inputProvider
+        Context $context
     ) {
         $this->entity             = $entity;
         $this->workflow           = $workflow;
@@ -99,8 +94,7 @@ class TransitionHandler
         $this->entityRepository   = $entityRepository;
         $this->stateRepository    = $stateRepository;
         $this->transactionHandler = $transactionHandler;
-        $this->context            = new Context($inputProvider);
-        $this->errors             = new ErrorCollection();
+        $this->context            = $context;
     }
 
 
@@ -174,11 +168,11 @@ class TransitionHandler
     }
 
     /**
-     * @return ErrorCollection
+     * @return Context
      */
-    public function getErrors()
+    public function getContext()
     {
-        return $this->errors;
+        return $this->context;
     }
 
     /**
@@ -204,9 +198,9 @@ class TransitionHandler
 
         try {
             if ($this->isStartTransition()) {
-                $state = $this->workflow->start($this->entity, $this->context, $this->errors);
+                $state = $this->workflow->start($this->entity, $this->context);
             } else {
-                $state = $this->workflow->transit($this->entity, $this->transitionName, $this->context, $this->errors);
+                $state = $this->workflow->transit($this->entity, $this->transitionName, $this->context);
             }
 
             $this->stateRepository->add($state);
