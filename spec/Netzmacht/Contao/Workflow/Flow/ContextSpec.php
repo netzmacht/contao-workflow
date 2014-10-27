@@ -3,7 +3,6 @@
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
-use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

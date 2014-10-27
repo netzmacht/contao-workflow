@@ -252,7 +252,7 @@ class TransitionSpec extends ObjectBehavior
         State $newState
     ) {
         $entity->getState()->willReturn($state);
-        $state->transit($this, true, array())->willReturn($newState);
+        $state->transit($this, true, $context)->willReturn($newState);
 
         $context->getProperties()->willReturn(array());
 

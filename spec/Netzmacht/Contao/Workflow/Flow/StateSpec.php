@@ -3,6 +3,8 @@
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
 use Netzmacht\Contao\Workflow\Data\Data;
+use Netzmacht\Contao\Workflow\ErrorCollection;
+use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use PhpSpec\ObjectBehavior;
@@ -68,9 +70,13 @@ class StateSpec extends ObjectBehavior
         $this->getData()->shouldReturn(static::$data);
     }
 
-    function it_transits_to_next_state(Transition $transition)
+    function it_transits_to_next_state(Transition $transition, Context $context, ErrorCollection $errorCollection)
     {
-        $this->transit($transition, false, array())->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
+        $context->getProperties()->willReturn(array());
+        $context->getErrorCollection()->willReturn($errorCollection);
+        $errorCollection->getErrors()->willReturn(array());
+
+        $this->transit($transition, false, $context)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
 
     }
 }

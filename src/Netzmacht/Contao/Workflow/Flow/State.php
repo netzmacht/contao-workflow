@@ -43,19 +43,32 @@ class State
     private $reachedAt;
 
     /**
-     * @param $transitionName
-     * @param $stepToName
-     * @param bool $successful
-     * @param array $data
-     * @param DateTime $reachedAt
+     * @var array
      */
-    public function __construct($transitionName, $stepToName, $successful, array $data, DateTime $reachedAt)
-    {
+    private $errors;
+
+    /**
+     * @param          $transitionName
+     * @param          $stepToName
+     * @param bool     $successful
+     * @param array    $data
+     * @param DateTime $reachedAt
+     * @param array    $errors
+     */
+    public function __construct(
+        $transitionName,
+        $stepToName,
+        $successful,
+        array $data,
+        DateTime $reachedAt,
+        array $errors = array()
+    ) {
         $this->transitionName = $transitionName;
         $this->stepName       = $stepToName;
         $this->successful     = $successful;
         $this->data           = $data;
         $this->reachedAt      = $reachedAt;
+        $this->errors         = $errors;
     }
 
     /**
@@ -108,14 +121,22 @@ class State
 
     /**
      * @param Transition $transition
-     * @param $success
-     * @param array $data
+     * @param bool       $success
+     * @param Context    $context
+     *
      * @return static
      */
-    public function transit(Transition $transition, $success = true, array $data = array())
+    public function transit(Transition $transition, $success = true, Context $context)
     {
         $dateTime = new DateTime();
 
-        return new static($transition->getName(), $transition->getStepTo()->getName(), $success, $data, $dateTime);
+        return new static(
+            $transition->getName(),
+            $transition->getStepTo()->getName(),
+            $success,
+            $context->getProperties(),
+            $dateTime,
+            $context->getErrorCollection()->getErrors()
+        );
     }
 }
