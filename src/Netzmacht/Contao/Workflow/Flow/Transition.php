@@ -42,6 +42,11 @@ class Transition
     private $condition;
 
     /**
+     * @var array
+     */
+    private $roles = array();
+
+    /**
      * @return string
      */
     public function getName()
@@ -258,7 +263,7 @@ class Transition
             return true;
         }
 
-        return $this->preCondition->match($entity, $context);
+        return $this->preCondition->match($this, $entity, $context);
     }
 
     /**
@@ -273,6 +278,26 @@ class Transition
             return true;
         }
 
-        return $this->condition->match($entity, $context);
+        return $this->condition->match($this, $entity, $context);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param $role
+     *
+     * @return $this
+     */
+    public function grantAccess($role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
     }
 }

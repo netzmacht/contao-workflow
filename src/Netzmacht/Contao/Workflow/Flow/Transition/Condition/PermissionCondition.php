@@ -11,29 +11,26 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 
+
 use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
-use Netzmacht\Contao\Workflow\Util\Comparison;
 
-class EntityPropertyCondition implements Condition
+class PermissionCondition implements Condition
 {
     /**
-     * @var string
+     * @var \BackendUser
      */
-    private $property;
+    private $user;
 
     /**
-     * @var string
+     * @param $user
      */
-    private $operator;
-
-    /**
-     * @var mixed
-     */
-    private $value;
+    function __construct(\BackendUser $user)
+    {
+        $this->user = $user;
+    }
 
     /**
      * @param Transition $transition
@@ -44,10 +41,10 @@ class EntityPropertyCondition implements Condition
      */
     public function match(Transition $transition, Entity $entity, Context $context)
     {
-        return Comparison::compare(
-            $entity->getProperty($this->property),
-            $this->value,
-            $this->operator
-        );
+        if (array_intersect($transition->getRoles(), $this->user->groups)) {
+            return true;
+        }
+
+        return false;
     }
 }
