@@ -121,12 +121,12 @@ class State
 
     /**
      * @param Transition $transition
-     * @param bool       $success
      * @param Context    $context
+     * @param bool       $success
      *
      * @return static
      */
-    public function transit(Transition $transition, $success = true, Context $context)
+    public function transit(Transition $transition, Context $context, $success = true)
     {
         $dateTime = new DateTime();
 

@@ -243,7 +243,7 @@ class Transition
             }
         }
 
-        return $state->transit($this, $success, $context);
+        return $state->transit($this, $context, $success);
     }
 
     /**

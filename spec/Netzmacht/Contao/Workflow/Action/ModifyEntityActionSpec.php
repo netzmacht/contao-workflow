@@ -64,8 +64,10 @@ class ModifyEntityActionSpec extends ObjectBehavior
     function it_updates_entity_with_data_mapping_during_transition(Transition $transition, Entity $entity, Context $context)
     {
         $this->addDataMapping('test');
-        $context->getProperty('test')->willReturn(true);
+        $context->getParam('test')->willReturn(true);
+
         $entity->setProperty('test', true)->shouldBeCalled();
+        $context->setProperty('test', true)->shouldBeCalled();
 
         $this->transit($transition, $entity, $context);
     }
@@ -74,10 +76,13 @@ class ModifyEntityActionSpec extends ObjectBehavior
     {
         $this->setValue('test', false);
         $this->addDataMapping('test');
-        $context->getProperty('test')->willReturn(true);
+        $context->getParam('test')->willReturn(true);
 
         $entity->setProperty('test', false)->shouldBeCalled();
+        $context->setProperty('test', false)->shouldBeCalled();
+
         $entity->setProperty('test', true)->shouldBeCalled();
+        $context->setProperty('test', true)->shouldBeCalled();
 
         $this->transit($transition, $entity, $context);
     }

@@ -2,7 +2,6 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
-use Netzmacht\Contao\Workflow\Data\Data;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Step;
@@ -76,7 +75,7 @@ class StateSpec extends ObjectBehavior
         $context->getErrorCollection()->willReturn($errorCollection);
         $errorCollection->getErrors()->willReturn(array());
 
-        $this->transit($transition, false, $context)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
+        $this->transit($transition, $context, false)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
 
     }
 }
