@@ -72,10 +72,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'config'      => array(),
             'activation'  => array('active'),
         ),
-        'core_notify extends default' => array
-        (
-            '+config' => array('notify_notification', 'notify_role'),
-        ),
     ),
 
     'fields' => array
@@ -155,36 +151,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
                 'submitOnChange' => true,
             ),
             'sql'       => "char(1) NOT NULL default ''"
-        ),
-
-        'notify_notification' => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['notify_role'],
-            'inputType' => 'select',
-            'exclude'   => true,
-            'options_callback' => array('Netzmacht\Contao\Workflow\Contao\Dca\Action', 'getNotifications'),
-            'eval'      => array(
-                'tl_class'           => 'w50',
-                'mandatory' => true,
-                'includeBlankOption' => true,
-                'chosen' => true,
-            ),
-            'sql'       => "int(10) unsigned NOT NULL default '0'",
-        ),
-
-        'notify_role' => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['notify_role'],
-            'inputType' => 'select',
-            'exclude'   => true,
-            'options_callback' => array('Netzmacht\Contao\Workflow\Contao\Dca\Action', 'getRoles'),
-            'eval'      => array(
-                'tl_class'           => 'w50',
-                'mandatory' => true,
-                'includeBlankOption' => true,
-                'chosen' => true,
-            ),
-            'sql'       => "mediumblob NULL",
         ),
     ),
 );

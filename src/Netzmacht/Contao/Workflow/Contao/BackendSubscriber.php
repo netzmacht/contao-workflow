@@ -32,6 +32,6 @@ class BackendSubscriber implements EventSubscriberInterface
      */
     public function getWorkflowTypes(GetWorkflowTypesEvent $event)
     {
-        $event->addTypes('core', array('notify'));
+//        $event->addTypes('core', array('notify'));
     }
 }

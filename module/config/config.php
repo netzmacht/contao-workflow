@@ -37,29 +37,3 @@ $GLOBALS['TL_MODELS']['tl_workflow']            = 'Netzmacht\Contao\Workflow\Con
 $GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Contao\Workflow\Contao\Model\StepModel';
 $GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Contao\Workflow\Contao\Model\RoleModel';
 $GLOBALS['TL_MODELS']['tl_workflow_transition'] = 'Netzmacht\Contao\Workflow\Contao\Model\TransitionModel';
-
-/*
- * Notification center configuration
- */
-// config.php
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = array
-(
-    // Type
-    'workflow_notify'   => array
-    (
-        // Field in tl_nc_language
-        'recipients'    => array
-        (
-            // Valid tokens
-            'recipient_email',
-            'recipient_role',
-        ),
-        'attachment_tokens'    => array
-        (
-            'entity_*',
-            'properties_*',
-            'step_*',
-            'transition_*',
-        )
-    )
-);

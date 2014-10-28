@@ -45,18 +45,6 @@ class Action
         return $options;
     }
 
-    public function getNotifications()
-    {
-        $collection = Notification::findByType('workflow_notify');
-        $options    = array();
-
-        while ($collection && $collection->next()) {
-            $options[$collection->id] = $collection->title;
-        }
-
-        return $options;
-    }
-
     /**
      * @return EventDispatcherInterface
      */
