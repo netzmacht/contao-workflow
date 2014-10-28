@@ -11,12 +11,31 @@
 
 namespace Netzmacht\Contao\Workflow\Transaction;
 
-
+/**
+ * Interface TransactionHandler describes the commonly used transaction steps begin, commit and rollback.
+ *
+ * @package Netzmacht\Contao\Workflow\Transaction
+ */
 interface TransactionHandler
 {
+    /**
+     * Begin a transaction.
+     *
+     * @return void
+     */
     public function begin();
 
+    /**
+     * Commit changes.
+     *
+     * @return void
+     */
     public function commit();
 
+    /**
+     * Rollback the transaction.
+     *
+     * @return void
+     */
     public function rollback();
 }

@@ -5,33 +5,48 @@ namespace Netzmacht\Contao\Workflow\Flow;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 
+/**
+ * Class Context provides extra information for a transition.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow
+ */
 class Context
 {
     /**
+     * Properties which will be stored as state data.
+     *
      * @var array
      */
     private $properties = array();
 
     /**
+     * The input provider.
+     *
      * @var InputProvider
      */
     private $inputProvider;
 
     /**
+     * Errors being raised during transition.
+     *
      * @var ErrorCollection
      */
     private $errorCollection;
 
     /**
+     * Params being passed.
+     *
      * @var array
      */
     private $params;
 
 
     /**
-     * @param InputProvider $inputProvider
-     * @param array         $properties
-     * @param array         $params
+     * Construct.
+     *
+     * @param InputProvider $inputProvider The input provider.
+     * @param array         $properties    The properties to be stored.
+     * @param array         $params        The given parameters.
      */
     public function __construct(InputProvider $inputProvider, array $properties = array(), array $params = array())
     {
@@ -42,8 +57,10 @@ class Context
     }
 
     /**
-     * @param $name
-     * @param $value
+     * Set a property value.
+     *
+     * @param string $name  Name of the property.
+     * @param mixed  $value Value of the property.
      *
      * @return $this
      */
@@ -55,9 +72,11 @@ class Context
     }
 
     /**
-     * @param $name
+     * Get the property value.
      *
-     * @return null
+     * @param string $name Property name.
+     *
+     * @return mixed
      */
     public function getProperty($name)
     {
@@ -69,7 +88,9 @@ class Context
     }
 
     /**
-     * @param $name
+     * Consider if property is set.
+     *
+     * @param string $name Property name.
      *
      * @return bool
      */
@@ -79,6 +100,8 @@ class Context
     }
 
     /**
+     * Get all properties.
+     *
      * @return array
      */
     public function getProperties()
@@ -87,6 +110,8 @@ class Context
     }
 
     /**
+     * Get the input provider.
+     *
      * @return InputProvider
      */
     public function getInputProvider()
@@ -95,6 +120,8 @@ class Context
     }
 
     /**
+     * Consider if an error isset.
+     *
      * @return bool
      */
     public function hasErrors()
@@ -103,8 +130,10 @@ class Context
     }
 
     /**
-     * @param       $message
-     * @param array $params
+     * Add a new error message.
+     *
+     * @param string $message The message.
+     * @param array  $params  Message parameters.
      *
      * @return $this
      */
@@ -116,6 +145,8 @@ class Context
     }
 
     /**
+     * Get the error collection.
+     *
      * @return ErrorCollection
      */
     public function getErrorCollection()
@@ -124,8 +155,10 @@ class Context
     }
 
     /**
-     * @param $name
-     * @param $value
+     * Set a parameter.
+     *
+     * @param string $name  Param name.
+     * @param mixed  $value Param value.
      *
      * @return $this
      */
@@ -137,7 +170,9 @@ class Context
     }
 
     /**
-     * @param $name
+     * Consider if a param isset.
+     *
+     * @param string $name Param name.
      *
      * @return bool
      */
@@ -147,6 +182,8 @@ class Context
     }
 
     /**
+     * Get all params.
+     *
      * @return array
      */
     public function getParams()
@@ -155,9 +192,11 @@ class Context
     }
 
     /**
-     * @param $name
+     * Get a param by name.
      *
-     * @return null
+     * @param string $name Param name.
+     *
+     * @return mixed
      */
     public function getParam($name)
     {
@@ -169,7 +208,9 @@ class Context
     }
 
     /**
-     * @param array $params
+     * Set multiple params.
+     *
+     * @param array $params Array of params.
      *
      * @return $this
      */

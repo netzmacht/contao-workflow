@@ -13,6 +13,13 @@ namespace Netzmacht\Contao\Workflow\Util;
 
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 
+/**
+ * Class Input is an util class for handling fetching and settings value from a input provider.
+ *
+ * It allows switching between parameters, values and persistent values by passing an argument.
+ *
+ * @package Netzmacht\Contao\Workflow\Util
+ */
 class Input
 {
     const PARAMETER        = 'parameter';
@@ -20,51 +27,54 @@ class Input
     const PERSISTENT_VALUE = 'persistent';
 
     /**
-     * @param InputProvider $inputProvider
-     * @param               $name
-     * @param string        $method
-     * @param bool          $raw
+     * Get a value from the input provider.
+     *
+     * @param InputProvider $inputProvider The input provider.
+     * @param string        $name          The name of the property.
+     * @param string        $type          The access type.
+     * @param bool          $raw           Get the value as raw value.
      *
      * @return mixed|null
      */
-    public static function get(InputProvider $inputProvider, $name, $method = Input::PARAMETER, $raw = false)
+    public static function get(InputProvider $inputProvider, $name, $type = self::PARAMETER, $raw = false)
     {
-        switch ($method) {
-            case static::PARAMETER:
-                return $inputProvider->getParameter($name, $raw);
-                break;
-
+        switch ($type) {
             case static::PERSISTENT_VALUE:
                 return $inputProvider->getPersistentValue($name);
-                break;
 
             case static::VALUE:
                 return $inputProvider->getValue($name, $raw);
-                break;
-        }
 
-        return null;
+            case static::PARAMETER:
+            default:
+                return $inputProvider->getParameter($name, $raw);
+        }
     }
 
     /**
-     * @param InputProvider $inputProvider
-     * @param               $name
-     * @param               $value
-     * @param string        $method
+     * Set a value of the input provider.
+     *
+     * @param InputProvider $inputProvider The input provider.
+     * @param string        $name          The name of the property.
+     * @param mixed         $value         The value of the property.
+     * @param string        $type          The property type.
+     *
+     * @return void
      */
-    public static function set(InputProvider $inputProvider, $name, $value, $method = Input::PARAMETER)
+    public static function set(InputProvider $inputProvider, $name, $value, $type = self::PARAMETER)
     {
-        switch ($method) {
-            case static::PARAMETER:
-                $inputProvider->setParameter($name, $value);
-                break;
-
+        switch ($type) {
             case static::PERSISTENT_VALUE:
                 $inputProvider->setPersistentValue($name, $value);
                 break;
 
             case static::VALUE:
                 $inputProvider->setValue($name, $name);
+                break;
+
+            case static::PARAMETER:
+            default:
+                $inputProvider->setParameter($name, $value);
                 break;
         }
     }

@@ -11,16 +11,21 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
-
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
 use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
 
+/**
+ * Class Workflow stores callback being used by the tl_workflow table.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Dca
+ */
 class Workflow
 {
     /**
-     * Get names of workflow types
+     * Get names of workflow types.
      *
      * @return array
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getTypes()
     {
@@ -28,6 +33,8 @@ class Workflow
     }
 
     /**
+     * Get all start steps.
+     *
      * @return array
      */
     public function getStartSteps()
@@ -39,6 +46,8 @@ class Workflow
     }
 
     /**
+     * Get all end steps.
+     *
      * @return array
      */
     public function getEndSteps()
@@ -47,6 +56,10 @@ class Workflow
     }
 
     /**
+     * Get all transitions.
+     *
+     * @param \DataContainer $dataContainer The data container.
+     *
      * @return array
      */
     public function getTransitions($dataContainer)
@@ -67,14 +80,17 @@ class Workflow
     }
 
     /**
-     * @param $value
+     * Validate given process data.
+     *
+     * @param mixed $value Raw process vlaue.
      *
      * @return array|mixed
-     * @throws \Exception
+     *
+     * @throws \Exception If Invalid data given.
      */
     public function validateProcess($value)
     {
-        $value    = deserialize($value, true);
+        $value = deserialize($value, true);
         $value = array_filter(
             $value,
             function ($item) {
@@ -88,11 +104,13 @@ class Workflow
     }
 
     /**
+     * Get steps form database.
+     *
      * @return array
      */
     private function getSteps()
     {
-        $steps = array();
+        $steps      = array();
         $collection = StepModel::findAll(array('order' => 'name'));
 
         if ($collection) {
@@ -109,9 +127,13 @@ class Workflow
     }
 
     /**
-     * @param $process
+     * Guard that start step is defined.
      *
-     * @throws \Exception
+     * @param array $process Process information.
+     *
+     * @throws \Exception If no start step is given.
+     *
+     * @return void
      */
     private function guardStartStepDefined($process)
     {

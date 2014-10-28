@@ -11,8 +11,17 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Model;
 
-
+/**
+ * TransitionModel using Contao models.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Model
+ */
 class TransitionModel extends \Model
 {
+    /**
+     * Table name.
+     *
+     * @var string
+     */
     protected static $strTable = 'tl_workflow_transition';
 }

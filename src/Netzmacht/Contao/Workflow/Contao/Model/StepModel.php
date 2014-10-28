@@ -11,8 +11,17 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Model;
 
-
+/**
+ * StepModel using Contao models.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Model
+ */
 class StepModel extends \Model
 {
+    /**
+     * Table name.
+     *
+     * @var string
+     */
     protected static $strTable = 'tl_workflow_step';
 }

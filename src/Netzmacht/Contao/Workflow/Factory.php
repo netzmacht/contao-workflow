@@ -11,20 +11,28 @@
 
 namespace Netzmacht\Contao\Workflow;
 
-
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateManagerEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
+/**
+ * Class Factory for creating workflow manager and entities.
+ *
+ * @package Netzmacht\Contao\Workflow
+ */
 class Factory
 {
     /**
+     * The event dispatcher.
+     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * @param EventDispatcher $eventDispatcher
+     * Construct.
+     *
+     * @param EventDispatcher $eventDispatcher The event dispatcher.
      */
     public function __construct(EventDispatcher $eventDispatcher)
     {
@@ -32,7 +40,11 @@ class Factory
     }
 
     /**
-     * @param $type
+     * Create a manager for a specific type.
+     *
+     * @param string $type Workflow type.
+     *
+     * @throws \RuntimeException If no manager was created.
      *
      * @return Manager
      */
@@ -52,8 +64,12 @@ class Factory
     }
 
     /**
-     * @param      $model
-     * @param null $table
+     * Create a new entity for a model.
+     *
+     * @param mixed       $model Create an workflow entity.
+     * @param string|null $table Table name is required for Contao results or array rows.
+     *
+     * @throws \RuntimeException If no entity could be created.
      *
      * @return Entity\Entity
      */

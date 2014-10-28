@@ -11,27 +11,37 @@
 
 namespace Netzmacht\Contao\Workflow\Acl;
 
-
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 
+/**
+ * Interface AclManager handles all roles for a workflow.
+ *
+ * @package Netzmacht\Contao\Workflow\Acl
+ */
 interface AclManager
 {
     /**
-     * @param Workflow $workflow
+     * Get roles for a workflow.
+     *
+     * @param Workflow $workflow Current workflow.
      *
      * @return Role[]
      */
     public function getRoles(Workflow $workflow);
 
     /**
-     * @param Workflow $workflow
-     * @param Role     $role
+     * Consider if current user have enough permission of given role.
+     *
+     * @param Workflow $workflow Current workflow.
+     * @param Role     $role     Role which should be granted.
      *
      * @return bool
      */
     public function hasPermission(Workflow $workflow, Role $role);
 
     /**
+     * Check if user has admin permission.
+     *
      * @return bool
      */
     public function hasAdminPermissions();

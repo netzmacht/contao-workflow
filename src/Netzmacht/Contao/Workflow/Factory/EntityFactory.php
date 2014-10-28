@@ -23,10 +23,19 @@ use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
 use MetaModels\IItem as MetaModelItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class EntityFactory is responsible to create the Entity for different model types.
+ *
+ * It acts as an event subscriber but can be used as standalone factory as well.
+ *
+ * @package Netzmacht\Contao\Workflow\Factory
+ */
 class EntityFactory implements EventSubscriberInterface
 {
     /**
-     * @{inheritdoc}
+     * Get subscribed events.
+     *
+     * @return array
      */
     public static function getSubscribedEvents()
     {
@@ -36,7 +45,9 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param CreateEntityEvent $event
+     * Handle the create entity event.
+     *
+     * @param CreateEntityEvent $event Event subscribed to.
      *
      * @return Entity
      */
@@ -48,8 +59,12 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param        $model
-     * @param string $tableName
+     * Create a new entity.
+     *
+     * @param mixed  $model     The data model.
+     * @param string $tableName The table name.
+     *
+     * @throws \InvalidArgumentException If unsupported entity format is given.
      *
      * @return Entity
      */
@@ -81,7 +96,9 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param \Model $model
+     * Create an entity from a Contao model.
+     *
+     * @param \Model $model Contao model.
      *
      * @return Entity
      */
@@ -91,7 +108,9 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param ModelInterface $model
+     * Create an entity from a dc general model.
+     *
+     * @param ModelInterface $model DcGeneral model.
      *
      * @return Entity
      */
@@ -101,7 +120,9 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param MetaModelItem $item
+     * Create an entity from a metamodel.
+     *
+     * @param MetaModelItem $item MetaModel.
      *
      * @return Entity
      */
@@ -113,10 +134,12 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param Result $result
-     * @param        $tableName
+     * Create an entity based on a database result.
      *
-     * @return ArrayDecorator
+     * @param Result $result    The database result.
+     * @param string $tableName The table name.
+     *
+     * @return Entity
      */
     public function createFromResult(Result $result, $tableName)
     {
@@ -124,10 +147,12 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param array $row
-     * @param       $tableName
+     * Create an entity from a data row.
      *
-     * @return ArrayDecorator
+     * @param array  $row       The data row.
+     * @param string $tableName The table name.
+     *
+     * @return Entity
      */
     public function createFromArray(array $row, $tableName)
     {

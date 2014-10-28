@@ -11,27 +11,44 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
-
-use Netzmacht\Contao\Workflow\Contao\Dca\Event\GetWorkflowTypesEvent;
+use Netzmacht\Contao\Workflow\Contao\Dca\Event\GetWorkflowActionsEvent;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
-use NotificationCenter\Model\Notification;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class Action is used for tl_workflow_action callbacks.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Dca
+ */
 class Action
 {
+    /**
+     * Get all available types.
+     *
+     * @param \DataContainer $dataContainer The datacontainer.
+     *
+     * @return array
+     */
     public function getTypes($dataContainer)
     {
         $workflowModel = $this->getWorkflowModel($dataContainer);
 
         $eventDispatcher = $this->getEventDispatcher();
-        $event           = new GetWorkflowTypesEvent($workflowModel);
+        $event           = new GetWorkflowActionsEvent($workflowModel);
 
         $eventDispatcher->dispatch($event::NAME, $event);
 
-        return $event->getTypes();
+        return $event->getActions();
     }
 
+    /**
+     * Get workflow roles.
+     *
+     * @param \DataContainer $dataContainer The data container driver.
+     *
+     * @return array
+     */
     public function getRoles($dataContainer)
     {
         $workflowModel = $this->getWorkflowModel($dataContainer);
@@ -46,7 +63,11 @@ class Action
     }
 
     /**
+     * Get the event dispatcher from the DIC.
+     *
      * @return EventDispatcherInterface
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getEventDispatcher()
     {
@@ -54,10 +75,13 @@ class Action
     }
 
     /**
-     * @param $dataContainer
+     * Get the workflow model.
+     *
+     * @param \DataContainer $dataContainer The data container driver.
      *
      * @return \Model|\Model\Collection
-     * @throws \Exception
+     *
+     * @throws \Exception If relation could not be resolved.
      */
     protected function getWorkflowModel($dataContainer)
     {

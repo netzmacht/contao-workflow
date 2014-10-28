@@ -11,13 +11,19 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
-
 use Exception;
 
+/**
+ * Class TransitionNotFoundException is thrown then transition was not found.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Exception
+ */
 class TransitionNotFoundException extends \Exception
 {
     /**
-     * @param string $transitionName
+     * Construct.
+     *
+     * @param string $transitionName The not found transition name.
      */
     public function __construct($transitionName)
     {

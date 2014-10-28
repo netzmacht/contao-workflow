@@ -11,39 +11,59 @@ use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
 
+/**
+ * Class Manager handles a set of workflows.
+ *
+ * Usually there will a different workflow manager for different workflow types. The manager is the API entry point
+ * when using the workflow API.
+ *
+ * @package Netzmacht\Contao\Workflow
+ */
 class Manager
 {
     /**
+     * The state repository.
+     *
      * @var StateRepository
      */
     private $stateRepository;
 
     /**
+     * A set of workflows.
+     *
      * @var Workflow[]
      */
     private $workflows;
 
     /**
+     * The repository factory.
+     *
      * @var RepositoryFactory
      */
     private $repositoryFactory;
 
     /**
+     * The transaction handler.
+     *
      * @var TransactionHandler
      */
     private $transactionHandler;
 
     /**
+     * The input provider.
+     *
      * @var InputProvider
      */
     private $inputProvider;
 
     /**
-     * @param StateRepository    $stateRepository
-     * @param RepositoryFactory  $repositoryFactory
-     * @param TransactionHandler $transactionHandler
-     * @param InputProvider      $inputProvider
-     * @param Workflow[]         $workflows
+     * Construct.
+     *
+     * @param StateRepository    $stateRepository    The state repository.
+     * @param RepositoryFactory  $repositoryFactory  The entity repository factory.
+     * @param TransactionHandler $transactionHandler The transaction handler.
+     * @param InputProvider      $inputProvider      The input provider.
+     * @param Workflow[]|array   $workflows          The set of managed workflows.
      */
     public function __construct(
         StateRepository $stateRepository,
@@ -63,12 +83,13 @@ class Manager
 
     /**
      * Handle a workflow transition of an entity will create a transition handler.
-     * If no matching workflow definition is found false will be returned
      *
-     * @param   Entity  $entity
-     * @param   string  $transitionName Transition name, required if workflow has already started
+     * If no matching workflow definition is found false will be returned.
      *
-     * @return  bool|\Netzmacht\Contao\Workflow\TransitionHandler
+     * @param Entity $entity         The entity to transit through a workflow.
+     * @param string $transitionName Transition name, required if workflow has already started.
+     *
+     * @return bool|\Netzmacht\Contao\Workflow\TransitionHandler
      */
     public function handle(Entity $entity, $transitionName = null)
     {
@@ -97,7 +118,9 @@ class Manager
 
 
     /**
-     * @param Workflow $workflow
+     * Add a workflow to the manager.
+     *
+     * @param Workflow $workflow The workflow being added.
      *
      * @return $this
      */
@@ -109,9 +132,11 @@ class Manager
     }
 
     /**
-     * @param Entity $entity
+     * Get a workflow for the given entity.
      *
-     *@return Workflow|bool
+     * @param Entity $entity The entity.
+     *
+     * @return Workflow|bool
      */
     public function getWorkflow(Entity $entity)
     {
@@ -125,7 +150,10 @@ class Manager
     }
 
     /**
-     * @param Entity $entity
+     * Consider if entity has an workflow.
+     *
+     * @param Entity $entity The entity.
+     *
      * @return bool
      */
     public function hasWorkflow(Entity $entity)
@@ -140,7 +168,9 @@ class Manager
     }
 
     /**
-     * @return Flow\Workflow[]
+     * Get all registered workflows.
+     *
+     * @return Workflow[]
      */
     public function getWorkflows()
     {
@@ -148,9 +178,10 @@ class Manager
     }
 
     /**
-     * Initialize state of an entity
+     * Initialize state of an entity.
      *
-     * @param Entity $entity
+     * @param Entity $entity The entity.
+     *
      * @return bool
      */
     private function loadState(Entity $entity)

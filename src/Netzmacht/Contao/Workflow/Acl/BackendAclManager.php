@@ -11,22 +11,18 @@
 
 namespace Netzmacht\Contao\Workflow\Acl;
 
-
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 
+/**
+ * Class BackendAclManager implements the acl manager for backend users.
+ *
+ * @package Netzmacht\Contao\Workflow\Acl
+ */
 class BackendAclManager extends AbstractContaoAclManager
 {
     /**
-     * @param \BackendUser $user
-     */
-    public function __construct(\BackendUser $user)
-    {
-        parent::__construct($user);
-    }
-
-    /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasAdminPermissions()
     {
@@ -34,9 +30,7 @@ class BackendAclManager extends AbstractContaoAclManager
     }
 
     /**
-     * @param $model
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     protected function matchUser(RoleModel $model)
     {

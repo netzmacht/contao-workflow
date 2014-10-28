@@ -11,7 +11,11 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
-
+/**
+ * Class Step used for tl_workflow_step callbacks.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Dca
+ */
 class Step
 {
 

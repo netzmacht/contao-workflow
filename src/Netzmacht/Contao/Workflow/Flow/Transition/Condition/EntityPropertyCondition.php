@@ -18,27 +18,40 @@ use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Util\Comparison;
 
+/**
+ * Class EntityPropertyCondition allows to define condition based on the entity properties.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Transition\Condition
+ */
 class EntityPropertyCondition implements Condition
 {
     /**
+     * The property name.
+     *
      * @var string
      */
     private $property;
 
     /**
+     * The comparison operator.
+     *
      * @var string
      */
     private $operator;
 
     /**
+     * The value to compare with.
+     *
      * @var mixed
      */
     private $value;
 
     /**
-     * @param Transition $transition
-     * @param Entity     $entity
-     * @param Context    $context
+     * Consider if property condition matches.
+     *
+     * @param Transition $transition The transition being in.
+     * @param Entity     $entity     The entity being transits.
+     * @param Context    $context    The transition context.
      *
      * @return bool
      */

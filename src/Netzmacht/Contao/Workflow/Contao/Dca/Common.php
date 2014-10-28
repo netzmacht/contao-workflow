@@ -11,9 +11,20 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
-
+/**
+ * Class Common provides common helper functionalities.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Dca
+ */
 class Common
 {
+    /**
+     * Generate a row view.
+     *
+     * @param array $row Current data row.
+     *
+     * @return string
+     */
     public function generateRow(array $row)
     {
         return sprintf(
@@ -25,8 +36,10 @@ class Common
     }
 
     /**
-     * @param $value
-     * @param $dataContainer
+     * Create the name.
+     *
+     * @param string         $value         Current name value.
+     * @param \DataContainer $dataContainer The Dc_Table.
      *
      * @return string
      */

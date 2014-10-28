@@ -13,22 +13,35 @@ namespace Netzmacht\Contao\Workflow\Transaction;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class DatabaseTransactionHandler subscribes to the event based transaction handler.
+ *
+ * It provides transaction handling for the contao database connection.
+ *
+ * @package Netzmacht\Contao\Workflow\Transaction
+ */
 class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberInterface
 {
     /**
-     * @var \Contao\Database
+     * The database connection.
+     *
+     * @var \Database
      */
     private $database;
 
     /**
-     * @param \Contao\Database $database
+     * Construct.
+     *
+     * @param \Database $database The database connection.
      */
-    public function __construct(\Contao\Database $database)
+    public function __construct(\Database $database)
     {
         $this->database = $database;
     }
 
     /**
+     * Get the subscribed events.
+     *
      * @return array
      */
     public static function getSubscribedEvents()
@@ -41,7 +54,9 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     }
 
     /**
-     * @{inheritdoc}
+     * Begin a transaction.
+     *
+     * @return void
      */
     public function begin()
     {
@@ -49,7 +64,9 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     }
 
     /**
-     * @{inheritdoc}
+     * Commit changes.
+     *
+     * @return void
      */
     public function commit()
     {
@@ -57,7 +74,9 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     }
 
     /**
-     * @{inheritdoc}
+     * Rollback changes.
+     *
+     * @return void
      */
     public function rollback()
     {

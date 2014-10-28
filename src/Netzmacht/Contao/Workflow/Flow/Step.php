@@ -2,29 +2,44 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
+/**
+ * Class Step defines fixed step in the workflow process.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow
+ */
 class Step
 {
     /**
+     * The step name.
+     *
      * @var string
      */
     private $name;
 
     /**
+     * The step label.
+     *
      * @var string
      */
     private $label;
 
     /**
+     * The allowed transition names.
+     *
      * @var array
      */
     private $allowedTransitions = array();
 
     /**
+     * Step is a final step.
+     *
      * @var bool
      */
     private $final = false;
 
     /**
+     * Get the step name.
+     *
      * @return string
      */
     public function getName()
@@ -33,7 +48,10 @@ class Step
     }
 
     /**
-     * @param string $name
+     * Set the step name.
+     *
+     * @param string $name The new step name.
+     *
      * @return $this
      */
     public function setName($name)
@@ -44,7 +62,9 @@ class Step
     }
 
     /**
-     * @return mixed
+     * Get the step label.
+     *
+     * @return string
      */
     public function getLabel()
     {
@@ -56,7 +76,10 @@ class Step
     }
 
     /**
-     * @param mixed $label
+     * Set the step label.
+     *
+     * @param string $label The new label.
+     *
      * @return $this
      */
     public function setLabel($label)
@@ -67,6 +90,8 @@ class Step
     }
 
     /**
+     * Consider if step is final.
+     *
      * @return boolean
      */
     public function isFinal()
@@ -75,18 +100,24 @@ class Step
     }
 
     /**
-     * @param boolean $final
+     * Mark step as final.
+     *
+     * @param boolean $final Step is a final step.
+     *
      * @return $this
      */
     public function setFinal($final)
     {
-        $this->final = (bool) $final;
+        $this->final = (bool)$final;
 
         return $this;
     }
 
     /**
-     * @param $transitionName
+     * Allow a transition.
+     *
+     * @param string $transitionName The name of the allowed transition.
+     *
      * @return $this
      */
     public function allowTransition($transitionName)
@@ -99,7 +130,10 @@ class Step
     }
 
     /**
-     * @param $transitionName
+     * Disallow a transition.
+     *
+     * @param string $transitionName The name of the disallowed transition.
+     *
      * @return $this
      */
     public function disallowTransition($transitionName)
@@ -115,6 +149,8 @@ class Step
     }
 
     /**
+     * Get all allowed transition names.
+     *
      * @return array
      */
     public function getAllowedTransitions()
@@ -127,7 +163,10 @@ class Step
     }
 
     /**
-     * @param $transitionName
+     * Consider if transition is allowed.
+     *
+     * @param string $transitionName The name of the checked transition.
+     *
      * @return bool
      */
     public function isTransitionAllowed($transitionName)

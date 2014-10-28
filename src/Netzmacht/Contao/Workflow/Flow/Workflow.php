@@ -2,7 +2,6 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
-
 use Assert\Assertion;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
@@ -11,45 +10,64 @@ use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
 
+/**
+ * Class Workflow stores all information of a step processing workflow.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow
+ */
 class Workflow
 {
     /**
+     * Transitions being available in the workflow.
+     *
      * @var Transition[]
      */
     private $transitions = array();
 
     /**
+     * Steps being available in the workflow.
+     *
      * @var Step[]
      */
     private $steps = array();
 
     /**
+     * The start transition.
+     *
      * @var Transition
      */
     private $startTransition;
 
     /**
+     * Condition to match if workflow can handle an entity.
+     *
      * @var Condition
      */
     private $condition;
 
     /**
+     * The name of the workflow.
+     *
      * @var string
      */
     private $name;
 
     /**
+     * The workflow database id.
+     *
      * @var int
      */
     private $workflowId;
 
     /**
-     * @param array $steps
-     * @param array $transitions
-     * @param $startTransitionName
-     * @param \Netzmacht\Contao\Workflow\Flow\Workflow\Condition $condition
+     * Construct.
      *
-     * @throws TransitionNotFoundException
+     * @param array     $steps               Set of steps.
+     * @param array     $transitions         Set of transitions.
+     * @param string    $startTransitionName Name of the start transition.
+     * @param Condition $condition           Optional pass a condition.
+     *
+     * @throws TransitionNotFoundException If transition is not found.
      */
     public function __construct(array $steps, array $transitions, $startTransitionName, Condition $condition = null)
     {
@@ -64,7 +82,10 @@ class Workflow
 
 
     /**
-     * @param $name
+     * Set the name of the workflow.
+     *
+     * @param string $name The workflow name.
+     *
      * @return $this
      */
     public function setName($name)
@@ -75,6 +96,8 @@ class Workflow
     }
 
     /**
+     * Get the workflow name.
+     *
      * @return string
      */
     public function getName()
@@ -83,9 +106,13 @@ class Workflow
     }
 
     /**
-     * @param $transitionName
-     * @throws TransitionNotFoundException
-     * @return \Netzmacht\Contao\Workflow\Flow\Transition
+     * Get a transition by name.
+     *
+     * @param string $transitionName The name of the transition.
+     *
+     * @throws TransitionNotFoundException If transition is not found.
+     *
+     * @return \Netzmacht\Contao\Workflow\Flow\Transition If transition is not found.
      */
     public function getTransition($transitionName)
     {
@@ -99,9 +126,13 @@ class Workflow
     }
 
     /**
-     * @param $stepName
+     * Get a step by step name.
+     *
+     * @param string $stepName The step name.
+     *
      * @return Step
-     * @throws StepNotFoundException
+     *
+     * @throws StepNotFoundException If step is not found.
      */
     public function getStep($stepName)
     {
@@ -115,6 +146,8 @@ class Workflow
     }
 
     /**
+     * Get the start transition.
+     *
      * @return Transition
      */
     public function getStartTransition()
@@ -123,7 +156,10 @@ class Workflow
     }
 
     /**
-     * @param Entity $entity
+     * Consider if workflow is responsible for the entity.
+     *
+     * @param Entity $entity The entity.
+     *
      * @return bool
      */
     public function match(Entity $entity)
@@ -136,16 +172,18 @@ class Workflow
     }
 
     /**
-     * @param Entity          $entity
-     * @param                 $transitionName
-     * @param Context         $context
+     * Transit the entity to a new state.
      *
-     * @throws ProcessNotStartedException
-     * @throws StepNotFoundException
-     * @throws TransitionNotAllowedException
-     * @throws TransitionNotFoundException
+     * @param Entity  $entity         The entity.
+     * @param string  $transitionName The transition name.
+     * @param Context $context        The context of the transition.
      *
-     * @return \Netzmacht\Contao\Workflow\Flow\State
+     * @throws ProcessNotStartedException    If process was not started.
+     * @throws StepNotFoundException         If step is not found.
+     * @throws TransitionNotAllowedException If transition is not allowed.
+     * @throws TransitionNotFoundException   If transition is not found.
+     *
+     * @return State
      */
     public function transit(Entity $entity, $transitionName, Context $context)
     {
@@ -162,10 +200,14 @@ class Workflow
     }
 
     /**
-     * @param Entity          $entity
-     * @param Context         $context
+     * Start a workflow.
      *
-     * @return \Netzmacht\Contao\Workflow\Flow\State
+     * If the workflow is already started, nothing happens.
+     *
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
+     *
+     * @return State
      */
     public function start(Entity $entity, Context $context)
     {
@@ -182,9 +224,13 @@ class Workflow
     }
 
     /**
-     * @param Entity $entity
+     * Guard that workflow has already started.
      *
-     * @throws ProcessNotStartedException
+     * @param Entity $entity The entity.
+     *
+     * @throws ProcessNotStartedException If workflow has not started yet.
+     *
+     * @return void
      */
     private function guardWorkflowStarted(Entity $entity)
     {
@@ -196,9 +242,14 @@ class Workflow
     }
 
     /**
-     * @param $currentStep
-     * @param $transitionName
-     * @throws TransitionNotAllowedException
+     * Guard that transition is allowed.
+     *
+     * @param Step   $currentStep    The current step.
+     * @param string $transitionName The name of the transition.
+     *
+     * @throws TransitionNotAllowedException If transition is not allowed.
+     *
+     * @return void
      */
     private function guardTransitionAllowed(Step $currentStep, $transitionName)
     {
@@ -207,6 +258,11 @@ class Workflow
         }
     }
 
+    /**
+     * Get the workflow id.
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->workflowId;

@@ -11,27 +11,21 @@
 
 namespace Netzmacht\Contao\Workflow\Contao;
 
-
-use Netzmacht\Contao\Workflow\Contao\Dca\Event\GetWorkflowTypesEvent;
+use Netzmacht\Contao\Workflow\Contao\Dca\Event\GetWorkflowActionsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class BackendSubscriber subscribes to events being raised in the backend interface.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao
+ */
 class BackendSubscriber implements EventSubscriberInterface
 {
     /**
-     * @return array|void
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            GetWorkflowTypesEvent::NAME => 'getWorkflowTypes',
-        );
-    }
-
-    /**
-     * @param GetWorkflowTypesEvent $event
-     */
-    public function getWorkflowTypes(GetWorkflowTypesEvent $event)
-    {
-//        $event->addTypes('core', array('notify'));
+        return array();
     }
 }

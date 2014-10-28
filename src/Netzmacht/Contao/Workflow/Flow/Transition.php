@@ -10,49 +10,72 @@ use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
 use Netzmacht\Contao\Workflow\Form\Form;
 
+/**
+ * Class Transition handles the transition from a step to another.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow
+ */
 class Transition
 {
     /**
+     * The name of the transition.
+     *
      * @var string
      */
     protected $name;
 
     /**
+     * The label of the transition.
+     *
      * @var string
      */
     protected $label;
 
     /**
+     * Actions which will be executed during the transition.
+     *
      * @var Action[]
      */
     private $actions = array();
 
     /**
+     * The step the transition is moving to.
+     *
      * @var Step
      */
     private $stepTo;
 
     /**
+     * A pre condition which has to be passed to execute transition.
+     *
      * @var Condition
      */
     private $preCondition;
 
     /**
+     * A condition which has to be passed to execute the transition.
+     *
      * @var Condition
      */
     private $condition;
 
     /**
+     * A set of roles which can perform the transition.
+     *
      * @var Role[]
      */
     private $roles = array();
 
     /**
+     * The corresponding workflow.
+     *
      * @var Workflow
      */
     private $workflow;
 
     /**
+     * Get the name of the transition.
+     *
      * @return string
      */
     public function getName()
@@ -61,7 +84,10 @@ class Transition
     }
 
     /**
-     * @param string $name
+     * Set the name of the transition.
+     *
+     * @param string $name The new name.
+     *
      * @return $this
      */
     public function setName($name)
@@ -72,6 +98,8 @@ class Transition
     }
 
     /**
+     * Get the label of the transition.
+     *
      * @return string
      */
     public function getLabel()
@@ -84,7 +112,10 @@ class Transition
     }
 
     /**
-     * @param string $label
+     * Set the label of the transition.
+     *
+     * @param string $label The new label.
+     *
      * @return $this
      */
     public function setLabel($label)
@@ -95,7 +126,10 @@ class Transition
     }
 
     /**
-     * @param Action $action
+     * Add an action to the transition.
+     *
+     * @param Action $action The added action.
+     *
      * @return $this
      */
     public function addAction(Action $action)
@@ -106,6 +140,8 @@ class Transition
     }
 
     /**
+     * Get all actions.
+     *
      * @return Action[]
      */
     public function getActions()
@@ -114,7 +150,10 @@ class Transition
     }
 
     /**
-     * @param Step $step
+     * Set the target step.
+     *
+     * @param Step $step The target step.
+     *
      * @return $this
      */
     public function setStepTo(Step $step)
@@ -125,6 +164,8 @@ class Transition
     }
 
     /**
+     * Get the condition.
+     *
      * @return Condition
      */
     public function getCondition()
@@ -133,7 +174,10 @@ class Transition
     }
 
     /**
-     * @param Condition $condition
+     * Set the condition.
+     *
+     * @param Condition $condition The new condition.
+     *
      * @return $this
      */
     public function setCondition(Condition $condition)
@@ -144,6 +188,8 @@ class Transition
     }
 
     /**
+     * Get the precondition.
+     *
      * @return Condition
      */
     public function getPreCondition()
@@ -152,7 +198,10 @@ class Transition
     }
 
     /**
-     * @param Condition $preCondition
+     * Set the precondition.
+     *
+     * @param Condition $preCondition The new precondition.
+     *
      * @return $this
      */
     public function setPreCondition(Condition $preCondition)
@@ -163,6 +212,8 @@ class Transition
     }
 
     /**
+     * Get the target step.
+     *
      * @return Step
      */
     public function getStepTo()
@@ -171,7 +222,10 @@ class Transition
     }
 
     /**
-     * @param Form $form
+     * Build the form.
+     *
+     * @param Form $form The form being build.
+     *
      * @return $this
      */
     public function buildForm(Form $form)
@@ -184,6 +238,8 @@ class Transition
     }
 
     /**
+     * Consider if user input is required.
+     *
      * @return bool
      */
     public function requiresInputData()
@@ -198,8 +254,10 @@ class Transition
     }
 
     /**
-     * @param Entity $entity
-     * @param Context $context
+     * Consider if transition is allowed.
+     *
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
      *
      * @return bool
      */
@@ -213,8 +271,12 @@ class Transition
     }
 
     /**
-     * @param Entity $entity
-     * @param Context $context
+     * Consider if transition is available.
+     *
+     * If a transition can be available but it is not allowed depending on the user input.
+     *
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
      *
      * @return bool
      */
@@ -228,12 +290,14 @@ class Transition
     }
 
     /**
-     * @param Entity $entity
-     * @param Context $context
+     * Transit an entity using this transition.
      *
-     * @throws ProcessNotStartedException
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
      *
-     * @return \Netzmacht\Contao\Workflow\Flow\State
+     * @throws ProcessNotStartedException If process was not started yet.
+     *
+     * @return State
      */
     public function transit(Entity $entity, Context $context)
     {
@@ -258,8 +322,10 @@ class Transition
     }
 
     /**
-     * @param Entity $entity
-     * @param Context $context
+     * Check the precondition.
+     *
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
      *
      * @return bool
      */
@@ -273,8 +339,10 @@ class Transition
     }
 
     /**
-     * @param Entity $entity
-     * @param Context $context
+     * Check the condition.
+     *
+     * @param Entity  $entity  The entity.
+     * @param Context $context The transition context.
      *
      * @return bool
      */
@@ -288,7 +356,9 @@ class Transition
     }
 
     /**
-     * @param Role $role
+     * Add a new role.
+     *
+     * @param Role $role The role being added.
      *
      * @return $this
      */
@@ -306,6 +376,8 @@ class Transition
     }
 
     /**
+     * Get all roles.
+     *
      * @return array
      */
     public function getRoles()
@@ -314,6 +386,8 @@ class Transition
     }
 
     /**
+     * Get the workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()

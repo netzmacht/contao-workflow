@@ -15,69 +15,95 @@ use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Exception\InValidTransitionException;
+use Netzmacht\Contao\Workflow\Flow\Exception\InvalidTransitionException;
+use Netzmacht\Contao\Workflow\Flow\State;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
 
+/**
+ * Class TransitionHandler handles the transition to another step in the workflow.
+ *
+ * @package Netzmacht\Contao\Workflow
+ */
 class TransitionHandler
 {
     /**
+     * The given entity.
+     *
      * @var Entity
      */
     private $entity;
 
     /**
+     * The current workflow.
+     *
      * @var Workflow
      */
     private $workflow;
 
     /**
+     * The transition name which will be handled.
+     *
      * @var string
      */
     private $transitionName;
 
     /**
+     * The form object for user input.
+     *
      * @var Form
      */
     private $form;
 
     /**
+     * Validation state.
+     *
      * @var bool
      */
     private $validated;
 
     /**
+     * The entity repository.
+     *
      * @var EntityRepository
      */
     private $entityRepository;
 
     /**
+     * The state repository.
+     *
      * @var StateRepository
      */
     private $stateRepository;
 
     /**
+     * The transaction handler.
+     *
      * @var TransactionHandler
      */
     private $transactionHandler;
 
     /**
+     * The transition context.
+     *
      * @var Context
      */
     private $context;
 
 
     /**
-     * @param Entity             $entity
-     * @param Workflow           $workflow
-     * @param                    $transitionName
-     * @param EntityRepository   $entityRepository
-     * @param StateRepository    $stateRepository
-     * @param TransactionHandler $transactionHandler
-     * @param Context            $context
+     * Construct.
+     *
+     * @param Entity             $entity             The entity.
+     * @param Workflow           $workflow           The current workflow.
+     * @param string             $transitionName     The transition to be handled.
+     * @param EntityRepository   $entityRepository   EntityRepository which stores changes.
+     * @param StateRepository    $stateRepository    StateRepository which stores new states.
+     * @param TransactionHandler $transactionHandler TransactionHandler take care of transactions.
+     * @param Context            $context            The context of the transition.
      */
     public function __construct(
         Entity $entity,
@@ -99,6 +125,8 @@ class TransitionHandler
 
 
     /**
+     * Get the workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()
@@ -107,6 +135,8 @@ class TransitionHandler
     }
 
     /**
+     * Get the entity.
+     *
      * @return Entity
      */
     public function getEntity()
@@ -115,7 +145,11 @@ class TransitionHandler
     }
 
     /**
-     * @return Transition
+     * Get the transition name.
+     *
+     * @return string
+     *
+     * @throws Flow\Exception\TransitionNotFoundException If transition was not found.
      */
     public function getTransitionName()
     {
@@ -123,8 +157,11 @@ class TransitionHandler
     }
 
     /**
+     * Get the transition.
+     *
      * @return Transition
-     * @throws Flow\Exception\TransitionNotFoundException
+     *
+     * @throws Flow\Exception\TransitionNotFoundException If transition was not found.
      */
     public function getTransition()
     {
@@ -136,6 +173,8 @@ class TransitionHandler
     }
 
     /**
+     * Get the input form.
+     *
      * @return Form
      */
     public function getForm()
@@ -148,6 +187,8 @@ class TransitionHandler
     }
 
     /**
+     * Consider if it handles a start transition.
+     *
      * @return bool
      */
     public function isStartTransition()
@@ -160,6 +201,8 @@ class TransitionHandler
     }
 
     /**
+     * Consider if input is required.
+     *
      * @return bool
      */
     public function requiresInputData()
@@ -168,6 +211,8 @@ class TransitionHandler
     }
 
     /**
+     * Get the context.
+     *
      * @return Context
      */
     public function getContext()
@@ -176,6 +221,8 @@ class TransitionHandler
     }
 
     /**
+     * Validate the input.
+     *
      * @return bool
      */
     public function validate()
@@ -188,7 +235,12 @@ class TransitionHandler
     }
 
     /**
-     * @throws InValidTransitionException
+     * Transit to next step.
+     *
+     * @throws InvalidTransitionException If transition was not validated.
+     * @throws \Exception                 If some actions throws an unknown exception.
+     *
+     * @return State
      */
     public function transit()
     {
@@ -220,7 +272,9 @@ class TransitionHandler
     }
 
     /**
-     * Build a new form
+     * Build a new form.
+     *
+     * @return void
      */
     private function buildForm()
     {
@@ -229,7 +283,11 @@ class TransitionHandler
     }
 
     /**
-     * @throws InValidTransitionException
+     * Guard that transition was validated before.
+     *
+     * @throws InvalidTransitionException If transition was not validated.
+     *
+     * @return void
      */
     private function guardValidated()
     {

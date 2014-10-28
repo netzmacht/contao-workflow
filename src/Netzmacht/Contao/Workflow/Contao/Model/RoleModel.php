@@ -11,8 +11,17 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Model;
 
-
+/**
+ * RoleModel using Contao models.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Model
+ */
 class RoleModel extends \Model
 {
+    /**
+     * Table name.
+     *
+     * @var string
+     */
     protected static $strTable = 'tl_workflow_role';
 }

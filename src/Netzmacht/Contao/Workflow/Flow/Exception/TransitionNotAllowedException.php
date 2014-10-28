@@ -11,16 +11,22 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
-
 use Exception;
 
+/**
+ * Class TransitionNotAllowedException is thrown when transition was not allowed.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Exception
+ */
 class TransitionNotAllowedException extends \Exception
 {
     /**
-     * @param string $currentStep
-     * @param int $transitionName
-     * @param int $code
-     * @param Exception $previous
+     * Construct.
+     *
+     * @param string    $currentStep    The current step name.
+     * @param string    $transitionName The transition name.
+     * @param int       $code           Error code.
+     * @param Exception $previous       Previous exception.
      */
     public function __construct($currentStep, $transitionName, $code = 0, Exception $previous = null)
     {

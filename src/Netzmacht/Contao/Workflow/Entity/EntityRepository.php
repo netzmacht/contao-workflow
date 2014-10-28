@@ -11,27 +11,39 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-
-use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface;
+use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface as DataProvider;
 use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
 
+/**
+ * Class EntityRepository stores an entity.
+ *
+ * @package Netzmacht\Contao\Workflow\Entity
+ */
 class EntityRepository
 {
     /**
-     * @var DataProviderInterface
+     * The used data provider.
+     *
+     * @var DataProvider
      */
     private $provider;
 
     /**
-     * @param DataProviderInterface $provider
+     * Construct.
+     *
+     * @param DataProvider $provider The data provider.
      */
-    public function __construct(DataProviderInterface $provider)
+    public function __construct(DataProvider $provider)
     {
         $this->provider = $provider;
     }
 
     /**
-     * @param Entity $entity
+     * Add an entity to the repository.
+     *
+     * @param Entity $entity The new entity.
+     *
+     * @return void
      */
     public function add(Entity $entity)
     {

@@ -11,19 +11,27 @@
 
 namespace Netzmacht\Contao\Workflow\Acl;
 
-
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 
+/**
+ * Class AbstractContaoAclManager implements the acl manager as base class for frontend/backend users.
+ *
+ * @package Netzmacht\Contao\Workflow\Acl
+ */
 abstract class AbstractContaoAclManager implements AclManager
 {
     /**
+     * The user object.
+     *
      * @var \User
      */
     protected $user;
 
     /**
-     * @param \User $user
+     * Construct.
+     *
+     * @param \User $user The user object.
      */
     public function __construct(\User $user)
     {
@@ -31,10 +39,7 @@ abstract class AbstractContaoAclManager implements AclManager
     }
 
     /**
-     * @param Workflow $workflow
-     * @param Role     $userRole
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasPermission(Workflow $workflow, Role $userRole)
     {
@@ -50,9 +55,7 @@ abstract class AbstractContaoAclManager implements AclManager
     }
 
     /**
-     * @param Workflow $workflow
-     *
-     * @return Role[]
+     * {@inheritdoc}
      */
     public function getRoles(Workflow $workflow)
     {
@@ -71,7 +74,9 @@ abstract class AbstractContaoAclManager implements AclManager
     }
 
     /**
-     * @param RoleModel $model
+     * Consider if user has the role.
+     *
+     * @param RoleModel $model Given role model.
      *
      * @return bool
      */
@@ -85,7 +90,9 @@ abstract class AbstractContaoAclManager implements AclManager
     }
 
     /**
-     * @param RoleModel $model
+     * Match role against user groups.
+     *
+     * @param RoleModel $model Current role.
      *
      * @return bool
      */
@@ -99,7 +106,9 @@ abstract class AbstractContaoAclManager implements AclManager
     }
 
     /**
-     * @param $model
+     * Match against current user.
+     *
+     * @param RoleModel $model Current role model.
      *
      * @return bool
      */

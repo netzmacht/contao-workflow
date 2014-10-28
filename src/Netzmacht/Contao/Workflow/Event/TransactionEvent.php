@@ -11,9 +11,13 @@
 
 namespace Netzmacht\Contao\Workflow\Event;
 
-
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class TransactionEvent is dispatched by the event based transaction handler.
+ *
+ * @package Netzmacht\Contao\Workflow\Event
+ */
 class TransactionEvent extends Event
 {
 }

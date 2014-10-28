@@ -11,9 +11,18 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
-
+/**
+ * Class Role provides callbacks for tl_workflow_role.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Dca
+ */
 class Role
 {
+    /**
+     * Get all users.
+     *
+     * @return array
+     */
     public function getUsers()
     {
         $options = array();
@@ -28,6 +37,11 @@ class Role
         return $options;
     }
 
+    /**
+     * Get all user groups.
+     *
+     * @return array
+     */
     public function getUserGroups()
     {
         $options = array();
@@ -42,6 +56,11 @@ class Role
         return $options;
     }
 
+    /**
+     * Get all members.
+     *
+     * @return array
+     */
     public function getMembers()
     {
         $options = array();
@@ -60,6 +79,11 @@ class Role
         return $options;
     }
 
+    /**
+     * Get all member groups.
+     *
+     * @return array
+     */
     public function getMemberGroups()
     {
         $options = array();

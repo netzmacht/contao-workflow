@@ -11,13 +11,19 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
-
 use Exception;
 
+/**
+ * Class StepNotFoundException is thrown when step is not found.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Exception
+ */
 class StepNotFoundException extends \Exception
 {
     /**
-     * @param string $stepName
+     * Construct.
+     *
+     * @param string $stepName The step name.
      */
     public function __construct($stepName)
     {

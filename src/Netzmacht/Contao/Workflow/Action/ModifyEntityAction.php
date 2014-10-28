@@ -11,27 +11,37 @@
 
 namespace Netzmacht\Contao\Workflow\Action;
 
-
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 
+/**
+ * Class ModifyEntityAction modify entity properties during the transition.
+ *
+ * @package Netzmacht\Contao\Workflow\Action
+ */
 class ModifyEntityAction extends AbstractAction
 {
     /**
+     * Given values.
+     *
      * @var array
      */
     private $values = array();
 
     /**
+     * Data mapping between context params and entity properties.
+     *
      * @var array
      */
     private $dataMapping = array();
 
     /**
-     * @param $name
-     * @param $value
+     * Set a value.
+     *
+     * @param string $name  Value name.
+     * @param mixed  $value Value being applied to entity.
      *
      * @return $this
      */
@@ -43,8 +53,11 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
-     * @return null
+     * Get a given value. Return null if not set.
+     *
+     * @param string $name Value name.
+     *
+     * @return mixed
      */
     public function getValue($name)
     {
@@ -56,7 +69,10 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
+     * Consider if value exists.
+     *
+     * @param string $name Value name.
+     *
      * @return bool
      */
     public function hasValue($name)
@@ -65,7 +81,10 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
+     * Remove a value.
+     *
+     * @param string $name Value name.
+     *
      * @return $this
      */
     public function removeValue($name)
@@ -76,7 +95,10 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
+     * Add a data mapping.
+     *
+     * @param string $name The property name.
+     *
      * @return $this
      */
     public function addDataMapping($name)
@@ -89,7 +111,10 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
+     * Consider if data mapping exists.
+     *
+     * @param string $name The property name.
+     *
      * @return bool
      */
     public function hasDataMapping($name)
@@ -98,7 +123,10 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param $name
+     * Remove a data mapping.
+     *
+     * @param string $name The property name.
+     *
      * @return $this
      */
     public function removeDataMapping($name)
@@ -113,9 +141,12 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * @param Transition $transition
-     * @param Entity $entity
-     * @param Context $context
+     * Change property values during transition.
+     *
+     * @param Transition $transition Current transition.
+     * @param Entity     $entity     Given entity.
+     * @param Context    $context    Transition environment.
+     *
      * @return void
      */
     public function transit(Transition $transition, Entity $entity, Context $context)

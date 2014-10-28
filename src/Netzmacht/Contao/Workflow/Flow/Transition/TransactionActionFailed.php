@@ -11,7 +11,11 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Transition;
 
-
+/**
+ * Class TransactionActionFailed is thrown then a transaction action failed.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Transition
+ */
 class TransactionActionFailed extends \Exception
 {
 

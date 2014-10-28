@@ -11,22 +11,32 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-
 use Netzmacht\Contao\Workflow\Flow\State;
 
+/**
+ * Class AbstractEntity implements base Entity functionality.
+ *
+ * @package Netzmacht\Contao\Workflow\Entity
+ */
 abstract class AbstractEntity implements Entity
 {
     /**
+     * Stored metadata.
+     *
      * @var array
      */
     private $metaData = array();
 
     /**
+     * Workflow state.
+     *
      * @var State
      */
     private $state;
 
     /**
+     * Get the workflow state.
+     *
      * @return State
      */
     public function getState()
@@ -35,9 +45,11 @@ abstract class AbstractEntity implements Entity
     }
 
     /**
-     * @param State $state
+     * Transit to a new workflow state.
      *
-     * @return mixed|void
+     * @param State $state New workflow state.
+     *
+     * @return void
      */
     public function transit(State $state)
     {
@@ -45,11 +57,7 @@ abstract class AbstractEntity implements Entity
     }
 
     /**
-     * Fetch meta information from model.
-     *
-     * @param string $metaName The meta information to retrieve.
-     *
-     * @return mixed The set meta information or null if undefined.
+     * {@inheritdoc}
      */
     public function getMeta($metaName)
     {
@@ -61,13 +69,7 @@ abstract class AbstractEntity implements Entity
     }
 
     /**
-     * Update meta information in the model.
-     *
-     * @param string $strMetaName The meta information name.
-     *
-     * @param mixed  $varValue    The meta information value to store.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setMeta($strMetaName, $varValue)
     {

@@ -11,20 +11,27 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Model;
 use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBagInterface;
-use Netzmacht\Contao\Workflow\Flow\State;
 
+/**
+ * Class DcGeneralModelDecorator implements an Entity using the decorator pattern for dc general models.
+ *
+ * @package Netzmacht\Contao\Workflow\Entity
+ */
 class DcGeneralModelDecorator extends AbstractEntity
 {
     /**
+     * The actual model.
+     *
      * @var Model
      */
     private $model;
 
     /**
-     * @param Model $model
+     * Construct.
+     *
+     * @param Model $model The actual model.
      */
     public function __construct(Model $model)
     {
@@ -32,7 +39,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -40,7 +47,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function __clone()
     {
@@ -48,7 +55,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -56,7 +63,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getProperty($propertyName)
     {
@@ -64,7 +71,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getPropertiesAsArray()
     {
@@ -72,7 +79,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getMeta($metaName)
     {
@@ -80,7 +87,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function setId($entityId)
     {
@@ -88,7 +95,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function setProperty($propertyName, $value)
     {
@@ -96,7 +103,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function setPropertiesAsArray($properties)
     {
@@ -104,7 +111,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function setMeta($metaName, $value)
     {
@@ -112,7 +119,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function hasProperties()
     {
@@ -120,7 +127,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getProviderName()
     {
@@ -128,7 +135,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function readFromPropertyValueBag(PropertyValueBagInterface $valueBag)
     {
@@ -138,7 +145,7 @@ class DcGeneralModelDecorator extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function writeToPropertyValueBag(PropertyValueBagInterface $valueBag)
     {

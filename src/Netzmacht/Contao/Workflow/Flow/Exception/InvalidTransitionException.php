@@ -11,11 +11,22 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
-
 use Exception;
 
-class InValidTransitionException extends \Exception
+/**
+ * Class InvalidTransitionException is thrown when transition could not be validated.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Exception
+ */
+class InvalidTransitionException extends \Exception
 {
+    /**
+     * Construct.
+     *
+     * @param string    $transitionName The transition name.
+     * @param int       $code           The error code.
+     * @param Exception $previous       Previous exception.
+     */
     public function __construct($transitionName, $code = 0, Exception $previous = null)
     {
         $message = sprintf('Transition "%s" is not validated', $transitionName);

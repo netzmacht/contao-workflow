@@ -11,8 +11,17 @@
 
 namespace Netzmacht\Contao\Workflow\Contao\Model;
 
-
+/**
+ * WorkflowModel using Contao models.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Model
+ */
 class WorkflowModel extends \Model
 {
+    /**
+     * Table name.
+     *
+     * @var string
+     */
     protected static $strTable = 'tl_workflow';
 }

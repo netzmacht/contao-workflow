@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 
-
 use Netzmacht\Contao\Workflow\Acl\AclManager;
 use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Entity\Entity;
@@ -19,28 +18,32 @@ use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 
+/**
+ * Class PermissionCondition handles permission limiting for transitions.
+ *
+ * @package Netzmacht\Contao\Workflow\Flow\Transition\Condition
+ */
 class PermissionCondition implements Condition
 {
     /**
+     * The ACL Manager.
+     *
      * @var AclManager
      */
     private $aclManager;
 
     /**
+     * Ignore admin permissions.
+     *
      * @var bool
      */
     private $ignoreAdmin = false;
 
     /**
-     * @var Role[]
-     */
-    private $transitionRoles = array();
-
-    /**
-     * @param AclManager $aclManager
-     * @param bool       $ignoreAdmin
+     * Construct.
      *
-     * @internal param \BackendUser $user
+     * @param AclManager $aclManager  The ACL manager.
+     * @param bool       $ignoreAdmin Ignore admin permissions.
      */
     public function __construct(AclManager $aclManager, $ignoreAdmin = false)
     {
@@ -49,7 +52,9 @@ class PermissionCondition implements Condition
     }
 
     /**
-     * @return boolean
+     * Consider if admin permissions should be ignored.
+     *
+     * @return bool
      */
     public function isAdminPermissionIgnored()
     {
@@ -57,7 +62,9 @@ class PermissionCondition implements Condition
     }
 
     /**
-     * @param boolean $ignoreAdmin
+     * Ignore admin permissions.
+     *
+     * @param bool $ignoreAdmin Ignore admin permissions.
      *
      * @return $this
      */
@@ -69,9 +76,11 @@ class PermissionCondition implements Condition
     }
 
     /**
-     * @param Transition $transition
-     * @param Entity     $entity
-     * @param Context    $context
+     * Consider if permision condition matches.
+     *
+     * @param Transition $transition The transition being in.
+     * @param Entity     $entity     The entity being transits.
+     * @param Context    $context    The transition context.
      *
      * @return bool
      */
@@ -81,8 +90,10 @@ class PermissionCondition implements Condition
             return true;
         }
 
-        foreach ($this->transitionRoles as $role) {
-            if ($this->aclManager->hasPermission($role)) {
+        $workflow = $transition->getWorkflow();
+
+        foreach ($transition->getRoles() as $role) {
+            if ($this->aclManager->hasPermission($workflow, $role)) {
                 return true;
             }
         }

@@ -11,7 +11,11 @@
 
 namespace Netzmacht\Contao\Workflow\Util;
 
-
+/**
+ * Class Comparison is an util class to allow value comparison by passing two values.
+ *
+ * @package Netzmacht\Contao\Workflow\Util
+ */
 class Comparison
 {
     const EQUALS                 = '==';
@@ -24,9 +28,11 @@ class Comparison
     const GREATER_THAN_OR_EQUALS = '>=';
 
     /**
-     * @param $valueA
-     * @param $valueB
-     * @param $operator
+     * Compare two values.
+     *
+     * @param mixed  $valueA   Value a.
+     * @param mixed  $valueB   Value b.
+     * @param string $operator The operator vor the comparison.
      *
      * @return bool
      */
@@ -35,43 +41,38 @@ class Comparison
         switch ($operator) {
             case static::EQUALS:
                 return static::equals($valueA, $valueB);
-                break;
 
             case static::NOT_EQUALS:
                 return static::notEquals($valueA, $valueB);
-                break;
 
             case static::IDENTICAL:
                 return static::identical($valueA, $valueB);
-                break;
 
             case static::NOT_IDENTICAL:
                 return static::notIdentical($valueA, $valueB);
-                break;
 
             case static::GREATER_THAN:
                 return static::greaterThan($valueA, $valueB);
-                break;
 
             case static::GREATER_THAN_OR_EQUALS:
                 return static::greaterThanOrEquals($valueA, $valueB);
-                break;
 
             case static::LESSER_THAN:
                 return static::lesserThan($valueA, $valueB);
-                break;
 
             case static::LESSER_THAN_OR_EQUALS:
                 return static::greaterThanOrEquals($valueA, $valueB);
-                break;
-        }
 
-        return false;
+            default:
+                return false;
+        }
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if two values equals.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -81,8 +82,12 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if both values are identical.
+     *
+     * It uses the === operator of php.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -92,8 +97,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if two values not equals.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -103,8 +110,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if two values are not identical.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -114,8 +123,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if value a is greater than value b.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -125,8 +136,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if value a is greater than or equals value b.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -136,8 +149,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if value a is lesser than value b.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */
@@ -147,8 +162,10 @@ class Comparison
     }
 
     /**
-     * @param $valueA
-     * @param $valueB
+     * Consider if value a is lesser than or equals value b.
+     *
+     * @param mixed $valueA Value a.
+     * @param mixed $valueB Value b.
      *
      * @return bool
      */

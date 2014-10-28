@@ -11,22 +11,32 @@
 
 namespace Netzmacht\Contao\Workflow\Acl;
 
-
+/**
+ * Class Role describes an user role.
+ *
+ * @package Netzmacht\Contao\Workflow\Acl
+ */
 class Role
 {
     /**
+     * The role id.
+     *
      * @var int
      */
     private $roleId;
 
     /**
+     * The role name.
+     *
      * @var string
      */
     private $name;
 
     /**
-     * @param $roleId
-     * @param $name
+     * Construct.
+     *
+     * @param int    $roleId Role id.
+     * @param string $name   Role name.
      */
     public function __construct($roleId, $name)
     {
@@ -35,6 +45,8 @@ class Role
     }
 
     /**
+     * Get the name.
+     *
      * @return string
      */
     public function getName()
@@ -43,6 +55,8 @@ class Role
     }
 
     /**
+     * Get the id.
+     *
      * @return int
      */
     public function getRoleId()
@@ -51,7 +65,9 @@ class Role
     }
 
     /**
-     * @param Role $role
+     * Consider if role equals to another role.
+     *
+     * @param Role $role Role to compare with.
      *
      * @return bool
      */

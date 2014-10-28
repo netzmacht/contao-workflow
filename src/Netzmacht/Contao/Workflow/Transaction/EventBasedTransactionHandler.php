@@ -15,15 +15,26 @@ namespace Netzmacht\Contao\Workflow\Transaction;
 use Netzmacht\Contao\Workflow\Event\TransactionEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class EventBasedTransactionHandler implements is a transaction handler.
+ *
+ * It just dispatches events so that multiple transaction handler can subscribe to them.
+ *
+ * @package Netzmacht\Contao\Workflow\Transaction
+ */
 class EventBasedTransactionHandler implements TransactionHandler
 {
     /**
+     * Event dispatcher.
+     *
      * @var EventDispatcherInterface
      */
     private $dispatcher;
 
     /**
-     * @param EventDispatcherInterface $dispatcher
+     * Construct.
+     *
+     * @param EventDispatcherInterface $dispatcher The event dispatcher.
      */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
@@ -32,7 +43,9 @@ class EventBasedTransactionHandler implements TransactionHandler
 
 
     /**
-     * Begin transaction fires an Events::TRANSACTION_BEGIN event
+     * Begin transaction fires an Events::TRANSACTION_BEGIN event.
+     *
+     * @return void
      */
     public function begin()
     {
@@ -41,7 +54,9 @@ class EventBasedTransactionHandler implements TransactionHandler
     }
 
     /**
-     * Begin transaction fires an Events::TRANSACTION_COMMIT event
+     * Begin transaction fires an Events::TRANSACTION_COMMIT event.
+     *
+     * @return void
      */
     public function commit()
     {
@@ -50,7 +65,9 @@ class EventBasedTransactionHandler implements TransactionHandler
     }
 
     /**
-     * Begin transaction fires an Events::TRANSACTION_ROLLBACK event
+     * Begin transaction fires an Events::TRANSACTION_ROLLBACK event.
+     *
+     * @return void
      */
     public function rollback()
     {

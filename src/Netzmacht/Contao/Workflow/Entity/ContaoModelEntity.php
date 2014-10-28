@@ -16,15 +16,24 @@ use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBagInterface;
 use ContaoCommunityAlliance\DcGeneral\Exception\DcGeneralInvalidArgumentException;
 use Model;
 
+/**
+ * Class ContaoModelEntity implements an Entity for Contao models.
+ *
+ * @package Netzmacht\Contao\Workflow\Entity
+ */
 class ContaoModelEntity extends AbstractEntity
 {
     /**
+     * The Contao model.
+     *
      * @var Model
      */
     private $model;
 
     /**
-     * @param $model
+     * Construct.
+     *
+     * @param Model $model The Contao model.
      */
     public function __construct(Model $model)
     {
@@ -32,7 +41,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -40,7 +49,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -48,13 +57,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Fetch the property with the given name from the model.
-     *
-     * This method returns null if an unknown property is retrieved.
-     *
-     * @param string $propertyName The property name to be retrieved.
-     *
-     * @return mixed The value of the given property.
+     * {@inheritdoc}.
      */
     public function getProperty($propertyName)
     {
@@ -62,9 +65,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Fetch all properties from the model as an name => value array.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getPropertiesAsArray()
     {
@@ -72,30 +73,17 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Set the id for this object.
-     *
-     * NOTE: when the Id has been set once to a non null value, it can NOT be changed anymore.
-     *
-     * Normally this should only be called from inside of the implementing provider.
-     *
-     * @param mixed $modelId Could be a integer, string or anything else - depends on the provider implementation.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setId($modelId)
     {
         $primaryKey = $this->model->getPk();
+
         $this->model->$primaryKey = $modelId;
     }
 
     /**
-     * Update the property value in the model.
-     *
-     * @param string $propertyName The property name to be set.
-     *
-     * @param mixed $value The value to be set.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setProperty($propertyName, $value)
     {
@@ -106,11 +94,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Update all properties in the model.
-     *
-     * @param array $properties The property values as name => value pairs.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setPropertiesAsArray($properties)
     {
@@ -120,19 +104,15 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Check if this model have any properties.
-     *
-     * @return boolean true if any property has been stored, false otherwise.
+     * {@inheritdoc}
      */
     public function hasProperties()
     {
-        return (bool) count($this->getPropertiesAsArray());
+        return (bool)count($this->getPropertiesAsArray());
     }
 
     /**
-     * Return the data provider name.
-     *
-     * @return string the name of the corresponding data provider.
+     * {@inheritdoc}
      */
     public function getProviderName()
     {
@@ -140,7 +120,9 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
+     *
+     * @throws DcGeneralInvalidArgumentException If property is invalid.
      */
     public function readFromPropertyValueBag(PropertyValueBagInterface $valueBag)
     {
@@ -160,11 +142,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Write values to a value bag.
-     *
-     * @param PropertyValueBagInterface $valueBag The value bag where to write to.
-     *
-     * @return ModelInterface
+     * {@inheritdoc}
      */
     public function writeToPropertyValueBag(PropertyValueBagInterface $valueBag)
     {
@@ -178,9 +156,7 @@ class ContaoModelEntity extends AbstractEntity
     }
 
     /**
-     * Copy this model, without the id.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function __clone()
     {
