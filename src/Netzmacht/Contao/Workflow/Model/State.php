@@ -9,10 +9,12 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow;
+namespace Netzmacht\Contao\Workflow\Model;
 
 use DateTime;
 use Netzmacht\Contao\Workflow\Data\Data;
+use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Contao\Workflow\Flow\Transition;
 
 /**
  * Class State stores information of a current state of an entity.

@@ -5,7 +5,7 @@ namespace Netzmacht\Contao\Workflow;
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
+use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
@@ -82,7 +82,7 @@ class Manager
     }
 
     /**
-     * Handle a workflow transition of an entity will create a transition handler.
+     * Handle a workflow transition of an entity will createEntityRepository a transition handler.
      *
      * If no matching workflow definition is found false will be returned.
      *
@@ -107,7 +107,7 @@ class Manager
             $entity,
             $workflow,
             $transitionName,
-            $this->repositoryFactory->createRepository($entity->getProviderName()),
+            $this->repositoryFactory->createEntityRepository($entity->getProviderName()),
             $this->stateRepository,
             $this->transactionHandler,
             new Context($this->inputProvider)

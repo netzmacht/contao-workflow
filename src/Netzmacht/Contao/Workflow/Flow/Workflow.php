@@ -3,19 +3,21 @@
 namespace Netzmacht\Contao\Workflow\Flow;
 
 use Assert\Assertion;
+use Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Class Workflow stores all information of a step processing workflow.
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Workflow
+class Workflow extends Configurable
 {
     /**
      * Transitions being available in the workflow.
@@ -46,63 +48,50 @@ class Workflow
     private $condition;
 
     /**
-     * The name of the workflow.
+     * The workflow model.
      *
-     * @var string
+     * @var WorkflowModel
      */
-    private $name;
+    private $model;
 
     /**
-     * The workflow database id.
+     * Extra workflow config.
      *
-     * @var int
+     * @var array
      */
-    private $workflowId;
+    private $config;
 
     /**
      * Construct.
      *
+     * @param string    $name                The name of the workflow.
      * @param array     $steps               Set of steps.
      * @param array     $transitions         Set of transitions.
      * @param string    $startTransitionName Name of the start transition.
      * @param Condition $condition           Optional pass a condition.
+     * @param null      $label               The label of the workflow.
+     * @param array     $config              Extra config.
      *
-     * @throws TransitionNotFoundException If transition is not found.
+     * @throws TransitionNotFoundException
      */
-    public function __construct(array $steps, array $transitions, $startTransitionName, Condition $condition = null)
-    {
+    public function __construct(
+        $name,
+        array $steps,
+        array $transitions,
+        $startTransitionName,
+        Condition $condition = null,
+        $label = null,
+        array $config = array()
+    ) {
         Assertion::allIsInstanceOf($steps, 'Netzmacht\Contao\Workflow\Flow\Step');
         Assertion::allIsInstanceOf($transitions, 'Netzmacht\Contao\Workflow\Flow\Transition');
+
+        parent::__construct($name, $label, $config);
 
         $this->transitions     = $transitions;
         $this->steps           = $steps;
         $this->startTransition = $this->getTransition($startTransitionName);
         $this->condition       = $condition;
-    }
-
-
-    /**
-     * Set the name of the workflow.
-     *
-     * @param string $name The workflow name.
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the workflow name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -256,15 +245,5 @@ class Workflow
         if (!$currentStep->isTransitionAllowed($transitionName)) {
             throw new TransitionNotAllowedException($currentStep->getName(), $transitionName);
         }
-    }
-
-    /**
-     * Get the workflow id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->workflowId;
     }
 }

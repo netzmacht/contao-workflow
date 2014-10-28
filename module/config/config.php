@@ -29,6 +29,10 @@ $GLOBALS['WORKFLOW_TYPES']['default'] = '';
  * Event Subscribers
  */
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Contao\BackendSubscriber';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\EntityFactory';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\ManagerFactory';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\RepositoryFactory';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Transaction\DatabaseTransactionHandler';
 
 /*
  * Models

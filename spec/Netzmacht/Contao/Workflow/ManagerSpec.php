@@ -5,8 +5,8 @@ namespace spec\Netzmacht\Contao\Workflow;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
-use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
+use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Manager;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
@@ -79,7 +79,7 @@ class ManagerSpec extends ObjectBehavior
         $entity->getId()->willReturn(static::ENTITY_ID);
 
         $repositoryFactory
-            ->createRepository(static::ENTITY_PROVIDER_NAME)
+            ->createEntityRepository(static::ENTITY_PROVIDER_NAME)
             ->willReturn($entityRepository);
 
         $stateRepository
@@ -103,7 +103,7 @@ class ManagerSpec extends ObjectBehavior
         $entity->getId()->willReturn(static::ENTITY_ID);
 
         $repositoryFactory
-            ->createRepository(static::ENTITY_PROVIDER_NAME)
+            ->createEntityRepository(static::ENTITY_PROVIDER_NAME)
             ->willReturn($entityRepository);
 
         $stateRepository

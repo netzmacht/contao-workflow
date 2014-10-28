@@ -10,7 +10,7 @@ use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Form\Form;
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -19,6 +19,11 @@ class TransitionSpec extends ObjectBehavior
     const TITLE = 'Title';
     const LABEL = 'Label';
 
+    function let()
+    {
+        $this->beConstructedWith(self::TITLE, self::LABEL);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Netzmacht\Contao\Workflow\Flow\Transition');
@@ -26,19 +31,17 @@ class TransitionSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->setName(self::TITLE)->shouldReturn($this);
         $this->getName()->shouldReturn(self::TITLE);
     }
 
     function it_has_a_label()
     {
-        $this->setLabel(self::LABEL)->shouldReturn($this);
         $this->getLabel()->shouldReturn(self::LABEL);
     }
 
     function it_is_labeled_by_name()
     {
-        $this->setName(self::TITLE);
+        $this->beConstructedWith(self::TITLE, null);
         $this->getLabel()->shouldReturn(self::TITLE);
     }
 

@@ -7,22 +7,8 @@ namespace Netzmacht\Contao\Workflow\Flow;
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Step
+class Step extends Configurable
 {
-    /**
-     * The step name.
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
-     * The step label.
-     *
-     * @var string
-     */
-    private $label;
-
     /**
      * The allowed transition names.
      *
@@ -36,58 +22,6 @@ class Step
      * @var bool
      */
     private $final = false;
-
-    /**
-     * Get the step name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the step name.
-     *
-     * @param string $name The new step name.
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the step label.
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        if (!$this->label) {
-            return $this->name;
-        }
-
-        return $this->label;
-    }
-
-    /**
-     * Set the step label.
-     *
-     * @param string $label The new label.
-     *
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
-    }
 
     /**
      * Consider if step is final.

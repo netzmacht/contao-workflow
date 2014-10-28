@@ -4,7 +4,7 @@ namespace spec\Netzmacht\Contao\Workflow\Flow;
 
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\ErrorCollection;
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
@@ -100,7 +100,7 @@ class WorkflowSpec extends ObjectBehavior
 
         $this
             ->transit($entity, 'test', $errorCollection)
-            ->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
+            ->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Model\State');
     }
 
     function it_throws_when_process_is_not_started(
@@ -153,7 +153,7 @@ class WorkflowSpec extends ObjectBehavior
             ->transit($entity, Argument::type('Netzmacht\Contao\Workflow\Flow\Context'), $errorCollection)
             ->willReturn($state);
 
-        $this->start($entity, $errorCollection)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
+        $this->start($entity, $errorCollection)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Model\State');
     }
 
     function it_should_return_current_state_if_already_started(

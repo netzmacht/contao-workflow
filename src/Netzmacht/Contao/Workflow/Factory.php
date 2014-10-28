@@ -11,7 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow;
 
+use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
+use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityRepositoryEvent;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateManagerEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
@@ -53,14 +55,13 @@ class Factory
         $event = new CreateManagerEvent($type);
         $this->eventDispatcher->dispatch($event::NAME, $event);
 
-        $manager = $event->getManager();
-        if (!$manager) {
+        if (!$event->getManager()) {
             throw new \RuntimeException(
                 sprintf('No workflow manager were created during dispatching event "%s"', $event::NAME)
             );
         }
 
-        return $manager;
+        return $event->getManager();
     }
 
     /**
@@ -78,13 +79,24 @@ class Factory
         $event = new CreateEntityEvent($model, $table);
         $this->eventDispatcher->dispatch($event::NAME, $event);
 
-        $entity = $event->getEntity();
-        if (!$entity) {
+        if (!$event->getEntity()) {
             throw new \RuntimeException(
                 sprintf('No entity were created during dispatching event "%s"', $event::NAME)
             );
         }
 
-        return $entity;
+        return $event->getEntity();
+    }
+
+    /**
+     * Create a repository for a given provider name.
+     *
+     * @param string $providerName Provider name.
+     *
+     * @return EntityRepository
+     */
+    public function createRepository($providerName)
+    {
+
     }
 }

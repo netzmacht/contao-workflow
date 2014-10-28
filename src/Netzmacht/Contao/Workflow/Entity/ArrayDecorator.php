@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Entity;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Class ArrayDecorator implements an Entity for wrapping an array and treat it as model.
@@ -47,7 +47,7 @@ class ArrayDecorator extends DefaultModel implements Entity
     /**
      * Get the workflow state.
      *
-     * @return State
+     * @return \Netzmacht\Contao\Workflow\Model\State
      */
     public function getState()
     {
@@ -57,7 +57,7 @@ class ArrayDecorator extends DefaultModel implements Entity
     /**
      * Transit the workflow state.
      *
-     * @param State $state New workflow state.
+     * @param \Netzmacht\Contao\Workflow\Model\State $state New workflow state.
      *
      * @return void
      */

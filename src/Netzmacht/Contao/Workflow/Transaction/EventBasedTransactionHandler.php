@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Transaction;
 
 
-use Netzmacht\Contao\Workflow\Event\TransactionEvent;
+use Netzmacht\Contao\Workflow\Transaction\Event\TransactionEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

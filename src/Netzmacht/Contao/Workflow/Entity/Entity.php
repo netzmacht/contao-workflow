@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Entity;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Interface Entity describes the contract for workflow entities.
@@ -24,14 +24,14 @@ interface Entity extends ModelInterface
     /**
      * Get the current workflow state.
      *
-     * @return State
+     * @return \Netzmacht\Contao\Workflow\Model\State
      */
     public function getState();
 
     /**
      * Transit entity to a new state.
      *
-     * @param State $state New state.
+     * @param \Netzmacht\Contao\Workflow\Model\State $state New state.
      *
      * @return void
      */

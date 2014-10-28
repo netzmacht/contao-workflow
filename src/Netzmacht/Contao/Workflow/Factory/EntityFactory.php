@@ -21,10 +21,11 @@ use Netzmacht\Contao\Workflow\Entity\DcGeneralModelDecorator;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
 use MetaModels\IItem as MetaModelItem;
+use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EntityFactory is responsible to create the Entity for different model types.
+ * Class EntityFactory is responsible to createEntityRepository the Entity for different model types.
  *
  * It acts as an event subscriber but can be used as standalone factory as well.
  *
@@ -45,7 +46,7 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * Handle the create entity event.
+     * Handle the createEntityRepository entity event.
      *
      * @param CreateEntityEvent $event Event subscribed to.
      *
@@ -53,9 +54,18 @@ class EntityFactory implements EventSubscriberInterface
      */
     public function handleCreateEntityEvent(CreateEntityEvent $event)
     {
-        $model = $event->getModel();
+        $model  = $event->getModel();
+        $entity = $this->createEntity($model, $event->getTable());
 
-        return $this->createEntity($model);
+        if ($entity) {
+            $state = $this->createState($entity);
+
+            if ($state) {
+                $entity->transit($state);
+            }
+
+            $event->setEntity($entity);
+        }
     }
 
     /**
@@ -157,5 +167,19 @@ class EntityFactory implements EventSubscriberInterface
     public function createFromArray(array $row, $tableName)
     {
         return new ArrayDecorator($row, $tableName);
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return \Netzmacht\Contao\Workflow\Model\State
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function createState(Entity $entity)
+    {
+        /** @var StateRepository $repository */
+        $repository = $GLOBALS['container']['workflow.state-repository'];
+
+        return $repository->find($entity->getProviderName(), $entity->getId());
     }
 }

@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Class AbstractEntity implements base Entity functionality.

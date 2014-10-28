@@ -15,22 +15,24 @@ class StepSpec extends ObjectBehavior
         $this->shouldHaveType('Netzmacht\Contao\Workflow\Flow\Step');
     }
 
+    function let()
+    {
+        $this->beConstructedWith(self::NAME, self::LABEL);
+    }
+
     function it_has_a_name()
     {
-        $this->setName(self::NAME)->shouldReturn($this);
         $this->getName()->shouldReturn(self::NAME);
     }
 
     function it_has_a_label()
     {
-        $this->setLabel(static::LABEL)->shouldReturn($this);
         $this->getLabel()->shouldReturn(static::LABEL);
     }
 
     function it_uses_name_as_label_by_default()
     {
-        $this->getLabel()->shouldBe(null);
-        $this->setName(static::NAME);
+        $this->beConstructedWith(self::NAME);
         $this->getLabel()->shouldReturn(static::NAME);
     }
 

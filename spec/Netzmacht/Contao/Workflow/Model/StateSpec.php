@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Netzmacht\Contao\Workflow\Flow;
+namespace spec\Netzmacht\Contao\Workflow\Model;
 
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
@@ -23,7 +23,7 @@ class StateSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Netzmacht\Contao\Workflow\Flow\State');
+        $this->shouldHaveType('Netzmacht\Contao\Workflow\Model\State');
     }
 
     function let(Transition $transition, \DateTime $dateTime, Step $stepTo)
@@ -75,7 +75,7 @@ class StateSpec extends ObjectBehavior
         $context->getErrorCollection()->willReturn($errorCollection);
         $errorCollection->getErrors()->willReturn(array());
 
-        $this->transit($transition, $context, false)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Flow\State');
+        $this->transit($transition, $context, false)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\Model\State');
 
     }
 }

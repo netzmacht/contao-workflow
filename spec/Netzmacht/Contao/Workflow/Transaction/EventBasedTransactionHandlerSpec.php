@@ -2,7 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Transaction;
 
-use Netzmacht\Contao\Workflow\Event\TransactionEvent;
+use Netzmacht\Contao\Workflow\Transaction\Event\TransactionEvent;
 use Netzmacht\Contao\Workflow\Transaction\Events;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedTransactionHandlerSpec extends ObjectBehavior
 {
+    const TRANSACTION_EVENT_CLASS = 'Netzmacht\Contao\Workflow\Transaction\Event\TransactionEvent';
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Netzmacht\Contao\Workflow\Transaction\EventBasedTransactionHandler');
@@ -26,7 +28,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
         $eventDispatcher
             ->dispatch(
                 Events::TRANSACTION_BEGIN,
-                Argument::type('Netzmacht\Contao\Workflow\Event\TransactionEvent')
+                Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();
 
@@ -38,7 +40,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
         $eventDispatcher
             ->dispatch(
                 Events::TRANSACTION_COMMIT,
-                Argument::type('Netzmacht\Contao\Workflow\Event\TransactionEvent')
+                Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();
 
@@ -50,7 +52,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
         $eventDispatcher
             ->dispatch(
                 Events::TRANSACTION_ROLLBACK,
-                Argument::type('Netzmacht\Contao\Workflow\Event\TransactionEvent')
+                Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();
 

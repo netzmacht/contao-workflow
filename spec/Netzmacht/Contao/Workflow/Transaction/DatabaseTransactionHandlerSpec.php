@@ -2,7 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Transaction;
 
-use Contao\Database;
+use Database;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

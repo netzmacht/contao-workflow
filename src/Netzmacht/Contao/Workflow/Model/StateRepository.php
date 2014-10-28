@@ -11,27 +11,25 @@
 
 namespace Netzmacht\Contao\Workflow\Model;
 
-use Netzmacht\Contao\Workflow\Flow\State;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
- * Class StateRepository stores workflow states.
+ * Interface StateRepository stores workflow states.
  *
  * @package Netzmacht\Contao\Workflow\Model
  */
-class StateRepository
+interface StateRepository
 {
     /**
      * Find last worfklow state of an entity.
      *
      * @param string $providerName The provider/table name.
      * @param int    $entityId     The entity id.
+     * @param bool   $successful   Only get latest succesful.
      *
      * @return State
      */
-    public function find($providerName, $entityId)
-    {
-        return State::init();
-    }
+    public function find($providerName, $entityId, $successful = true);
 
     /**
      * Add a new state.
@@ -40,7 +38,5 @@ class StateRepository
      *
      * @return void
      */
-    public function add(State $state)
-    {
-    }
+    public function add(State $state);
 }

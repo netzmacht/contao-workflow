@@ -9,28 +9,15 @@ use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
 use Netzmacht\Contao\Workflow\Form\Form;
+use Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Class Transition handles the transition from a step to another.
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Transition
+class Transition extends Configurable
 {
-    /**
-     * The name of the transition.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * The label of the transition.
-     *
-     * @var string
-     */
-    protected $label;
-
     /**
      * Actions which will be executed during the transition.
      *
@@ -72,58 +59,6 @@ class Transition
      * @var Workflow
      */
     private $workflow;
-
-    /**
-     * Get the name of the transition.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the name of the transition.
-     *
-     * @param string $name The new name.
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the label of the transition.
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        if (!$this->label) {
-            return $this->name;
-        }
-
-        return $this->label;
-    }
-
-    /**
-     * Set the label of the transition.
-     *
-     * @param string $label The new label.
-     *
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
-    }
 
     /**
      * Add an action to the transition.
