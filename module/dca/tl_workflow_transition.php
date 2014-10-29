@@ -71,14 +71,14 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         (
             'name'        => array('label', 'name', 'description'),
             'config'      => array(),
-            'permissions' => array('limitPermissions')
+            'permissions' => array('limitPermissions'),
+            'properties'  => array('addPropertyConditions'),
         ),
     ),
 
     'metasubpalettes' => array
     (
-        'limitPermissions' => array('roles'),
-
+        'limitPermissions'      => array('roles'),
     ),
 
     'fields' => array
@@ -160,6 +160,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
                 'chosen'   => true,
             ),
             'sql'       => "mediumblob NULL",
-        )
+        ),
     ),
 );

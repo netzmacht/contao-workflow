@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateEntityRepositoryEvent extends Event
 {
-    const NAME = 'workflow.factory.createEntityRepository-entity-repository';
+    const NAME = 'workflow.factory.createRepository-entity-repository';
 
     /**
      * Name of the provider (table).

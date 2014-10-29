@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateManagerEvent extends Event
 {
-    const NAME = 'workflow.factory.createEntityRepository-manager';
+    const NAME = 'workflow.factory.createRepository-manager';
 
     /**
      * The created manager.

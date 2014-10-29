@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Workflow;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 
 /**
  * Interface Condition describes condition being used by the workflow.

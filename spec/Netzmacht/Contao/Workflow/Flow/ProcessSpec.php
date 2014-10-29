@@ -2,7 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Step;

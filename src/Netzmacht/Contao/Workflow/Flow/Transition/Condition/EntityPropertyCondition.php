@@ -16,6 +16,7 @@ use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
+use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Util\Comparison;
 
 /**
@@ -50,15 +51,15 @@ class EntityPropertyCondition implements Condition
      * Consider if property condition matches.
      *
      * @param Transition $transition The transition being in.
-     * @param Entity     $entity     The entity being transits.
+     * @param Item       $item       The entity being transits.
      * @param Context    $context    The transition context.
      *
      * @return bool
      */
-    public function match(Transition $transition, Entity $entity, Context $context)
+    public function match(Transition $transition, Item $item, Context $context)
     {
         return Comparison::compare(
-            $entity->getProperty($this->property),
+            $item->getEntity()->getProperty($this->property),
             $this->value,
             $this->operator
         );

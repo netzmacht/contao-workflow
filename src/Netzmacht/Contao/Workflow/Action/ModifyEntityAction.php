@@ -11,8 +11,8 @@
 
 namespace Netzmacht\Contao\Workflow\Action;
 
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Action;
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 

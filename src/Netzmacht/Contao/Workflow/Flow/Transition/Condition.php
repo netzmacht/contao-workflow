@@ -11,9 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Transition;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Interface Condition describes an condition which used for transtion conditions.
@@ -26,10 +26,10 @@ interface Condition
      * Consider if condition matches for the given entity.
      *
      * @param Transition $transition The transition being in.
-     * @param Entity     $entity     The entity being transits.
+     * @param Item       $item       The entity being transits.
      * @param Context    $context    The transition context.
      *
      * @return bool
      */
-    public function match(Transition $transition, Entity $entity, Context $context);
+    public function match(Transition $transition, Item $item, Context $context);
 }

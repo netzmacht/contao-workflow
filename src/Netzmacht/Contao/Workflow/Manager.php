@@ -3,8 +3,8 @@
 namespace Netzmacht\Contao\Workflow;
 
 use Assert\Assertion;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
@@ -82,7 +82,7 @@ class Manager
     }
 
     /**
-     * Handle a workflow transition of an entity will createEntityRepository a transition handler.
+     * Handle a workflow transition of an entity will createRepository a transition handler.
      *
      * If no matching workflow definition is found false will be returned.
      *
@@ -99,15 +99,11 @@ class Manager
             return false;
         }
 
-        if ($this->loadState($entity)) {
-            Assertion::string($transitionName, 'Transition name is required');
-        }
-
         $handler = new TransitionHandler(
-            $entity,
+            $this->createItem($entity),
             $workflow,
             $transitionName,
-            $this->repositoryFactory->createEntityRepository($entity->getProviderName()),
+            $this->repositoryFactory->createRepository($entity->getProviderName()),
             $this->stateRepository,
             $this->transactionHandler,
             new Context($this->inputProvider)
@@ -150,6 +146,24 @@ class Manager
     }
 
     /**
+     * Get Workflow by its name.
+     *
+     * @param string $name Name of workflow.
+     *
+     * @return bool|Workflow
+     */
+    public function getWorkflowByName($name)
+    {
+        foreach ($this->workflows as $workflow) {
+            if ($workflow->getName() == $name) {
+                return $workflow;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Consider if entity has an workflow.
      *
      * @param Entity $entity The entity.
@@ -178,25 +192,14 @@ class Manager
     }
 
     /**
-     * Initialize state of an entity.
+     * @param Entity $entity
      *
-     * @param Entity $entity The entity.
-     *
-     * @return bool
+     * @return Item
      */
-    private function loadState(Entity $entity)
+    private function createItem(Entity $entity)
     {
-        if ($entity->getState()) {
-            return true;
-        }
+        $stateHistory = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
 
-        try {
-            $state = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
-            $entity->transit($state);
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return Item::restore($entity, $stateHistory);
     }
 }

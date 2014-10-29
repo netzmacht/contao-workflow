@@ -17,6 +17,7 @@ use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
+use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Class PermissionCondition handles permission limiting for transitions.
@@ -76,15 +77,15 @@ class PermissionCondition implements Condition
     }
 
     /**
-     * Consider if permision condition matches.
+     * Consider if permission condition matches.
      *
      * @param Transition $transition The transition being in.
-     * @param Entity     $entity     The entity being transits.
+     * @param Item       $item       The entity being transits.
      * @param Context    $context    The transition context.
      *
      * @return bool
      */
-    public function match(Transition $transition, Entity $entity, Context $context)
+    public function match(Transition $transition, Item $item, Context $context)
     {
         if (!$this->ignoreAdmin && $this->aclManager->hasAdminPermissions()) {
             return true;

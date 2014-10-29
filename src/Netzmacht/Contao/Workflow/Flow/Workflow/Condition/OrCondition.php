@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 
 /**
  * Class OrCondition matches if any child conditions matches.

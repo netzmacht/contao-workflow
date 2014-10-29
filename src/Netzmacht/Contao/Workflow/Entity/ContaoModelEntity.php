@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBagInterface;
 use ContaoCommunityAlliance\DcGeneral\Exception\DcGeneralInvalidArgumentException;
 use Model;

@@ -27,7 +27,7 @@ interface StateRepository
      * @param int    $entityId     The entity id.
      * @param bool   $successful   Only get latest succesful.
      *
-     * @return State
+     * @return State[]
      */
     public function find($providerName, $entityId, $successful = true);
 

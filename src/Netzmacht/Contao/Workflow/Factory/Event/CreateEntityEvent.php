@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Factory\Event;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

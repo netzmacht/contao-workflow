@@ -2,8 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow;
 
-use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Model\State;

@@ -25,7 +25,7 @@ use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EntityFactory is responsible to createEntityRepository the Entity for different model types.
+ * Class EntityFactory is responsible to createRepository the Entity for different model types.
  *
  * It acts as an event subscriber but can be used as standalone factory as well.
  *
@@ -46,7 +46,7 @@ class EntityFactory implements EventSubscriberInterface
     }
 
     /**
-     * Handle the createEntityRepository entity event.
+     * Handle the createRepository entity event.
      *
      * @param CreateEntityEvent $event Event subscribed to.
      *

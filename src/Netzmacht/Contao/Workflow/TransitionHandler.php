@@ -11,8 +11,6 @@
 
 namespace Netzmacht\Contao\Workflow;
 
-use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Exception\InvalidTransitionException;
@@ -22,6 +20,7 @@ use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 
 /**
  * Class TransitionHandler handles the transition to another step in the workflow.
@@ -33,9 +32,9 @@ class TransitionHandler
     /**
      * The given entity.
      *
-     * @var Entity
+     * @var Item
      */
-    private $entity;
+    private $item;
 
     /**
      * The current workflow.
@@ -97,7 +96,7 @@ class TransitionHandler
     /**
      * Construct.
      *
-     * @param Entity             $entity             The entity.
+     * @param Item               $item               The item.
      * @param Workflow           $workflow           The current workflow.
      * @param string             $transitionName     The transition to be handled.
      * @param EntityRepository   $entityRepository   EntityRepository which stores changes.
@@ -106,7 +105,7 @@ class TransitionHandler
      * @param Context            $context            The context of the transition.
      */
     public function __construct(
-        Entity $entity,
+        Item $item,
         Workflow $workflow,
         $transitionName,
         EntityRepository $entityRepository,
@@ -114,7 +113,7 @@ class TransitionHandler
         TransactionHandler $transactionHandler,
         Context $context
     ) {
-        $this->entity             = $entity;
+        $this->item               = $item;
         $this->workflow           = $workflow;
         $this->transitionName     = $transitionName;
         $this->entityRepository   = $entityRepository;
@@ -139,9 +138,9 @@ class TransitionHandler
      *
      * @return Entity
      */
-    public function getEntity()
+    public function getItem()
     {
-        return $this->entity;
+        return $this->item;
     }
 
     /**
@@ -193,7 +192,7 @@ class TransitionHandler
      */
     public function isStartTransition()
     {
-        if ($this->entity->getState()) {
+        if ($this->item->isWorkflowStarted()) {
             return false;
         }
 
@@ -250,15 +249,17 @@ class TransitionHandler
 
         try {
             if ($this->isStartTransition()) {
-                $state = $this->workflow->start($this->entity, $this->context);
+                $state = $this->workflow->start($this->item, $this->context);
             } else {
-                $state = $this->workflow->transit($this->entity, $this->transitionName, $this->context);
+                $state = $this->workflow->transit($this->item, $this->transitionName, $this->context);
             }
 
             $this->stateRepository->add($state);
 
-            if ($this->entity->getMeta(Entity::IS_CHANGED)) {
-                $this->entityRepository->add($this->entity);
+            $entity = $this->item->getEntity();
+
+            if ($entity->getMeta(Entity::IS_CHANGED)) {
+                $this->entityRepository->add($entity);
             }
         } catch (\Exception $e) {
             $this->transactionHandler->rollback();

@@ -2,9 +2,9 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Acl\AclManager;
 use Netzmacht\Contao\Workflow\Acl\Role;
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;

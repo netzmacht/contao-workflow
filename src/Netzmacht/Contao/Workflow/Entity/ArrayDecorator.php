@@ -19,7 +19,7 @@ use Netzmacht\Contao\Workflow\Model\State;
  *
  * @package Netzmacht\Contao\Workflow\Entity
  */
-class ArrayDecorator extends DefaultModel implements Entity
+class ArrayDecorator extends DefaultModel
 {
     /**
      * Workflow state.

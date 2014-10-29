@@ -9,6 +9,7 @@ use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
 use Netzmacht\Contao\Workflow\Form\Form;
+use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 
 /**
@@ -191,15 +192,15 @@ class Transition extends Configurable
     /**
      * Consider if transition is allowed.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item    $item    The Item.
      * @param Context $context The transition context.
      *
      * @return bool
      */
-    public function isAllowed(Entity $entity, Context $context)
+    public function isAllowed(Item $item, Context $context)
     {
-        if ($this->checkPreCondition($entity, $context)) {
-            return $this->checkCondition($entity, $context);
+        if ($this->checkPreCondition($item, $context)) {
+            return $this->checkCondition($item, $context);
         }
 
         return false;
@@ -210,40 +211,39 @@ class Transition extends Configurable
      *
      * If a transition can be available but it is not allowed depending on the user input.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item    $item    The Item.
      * @param Context $context The transition context.
      *
      * @return bool
      */
-    public function isAvailable(Entity $entity, Context $context)
+    public function isAvailable(Item $item, Context $context)
     {
         if ($this->requiresInputData()) {
-            return $this->checkPreCondition($entity, $context);
+            return $this->checkPreCondition($item, $context);
         }
 
-        return $this->isAllowed($entity, $context);
+        return $this->isAllowed($item, $context);
     }
 
     /**
-     * Transit an entity using this transition.
+     * Transit an Item using this transition.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item   $item     The Item.
      * @param Context $context The transition context.
      *
      * @throws ProcessNotStartedException If process was not started yet.
      *
      * @return State
      */
-    public function transit(Entity $entity, Context $context)
+    public function transit(Item $item, Context $context)
     {
-        $state   = $entity->getState();
-        $success = $this->isAllowed($entity, $context);
-
+        $success = $this->isAllowed($item, $context);
+        $state   = $item->getLatestState();
 
         if ($success) {
             try {
                 foreach ($this->actions as $action) {
-                    $action->transit($this, $entity, $context);
+                    $action->transit($this, $item, $context);
                 }
             } catch (TransactionActionFailed $e) {
                 $success = false;
@@ -253,41 +253,44 @@ class Transition extends Configurable
             }
         }
 
-        return $state->transit($this, $context, $success);
+        $state = $state->transit($this, $context, $success);
+        $item->transit($state);
+
+        return $state;
     }
 
     /**
      * Check the precondition.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item    $item    The Item.
      * @param Context $context The transition context.
      *
      * @return bool
      */
-    public function checkPreCondition(Entity $entity, Context $context)
+    public function checkPreCondition(Item $item, Context $context)
     {
         if (!$this->preCondition) {
             return true;
         }
 
-        return $this->preCondition->match($this, $entity, $context);
+        return $this->preCondition->match($this, $item, $context);
     }
 
     /**
      * Check the condition.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item    $item    The Item.
      * @param Context $context The transition context.
      *
      * @return bool
      */
-    public function checkCondition(Entity $entity, Context $context)
+    public function checkCondition(Item $item, Context $context)
     {
         if (!$this->condition) {
             return true;
         }
 
-        return $this->condition->match($this, $entity, $context);
+        return $this->condition->match($this, $item, $context);
     }
 
     /**

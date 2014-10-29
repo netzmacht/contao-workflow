@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Entity;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface as DataProvider;
-use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 
 /**
  * Class EntityRepository stores an entity.

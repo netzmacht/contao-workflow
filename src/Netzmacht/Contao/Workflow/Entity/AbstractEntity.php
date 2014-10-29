@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-use Netzmacht\Contao\Workflow\Model\State;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 
 /**
  * Class AbstractEntity implements base Entity functionality.
@@ -21,40 +21,11 @@ use Netzmacht\Contao\Workflow\Model\State;
 abstract class AbstractEntity implements Entity
 {
     /**
-     * Stored metadata.
+     * Entity metadata.
      *
      * @var array
      */
     private $metaData = array();
-
-    /**
-     * Workflow state.
-     *
-     * @var State
-     */
-    private $state;
-
-    /**
-     * Get the workflow state.
-     *
-     * @return State
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * Transit to a new workflow state.
-     *
-     * @param State $state New workflow state.
-     *
-     * @return void
-     */
-    public function transit(State $state)
-    {
-        $this->state = $state;
-    }
 
     /**
      * {@inheritdoc}

@@ -79,7 +79,7 @@ class ManagerSpec extends ObjectBehavior
         $entity->getId()->willReturn(static::ENTITY_ID);
 
         $repositoryFactory
-            ->createEntityRepository(static::ENTITY_PROVIDER_NAME)
+            ->createRepository(static::ENTITY_PROVIDER_NAME)
             ->willReturn($entityRepository);
 
         $stateRepository
@@ -103,7 +103,7 @@ class ManagerSpec extends ObjectBehavior
         $entity->getId()->willReturn(static::ENTITY_ID);
 
         $repositoryFactory
-            ->createEntityRepository(static::ENTITY_PROVIDER_NAME)
+            ->createRepository(static::ENTITY_PROVIDER_NAME)
             ->willReturn($entityRepository);
 
         $stateRepository

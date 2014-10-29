@@ -37,7 +37,7 @@ class RepositoryFactory implements EventSubscriberInterface
     }
 
     /**
-     * Handle the createEntityRepository entity repository event.
+     * Handle the createRepository entity repository event.
      *
      * @param CreateEntityRepositoryEvent $event Event subscribed to.
      *
@@ -73,14 +73,14 @@ class RepositoryFactory implements EventSubscriberInterface
      *
      * @return EntityRepository
      */
-    public function createEntityRepository($providerName)
+    public function createRepository($providerName)
     {
         $event = new CreateEntityRepositoryEvent($providerName);
         $this->getEventDispatcher()->dispatch($event::NAME, $event);
 
         if (!$event->getRepository()) {
             throw new \InvalidArgumentException(
-                sprintf('Could not createEntityRepository entity repository "%s".', $providerName)
+                sprintf('Could not createRepository entity repository "%s".', $providerName)
             );
         }
 

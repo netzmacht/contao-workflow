@@ -24,6 +24,11 @@ class Step extends Configurable
     private $final = false;
 
     /**
+     * @var Workflow
+     */
+    private $workflow;
+
+    /**
      * Consider if step is final.
      *
      * @return boolean
@@ -45,6 +50,16 @@ class Step extends Configurable
         $this->final = (bool)$final;
 
         return $this;
+    }
+
+    /**
+     * Get the workflow.
+     *
+     * @return Workflow
+     */
+    public function getWorkflow()
+    {
+        return $this->workflow;
     }
 
     /**

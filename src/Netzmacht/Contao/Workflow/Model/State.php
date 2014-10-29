@@ -12,7 +12,6 @@
 namespace Netzmacht\Contao\Workflow\Model;
 
 use DateTime;
-use Netzmacht\Contao\Workflow\Data\Data;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 
@@ -64,6 +63,13 @@ class State
      * @var array
      */
     private $errors;
+
+    /**
+     * Name of the workflow.
+     *
+     * @var string
+     */
+    private $workflowName;
 
     /**
      * Construct.
@@ -119,6 +125,14 @@ class State
     public function getTransitionName()
     {
         return $this->transitionName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkflowName()
+    {
+        return $this->workflowName;
     }
 
     /**

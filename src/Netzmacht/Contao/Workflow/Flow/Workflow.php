@@ -3,13 +3,13 @@
 namespace Netzmacht\Contao\Workflow\Flow;
 
 use Assert\Assertion;
-use Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 
 /**
@@ -46,20 +46,6 @@ class Workflow extends Configurable
      * @var Condition
      */
     private $condition;
-
-    /**
-     * The workflow model.
-     *
-     * @var WorkflowModel
-     */
-    private $model;
-
-    /**
-     * Extra workflow config.
-     *
-     * @var array
-     */
-    private $config;
 
     /**
      * Construct.
@@ -163,7 +149,7 @@ class Workflow extends Configurable
     /**
      * Transit the entity to a new state.
      *
-     * @param Entity  $entity         The entity.
+     * @param Item    $item         The entity.
      * @param string  $transitionName The transition name.
      * @param Context $context        The context of the transition.
      *
@@ -174,18 +160,17 @@ class Workflow extends Configurable
      *
      * @return State
      */
-    public function transit(Entity $entity, $transitionName, Context $context)
+    public function transit(Item $item, $transitionName, Context $context)
     {
-        $this->guardWorkflowStarted($entity);
+        $this->guardWorkflowStarted($item);
 
-        $state       = $entity->getState();
-        $currentStep = $this->getStep($state->getStepName());
+        $currentStep = $this->getStep($item->getCurrentStepName());
 
         $this->guardTransitionAllowed($currentStep, $transitionName);
 
         $transition = $this->getTransition($transitionName);
 
-        return $transition->transit($entity, $context);
+        return $transition->transit($item, $context);
     }
 
     /**
@@ -193,39 +178,34 @@ class Workflow extends Configurable
      *
      * If the workflow is already started, nothing happens.
      *
-     * @param Entity  $entity  The entity.
+     * @param Item    $item    The entity.
      * @param Context $context The transition context.
      *
      * @return State
      */
-    public function start(Entity $entity, Context $context)
+    public function start(Item $item, Context $context)
     {
-        if ($entity->getState()) {
-            return $entity->getState();
+        if ($item->isWorkflowStarted()) {
+            return $item->getLatestState();
         }
-
-        $state = State::init();
-        $entity->transit($state);
 
         $transition = $this->getStartTransition();
 
-        return $transition->transit($entity, $context);
+        return $transition->transit($item, $context);
     }
 
     /**
      * Guard that workflow has already started.
      *
-     * @param Entity $entity The entity.
+     * @param Item $item The entity.
      *
      * @throws ProcessNotStartedException If workflow has not started yet.
      *
      * @return void
      */
-    private function guardWorkflowStarted(Entity $entity)
+    private function guardWorkflowStarted(Item $item)
     {
-        $state = $entity->getState();
-
-        if (!$state) {
+        if (!$item->isWorkflowStarted()) {
             throw new ProcessNotStartedException();
         }
     }
