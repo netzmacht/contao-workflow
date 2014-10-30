@@ -14,6 +14,7 @@ namespace Netzmacht\Contao\Workflow\Model;
 use DateTime;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Class State stores information of a current state of an entity.
@@ -74,6 +75,7 @@ class State
     /**
      * Construct.
      *
+     * @param string   $workflowName   Workflow name.
      * @param string   $transitionName The transition executed to reach the step.
      * @param string   $stepToName     The step reached after transition.
      * @param bool     $successful     Consider if transition was successful.
@@ -82,6 +84,7 @@ class State
      * @param array    $errors         List of errors.
      */
     public function __construct(
+        $workflowName,
         $transitionName,
         $stepToName,
         $successful,
@@ -89,6 +92,7 @@ class State
         DateTime $reachedAt,
         array $errors = array()
     ) {
+        $this->workflowName   = $workflowName;
         $this->transitionName = $transitionName;
         $this->stepName       = $stepToName;
         $this->successful     = $successful;
@@ -98,13 +102,23 @@ class State
     }
 
     /**
-     * Init an new state.
+     * @param Transition $transition
+     * @param Context    $context
+     * @param            $success
      *
-     * @return static
+     * @return \Netzmacht\Contao\Workflow\Model\State
      */
-    public static function init()
+    public static function start(Transition $transition, Context $context, $success)
     {
-        return new static(null, null, true, array(), new DateTime());
+        return new State(
+            $transition->getWorkflow()->getName(),
+            $transition->getName(),
+            $transition->getStepTo()->getName(),
+            $success,
+            $context->getProperties(),
+            new \DateTime(),
+            $context->getErrorCollection()->getErrors()
+        );
     }
 
     /**
@@ -180,6 +194,7 @@ class State
         $stepName = $success ? $transition->getStepTo()->getName() : $this->stepName;
 
         return new static(
+            $this->workflowName,
             $transition->getName(),
             $stepName,
             $success,

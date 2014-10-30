@@ -2,12 +2,14 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
+use Netzmacht\Contao\Workflow\Base;
+
 /**
  * Class Step defines fixed step in the workflow process.
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Step extends Configurable
+class Step extends Base
 {
     /**
      * The allowed transition names.

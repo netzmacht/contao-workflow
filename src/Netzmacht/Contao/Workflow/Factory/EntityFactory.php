@@ -11,17 +11,16 @@
 
 namespace Netzmacht\Contao\Workflow\Factory;
 
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
+use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Database\Result;
-use MetaModels\DcGeneral\Data\Model;
+use MetaModels\DcGeneral\Data\Model as MetaModelModel;
 use Model\Collection;
 use Netzmacht\Contao\Workflow\Entity\ArrayDecorator;
 use Netzmacht\Contao\Workflow\Entity\ContaoModelEntity;
 use Netzmacht\Contao\Workflow\Entity\DcGeneralModelDecorator;
-use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
 use MetaModels\IItem as MetaModelItem;
-use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -57,15 +56,7 @@ class EntityFactory implements EventSubscriberInterface
         $model  = $event->getModel();
         $entity = $this->createEntity($model, $event->getTable());
 
-        if ($entity) {
-            $state = $this->createState($entity);
-
-            if ($state) {
-                $entity->transit($state);
-            }
-
-            $event->setEntity($entity);
-        }
+        $event->setEntity($entity);
     }
 
     /**
@@ -80,9 +71,11 @@ class EntityFactory implements EventSubscriberInterface
      */
     public function createEntity($model, $tableName = null)
     {
-        if ($model instanceof ModelInterface) {
-            $entity = $this->createFromDcGeneralModel($model);
-        } elseif ($model instanceof \Model) {
+        if ($model instanceof Entity) {
+            return $model;
+        }
+
+        if ($model instanceof \Model) {
             $entity = $this->createFromContaoModel($model);
         } elseif ($model instanceof Collection) {
             $entity = $this->createFromContaoModel($model->current());
@@ -117,17 +110,6 @@ class EntityFactory implements EventSubscriberInterface
         return new ContaoModelEntity($model);
     }
 
-    /**
-     * Create an entity from a dc general model.
-     *
-     * @param ModelInterface $model DcGeneral model.
-     *
-     * @return Entity
-     */
-    public function createFromDcGeneralModel(ModelInterface $model)
-    {
-        return new DcGeneralModelDecorator($model);
-    }
 
     /**
      * Create an entity from a metamodel.
@@ -138,9 +120,7 @@ class EntityFactory implements EventSubscriberInterface
      */
     public function createFromMetaModel(MetaModelItem $item)
     {
-        $wrapper = new Model($item);
-
-        return $this->createFromDcGeneralModel($wrapper);
+        return new MetaModelModel($item);
     }
 
     /**
@@ -166,20 +146,13 @@ class EntityFactory implements EventSubscriberInterface
      */
     public function createFromArray(array $row, $tableName)
     {
-        return new ArrayDecorator($row, $tableName);
-    }
+        $model = new DefaultModel();
+        $model->setProviderName($tableName);
 
-    /**
-     * @param $entity
-     *
-     * @return \Netzmacht\Contao\Workflow\Model\State
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    private function createState(Entity $entity)
-    {
-        /** @var StateRepository $repository */
-        $repository = $GLOBALS['container']['workflow.state-repository'];
+        foreach ($row as $name => $value) {
+            $model->setPropertyRaw($name, $value);
+        }
 
-        return $repository->find($entity->getProviderName(), $entity->getId());
+        return $model;
     }
 }

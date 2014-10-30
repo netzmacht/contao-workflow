@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Factory\Event;
 
+use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -20,5 +21,30 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateWorkflowEvent extends Event
 {
+    const NAME = 'workflow.factory.create-workflow';
 
+    /**
+     * @var Workflow
+     */
+    private $workflow;
+
+    /**
+     * Construct.
+     *
+     * @param Workflow $workflow Workflow being created.
+     */
+    public function __construct(Workflow $workflow)
+    {
+        $this->workflow = $workflow;
+    }
+
+    /**
+     * Get the workflow.
+     *
+     * @return Workflow
+     */
+    public function getWorkflow()
+    {
+        return $this->workflow;
+    }
 }

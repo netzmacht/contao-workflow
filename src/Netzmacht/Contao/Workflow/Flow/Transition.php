@@ -4,9 +4,10 @@ namespace Netzmacht\Contao\Workflow\Flow;
 
 use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Action;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\Contao\Workflow\Base;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
+use Netzmacht\Contao\Workflow\Flow\Transition\Condition\AndCondition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Item;
@@ -17,7 +18,7 @@ use Netzmacht\Contao\Workflow\Model\State;
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Transition extends Configurable
+class Transition extends Base
 {
     /**
      * Actions which will be executed during the transition.
@@ -60,6 +61,22 @@ class Transition extends Configurable
      * @var Workflow
      */
     private $workflow;
+
+
+    /**
+     * This method should not be called. It's used to set the workflow reference when transition is added to the
+     * workflow.
+     *
+     * @param Workflow $workflow
+     *
+     * @return $this
+     */
+    public function setWorkflow(Workflow $workflow)
+    {
+        $this->workflow = $workflow;
+
+        return $this;
+    }
 
     /**
      * Add an action to the transition.
@@ -110,15 +127,18 @@ class Transition extends Configurable
     }
 
     /**
-     * Set the condition.
+     * Add a condition.
      *
      * @param Condition $condition The new condition.
      *
      * @return $this
      */
-    public function setCondition(Condition $condition)
+    public function addCondition(Condition $condition)
     {
-        $this->condition = $condition;
+        if (!$this->condition) {
+            $this->condition = new AndCondition();
+        }
+        $this->condition->addCondition($condition);
 
         return $this;
     }
@@ -134,15 +154,19 @@ class Transition extends Configurable
     }
 
     /**
-     * Set the precondition.
+     * Add a precondition precondition.
      *
      * @param Condition $preCondition The new precondition.
      *
      * @return $this
      */
-    public function setPreCondition(Condition $preCondition)
+    public function addPreCondition(Condition $preCondition)
     {
-        $this->preCondition = $preCondition;
+        if (!$this->preCondition) {
+            $this->preCondition = new AndCondition();
+        }
+
+        $this->preCondition->addCondition($preCondition);
 
         return $this;
     }
@@ -225,6 +249,18 @@ class Transition extends Configurable
         return $this->isAllowed($item, $context);
     }
 
+    public function start(Item $item, Context $context)
+    {
+        if ($item->isWorkflowStarted()) {
+            return $item->getLatestState();
+        }
+
+        $success = $this->executeActions($item, $context);
+        $state   = State::start($this, $context, $success);
+
+        return $state;
+    }
+
     /**
      * Transit an Item using this transition.
      *
@@ -237,23 +273,10 @@ class Transition extends Configurable
      */
     public function transit(Item $item, Context $context)
     {
-        $success = $this->isAllowed($item, $context);
         $state   = $item->getLatestState();
+        $success = $this->executeActions($item, $context);
+        $state   = $state->transit($this, $context, $success);
 
-        if ($success) {
-            try {
-                foreach ($this->actions as $action) {
-                    $action->transit($this, $item, $context);
-                }
-            } catch (TransactionActionFailed $e) {
-                $success = false;
-                $params  = array('exception' => $e->getMessage());
-
-                $context->addError('transition.action.failed', $params);
-            }
-        }
-
-        $state = $state->transit($this, $context, $success);
         $item->transit($state);
 
         return $state;
@@ -331,5 +354,37 @@ class Transition extends Configurable
     public function getWorkflow()
     {
         return $this->workflow;
+    }
+
+    /**
+     * @param Item    $item
+     * @param Context $context
+     *
+     * @return bool
+     */
+    private function executeActions(Item $item, Context $context)
+    {
+        $success = $this->isAllowed($item, $context);
+
+        if ($success) {
+            try {
+                foreach ($this->actions as $action) {
+                    $action->transit($this, $item, $context);
+
+                    return $success;
+                }
+
+                return $success;
+            } catch (TransactionActionFailed $e) {
+                $success = false;
+                $params  = array('exception' => $e->getMessage());
+
+                $context->addError('transition.action.failed', $params);
+
+                return $success;
+            }
+        }
+
+        return $success;
     }
 }

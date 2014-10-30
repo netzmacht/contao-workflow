@@ -7,6 +7,7 @@ use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Contao\Workflow\Flow\Exception\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
@@ -89,7 +90,7 @@ class Manager
      * @param Entity $entity         The entity to transit through a workflow.
      * @param string $transitionName Transition name, required if workflow has already started.
      *
-     * @return bool|\Netzmacht\Contao\Workflow\TransitionHandler
+     * @return bool|TransitionHandler
      */
     public function handle(Entity $entity, $transitionName = null)
     {
@@ -99,8 +100,11 @@ class Manager
             return false;
         }
 
+        $item = $this->createItem($entity);
+        $this->guardSameWorkflow($item, $workflow);
+
         $handler = new TransitionHandler(
-            $this->createItem($entity),
+            $item,
             $workflow,
             $transitionName,
             $this->repositoryFactory->createRepository($entity->getProviderName()),
@@ -201,5 +205,28 @@ class Manager
         $stateHistory = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
 
         return Item::restore($entity, $stateHistory);
+    }
+
+    /**
+     * Guard that already started workflow is the same which is tried to be runned now.
+     *
+     * @param Item     $item     Current workflow item.
+     * @param Workflow $workflow Selected workflow.
+     *
+     * @throws WorkflowException
+     */
+    private function guardSameWorkflow(Item $item, Workflow $workflow)
+    {
+        if ($item->isWorkflowStarted() && $item->getWorkflowName() != $workflow->getName()) {
+            $message = sprintf(
+                'Item %s::%s already process workflow "%s" and cannot be handled by "%s"',
+                $item->getEntity()->getProviderName(),
+                $item->getEntity()->getId(),
+                $item->getWorkflowName(),
+                $workflow->getName()
+            );
+
+            throw new WorkflowException($message);
+        }
     }
 }

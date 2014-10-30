@@ -134,9 +134,9 @@ class TransitionHandler
     }
 
     /**
-     * Get the entity.
+     * Get the item.
      *
-     * @return Entity
+     * @return Item
      */
     public function getItem()
     {

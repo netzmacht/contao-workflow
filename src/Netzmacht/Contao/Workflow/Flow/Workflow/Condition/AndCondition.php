@@ -12,6 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
+use Netzmacht\Contao\Workflow\Flow\Workflow;
 
 /**
  * Class AndCondition matches if all child conditions matches.
@@ -23,10 +24,10 @@ class AndCondition extends ConditionCollection
     /**
      * {@inheritdoc}
      */
-    public function match(Entity $entity)
+    public function match(Workflow $workflow, Entity $entity)
     {
         foreach ($this->conditions as $condition) {
-            if (!$condition->match($entity)) {
+            if (!$condition->match($workflow, $entity)) {
                 return false;
             }
         }

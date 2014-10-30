@@ -171,6 +171,6 @@ class Item
      */
     public function isWorkflowStarted()
     {
-        return !$this->currentStepName;
+        return !empty($this->currentStepName);
     }
 }

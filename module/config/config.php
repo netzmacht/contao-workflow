@@ -29,15 +29,19 @@ $GLOBALS['WORKFLOW_TYPES']['default'] = '';
  * Event Subscribers
  */
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Contao\BackendSubscriber';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\CreateWorkflowSubscriber';
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\EntityFactory';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\ManagerFactory';
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\RepositoryFactory';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Transaction\DatabaseTransactionHandler';
+
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = function() {
+    return new Netzmacht\Contao\Workflow\Transaction\DatabaseTransactionHandler(\Database::getInstance());
+};
 
 /*
  * Models
  */
 $GLOBALS['TL_MODELS']['tl_workflow']            = 'Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel';
-$GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Contao\Workflow\Contao\Model\StepModel';
 $GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Contao\Workflow\Contao\Model\RoleModel';
+$GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Contao\Workflow\Contao\Model\StepModel';
+$GLOBALS['TL_MODELS']['tl_workflow_state']      = 'Netzmacht\Contao\Workflow\Contao\Model\StateModel';
 $GLOBALS['TL_MODELS']['tl_workflow_transition'] = 'Netzmacht\Contao\Workflow\Contao\Model\TransitionModel';

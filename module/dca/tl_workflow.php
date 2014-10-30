@@ -125,6 +125,17 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),
+        'providerName'           => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['providerName'],
+            'inputType' => 'text',
+            'search'    => true,
+            'exclude'   => true,
+            'eval'      => array(
+                'tl_class'           => 'w50',
+            ),
+            'sql'       => "varchar(64) NOT NULL default ''",
+        ),
         'description'           => array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['description'],
@@ -175,23 +186,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         ),
                         'eval'      => array
                         (
-                            'style' => 'width:200px',
-                            'includeBlankOption' => true,
-                            'chosen' => true,
-                        ),
-                    ),
-                    'stepTo' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['stepTo'],
-                        'inputType' => 'select',
-                        'options_callback' => array
-                        (
-                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
-                            'getEndSteps'
-                        ),
-                        'eval'      => array
-                        (
-                            'style' => 'width:200px',
+                            'style' => 'width:350px',
                             'includeBlankOption' => true,
                             'chosen' => true,
                         ),

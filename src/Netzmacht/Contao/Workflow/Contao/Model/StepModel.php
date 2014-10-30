@@ -24,4 +24,18 @@ class StepModel extends \Model
      * @var string
      */
     protected static $strTable = 'tl_workflow_step';
+
+    /**
+     * @param $workflowId
+     *
+     * @return \Model\Collection|null
+     */
+    public static function findByWorkflow($workflowId)
+    {
+        return static::findBy(
+            array('pid=?'),
+            $workflowId,
+            array('order' => 'name')
+        );
+    }
 }

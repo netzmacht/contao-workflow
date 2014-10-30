@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateManagerEvent extends Event
 {
-    const NAME = 'workflow.factory.createRepository-manager';
+    const NAME = 'workflow.factory.create-repository-manager';
 
     /**
      * The created manager.
@@ -35,16 +35,24 @@ class CreateManagerEvent extends Event
      *
      * @var string
      */
-    private $type;
+    private $workflowType;
+
+    /**
+     * Name of the provider.
+     * @var string
+     */
+    private $providerName;
 
     /**
      * Construct.
      *
-     * @param string $type Workflow type.
+     * @param string $workflowType Workflow type.
+     * @param string $providerName Provider name.
      */
-    public function __construct($type)
+    public function __construct($workflowType, $providerName = null)
     {
-        $this->type = $type;
+        $this->workflowType = $workflowType;
+        $this->providerName = $providerName;
     }
 
     /**
@@ -52,9 +60,19 @@ class CreateManagerEvent extends Event
      *
      * @return string
      */
-    public function getType()
+    public function getWorkflowType()
     {
-        return $this->type;
+        return $this->workflowType;
+    }
+
+    /**
+     * Get provider name.
+     *
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return $this->providerName;
     }
 
     /**

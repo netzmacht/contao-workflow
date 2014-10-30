@@ -9,10 +9,14 @@
  *
  */
 
-namespace Netzmacht\Contao\WorkflowDeprecated\Exception;
+namespace Netzmacht\Contao\Workflow\Contao\Model;
 
 
-class InvalidTransitionException extends \Exception
+class StateModel extends \Model
 {
+    /**
+     * @var string
+     */
+    protected static $strTable = 'tl_workflow_state';
 
-} 
+}

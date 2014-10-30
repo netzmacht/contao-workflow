@@ -9,14 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\WorkflowDeprecated\View;
+namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
 
-interface FormFactory
+class WorkflowException extends \Exception
 {
-    /**
-     * @return Form
-     */
-    public function create();
 
-} 
+}

@@ -71,7 +71,15 @@ class Workflow
 
             if ($collection) {
                 while ($collection->next()) {
-                    $options[$collection->id] = sprintf('%s [%s]', $collection->label, $collection->name);
+                    $stepTo = $collection->getRelated('stepTo');
+
+                    $options[$collection->id] = sprintf(
+                        '%s [%s] --> %s [%s]',
+                        $collection->label,
+                        $collection->name,
+                        $stepTo->label,
+                        $stepTo->name
+                    );
                 }
             }
         }
@@ -94,7 +102,7 @@ class Workflow
         $value = array_filter(
             $value,
             function ($item) {
-                return $item['step'] && $item['stepTo'] && $item['transition'];
+                return $item['step'] && $item['transition'];
             }
         );
 

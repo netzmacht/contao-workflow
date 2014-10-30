@@ -12,6 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Factory;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
+use Netzmacht\Contao\Workflow\Contao\DataContainer;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityRepositoryEvent;
 use Netzmacht\Contao\Workflow\Model\ContaoStateRepository;
@@ -110,7 +111,7 @@ class RepositoryFactory implements EventSubscriberInterface
      */
     private function getDriver($providerName)
     {
-        \Controller::loadDataContainer($providerName);
+        DataContainer::load($providerName);
 
         if (!isset($GLOBALS['TL_DCA'][$providerName]['config']['dataContainer'])) {
             throw new \InvalidArgumentException(sprintf('Could not detect data container type of "%s"', $providerName));

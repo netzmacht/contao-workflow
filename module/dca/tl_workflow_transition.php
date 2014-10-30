@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
     (
         'default' => array
         (
-            'name'        => array('label', 'name', 'description'),
+            'name'        => array('label', 'name', 'description', 'stepTo'),
             'config'      => array(),
             'permissions' => array('limitPermissions'),
             'properties'  => array('addPropertyConditions'),
@@ -133,6 +133,29 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
                 'maxlength' => 255,
             ),
             'sql'       => "varchar(255) NOT NULL default ''",
+        ),
+        'stepTo' => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'],
+            'inputType' => 'select',
+            'options_callback' => array
+            (
+                'Netzmacht\Contao\Workflow\Contao\Dca\Transition',
+                'getStepsTo'
+            ),
+            'eval'      => array
+            (
+                'mandatory' => true,
+                'tl_class' => 'w50',
+                'includeBlankOption' => true,
+                'chosen' => true,
+            ),
+            'relation' => array(
+                'type' => 'hasOne',
+                'table'    => 'tl_workflow_step',
+                'load'     => 'eager'
+            ),
+            'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'limitPermissions'      => array
         (

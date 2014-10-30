@@ -24,4 +24,18 @@ class TransitionModel extends \Model
      * @var string
      */
     protected static $strTable = 'tl_workflow_transition';
+
+    /**
+     * @param $workflowId
+     *
+     * @return \Model\Collection|null
+     */
+    public static function findByWorkflow($workflowId)
+    {
+        return static::findBy(
+            array(static::$strTable . '.pid=?'),
+            $workflowId,
+            array('order' => static::$strTable . '.name')
+        );
+    }
 }

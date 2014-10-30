@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\WorkflowDeprecated\Exception;
+namespace Netzmacht\Contao\Workflow\Flow\Exception;
 
 
-class InvalidArgumentException extends \Exception
+class RoleNotFoundException extends \Exception
 {
 
-} 
+}

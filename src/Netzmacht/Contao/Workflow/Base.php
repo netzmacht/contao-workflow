@@ -9,14 +9,14 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow;
+namespace Netzmacht\Contao\Workflow;
 
 /**
  * Class Configurable is the base class for each flow elements.
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Configurable
+abstract class Base
 {
     /**
      * Configuration values.
@@ -40,17 +40,26 @@ class Configurable
     private $label;
 
     /**
+     * Identifier of database model.
+     *
+     * @var int
+     */
+    private $modelId;
+
+    /**
      * Construct.
      *
-     * @param string $name   Name of the element.
-     * @param string $label  Label of the element.
-     * @param array  $config Configuration values.
+     * @param string $name    Name of the element.
+     * @param string $label   Label of the element.
+     * @param array  $config  Configuration values.
+     * @param int    $modelId Optional database id.
      */
-    public function __construct($name, $label = null, array $config = array())
+    public function __construct($name, $label = null, array $config = array(), $modelId = null)
     {
-        $this->name   = $name;
-        $this->label  = $label ?: $name;
-        $this->config = $config;
+        $this->name    = $name;
+        $this->label   = $label ?: $name;
+        $this->config  = $config;
+        $this->modelId = $modelId;
     }
 
     /**
@@ -71,6 +80,14 @@ class Configurable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getModelId()
+    {
+        return $this->modelId;
     }
 
     /**

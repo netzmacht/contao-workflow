@@ -24,4 +24,19 @@ class WorkflowModel extends \Model
      * @var string
      */
     protected static $strTable = 'tl_workflow';
+
+    public static function findByType($workflowType)
+    {
+        return static::findBy(
+            'type', $workflowType
+        );
+    }
+
+    public static function findByTypeAndProvider($workflowType, $providerName)
+    {
+        return static::findBy(
+            array(static::$strTable . '.type=?', static::$strTable . '.providerName=?'),
+            array($workflowType, $providerName)
+        );
+    }
 }

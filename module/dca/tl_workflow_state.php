@@ -25,6 +25,10 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
         (
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
+        'workflowName' => array
+        (
+            'sql' => "varchar(32) NOT NULL default ''"
+        ),
         'providerName'             => array
         (
             'sql' => "varchar(32) NOT NULL default ''"

@@ -2,17 +2,23 @@
 
 namespace spec\Netzmacht\Contao\Workflow;
 
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
+use Netzmacht\Contao\Workflow\TransitionHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * Class TransitionHandlerSpec
+ * @package spec\Netzmacht\Contao\Workflow
+ * @mixin TransitionHandler
+ */
 class TransitionHandlerSpec extends ObjectBehavior
 {
     const TRANSITION_NAME = 'transition';
@@ -25,7 +31,7 @@ class TransitionHandlerSpec extends ObjectBehavior
     }
 
     function let(
-        Entity $entity,
+        Item $item,
         Workflow $workflow,
         StateRepository $stateRepository,
         EntityRepository $entityRepository,
@@ -33,7 +39,7 @@ class TransitionHandlerSpec extends ObjectBehavior
         Context $context
     )  {
         $this->beConstructedWith(
-            $entity,
+            $item,
             $workflow,
             static::TRANSITION_NAME,
             $entityRepository,
@@ -48,9 +54,9 @@ class TransitionHandlerSpec extends ObjectBehavior
         $this->getWorkflow()->shouldReturn($workflow);
     }
 
-    function it_gets_entity(Entity $entity)
+    function it_gets_item(Item $item)
     {
-        $this->getEntity()->shouldReturn($entity);
+        $this->getItem()->shouldReturn($item);
     }
 
     function it_gets_transition_name_for_start_transition(Workflow $workflow, Transition $transition)
@@ -66,18 +72,19 @@ class TransitionHandlerSpec extends ObjectBehavior
         $this->isStartTransition()->shouldReturn(true);
     }
 
-    function it_gets_transition_name_for_nonstart_transition(Workflow $workflow, Transition $transition, Entity $entity, State $state)
+    function it_gets_transition_name_for_not_started_transition(Workflow $workflow, Transition $transition, Item $item, State $state)
     {
-        $entity->getState()->willReturn($state);
+        $item->isWorkflowStarted()->willReturn(true);
+
         $workflow->getTransition(static::TRANSITION_NAME)->willReturn($transition);
         $transition->getName()->willReturn(static::TRANSITION_NAME);
 
         $this->getTransitionName()->shouldReturn(static::TRANSITION_NAME);
     }
 
-    function it_knows_about_nonstart_transition(Entity $entity, State $state)
+    function it_knows_about_nonstart_transition(Item $item, State $state)
     {
-        $entity->getState()->willReturn($state);
+        $item->isWorkflowStarted()->willReturn(true);
         $this->isStartTransition()->shouldReturn(false);
     }
 
@@ -109,9 +116,9 @@ class TransitionHandlerSpec extends ObjectBehavior
     }
 
 
-    function it_gets_nonstart_transition(Workflow $workflow, Transition $transition, State $state, Entity $entity)
+    function it_gets_nonstart_transition(Workflow $workflow, Transition $transition, State $state, Item $item)
     {
-        $entity->getState()->willReturn($state);
+//        $item->getState()->willReturn($state);
         $workflow->getStartTransition()->willReturn($transition);
         $transition->getName()->willReturn(static::TRANSITION_NAME);
 

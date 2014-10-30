@@ -3,7 +3,7 @@
 namespace spec\Netzmacht\Contao\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
 use Netzmacht\Contao\Workflow\Model\State;
@@ -74,7 +74,6 @@ class ManagerSpec extends ObjectBehavior
         RepositoryFactory $repositoryFactory,
         EntityRepository $entityRepository
     ) {
-        $entity->getState()->willReturn(null);
         $entity->getProviderName()->willReturn(static::ENTITY_PROVIDER_NAME);
         $entity->getId()->willReturn(static::ENTITY_ID);
 
@@ -84,7 +83,7 @@ class ManagerSpec extends ObjectBehavior
 
         $stateRepository
             ->find(static::ENTITY_PROVIDER_NAME, static::ENTITY_ID)
-            ->willThrow('\Exception');
+            ->willReturn(array());
 
         $workflow->match($entity)->willReturn(true);
         $this->handle($entity)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\TransitionHandler');
@@ -98,9 +97,12 @@ class ManagerSpec extends ObjectBehavior
         EntityRepository $entityRepository,
         State $startState
     ) {
-        $entity->getState()->willReturn(null);
         $entity->getProviderName()->willReturn(static::ENTITY_PROVIDER_NAME);
         $entity->getId()->willReturn(static::ENTITY_ID);
+
+        $stateRepository
+            ->find(static::ENTITY_PROVIDER_NAME, static::ENTITY_ID)
+            ->willReturn(array($startState));
 
         $repositoryFactory
             ->createRepository(static::ENTITY_PROVIDER_NAME)
@@ -108,7 +110,7 @@ class ManagerSpec extends ObjectBehavior
 
         $stateRepository
             ->find(static::ENTITY_PROVIDER_NAME, static::ENTITY_ID)
-            ->willReturn($startState);
+            ->willReturn(array($startState));
 
         $workflow->match($entity)->willReturn(true);
         $this->handle($entity)->shouldBeAnInstanceOf('Netzmacht\Contao\Workflow\TransitionHandler');

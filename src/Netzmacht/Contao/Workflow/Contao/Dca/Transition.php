@@ -12,6 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Contao\Dca;
 
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
+use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
@@ -42,5 +43,23 @@ class Transition
         );
 
         return $roles;
+    }
+
+    public function getStepsTo()
+    {
+        $steps      = array();
+        $collection = StepModel::findAll(array('order' => 'name'));
+
+        if ($collection) {
+            while ($collection->next()) {
+                $steps[$collection->id] = $collection->label;
+
+                if ($collection->final) {
+                    $steps[$collection->id] .= ' [final]';
+                }
+            }
+        }
+
+        return $steps;
     }
 }

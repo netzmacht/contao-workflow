@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBagInterface;
 use ContaoCommunityAlliance\DcGeneral\Exception\DcGeneralInvalidArgumentException;
 use Model;
@@ -20,7 +21,7 @@ use Model;
  *
  * @package Netzmacht\Contao\Workflow\Entity
  */
-class ContaoModelEntity extends AbstractEntity
+class ContaoModelEntity implements ModelInterface
 {
     /**
      * The Contao model.
@@ -28,6 +29,11 @@ class ContaoModelEntity extends AbstractEntity
      * @var Model
      */
     private $model;
+
+    /**
+     * @var array
+     */
+    private $metaData = array();
 
     /**
      * Construct.
@@ -117,6 +123,37 @@ class ContaoModelEntity extends AbstractEntity
     {
         return $this->model->getTable();
     }
+
+    /**
+     * Fetch meta information from model.
+     *
+     * @param string $strMetaName The meta information to retrieve.
+     *
+     * @return mixed The set meta information or null if undefined.
+     */
+    public function getMeta($strMetaName)
+    {
+        if (isset($this->metaData[$strMetaName])) {
+            return $this->metaData[$strMetaName];
+        }
+
+        return null;
+    }
+
+    /**
+     * Update meta information in the model.
+     *
+     * @param string $strMetaName The meta information name.
+     *
+     * @param mixed  $varValue    The meta information value to store.
+     *
+     * @return void
+     */
+    public function setMeta($strMetaName, $varValue)
+    {
+        $this->metaData[$strMetaName] = $varValue;
+    }
+
 
     /**
      * {@inheritdoc}

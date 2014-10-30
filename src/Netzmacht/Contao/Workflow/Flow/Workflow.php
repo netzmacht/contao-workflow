@@ -4,11 +4,16 @@ namespace Netzmacht\Contao\Workflow\Flow;
 
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
+use Netzmacht\Contao\Workflow\Acl\Role;
+use Netzmacht\Contao\Workflow\Base;
+use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
+use Netzmacht\Contao\Workflow\Flow\Exception\RoleNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Flow\Workflow\Condition\AndCondition;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 
@@ -17,7 +22,7 @@ use Netzmacht\Contao\Workflow\Model\State;
  *
  * @package Netzmacht\Contao\Workflow\Flow
  */
-class Workflow extends Configurable
+class Workflow extends Base
 {
     /**
      * Transitions being available in the workflow.
@@ -43,41 +48,56 @@ class Workflow extends Configurable
     /**
      * Condition to match if workflow can handle an entity.
      *
-     * @var Condition
+     * @var AndCondition
      */
     private $condition;
 
     /**
+     * Acl roles.
+     *
+     * @var Role[]
+     */
+    private $roles;
+
+    /**
+     * @var string
+     */
+    private $providerName;
+
+    /**
      * Construct.
      *
-     * @param string    $name                The name of the workflow.
-     * @param array     $steps               Set of steps.
-     * @param array     $transitions         Set of transitions.
-     * @param string    $startTransitionName Name of the start transition.
-     * @param Condition $condition           Optional pass a condition.
-     * @param null      $label               The label of the workflow.
-     * @param array     $config              Extra config.
-     *
-     * @throws TransitionNotFoundException
+     * @param string      $name   The name of the workflow.
+     * @param null|string $providerName
+     * @param null        $label  The label of the workflow.
+     * @param array       $config Extra config.
+     * @param null        $modelId
      */
-    public function __construct(
-        $name,
-        array $steps,
-        array $transitions,
-        $startTransitionName,
-        Condition $condition = null,
-        $label = null,
-        array $config = array()
-    ) {
-        Assertion::allIsInstanceOf($steps, 'Netzmacht\Contao\Workflow\Flow\Step');
-        Assertion::allIsInstanceOf($transitions, 'Netzmacht\Contao\Workflow\Flow\Transition');
+    public function __construct($name, $providerName, $label = null, array $config = array(), $modelId = null)
+    {
+        parent::__construct($name, $label, $config, $modelId);
 
-        parent::__construct($name, $label, $config);
+        $this->providerName = $providerName;
+    }
 
-        $this->transitions     = $transitions;
-        $this->steps           = $steps;
-        $this->startTransition = $this->getTransition($startTransitionName);
-        $this->condition       = $condition;
+    /**
+     * Add a transition to the workflow.
+     *
+     * @param Transition $transition      Transition to be added.
+     * @param bool       $startTransition True if transition will be the start transition.
+     *
+     * @return $this
+     */
+    public function addTransition(Transition $transition, $startTransition = false)
+    {
+        $transition->setWorkflow($this);
+        $this->transitions[] = $transition;
+
+        if ($startTransition) {
+            $this->startTransition = $transition;
+        }
+
+        return $this;
     }
 
     /**
@@ -101,6 +121,20 @@ class Workflow extends Configurable
     }
 
     /**
+     * Add a new step to the workflow.
+     *
+     * @param Step $step Step to be added.
+     *
+     * @return $this
+     */
+    public function addStep(Step $step)
+    {
+        $this->steps[] = $step;
+
+        return $this;
+    }
+
+    /**
      * Get a step by step name.
      *
      * @param string $stepName The step name.
@@ -121,6 +155,26 @@ class Workflow extends Configurable
     }
 
     /**
+     * Set transition as start transition.
+     *
+     * @param Transition $transition
+     *
+     * @return $this
+     */
+    public function setStartTransition(Transition $transition)
+    {
+        Assertion::inArray(
+            $transition,
+            $this->transitions,
+            'Transition being set as start transition is not part of workflow'
+        );
+
+        $this->startTransition = $transition;
+
+        return $this;
+    }
+
+    /**
      * Get the start transition.
      *
      * @return Transition
@@ -128,6 +182,88 @@ class Workflow extends Configurable
     public function getStartTransition()
     {
         return $this->startTransition;
+    }
+
+    /**
+     * Add an acl role.
+     *
+     * @param Role $role Role to be added.
+     *
+     * @return $this
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get A role by its name.
+     *
+     * @param string $roleName Name of the role being requested.
+     *
+     * @return Role
+     *
+     * @throws RoleNotFoundException If role is not set.
+     */
+    public function getRole($roleName)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->getName() == $roleName) {
+                return $role;
+            }
+        }
+
+        throw new RoleNotFoundException($roleName);
+    }
+
+    /**
+     * Get all available roles.
+     *
+     * @return Role[]
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Get the current condition.
+     *
+     * @return AndCondition
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * Shortcut to add a condition to the condition collection.
+     *
+     * @param Condition $condition Condition to be added.
+     *
+     * @return $this
+     */
+    public function addCondition(Condition $condition)
+    {
+        if (!$this->condition) {
+            $this->condition = new AndCondition();
+        }
+
+        $this->condition->addCondition($condition);
+
+        return $this;
+    }
+
+    /**
+     * Get provider name.
+     *
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return $this->providerName;
     }
 
     /**
@@ -139,11 +275,7 @@ class Workflow extends Configurable
      */
     public function match(Entity $entity)
     {
-        if ($this->condition) {
-            return $this->condition->match($entity);
-        }
-
-        return false;
+        return $this->condition->match($this, $entity);
     }
 
     /**
@@ -191,7 +323,7 @@ class Workflow extends Configurable
 
         $transition = $this->getStartTransition();
 
-        return $transition->transit($item, $context);
+        return $transition->start($item, $context);
     }
 
     /**

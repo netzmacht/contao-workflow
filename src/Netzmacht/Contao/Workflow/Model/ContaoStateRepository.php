@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Model;
 
+use Netzmacht\Contao\Workflow\Contao\Model\StateModel;
 use Netzmacht\Contao\Workflow\Model\State;
 
 /**
@@ -42,16 +43,21 @@ class ContaoStateRepository implements StateRepository
      */
     public function find($providerName, $entityId, $success = true)
     {
-        $result = $this
-            ->prepareFindStatement($success)
-            ->limit(1)
-            ->execute($providerName, $entityId);
+        $collection = StateModel::findBy(
+            array('tl_workflow_state.providerName=?', 'tl_workflow_state.entityId=?'),
+            array($providerName, $entityId),
+            array('order' => 'tl_workflow_state.id DESC')
+        );
 
-        if (!$result->numRows) {
-            return null;
+        $states = array();
+
+        if ($collection) {
+            while ($collection->next()) {
+                $states[] = $this->createState($collection->current());
+            }
         }
 
-        return $this->createState($result);
+        return $states;
     }
 
     /**
@@ -59,47 +65,29 @@ class ContaoStateRepository implements StateRepository
      */
     public function add(State $state)
     {
-    }
-
-    /**
-     * Prepare the find statement.
-     *
-     * @param bool $success Only load successful states.
-     *
-     * @return \Database\Statement
-     */
-    private function prepareFindStatement($success)
-    {
-        $query = 'SELECT * FROM tl_workflow_state WHERE providerName=? AND entityId=?';
-
-        if ($success) {
-            $query .= ' AND success=1';
-        }
-
-        $query .= ' ORDER BY reachedAt DESC';
-
-        return $this->database->prepare($query);
+        var_dump($state);
     }
 
     /**
      * Create the state object.
      *
-     * @param \Database\Result $result The database result.
+     * @param StateModel $model The state model.
      *
      * @return State
      */
-    private function createState($result)
+    private function createState(StateModel $model)
     {
         $reachedAt = new \DateTime();
-        $reachedAt->setTimestamp($result->reachedAt);
+        $reachedAt->setTimestamp($model->reachedAt);
 
         $state = new State(
-            $result->transitionName,
-            $result->stepName,
-            (bool)$result->success,
-            deserialize($result->data, true),
+            $model->workflowName,
+            $model->transitionName,
+            $model->stepName,
+            (bool)$model->success,
+            deserialize($model->data, true),
             $reachedAt,
-            deserialize($result->errors, true)
+            deserialize($model->errors, true)
         );
 
         return $state;

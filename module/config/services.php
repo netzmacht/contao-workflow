@@ -18,6 +18,14 @@ $container['workflow.transaction-handler'] = $container->share(
     }
 );
 
+$container['workflow.acl-manager'] = $container->share(
+    function($container) {
+        $user = \BackendUser::getInstance();
+
+        return new \Netzmacht\Contao\Workflow\Acl\BackendAclManager($user);
+    }
+);
+
 $container['workflow.repository-factory'] = $container->share(
     function() {
         return new Factory\RepositoryFactory();
