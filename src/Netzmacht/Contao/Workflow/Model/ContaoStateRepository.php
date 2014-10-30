@@ -12,6 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Model;
 
 use Netzmacht\Contao\Workflow\Contao\Model\StateModel;
+use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
 use Netzmacht\Contao\Workflow\Model\State;
 
 /**
@@ -65,6 +66,24 @@ class ContaoStateRepository implements StateRepository
      */
     public function add(State $state)
     {
+        $model = new StateModel();
+        $model->workflowName   = $state->getWorkflowName();
+        $model->entityId       = $state->getEntityId();
+        $model->providerName   = $state->getProviderName();
+        $model->transitionName = $state->getTransitionName();
+        $model->stepName       = $state->getStepName();
+        $model->success        = $state->isSuccessful();
+        $model->errors         = json_encode($state->getErrors());
+        $model->data           = json_encode($state->getData());
+        $model->reachedAt      = $state->getReachedAt()->getTimestamp();
+
+        $model->save();
+
+        $reflector = new \ReflectionObject($state);
+        $property  = $reflector->getProperty('stateId');
+        $property->setAccessible(true);
+        $property->setValue($state, $model->id);
+
         var_dump($state);
     }
 
@@ -81,13 +100,16 @@ class ContaoStateRepository implements StateRepository
         $reachedAt->setTimestamp($model->reachedAt);
 
         $state = new State(
+            $model->entityId,
+            $model->providerName,
             $model->workflowName,
             $model->transitionName,
             $model->stepName,
-            (bool)$model->success,
-            deserialize($model->data, true),
+            (bool) $model->success,
+            (array) json_decode($model->data, true),
             $reachedAt,
-            deserialize($model->errors, true)
+            (array) json_decode($model->errors, true),
+            $model->id
         );
 
         return $state;

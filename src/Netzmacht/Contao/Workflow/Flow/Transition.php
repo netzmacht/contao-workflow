@@ -256,7 +256,7 @@ class Transition extends Base
         }
 
         $success = $this->executeActions($item, $context);
-        $state   = State::start($this, $context, $success);
+        $state   = State::start($item->getEntity(), $this, $context, $success);
 
         return $state;
     }
@@ -370,18 +370,12 @@ class Transition extends Base
             try {
                 foreach ($this->actions as $action) {
                     $action->transit($this, $item, $context);
-
-                    return $success;
                 }
-
-                return $success;
             } catch (TransactionActionFailed $e) {
-                $success = false;
-                $params  = array('exception' => $e->getMessage());
-
+                $params = array('exception' => $e->getMessage());
                 $context->addError('transition.action.failed', $params);
 
-                return $success;
+                return false;
             }
         }
 

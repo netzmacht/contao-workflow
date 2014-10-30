@@ -14,11 +14,16 @@ $factory = $GLOBALS['container']['workflow.factory'];
 $manager  = $factory->createManager('default');
 $workflow = $manager->getWorkflowByName('test');
 $entity   = $factory->createEntity(\ContentModel::findByPk(1));
-$handler  = $manager->handle($entity);
+$handler  = $manager->handle($entity, 'publish');
+
+$stepName = $handler->getItem()->getCurrentStepName();
+$step     = $workflow->getStep($stepName);
+var_dump($step->isFinal());
 
 //var_dump($workflow->getStartTransition());
 if ($handler->validate()) {
-    $state = $handler->transit();
+
+    //$state = $handler->transit();
   //  var_dump($state);
 }
 else {

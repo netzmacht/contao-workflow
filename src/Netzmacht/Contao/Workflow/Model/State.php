@@ -11,10 +11,10 @@
 
 namespace Netzmacht\Contao\Workflow\Model;
 
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use DateTime;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Class State stores information of a current state of an entity.
@@ -23,6 +23,21 @@ use Netzmacht\Contao\Workflow\Item;
  */
 class State
 {
+    /**
+     * @var int
+     */
+    private $stateId;
+
+    /**
+     * @var int
+     */
+    private $entityId;
+
+    /**
+     * @var string
+     */
+    private $providerName;
+
     /**
      * Store if transition was successful.
      *
@@ -75,6 +90,8 @@ class State
     /**
      * Construct.
      *
+     * @param          $entityId
+     * @param          $providerName
      * @param string   $workflowName   Workflow name.
      * @param string   $transitionName The transition executed to reach the step.
      * @param string   $stepToName     The step reached after transition.
@@ -82,16 +99,22 @@ class State
      * @param array    $data           Stored data.
      * @param DateTime $reachedAt      Time when state was reached.
      * @param array    $errors         List of errors.
+     * @param null     $stateId
      */
     public function __construct(
+        $entityId,
+        $providerName,
         $workflowName,
         $transitionName,
         $stepToName,
         $successful,
         array $data,
         DateTime $reachedAt,
-        array $errors = array()
+        array $errors = array(),
+        $stateId = null
     ) {
+        $this->entityId       = $entityId;
+        $this->providerName   = $providerName;
         $this->workflowName   = $workflowName;
         $this->transitionName = $transitionName;
         $this->stepName       = $stepToName;
@@ -99,18 +122,22 @@ class State
         $this->data           = $data;
         $this->reachedAt      = $reachedAt;
         $this->errors         = $errors;
+        $this->stateId        = $stateId;
     }
 
     /**
+     * @param Entity     $entity
      * @param Transition $transition
      * @param Context    $context
      * @param            $success
      *
      * @return \Netzmacht\Contao\Workflow\Model\State
      */
-    public static function start(Transition $transition, Context $context, $success)
+    public static function start(Entity $entity, Transition $transition, Context $context, $success)
     {
-        return new State(
+        $state = new State(
+            $entity->getId(),
+            $entity->getProviderName(),
             $transition->getWorkflow()->getName(),
             $transition->getName(),
             $transition->getStepTo()->getName(),
@@ -119,6 +146,8 @@ class State
             new \DateTime(),
             $context->getErrorCollection()->getErrors()
         );
+
+        return $state;
     }
 
     /**
@@ -180,6 +209,38 @@ class State
     }
 
     /**
+     * @return int
+     */
+    public function getEntityId()
+    {
+        return $this->entityId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderName()
+    {
+        return $this->providerName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStateId()
+    {
+        return $this->stateId;
+    }
+
+    /**
      * Transit to a new state.
      *
      * @param Transition $transition The transition being performed.
@@ -194,6 +255,8 @@ class State
         $stepName = $success ? $transition->getStepTo()->getName() : $this->stepName;
 
         return new static(
+            $this->entityId,
+            $this->providerName,
             $this->workflowName,
             $transition->getName(),
             $stepName,

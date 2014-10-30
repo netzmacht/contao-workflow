@@ -55,7 +55,11 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
         ),
         'data'         => array
         (
-            'sql' => "blob NULL"
+            'sql' => "text NULL"
+        ),
+        'errors'         => array
+        (
+            'sql' => "text NULL"
         ),
     )
 
