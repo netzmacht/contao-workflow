@@ -234,14 +234,6 @@ class CreateWorkflowSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return AclManager
-     */
-    private function getAclManager()
-    {
-        return $GLOBALS['container']['workflow.acl-manager'];
-    }
-
-    /**
      * @return EventDispatcher
      */
     private function getEventDispatcher()

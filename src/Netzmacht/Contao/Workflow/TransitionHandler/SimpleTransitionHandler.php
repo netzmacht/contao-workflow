@@ -13,9 +13,9 @@ namespace Netzmacht\Contao\Workflow\TransitionHandler;
 
 use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Exception\InvalidTransitionException;
-use Netzmacht\Contao\Workflow\Flow\Exception\TransitionNotFoundException;
-use Netzmacht\Contao\Workflow\Flow\Exception\WorkflowException;
+use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
+use Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotFoundException;
+use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;

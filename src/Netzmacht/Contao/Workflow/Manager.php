@@ -4,7 +4,7 @@ namespace Netzmacht\Contao\Workflow;
 
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Contao\Workflow\Flow\Exception\WorkflowException;
+use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory;

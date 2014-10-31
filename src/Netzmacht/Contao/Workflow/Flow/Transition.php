@@ -5,7 +5,7 @@ namespace Netzmacht\Contao\Workflow\Flow;
 use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Base;
-use Netzmacht\Contao\Workflow\Flow\Exception\ProcessNotStartedException;
+use Netzmacht\Contao\Workflow\Exception\Flow\ProcessNotStartedException;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
 use Netzmacht\Contao\Workflow\Flow\Transition\Condition\AndCondition;
 use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;

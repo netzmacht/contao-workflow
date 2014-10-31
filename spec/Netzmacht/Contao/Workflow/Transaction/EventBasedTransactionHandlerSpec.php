@@ -2,7 +2,7 @@
 
 namespace spec\Netzmacht\Contao\Workflow\Transaction;
 
-use Netzmacht\Contao\Workflow\Transaction\Event\TransactionEvent;
+use Netzmacht\Contao\Workflow\Event\Transaction\TransactionEvent;
 use Netzmacht\Contao\Workflow\Transaction\Events;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

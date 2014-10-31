@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Exception;
+namespace Netzmacht\Contao\Workflow\Exception\Flow;
 
 use Exception;
 

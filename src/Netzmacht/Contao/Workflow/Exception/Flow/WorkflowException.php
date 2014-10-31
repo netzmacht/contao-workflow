@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Model\Exception;
+namespace Netzmacht\Contao\Workflow\Exception\Flow;
 
 
-class StateNotFoundException
+class WorkflowException extends \Exception
 {
 
 }

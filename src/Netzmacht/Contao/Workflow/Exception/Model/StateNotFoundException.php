@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Exception;
+namespace Netzmacht\Contao\Workflow\Exception\Model;
 
 
-class RoleNotFoundException extends \Exception
+class StateNotFoundException
 {
 
 }

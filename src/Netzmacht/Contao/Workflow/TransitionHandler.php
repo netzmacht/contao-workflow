@@ -12,8 +12,8 @@
 namespace Netzmacht\Contao\Workflow;
 
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Exception\InvalidTransitionException;
-use Netzmacht\Contao\Workflow\Flow\Exception\WorkflowException;
+use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
+use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
@@ -52,7 +52,7 @@ interface TransitionHandler
      *
      * @return Transition
      *
-     * @throws Flow\Exception\TransitionNotFoundException If transition was not found.
+     * @throws Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotFoundException If transition was not found.
      */
     public function getTransition();
 
