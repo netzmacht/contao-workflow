@@ -19,7 +19,7 @@ use Model\Collection;
 use Netzmacht\Contao\Workflow\Entity\ArrayDecorator;
 use Netzmacht\Contao\Workflow\Entity\ContaoModelEntity;
 use Netzmacht\Contao\Workflow\Entity\DcGeneralModelDecorator;
-use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityEvent;
 use MetaModels\IItem as MetaModelItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

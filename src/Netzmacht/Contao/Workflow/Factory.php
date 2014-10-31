@@ -12,8 +12,8 @@
 namespace Netzmacht\Contao\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityEvent;
-use Netzmacht\Contao\Workflow\Factory\Event\CreateManagerEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 

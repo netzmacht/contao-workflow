@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Action;
 
 
-use Netzmacht\Contao\Workflow\Action\Event\ExecuteTransitionEvent;
+use Netzmacht\Contao\Workflow\Event\Action\ExecuteTransitionEvent;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Item;

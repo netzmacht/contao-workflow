@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Factory\Event;
+namespace Netzmacht\Contao\Workflow\Event\Factory;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Symfony\Component\EventDispatcher\Event;
