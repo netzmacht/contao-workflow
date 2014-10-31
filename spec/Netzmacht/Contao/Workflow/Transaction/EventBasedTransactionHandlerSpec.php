@@ -3,7 +3,7 @@
 namespace spec\Netzmacht\Contao\Workflow\Transaction;
 
 use Netzmacht\Contao\Workflow\Event\Transaction\TransactionEvent;
-use Netzmacht\Contao\Workflow\Transaction\Events;
+use Netzmacht\Contao\Workflow\Event\TransactionEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +27,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
     {
         $eventDispatcher
             ->dispatch(
-                Events::TRANSACTION_BEGIN,
+                \Netzmacht\Contao\Workflow\Event\TransactionEvents::TRANSACTION_BEGIN,
                 Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();
@@ -39,7 +39,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
     {
         $eventDispatcher
             ->dispatch(
-                Events::TRANSACTION_COMMIT,
+                TransactionEvents::TRANSACTION_COMMIT,
                 Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();
@@ -51,7 +51,7 @@ class EventBasedTransactionHandlerSpec extends ObjectBehavior
     {
         $eventDispatcher
             ->dispatch(
-                Events::TRANSACTION_ROLLBACK,
+                \Netzmacht\Contao\Workflow\Event\TransactionEvents::TRANSACTION_ROLLBACK,
                 Argument::type(self::TRANSACTION_EVENT_CLASS)
             )
             ->shouldBeCalled();

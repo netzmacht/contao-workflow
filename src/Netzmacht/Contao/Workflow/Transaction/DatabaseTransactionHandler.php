@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Transaction;
 
+use Netzmacht\Contao\Workflow\Event\TransactionEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -47,9 +48,9 @@ class DatabaseTransactionHandler implements TransactionHandler, EventSubscriberI
     public static function getSubscribedEvents()
     {
         return array(
-            Events::TRANSACTION_BEGIN  => 'begin',
-            Events::TRANSACTION_COMMIT => 'commit',
-            Events::TRANSACTION_ROLLBACK => 'rollback',
+            TransactionEvents::TRANSACTION_BEGIN  => 'begin',
+            TransactionEvents::TRANSACTION_COMMIT => 'commit',
+            TransactionEvents::TRANSACTION_ROLLBACK => 'rollback',
         );
     }
 

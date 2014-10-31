@@ -11,9 +11,6 @@
 
 namespace Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
-
 /**
  * Class ConditionCollection contains child conditions which are called during match.
  *
@@ -61,7 +58,7 @@ abstract class ConditionCollection implements Condition
     /**
      * Get child conditions
      *
-     * @return array|Transition\Condition[]
+     * @return array|Condition[]
      */
     public function getConditions()
     {

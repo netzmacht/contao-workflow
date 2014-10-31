@@ -21,7 +21,7 @@ use Netzmacht\Contao\Workflow\Factory;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateWorkflowEvent;
 use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\ProviderTypeCondition;
 use Netzmacht\Contao\Workflow\Manager;

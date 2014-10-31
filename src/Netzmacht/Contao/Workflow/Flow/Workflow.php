@@ -6,7 +6,6 @@ use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Base;
-use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
 use Netzmacht\Contao\Workflow\Exception\Flow\RoleNotFoundException;
 use Netzmacht\Contao\Workflow\Exception\Flow\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotAllowedException;

@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Item;
 
 /**

@@ -14,7 +14,7 @@ namespace Netzmacht\Contao\Workflow\Action;
 
 use Netzmacht\Contao\Workflow\Event\Action\ExecuteTransitionEvent;
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Item;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 

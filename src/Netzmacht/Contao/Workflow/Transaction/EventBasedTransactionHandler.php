@@ -13,6 +13,7 @@ namespace Netzmacht\Contao\Workflow\Transaction;
 
 
 use Netzmacht\Contao\Workflow\Event\Transaction\TransactionEvent;
+use Netzmacht\Contao\Workflow\Event\TransactionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -50,7 +51,7 @@ class EventBasedTransactionHandler implements TransactionHandler
     public function begin()
     {
         $event = new TransactionEvent();
-        $this->dispatcher->dispatch(Events::TRANSACTION_BEGIN, $event);
+        $this->dispatcher->dispatch(TransactionEvents::TRANSACTION_BEGIN, $event);
     }
 
     /**
@@ -61,7 +62,7 @@ class EventBasedTransactionHandler implements TransactionHandler
     public function commit()
     {
         $event = new TransactionEvent();
-        $this->dispatcher->dispatch(Events::TRANSACTION_COMMIT, $event);
+        $this->dispatcher->dispatch(TransactionEvents::TRANSACTION_COMMIT, $event);
     }
 
     /**
@@ -72,6 +73,6 @@ class EventBasedTransactionHandler implements TransactionHandler
     public function rollback()
     {
         $event = new TransactionEvent();
-        $this->dispatcher->dispatch(Events::TRANSACTION_ROLLBACK, $event);
+        $this->dispatcher->dispatch(TransactionEvents::TRANSACTION_ROLLBACK, $event);
     }
 }

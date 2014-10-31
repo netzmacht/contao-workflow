@@ -9,14 +9,14 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Transaction;
+namespace Netzmacht\Contao\Workflow\Event;
 
 /**
  * Class Events stores the transaction events names.
  *
  * @package Netzmacht\Contao\Workflow\Transaction
  */
-class Events
+class TransactionEvents
 {
     const TRANSACTION_BEGIN = 'workflow.transaction.begin';
 
