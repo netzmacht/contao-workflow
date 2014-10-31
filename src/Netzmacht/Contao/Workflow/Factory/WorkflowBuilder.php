@@ -13,6 +13,7 @@ namespace Netzmacht\Contao\Workflow\Factory;
 
 use Model\Collection;
 use Netzmacht\Contao\Workflow\Acl\Role;
+use Netzmacht\Contao\Workflow\Action\EventDispatcherAction;
 use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
@@ -162,7 +163,8 @@ class WorkflowBuilder implements EventSubscriberInterface
      */
     private function createTransitions(Workflow $workflow)
     {
-        $collection = TransitionModel::findByWorkflow($workflow->getModelId());
+        $collection       = TransitionModel::findByWorkflow($workflow->getModelId());
+        $actionDispatcher = new EventDispatcherAction($this->getEventDispatcher());
 
         while ($collection && $collection->next()) {
             $transition = new Transition($collection->name, $collection->label, $collection->row(), $collection->id);
@@ -177,6 +179,9 @@ class WorkflowBuilder implements EventSubscriberInterface
 
             $event = new CreateTransitionEvent($transition);
             $this->getEventDispatcher()->dispatch($event::NAME, $event);
+
+            // add an action which will dispatch an event that transition is executed.
+            $transition->addAction($actionDispatcher);
 
             $this->transitions[$collection->id] = $transition;
         }
@@ -316,7 +321,7 @@ class WorkflowBuilder implements EventSubscriberInterface
         }
 
         $collection = ActionModel::findAll(array(
-                'column' => 'pid IN (' . implode(', ', $transitionIds) . ')',
+                'column' => 'active=1 AND pid IN (' . implode(', ', $transitionIds) . ')',
                 'order'  => 'pid, sorting',
             )
         );

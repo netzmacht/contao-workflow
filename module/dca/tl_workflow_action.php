@@ -148,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         ),
         'active'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['active'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
             'inputType' => 'checkbox',
             'eval'      => array(
                 'tl_class'       => 'clr w50',

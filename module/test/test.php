@@ -19,7 +19,20 @@ $handler  = $manager->handle($item, 'publish');
 $stepName = $handler->getItem()->getCurrentStepName();
 $step     = $workflow->getStep($stepName);
 
-var_dump($handler->getCurrentStep());
+$GLOBALS['container']['event-dispatcher']->addListener(
+    \Netzmacht\Contao\Workflow\Event\Action\ExecuteTransitionEvent::NAME,
+    function ($event) {
+        var_dump($event->getTransition()->getRoles());
+    }
+);
+
+$workflow->getTransition('publish')->getActions()[0]->transit(
+    $workflow->getTransition('publish'),
+    $item,
+    $handler->getContext()
+);
+
+
 
 //if ($handler->validate()) {
 //    if ($handler->isWorkflowStarted()) {
