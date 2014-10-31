@@ -15,7 +15,7 @@ use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
 use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Model\State;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Form\Form;
 

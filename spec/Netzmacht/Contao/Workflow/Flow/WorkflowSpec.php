@@ -3,7 +3,7 @@
 namespace spec\Netzmacht\Contao\Workflow\Flow;
 
 use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+namespace Netzmacht\Contao\Workflow\Flow\Condition\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Flow\Workflow;

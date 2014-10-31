@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Event\TransitionHandler;
 
 
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Item;
 use Symfony\Component\EventDispatcher\Event;

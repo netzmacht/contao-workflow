@@ -19,7 +19,7 @@ use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Model\StateRepository;

@@ -13,7 +13,7 @@ namespace Netzmacht\Contao\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Form\Form;
 
 /**

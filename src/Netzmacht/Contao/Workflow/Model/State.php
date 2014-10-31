@@ -14,7 +14,7 @@ namespace Netzmacht\Contao\Workflow\Model;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use DateTime;
 use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
 /**
  * Class State stores information of a current state of an entity.

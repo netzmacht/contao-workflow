@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Transition\Condition;
+namespace Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
 /**
  * Class ConditionCollection contains child conditions which are called during match.

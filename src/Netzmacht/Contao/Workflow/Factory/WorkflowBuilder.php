@@ -11,10 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Factory;
 
-
-use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
 use Model\Collection;
-use Netzmacht\Contao\Workflow\Acl\AclManager;
 use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
@@ -24,15 +21,14 @@ use Netzmacht\Contao\Workflow\Factory;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateWorkflowEvent;
 use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Transition\Condition\PermissionCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition\ProviderTypeCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\ProviderTypeCondition;
 use Netzmacht\Contao\Workflow\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CreateWorkflowSubscriber implements EventSubscriberInterface
+class WorkflowBuilder implements EventSubscriberInterface
 {
     /**
      * @var array|Step[]

@@ -5,7 +5,7 @@ namespace spec\Netzmacht\Contao\Workflow\Model;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

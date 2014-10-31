@@ -9,11 +9,11 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+namespace Netzmacht\Contao\Workflow\Flow\Condition\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\Condition;
 
 /**
  * Class ProviderTypeCondition check if entity matches a specific provider.

@@ -6,8 +6,8 @@ use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\Condition;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

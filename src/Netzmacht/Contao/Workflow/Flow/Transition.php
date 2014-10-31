@@ -6,9 +6,9 @@ use Netzmacht\Contao\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Base;
 use Netzmacht\Contao\Workflow\Exception\Flow\ProcessNotStartedException;
-use Netzmacht\Contao\Workflow\Flow\Transition\Condition;
-use Netzmacht\Contao\Workflow\Flow\Transition\Condition\AndCondition;
-use Netzmacht\Contao\Workflow\Flow\Transition\TransactionActionFailed;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition\AndCondition;
+use Netzmacht\Contao\Workflow\Exception\Flow\TransitionActionFailedException;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
@@ -371,7 +371,7 @@ class Transition extends Base
                 foreach ($this->actions as $action) {
                     $action->transit($this, $item, $context);
                 }
-            } catch (TransactionActionFailed $e) {
+            } catch (TransitionActionFailedException $e) {
                 $params = array('exception' => $e->getMessage());
                 $context->addError('transition.action.failed', $params);
 

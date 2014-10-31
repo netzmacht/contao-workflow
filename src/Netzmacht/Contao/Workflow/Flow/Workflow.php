@@ -12,8 +12,8 @@ use Netzmacht\Contao\Workflow\Exception\Flow\StepNotFoundException;
 use Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotAllowedException;
 use Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Exception\Flow\ProcessNotStartedException;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition\AndCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\AndCondition;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 

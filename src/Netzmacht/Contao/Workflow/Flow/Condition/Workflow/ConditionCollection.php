@@ -9,11 +9,11 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+namespace Netzmacht\Contao\Workflow\Flow\Condition\Workflow;
 
 
 use Assert\Assertion;
-use Netzmacht\Contao\Workflow\Flow\Workflow\Condition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\Condition;
 
 abstract class ConditionCollection implements Condition
 {
