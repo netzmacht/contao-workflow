@@ -41,6 +41,7 @@ $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = function() {
  * Models
  */
 $GLOBALS['TL_MODELS']['tl_workflow']            = 'Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel';
+$GLOBALS['TL_MODELS']['tl_workflow_action']     = 'Netzmacht\Contao\Workflow\Contao\Model\ActionModel';
 $GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Contao\Workflow\Contao\Model\RoleModel';
 $GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Contao\Workflow\Contao\Model\StepModel';
 $GLOBALS['TL_MODELS']['tl_workflow_state']      = 'Netzmacht\Contao\Workflow\Contao\Model\StateModel';

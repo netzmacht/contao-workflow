@@ -86,6 +86,10 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'foreignKey' => 'tl_workflow_transition.name',
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
+        'sorting'             => array
+        (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
         'tstamp'         => array
         (
             'sql' => "int(10) unsigned NOT NULL default '0'"

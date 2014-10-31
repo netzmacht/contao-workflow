@@ -13,10 +13,14 @@ namespace Netzmacht\Contao\Workflow\Factory;
 
 use Model\Collection;
 use Netzmacht\Contao\Workflow\Acl\Role;
+use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
 use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
 use Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateActionEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateStepEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateTransitionEvent;
 use Netzmacht\Contao\Workflow\Factory;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateWorkflowEvent;
@@ -83,8 +87,11 @@ class WorkflowBuilder implements EventSubscriberInterface
             $this->createRoles($workflow);
             $this->createSteps($workflow);
             $this->createTransitions($workflow);
+            $this->buildActions($workflow);
             $this->createProcess($workflow);
         }
+
+        $this->resetBuilder();
     }
 
     /**
@@ -141,6 +148,9 @@ class WorkflowBuilder implements EventSubscriberInterface
 
             $workflow->addStep($step);
 
+            $event = new CreateStepEvent($workflow, $step);
+            $this->getEventDispatcher()->dispatch($event::NAME, $event);
+
             $this->steps[$collection->id] = $step;
         }
     }
@@ -162,9 +172,11 @@ class WorkflowBuilder implements EventSubscriberInterface
             }
 
             $transition->setStepTo($this->steps[$collection->stepTo]);
-
             $this->addRolesToTransition($collection, $transition);
             $workflow->addTransition($transition);
+
+            $event = new CreateTransitionEvent($transition);
+            $this->getEventDispatcher()->dispatch($event::NAME, $event);
 
             $this->transitions[$collection->id] = $transition;
         }
@@ -262,5 +274,63 @@ class WorkflowBuilder implements EventSubscriberInterface
         );
 
         $event->setManager($manager);
+    }
+
+    /**
+     * Load actions for all loaded transitions.
+     *
+     * @param Workflow $workflow
+     *
+     * @return void
+     */
+    private function buildActions(Workflow $workflow)
+    {
+        $collection = $this->findActions();
+
+        if (!$collection) {
+            return;
+        }
+
+        while ($collection->next()) {
+            $event = new CreateActionEvent($workflow, $collection->current());
+            $this->getEventDispatcher()->dispatch($event::NAME, $event);
+
+            if ($event->getAction()) {
+                $this->transitions[$collection->pid]->addAction($event->getAction());
+            }
+            else {
+                // TODO: Handle error
+            }
+        }
+    }
+
+    /**
+     * @return Collection|null
+     */
+    private function findActions()
+    {
+        $transitionIds = array_keys($this->transitions);
+
+        if (!$transitionIds) {
+            return null;
+        }
+
+        $collection = ActionModel::findAll(array(
+                'column' => 'pid IN (' . implode(', ', $transitionIds) . ')',
+                'order'  => 'pid, sorting',
+            )
+        );
+
+        return $collection;
+    }
+
+    /**
+     * Clear builder cache.
+     */
+    private function resetBuilder()
+    {
+        $this->transitions = array();
+        $this->steps       = array();
+        $this->roles       = array();
     }
 }
