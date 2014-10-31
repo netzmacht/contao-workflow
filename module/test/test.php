@@ -14,18 +14,27 @@ $factory = $GLOBALS['container']['workflow.factory'];
 $manager  = $factory->createManager('default');
 $workflow = $manager->getWorkflowByName('test');
 $entity   = $factory->createEntity(\ContentModel::findByPk(1));
-$handler  = $manager->handle($entity, 'publish');
-
+$item     = $manager->createItem($entity);
+$handler  = $manager->handle($item, 'publish');
 $stepName = $handler->getItem()->getCurrentStepName();
 $step     = $workflow->getStep($stepName);
-var_dump($step->isFinal());
 
-//var_dump($workflow->getStartTransition());
-if ($handler->validate()) {
+var_dump($handler->getCurrentStep());
 
-    //$state = $handler->transit();
-  //  var_dump($state);
-}
-else {
-    var_dump($handler->getContext()->getErrorCollection());
-}
+//if ($handler->validate()) {
+//    if ($handler->isWorkflowStarted()) {
+//        $state = $handler->transit('publish');
+//    }
+//    else {
+//        $handler->start();
+//    }
+//}
+//else {
+//    if ($handler->requiresInputData()) {
+//        $view = new View();
+//        echo $handler->getForm()->render($view);
+//    }
+//    else {
+//        echo 'Something went wrong';
+//    }
+//}

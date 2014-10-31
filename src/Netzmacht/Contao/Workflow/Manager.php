@@ -4,13 +4,10 @@ namespace Netzmacht\Contao\Workflow;
 
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
-use Netzmacht\Contao\Workflow\Factory\RepositoryFactory;
-use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Exception\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
-use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
+use Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory;
 
 /**
  * Class Manager handles a set of workflows.
@@ -37,49 +34,29 @@ class Manager
     private $workflows;
 
     /**
-     * The repository factory.
+     * A Transition handler factory.
      *
-     * @var RepositoryFactory
+     * @var TransitionHandlerFactory
      */
-    private $repositoryFactory;
-
-    /**
-     * The transaction handler.
-     *
-     * @var TransactionHandler
-     */
-    private $transactionHandler;
-
-    /**
-     * The input provider.
-     *
-     * @var InputProvider
-     */
-    private $inputProvider;
+    private $handlerFactory;
 
     /**
      * Construct.
      *
-     * @param StateRepository    $stateRepository    The state repository.
-     * @param RepositoryFactory  $repositoryFactory  The entity repository factory.
-     * @param TransactionHandler $transactionHandler The transaction handler.
-     * @param InputProvider      $inputProvider      The input provider.
-     * @param Workflow[]|array   $workflows          The set of managed workflows.
+     * @param TransitionHandlerFactory $handlerFactory
+     * @param StateRepository          $stateRepository
+     * @param Workflow[]|array         $workflows The set of managed workflows.
      */
     public function __construct(
+        TransitionHandlerFactory $handlerFactory,
         StateRepository $stateRepository,
-        RepositoryFactory $repositoryFactory,
-        TransactionHandler $transactionHandler,
-        InputProvider $inputProvider,
         array $workflows = array()
     ) {
         Assertion::allIsInstanceOf($workflows, 'Netzmacht\Contao\Workflow\Flow\Workflow');
 
-        $this->workflows          = $workflows;
-        $this->stateRepository    = $stateRepository;
-        $this->repositoryFactory  = $repositoryFactory;
-        $this->transactionHandler = $transactionHandler;
-        $this->inputProvider      = $inputProvider;
+        $this->workflows       = $workflows;
+        $this->handlerFactory  = $handlerFactory;
+        $this->stateRepository = $stateRepository;
     }
 
     /**
@@ -87,30 +64,30 @@ class Manager
      *
      * If no matching workflow definition is found false will be returned.
      *
-     * @param Entity $entity         The entity to transit through a workflow.
+     * @param Item   $item
      * @param string $transitionName Transition name, required if workflow has already started.
+     *
+     * @throws WorkflowException
      *
      * @return bool|TransitionHandler
      */
-    public function handle(Entity $entity, $transitionName = null)
+    public function handle(Item $item, $transitionName = null)
     {
+        $entity   = $item->getEntity();
         $workflow = $this->getWorkflow($entity);
 
         if (!$workflow) {
             return false;
         }
 
-        $item = $this->createItem($entity);
         $this->guardSameWorkflow($item, $workflow);
 
-        $handler = new TransitionHandler(
+        $handler = $this->handlerFactory->createTransitionHandler(
             $item,
             $workflow,
             $transitionName,
-            $this->repositoryFactory->createRepository($entity->getProviderName()),
-            $this->stateRepository,
-            $this->transactionHandler,
-            new Context($this->inputProvider)
+            $entity->getProviderName(),
+            $this->stateRepository
         );
 
         return $handler;
@@ -200,7 +177,7 @@ class Manager
      *
      * @return Item
      */
-    private function createItem(Entity $entity)
+    public function createItem(Entity $entity)
     {
         $stateHistory = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
 

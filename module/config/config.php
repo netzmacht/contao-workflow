@@ -31,7 +31,7 @@ $GLOBALS['WORKFLOW_TYPES']['default'] = '';
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Contao\BackendSubscriber';
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\CreateWorkflowSubscriber';
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\EntityFactory';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\RepositoryFactory';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Entity\EntityManager';
 
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = function() {
     return new Netzmacht\Contao\Workflow\Transaction\DatabaseTransactionHandler(\Database::getInstance());

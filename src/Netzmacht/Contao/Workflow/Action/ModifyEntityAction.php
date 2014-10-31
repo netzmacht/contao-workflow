@@ -15,6 +15,7 @@ use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Class ModifyEntityAction modify entity properties during the transition.
@@ -141,16 +142,12 @@ class ModifyEntityAction extends AbstractAction
     }
 
     /**
-     * Change property values during transition.
-     *
-     * @param Transition $transition Current transition.
-     * @param Entity     $entity     Given entity.
-     * @param Context    $context    Transition environment.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function transit(Transition $transition, Entity $entity, Context $context)
+    public function transit(Transition $transition, Item $item, Context $context)
     {
+        $entity = $item->getEntity();
+
         foreach ($this->dataMapping as $name) {
             $value = $context->getParam($name);
 

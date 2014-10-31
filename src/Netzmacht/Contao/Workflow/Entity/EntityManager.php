@@ -9,23 +9,18 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Factory;
+namespace Netzmacht\Contao\Workflow\Entity;
+
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
 use Netzmacht\Contao\Workflow\Contao\DataContainer;
-use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Netzmacht\Contao\Workflow\Factory\Event\CreateEntityRepositoryEvent;
 use Netzmacht\Contao\Workflow\Model\ContaoStateRepository;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
-/**
- * Class RepositoryFactory creates the entity repositories based on dca settings.
- *
- * @package Netzmacht\Contao\Workflow\Entity
- */
-class RepositoryFactory implements EventSubscriberInterface
+class EntityManager implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -74,7 +69,7 @@ class RepositoryFactory implements EventSubscriberInterface
      *
      * @return EntityRepository
      */
-    public function createRepository($providerName)
+    public function getRepository($providerName)
     {
         $event = new CreateEntityRepositoryEvent($providerName);
         $this->getEventDispatcher()->dispatch($event::NAME, $event);
@@ -93,7 +88,7 @@ class RepositoryFactory implements EventSubscriberInterface
      *
      * @return StateRepository
      */
-    public function createStateRepository()
+    public function getStateRepository()
     {
         return new ContaoStateRepository(\Database::getInstance());
     }

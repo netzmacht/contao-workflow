@@ -269,10 +269,8 @@ class CreateWorkflowSubscriber implements EventSubscriberInterface
 
         $container = $this->getContainer();
         $manager   = new Manager(
-            $container['workflow.state-repository'],
-            $container['workflow.repository-factory'],
-            $container['workflow.transaction-handler'],
-            new InputProvider()
+            $container['workflow.transition-handler-factory'],
+            $container['workflow.entity-manager']->getStateRepository()
         );
 
         $event->setManager($manager);

@@ -43,10 +43,10 @@ interface Action
      * Transit will execute the action.
      *
      * @param Transition $transition Current transition.
-     * @param Entity     $entity     The passed entity.
+     * @param Item       $item       The passed item.
      * @param Context    $context    Transition context.
      *
      * @return void
      */
-    public function transit(Transition $transition, Entity $entity, Context $context);
+    public function transit(Transition $transition, Item $item, Context $context);
 }

@@ -1,5 +1,7 @@
 <?php
 
+use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
+use Netzmacht\Contao\Workflow\Entity\EntityManager;
 use Netzmacht\Contao\Workflow\Factory;
 use Netzmacht\Contao\Workflow\Transaction\EventBasedTransactionHandler;
 
@@ -9,6 +11,21 @@ global $container;
 $container['workflow.factory'] = $container->share(
     function($container) {
         return new Factory($container['event-dispatcher']);
+    }
+);
+
+$container['workflow.transition-handler-factory'] = $container->share(
+    function($container) {
+        $factory = new \Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory(
+            $container['workflow.entity-manager'],
+            $container['workflow.transaction-handler'],
+            new InputProvider(),
+            $container['event-dispatcher']
+        );
+
+        $factory->useEventDispatching(true);
+
+        return $factory;
     }
 );
 
@@ -26,14 +43,14 @@ $container['workflow.acl-manager'] = $container->share(
     }
 );
 
-$container['workflow.repository-factory'] = $container->share(
+$container['workflow.entity-manager'] = $container->share(
     function() {
-        return new Factory\RepositoryFactory();
+        return new EntityManager();
     }
 );
 
 $container['workflow.state-repository'] = $container->share(
     function($container) {
-        return $container['workflow.repository-factory']->createStateRepository();
+        return $container['workflow.entity-manager']->getStateRepository();
     }
 );
