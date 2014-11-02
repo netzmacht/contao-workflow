@@ -1,0 +1,17 @@
+
+<form action="<?php echo $this->action; ?>" method="post">
+    <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->name; ?>">
+
+    <?php foreach ($this->fieldsets as $fieldset) : ?>
+        <fieldset class="<?php echo $fieldset['class']; ?>">
+            <legend><?php echo $fieldset['legend']; ?></legend>
+            <?php echo $fieldset['palette']; ?>
+        </fieldset>
+    <?php endforeach; ?>
+
+    <div class="tl_formbody_submit">
+        <div class="tl_submit_container">
+            <input type="submit" name="submit" value="<?php echo $this->submitLabel; ?>" class="tl_submit">
+        </div>
+    </div>
+</form>

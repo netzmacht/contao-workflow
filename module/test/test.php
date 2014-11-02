@@ -39,14 +39,21 @@ class MyAction extends \Netzmacht\Contao\Workflow\Action\AbstractAction
 
     public function buildForm(Form $form)
     {
-        $form->addField('test', array(
-                'inputType' => 'text',
-                'eval'      => array(
-                    'mandatory' => true,
-                )
-            ),
-            'test'
+        $form->addField(
+            'test',
+            'text',
+            'arschloch',
+            array('mandatory' => true)
         );
+//        $form->addField('test', array(
+//                'inputType' => 'text',
+//                'default'   => 'aschl',
+//                'eval'      => array(
+//                    'mandatory' => true,
+//                )
+//            ),
+//            'test'
+//        );
     }
 
     /**
@@ -60,6 +67,7 @@ class MyAction extends \Netzmacht\Contao\Workflow\Action\AbstractAction
      */
     public function transit(Transition $transition, Item $item, Context $context)
     {
+        $context->setProperty('test', 'test_value');
         echo 'Transition is executed';
     }
 }
@@ -81,9 +89,7 @@ else {
 
     if ($handler->requiresInputData()) {
         $form = $handler->getForm();
-        echo '<form action="" method="post"><input type="hidden" name="REQUEST_TOKEN" value="' . \RequestToken::get() . '" ';
         echo $form->render();
-        echo '<input type="submit" name="submit" value="absenden"></form>';
     }
 
     var_dump($handler->getContext()->getErrorCollection()->getErrors());

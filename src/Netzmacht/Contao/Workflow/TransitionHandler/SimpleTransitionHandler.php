@@ -18,6 +18,7 @@ use Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotFoundException;
 use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
 use Netzmacht\Contao\Workflow\Flow\Step;
 use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Contao\Workflow\Form\BackendForm;
 use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
@@ -290,7 +291,7 @@ class SimpleTransitionHandler implements TransitionHandler
      */
     private function buildForm()
     {
-        $this->form = new Form();
+        $this->form = new BackendForm();
         $this->getTransition()->buildForm($this->form);
     }
 
