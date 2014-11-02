@@ -113,6 +113,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['type'],
             'inputType' => 'select',
             'filter'    => true,
+            'reference' => &$GLOBALS['TL_LANG']['workflow_type'],
             'options_callback' => array
             (
                 'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',

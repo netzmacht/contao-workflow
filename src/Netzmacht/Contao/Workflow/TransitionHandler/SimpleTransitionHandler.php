@@ -231,7 +231,12 @@ class SimpleTransitionHandler implements TransitionHandler
     public function validate()
     {
         if (!$this->validated) {
-            $this->validated = $this->getForm()->validate($this->context);
+            if ($this->requiresInputData()) {
+                $this->validated = $this->getForm()->validate($this->context);
+            }
+            else {
+                $this->validated = true;
+            }
         }
 
         return $this->validated;
@@ -355,11 +360,11 @@ class SimpleTransitionHandler implements TransitionHandler
 
         $step = $this->getCurrentStep();
 
-        if ($step->isTransitionAllowed($transitionName)) {
+        if (!$step->isTransitionAllowed($transitionName)) {
             throw new WorkflowException(sprintf(
                     'Not allowed to process transition "%s". Transition is not allowed in step "%s"',
                     $transitionName,
-                    $step->getWorkflow()
+                    $step->getName()
                 )
             );
         }

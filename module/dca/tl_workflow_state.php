@@ -5,6 +5,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
     'config' => array
     (
         'dataContainer' => 'Table',
+        'closed' => true,
         'sql'           => array
         (
             'keys' => array

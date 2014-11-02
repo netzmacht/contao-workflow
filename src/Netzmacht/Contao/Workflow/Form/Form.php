@@ -11,7 +11,17 @@
 
 namespace Netzmacht\Contao\Workflow\Form;
 
+use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
+use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\ContaoWidgetManager;
+use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\EncodePropertyValueFromWidgetEvent;
+use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
 use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBag;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\DefaultContainer;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefaultPropertiesDefinition;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\Properties\DefaultProperty;
+use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
+use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
+use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
 use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
 
 /**
@@ -21,6 +31,11 @@ use ContaoCommunityAlliance\DcGeneral\InputProviderInterface;
  */
 class Form
 {
+    /**
+     * @var ContaoWidgetManager
+     */
+    private $widgetManager;
+
     /**
      * Legends.
      *
@@ -41,9 +56,25 @@ class Form
     private $widgets = array();
 
     /**
-     * @var InputProviderInterface
+     * @var EnvironmentInterface
      */
-    private $inputProvider;
+    private $environment;
+
+    public function __construct()
+    {
+        $container = new DefaultContainer('workflow_data');
+        $container->setPropertiesDefinition(new DefaultPropertiesDefinition());
+
+        $this->model = new DefaultModel();
+
+        $this->environment   = new DefaultEnvironment();
+        $this->environment->setDataDefinition($container);
+        $this->environment->setInputProvider(new InputProvider());
+        $this->environment->setEventPropagator(new EventPropagator($GLOBALS['container']['event-dispatcher']));
+
+        $this->widgetManager = new ContaoWidgetManager($this->environment, $this->model);
+
+    }
 
     /**
      * Validate the form.
@@ -52,6 +83,10 @@ class Form
      */
     public function validate()
     {
+        if (\Input::post('FORM_SUBMIT') != 'workflow_transition') {
+            return false;
+        }
+
         $this->buildWidgets();
 
         $propertyValues = $this->getPropertyValues();
@@ -62,17 +97,47 @@ class Form
 
     /**
      * @param       $fieldName
-     * @param array $fieldConfiguration
+     * @param array $config
      * @param       $legend
      */
-    public function addField($fieldName, array $fieldConfiguration, $legend)
+    public function addField($fieldName, array $config, $legend)
     {
-        $this->fields[$fieldName] = $fieldConfiguration;
+        $property = new DefaultProperty($fieldName);
+        $property->setWidgetType($config['inputType']);
+        $property->setExtra($config['eval']);
+
+        if (isset($config['options'])) {
+            $property->setOptions($config['options']);
+        }
+
+        $this->environment->getDataDefinition()->getPropertiesDefinition()->addProperty($property);
+
+        $this->fields[]           = $fieldName;
         $this->legends[$legend][] = $fieldName;
     }
 
+    /**
+     *
+     */
     private function buildWidgets()
     {
+        foreach ($this->fields as $fieldName) {
+            $this->widgets[$fieldName] = $this->widgetManager->getWidget($fieldName);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        $rendered = array();
+
+        foreach ($this->widgets as $name => $widget) {
+            $rendered[] = $this->widgetManager->renderWidget($name, false);
+        }
+
+        return implode('', $rendered);
     }
 
     /**
@@ -97,7 +162,7 @@ class Form
         }
 
         // Now get and validate the widgets.
-        foreach (array_keys($this->fields) as $property) {
+        foreach ($this->fields as $property) {
             // NOTE: the passed input values are RAW DATA from the input provider - aka widget known values and not
             // native data as in the model.
             // Therefore we do not need to decode them but MUST encode them.
@@ -132,10 +197,43 @@ class Form
     {
         $propertyValues = new PropertyValueBag();
 
-        foreach (array_keys($this->fields) as $fieldName) {
-            $propertyValues->setPropertyValue($fieldName, $this->inputProvider->getValue($propertyValues, true));
+        foreach ($this->fields as $fieldName) {
+            $propertyValues->setPropertyValue(
+                $fieldName,
+                $this->environment->getInputProvider()->getValue($fieldName, true)
+            );
         }
 
         return $propertyValues;
+    }
+
+    private function encodeValue($property, $value, $propertyValues)
+    {
+        $environment = $this->getEnvironment();
+
+        $event = new EncodePropertyValueFromWidgetEvent($environment, $this->model, $propertyValues);
+        $event
+            ->setProperty($property)
+            ->setValue($value);
+
+        $environment->getEventDispatcher()->dispatch(
+            sprintf('%s[%s][%s]', $event::NAME, $environment->getDataDefinition()->getName(), $property),
+            $event
+        );
+        $environment->getEventDispatcher()->dispatch(
+            sprintf('%s[%s]', $event::NAME, $environment->getDataDefinition()->getName()),
+            $event
+        );
+        $environment->getEventDispatcher()->dispatch($event::NAME, $event);
+
+        return $event->getValue();
+    }
+
+    /**
+     * @return EnvironmentInterface
+     */
+    private function getEnvironment()
+    {
+        return $this->environment;
     }
 }

@@ -33,3 +33,9 @@ $GLOBALS['TL_LANG']['tl_workflow']['stepTo'][1]      = 'Step which is reached af
 $GLOBALS['TL_LANG']['tl_workflow']['process']['steps']   = 'Steps';
 $GLOBALS['TL_LANG']['tl_workflow']['process']['process'] = 'Process';
 $GLOBALS['TL_LANG']['tl_workflow']['process']['start']   = 'Start point';
+
+/*
+ * Workflow types
+ */
+$GLOBALS['TL_LANG']['workflow_type']['default'][0] = 'Default';
+$GLOBALS['TL_LANG']['workflow_type']['default'][1] = 'Default workflow type';

@@ -187,6 +187,8 @@ class EventDispatchingTransitionHandler implements TransitionHandler
             $this->eventDispatcher->dispatch($event::NAME, $event);
 
             $this->validated = $event->isValid();
+
+            return $this->validated;
         }
 
         $this->validated = false;

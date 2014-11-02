@@ -15,6 +15,10 @@ array_insert($GLOBALS['BE_MOD'], 1, array
                 'tl_workflow_action',
                 'tl_workflow_role',
             ),
+        ),
+        'workflow_history' => array(
+            'icon'   => 'system/themes/default/images/news.gif',
+            'tables' => array('tl_workflow_state'),
         )
     )
 ));
