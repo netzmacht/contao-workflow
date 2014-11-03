@@ -13,6 +13,7 @@ namespace Netzmacht\Contao\Workflow;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityEvent;
+use Netzmacht\Contao\Workflow\Event\Factory\CreateFormEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
@@ -85,6 +86,23 @@ class Factory
         }
 
         return $event->getEntity();
+    }
+
+    /**
+     * @param $type
+     *
+     * @return Form\Form
+     */
+    public function createForm($type)
+    {
+        $event = new CreateFormEvent($type);
+        $this->eventDispatcher->dispatch($event::NAME, $event);
+
+        if (!$event->getForm()) {
+            throw new \RuntimeException(sprintf('Could not create form type "%s"', $type));
+        }
+
+        return $event->getForm();
     }
 
 }

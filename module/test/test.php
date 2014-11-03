@@ -39,12 +39,21 @@ class MyAction extends \Netzmacht\Contao\Workflow\Action\AbstractAction
 
     public function buildForm(Form $form)
     {
-        $form->addField(
-            'test',
-            'text',
-            'arschloch',
-            array('mandatory' => true)
-        );
+        $form->setFieldsetDetails('default', 'Standard', 'Here we go', 'tl_special');
+
+        $test = $form->createField('test', 'text');
+        $test
+            ->setLabel('Test')
+            ->setDescription('Test it baby.')
+            ->setDefaultValue('arschloch')
+            ->setExtra(array('mandatory' => true))
+            ->addToForm($form);
+
+        $email = $form->createField('email', 'text');
+        $email->setExtra(array('rgxp' => 'email'));
+        $email->addToForm($form);
+
+//        $form->addField('email', array('inputType' => 'text'));
 //        $form->addField('test', array(
 //                'inputType' => 'text',
 //                'default'   => 'aschl',
@@ -77,7 +86,7 @@ class MyAction extends \Netzmacht\Contao\Workflow\Action\AbstractAction
 $action = new MyAction();
 $workflow->getTransition('publish')->addAction($action);
 
-if ($handler->validate()) {
+if ($handler->validate($factory->createForm('backend'))) {
     echo 'validated';
 
     $state = $handler->transit();
@@ -88,8 +97,7 @@ else {
     echo 'not validated';
 
     if ($handler->requiresInputData()) {
-        $form = $handler->getForm();
-        echo $form->render();
+        echo $handler->getForm()->render();
     }
 
     var_dump($handler->getContext()->getErrorCollection()->getErrors());

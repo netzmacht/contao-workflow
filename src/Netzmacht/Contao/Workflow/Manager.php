@@ -71,7 +71,7 @@ class Manager
      *
      * @return bool|TransitionHandler
      */
-    public function handle(Item $item, $transitionName = null)
+    public function handle(Item $item, $transitionName = null, $formType = 'default')
     {
         $entity   = $item->getEntity();
         $workflow = $this->getWorkflow($entity);

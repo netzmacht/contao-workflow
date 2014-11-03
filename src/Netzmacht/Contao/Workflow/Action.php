@@ -33,16 +33,17 @@ interface Action
      * Build the corresponding form.
      *
      * @param Form $form Transition form.
+     * @param Item $item Workflow item.
      *
      * @return void
      */
-    public function buildForm(Form $form);
+    public function buildForm(Form $form, Item $item);
 
     /**
      * Transit will execute the action.
      *
      * @param Transition $transition Current transition.
-     * @param Item       $item       The passed item.
+     * @param Item       $item       Workflow item.
      * @param Context    $context    Transition context.
      *
      * @return void

@@ -1,12 +1,15 @@
 
-<form action="<?php echo $this->action; ?>" method="post">
+<form action="<?php echo $this->action; ?>" method="post" class="tl_form workflow_transition_form">
     <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->name; ?>">
-
+    <input type="hidden" name="REQUEST_TOKEN" value="<?php echo $this->requestToken; ?>">
     <?php foreach ($this->fieldsets as $fieldset) : ?>
-        <fieldset class="<?php echo $fieldset['class']; ?>">
-            <legend><?php echo $fieldset['legend']; ?></legend>
-            <?php echo $fieldset['palette']; ?>
-        </fieldset>
+    <fieldset class="<?php echo $fieldset['class']; ?>">
+        <legend><?php echo $fieldset['legend']; ?></legend>
+        <?php if ($fieldset['description']): ?>
+        <p class="fieldeset_description"><?php echo $fieldset['description']; ?></p>
+        <?php endif; ?>
+        <?php echo $fieldset['palette']; ?>
+    </fieldset>
     <?php endforeach; ?>
 
     <div class="tl_formbody_submit">

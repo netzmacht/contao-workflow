@@ -88,9 +88,11 @@ interface TransitionHandler
     /**
      * Validate the input.
      *
+     * @param Form $form
+     *
      * @return bool
      */
-    public function validate();
+    public function validate(Form $form);
 
     /**
      * @return State

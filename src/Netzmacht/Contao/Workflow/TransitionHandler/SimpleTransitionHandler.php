@@ -155,10 +155,6 @@ class SimpleTransitionHandler implements TransitionHandler
      */
     public function getForm()
     {
-        if (!$this->form) {
-            $this->buildForm();
-        }
-
         return $this->form;
     }
 
@@ -227,10 +223,17 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Validate the input.
      *
+     * @param Form $form
+     *
      * @return bool
      */
-    public function validate()
+    public function validate(Form $form)
     {
+        if ($form) {
+            $this->form = $form;
+            $this->buildForm();
+        }
+
         if (!$this->validated) {
             if ($this->requiresInputData()) {
                 $this->validated = $this->getForm()->validate($this->context);

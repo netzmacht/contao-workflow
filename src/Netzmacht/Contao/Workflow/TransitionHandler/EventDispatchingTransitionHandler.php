@@ -168,15 +168,17 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Validate the input.
      *
+     * @param Form $form Transition form.
+     *
      * @return bool
      */
-    public function validate()
+    public function validate(Form $form)
     {
         if ($this->validated !== null) {
             return $this->validated;
         }
 
-        if ($this->transitionHandler->validate()) {
+        if ($this->transitionHandler->validate($form)) {
             $event = new ValidateTransitionEvent(
                 $this->getWorkflow(),
                 $this->getTransition(),

@@ -13,17 +13,20 @@ namespace Netzmacht\Contao\Workflow\Form;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\ContaoWidgetManager;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\EncodePropertyValueFromWidgetEvent;
+use ContaoCommunityAlliance\DcGeneral\Controller\DefaultController;
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\Data\PropertyValueBag;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\DefaultContainer;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefaultBasicDefinition;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefaultPropertiesDefinition;
-use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\Properties\DefaultProperty;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\Properties\PropertyInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\PropertiesDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
+use Netzmacht\Contao\Workflow\ErrorCollection;
+use Netzmacht\Contao\Workflow\Flow\Context;
 
 /**
  * Form implementation for a backend form.
@@ -89,6 +92,11 @@ class BackendForm implements Form
     private $model;
 
     /**
+     * @var PropertyValueBag
+     */
+    private $propertyValues;
+
+    /**
      * Construct.
      */
     public function __construct()
@@ -98,6 +106,7 @@ class BackendForm implements Form
 
         $container = new DefaultContainer('workflow_data');
         $container->setPropertiesDefinition(new DefaultPropertiesDefinition());
+        $container->setBasicDefinition(new DefaultBasicDefinition());
 
         $this->model = new DefaultModel();
 
@@ -106,51 +115,63 @@ class BackendForm implements Form
         $this->environment->setInputProvider(new InputProvider());
         $this->environment->setEventPropagator(new EventPropagator($GLOBALS['container']['event-dispatcher']));
 
+        $controller = new DefaultController();
+        $controller->setEnvironment($this->environment);
+
+        $this->environment->setController($controller);
+
         $this->widgetManager = new ContaoWidgetManager($this->environment, $this->model);
     }
 
     /**
      * Validate the form.
      *
+     * @param Context $context
+     *
      * @return bool
      */
-    public function validate()
+    public function validate(Context $context)
     {
         if (\Input::post('FORM_SUBMIT') != $this->formName) {
             return false;
         }
 
+        $this->loadPropertyValues();
         $this->buildWidgets();
+        $this->validateWidgets();
+        $this->updateContext($context);
 
-        $propertyValues = $this->getPropertyValues();
-        $this->validateWidgets($propertyValues);
+        return $this->propertyValues->hasNoInvalidPropertyValues();
+    }
 
-        return $propertyValues->hasNoInvalidPropertyValues();
+    /**
+     * @param string $name
+     * @param string $type
+     * @param array  $extra
+     *
+     * @return FormField
+     */
+    public function createField($name, $type = 'text', array $extra = array())
+    {
+        $formField = new BackendFormField($name, $type);
+        $formField->setExtra($extra);
+
+        return $formField;
     }
 
     /**
      * Add a field to the form.
      *
-     * @param string $name     Name of the field
-     * @param string $type     Widget type name.
-     * @param mixed  $default  Optional default value.
-     * @param array  $config   Widget configuration.
-     * @param array  $options  Optional Widget options.
-     * @param string $fieldset Legend to which the widget should be grouped.
+     * @param FormField $formField
+     * @param string    $fieldset
      *
      * @return $this
      */
-    public function addField(
-        $name,
-        $type,
-        $default = null,
-        array $config = array(),
-        array $options = array(),
-        $fieldset = 'default'
-    ) {
-        $this->createPropertyForField($name, $type, $default, $config, $options);
+    public function addField(FormField $formField, $fieldset = 'default') {
+        $property = $this->convertToProperty($formField);
 
-        $this->fields[$fieldset][] = $name;
+        $this->getPropertiesDefinition()->addProperty($property);
+        $this->fields[$fieldset][] = $formField->getName();
 
         return $this;
     }
@@ -165,7 +186,7 @@ class BackendForm implements Form
      *
      * @return $this
      */
-    public function addFieldset($name, $label, $description = null, $class = null)
+    public function setFieldsetDetails($name, $label, $description = null, $class = null)
     {
         $this->fieldsets[$name] = array(
             'legend'      => $label,
@@ -186,9 +207,10 @@ class BackendForm implements Form
     {
         $template = new \BackendTemplate($this->templateName);
 
-        $template->submitLabel = $GLOBALS['TL_LANG']['MSC']['workflowSubmitLabel'];
-        $template->name        = $this->templateName;
-        $template->fieldsets   = $this->renderFieldSets();
+        $template->submitLabel  = $GLOBALS['TL_LANG']['MSC']['workflowSubmitLabel'];
+        $template->name         = $this->formName;
+        $template->fieldsets    = $this->renderFieldSets();
+        $template->requestToken = \RequestToken::get();
 
         return $template->parse();
     }
@@ -211,110 +233,36 @@ class BackendForm implements Form
     {
         foreach ($this->fields as $fieldset => $fields) {
             foreach ($fields as $fieldName) {
-                $this->widgets[$fieldName] = $this->widgetManager->getWidget($fieldName);
+                $this->widgets[$fieldName] = $this->widgetManager->getWidget($fieldName, $this->propertyValues);
             }
         }
     }
 
     /**
      * Validate widgets.
-     *
-     * @copyright The MetaModels team./ DcGeneral
-     * @see       Taken from ContaoCommunityAlliance/DcGeneral/Contao/View/Contao2BackendView/ContaoWidgetManager
-     *
-     * @param PropertyValueBag $propertyValues
      */
-    private function validateWidgets(PropertyValueBag $propertyValues)
+    private function validateWidgets()
     {
-        // @codingStandardsIgnoreStart - Remember current POST data and clear it.
-        $post  = $_POST;
-        $_POST = array();
-        // @codingStandardsIgnoreEnd
-        \Input::resetCache();
-
-        // Set all POST data, these get used within the Widget::validate() method.
-        foreach ($propertyValues as $property => $propertyValue) {
-            $_POST[$property] = $propertyValue;
-        }
-
-        // Now get and validate the widgets.
-        foreach ($this->fields as $fieldset => $fields) {
-            foreach ($fields as $property) {
-                // NOTE: the passed input values are RAW DATA from the input provider - aka widget known values and not
-                // native data as in the model.
-                // Therefore we do not need to decode them but MUST encode them.
-                $widget = $this->widgets[$property];
-                $widget->validate();
-
-                if ($widget->hasErrors()) {
-                    foreach ($widget->getErrors() as $error) {
-                        $propertyValues->markPropertyValueAsInvalid($property, $error);
-                    }
-                } elseif ($widget->submitInput()) {
-                    try {
-                        $propertyValues->setPropertyValue(
-                            $property,
-                            $this->encodeValue($property, $widget->value, $propertyValues)
-                        );
-                    } catch (\Exception $e) {
-                        $widget->addError($e->getMessage());
-                        $propertyValues->markPropertyValueAsInvalid($property, $e->getMessage());
-                    }
-                }
-            }
-        }
-
-        $_POST = $post;
-        \Input::resetCache();
+        $this->widgetManager->processInput($this->propertyValues);
     }
 
     /**
      * @return PropertyValueBag
      */
-    private function getPropertyValues()
+    private function loadPropertyValues()
     {
-        $propertyValues = new PropertyValueBag();
+        $this->propertyValues = new PropertyValueBag();
 
         foreach ($this->fields as $fields) {
             foreach ($fields as $fieldName) {
-                $propertyValues->setPropertyValue(
-                    $fieldName,
-                    $this->environment->getInputProvider()->getValue($fieldName, true)
-                );
+                $value = $this->environment->getInputProvider()->getValue($fieldName, true);
+
+                // Set value to property values and to model. If validation failed, the widget manager loads data
+                // from the model.
+                $this->model->setProperty($fieldName, $value);
+                $this->propertyValues->setPropertyValue($fieldName, $value);
             }
         }
-
-        return $propertyValues;
-    }
-
-    private function encodeValue($property, $value, $propertyValues)
-    {
-        $environment = $this->getEnvironment();
-
-        $event = new EncodePropertyValueFromWidgetEvent($environment, $this->model, $propertyValues);
-        $event
-            ->setProperty($property)
-            ->setValue($value);
-
-        $environment->getEventDispatcher()->dispatch(
-            sprintf('%s[%s][%s]', $event::NAME, $environment->getDataDefinition()->getName(), $property),
-            $event
-        );
-        $environment->getEventDispatcher()->dispatch(
-            sprintf('%s[%s]', $event::NAME, $environment->getDataDefinition()->getName()),
-            $event
-        );
-        $environment->getEventDispatcher()->dispatch($event::NAME, $event);
-
-        return $event->getValue();
-    }
-
-    /**
-     * @return EnvironmentInterface
-     */
-    private function getEnvironment()
-    {
-        return $this->environment;
     }
 
     /**
@@ -339,7 +287,7 @@ class BackendForm implements Form
             $fields = array();
 
             foreach ($widgets as $fieldName) {
-                $fields[] = $this->widgetManager->renderWidget($fieldName, false);
+                $fields[] = $this->widgetManager->renderWidget($fieldName, false, $this->propertyValues);
             }
 
             $fieldset = array(
@@ -368,28 +316,47 @@ class BackendForm implements Form
     }
 
     /**
-     * @param       $name
-     * @param       $type
-     * @param       $default
-     * @param array $config
-     * @param array $options
-     *
-     * @return void
+     * @param $formField
+     * @return PropertyInterface
      */
-    private function createPropertyForField($name, $type, $default, array $config, array $options)
+    private function convertToProperty(FormField $formField)
     {
-        $property = new DefaultProperty($name);
-        $property->setWidgetType($type);
-        $property->setExtra($config);
-
-        if ($default) {
-            $this->model->setProperty($name, $default);
+        // Backend form field is a facade for the property.
+        if ($formField instanceof PropertyInterface) {
+            return $formField;
         }
 
-        if ($options) {
-            $property->setOptions($options);
-        }
+        $property = new BackendFormField($formField->getName(), $formField->getWidgetType());
+        $property
+            ->setLabel($formField->getLabel())
+            ->setDescription($formField->getDescription())
+            ->setOptions($formField->getOptions())
+            ->setExtra($formField->getExtra())
+            ->setExplanation($formField->getExplanation());
 
-        $this->getPropertiesDefinition()->addProperty($property);
+        return $property;
+    }
+
+    /**
+     * @param Context $context
+     */
+    private function updateContext(Context $context)
+    {
+        // set form input as params
+        $context->setParams($this->propertyValues->getArrayCopy());
+
+        // copy error messages
+        $errorCollection = $context->getErrorCollection();
+        foreach ($this->propertyValues->getInvalidPropertyErrors() as $field => $errors) {
+            foreach ($errors as $error) {
+                $errorCollection->addError(
+                    'form.validation.error',
+                    array(
+                        'field'   => $field,
+                        'message' => $error
+                    )
+                );
+            }
+        }
     }
 }

@@ -11,6 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow\Form;
 
+use Netzmacht\Contao\Workflow\Flow\Context;
+
+
 /**
  * Interface Form describes a form instance which is used for workflow transition.
  *
@@ -21,9 +24,11 @@ interface Form
     /**
      * Validate form data.
      *
+     * @param Context $context
+     *
      * @return bool
      */
-    public function validate();
+    public function validate(Context $context);
 
     /**
      * Render the form and return it as string.
@@ -42,28 +47,26 @@ interface Form
      *
      * @return $this
      */
-    public function addFieldset($name, $label, $description = null, $class = null);
+    public function setFieldsetDetails($name, $label, $description = null, $class = null);
+
+    /**
+     * @param string $name
+     * @param string $type
+     * @param array  $extra
+     *
+     * @return FormField
+     */
+    public function createField($name, $type = 'text', array $extra = array());
 
     /**
      * Add a field to the form.
      *
-     * @param string $name     Name of the field
-     * @param string $type     Widget type name.
-     * @param mixed  $default  Optional default value.
-     * @param array  $config   Widget configuration.
-     * @param array  $options  Options.
-     * @param string $fieldset Legend to which the widget should be grouped.
+     * @param FormField $formField
+     * @param string    $fieldset
      *
      * @return $this
      */
-    public function addField(
-        $name,
-        $type,
-        $default=null,
-        array $config = array(),
-        array $options = null,
-        $fieldset = 'default'
-    );
+    public function addField(FormField $formField, $fieldset = 'default');
 
     /**
      * Get form data of an validated form.

@@ -14,6 +14,7 @@ namespace Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Action;
 use Netzmacht\Contao\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Form\FormBuilder;
+use Netzmacht\Contao\Workflow\Item;
 
 /**
  * Class AbstractAction implements base action.
@@ -40,7 +41,7 @@ abstract class AbstractAction implements Action
     }
 
     /**
-     * Consider if input is required.
+     * Consider if input is required. It guesses that input is required than an form builder isset.
      *
      * @return bool
      */
@@ -57,14 +58,14 @@ abstract class AbstractAction implements Action
      * Build the form.
      *
      * @param Form $form Form being build.
+     * @param Item $item Current workflow item.
      *
      * @return void
      */
-    public function buildForm(Form $form)
+    public function buildForm(Form $form, Item $item)
     {
         if ($this->formBuilder) {
-            $this->formBuilder->build($form);
+            $this->formBuilder->build($form, $item);
         }
-
     }
 }
