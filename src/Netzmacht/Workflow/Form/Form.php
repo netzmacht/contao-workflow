@@ -18,7 +18,7 @@ use Netzmacht\Workflow\Flow\Context;
 /**
  * Interface Form describes a form instance which is used for workflow transition.
  *
- * @package Netzmacht\Contao\Workflow\Form
+ * @package Netzmacht\Workflow\Form
  */
 interface Form
 {

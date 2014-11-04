@@ -14,7 +14,7 @@ namespace Netzmacht\Workflow\Util;
 /**
  * Class Comparison is an util class to allow value comparison by passing two values.
  *
- * @package Netzmacht\Contao\Workflow\Util
+ * @package Netzmacht\Workflow\Util
  */
 class Comparison
 {

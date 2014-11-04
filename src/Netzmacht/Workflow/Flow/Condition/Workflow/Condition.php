@@ -17,7 +17,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 /**
  * Interface Condition describes condition being used by the workflow.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Workflow
+ * @package Netzmacht\Workflow\Flow\Workflow
  */
 interface Condition
 {

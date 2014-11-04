@@ -16,7 +16,7 @@ use Exception;
 /**
  * Class TransitionNotFoundException is thrown then transition was not found.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Exception
+ * @package Netzmacht\Workflow\Flow\Exception
  */
 class TransitionNotFoundException extends \Exception
 {

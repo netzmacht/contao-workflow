@@ -16,6 +16,7 @@ use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateFormEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**

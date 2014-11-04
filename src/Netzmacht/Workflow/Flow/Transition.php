@@ -4,17 +4,16 @@ namespace Netzmacht\Workflow\Flow;
 
 use Netzmacht\Workflow\Acl\Role;
 use Netzmacht\Workflow\Base;
-use Netzmacht\Contao\Workflow\Exception\Flow\ProcessNotStartedException;
 use Netzmacht\Workflow\Flow\Condition\Transition\AndCondition;
-use Netzmacht\Contao\Workflow\Exception\Flow\TransitionActionFailedException;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
+use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
+use Netzmacht\Workflow\Flow\Exception\WorkflowException;
 use Netzmacht\Workflow\Form\Form;
-use Netzmacht\Workflow\Flow\Item;
 
 /**
  * Class Transition handles the transition from a step to another.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 class Transition extends Base
 {
@@ -283,7 +282,7 @@ class Transition extends Base
      * @param Item   $item     The Item.
      * @param Context $context The transition context.
      *
-     * @throws ProcessNotStartedException If process was not started yet.
+     * @throws WorkflowException If process was not started yet.
      *
      * @return \Netzmacht\Workflow\Flow\State
      */
@@ -377,7 +376,7 @@ class Transition extends Base
                 foreach ($this->actions as $action) {
                     $action->transit($this, $item, $context);
                 }
-            } catch (TransitionActionFailedException $e) {
+            } catch (ActionFailedException $e) {
                 $params = array('exception' => $e->getMessage());
                 $context->addError('transition.action.failed', $params);
 

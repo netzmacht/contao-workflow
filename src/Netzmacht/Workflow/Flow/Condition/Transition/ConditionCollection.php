@@ -16,7 +16,7 @@ use Assert\Assertion;
 /**
  * Class ConditionCollection contains child conditions which are called during match.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Transition\Condition
+ * @package Netzmacht\Workflow\Flow\Transition\Condition
  */
 abstract class ConditionCollection implements Condition
 {

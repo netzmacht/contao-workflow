@@ -13,7 +13,6 @@ namespace Netzmacht\Workflow\Handler;
 
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
 use Netzmacht\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Workflow\Flow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\Step;
@@ -27,7 +26,7 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
 /**
  * Class TransitionHandler handles the transition to another step in the workflow.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 abstract class AbstractTransitionHandler implements TransitionHandler
 {
@@ -271,8 +270,8 @@ abstract class AbstractTransitionHandler implements TransitionHandler
      *
      * @return \Netzmacht\Workflow\Flow\State
      *
-     * @throws InvalidTransitionException If an invalid transition was requested.
-     * @throws \Exception                 If some actions throws an unknown exception.
+     * @throws WorkflowException If an invalid transition was requested.
+     * @throws \Exception        If some actions throws an unknown exception.
      */
     private function start()
     {
@@ -290,8 +289,8 @@ abstract class AbstractTransitionHandler implements TransitionHandler
      *
      * @return State
      *
-     * @throws InvalidTransitionException If an invalid transition was requested.
-     * @throws \Exception                 If some actions throws an unknown exception.
+     * @throws WorkflowException If an invalid transition was requested.
+     * @throws \Exception        If some actions throws an unknown exception.
      */
     private function doStateTransition($processor)
     {

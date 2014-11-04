@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class State stores information of a current state of an entity.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 class State
 {

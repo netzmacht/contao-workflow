@@ -1,15 +1,15 @@
 <?php
 
-namespace Netzmacht\Contao\Workflow;
+namespace Netzmacht\Workflow;
 
 use Assert\Assertion;
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
+use Netzmacht\Workflow\Data\Entity;
+use Netzmacht\Workflow\Data\StateRepository;
+use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
+use Netzmacht\Workflow\Flow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Model\StateRepository;
-use Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory;
 
 /**
  * Class Manager handles a set of workflows.
@@ -17,7 +17,7 @@ use Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory;
  * Usually there will a different workflow manager for different workflow types. The manager is the API entry point
  * when using the workflow API.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 class Manager
 {
@@ -47,14 +47,14 @@ class Manager
      *
      * @param TransitionHandlerFactory $handlerFactory  The transition handler factory.
      * @param StateRepository          $stateRepository The state repository.
-     * @param \Netzmacht\Workflow\Flow\Workflow[]|array         $workflows       The set of managed workflows.
+     * @param Workflow[]|array         $workflows       The set of managed workflows.
      */
     public function __construct(
         TransitionHandlerFactory $handlerFactory,
         StateRepository $stateRepository,
         array $workflows = array()
     ) {
-        Assertion::allIsInstanceOf($workflows, 'Netzmacht\Contao\Workflow\Flow\Workflow');
+        Assertion::allIsInstanceOf($workflows, 'Netzmacht\Workflow\Flow\Workflow');
 
         $this->workflows       = $workflows;
         $this->handlerFactory  = $handlerFactory;
@@ -88,7 +88,7 @@ class Manager
             $item,
             $workflow,
             $transitionName,
-            $entity->getProviderName(),
+            $entity->getEntityId()->getProviderName(),
             $this->stateRepository
         );
 
@@ -99,7 +99,7 @@ class Manager
     /**
      * Add a workflow to the manager.
      *
-     * @param \Netzmacht\Workflow\Flow\Workflow $workflow The workflow being added.
+     * @param Workflow $workflow The workflow being added.
      *
      * @return $this
      */
@@ -183,7 +183,7 @@ class Manager
      */
     public function createItem(Entity $entity)
     {
-        $stateHistory = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
+        $stateHistory = $this->stateRepository->find($entity->getEntityId());
 
         return Item::reconstitute($entity, $stateHistory);
     }
@@ -192,7 +192,7 @@ class Manager
      * Guard that already started workflow is the same which is tried to be ran now.
      *
      * @param Item     $item     Current workflow item.
-     * @param \Netzmacht\Workflow\Flow\Workflow $workflow Selected workflow.
+     * @param Workflow $workflow Selected workflow.
      *
      * @throws WorkflowException If item workflow is not the same as current workflow.
      *
@@ -202,9 +202,8 @@ class Manager
     {
         if ($item->isWorkflowStarted() && $item->getWorkflowName() != $workflow->getName()) {
             $message = sprintf(
-                'Item %s::%s already process workflow "%s" and cannot be handled by "%s"',
-                $item->getEntity()->getProviderName(),
-                $item->getEntity()->getId(),
+                'Item "%s" already process workflow "%s" and cannot be handled by "%s"',
+                $item->getEntity()->getEntityId(),
                 $item->getWorkflowName(),
                 $workflow->getName()
             );

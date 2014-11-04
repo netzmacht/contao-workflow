@@ -8,7 +8,7 @@ use Netzmacht\Workflow\Base;
 /**
  * Class Step defines fixed step in the workflow process.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 class Step extends Base
 {

@@ -17,7 +17,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 /**
  * Class OrCondition matches if any child conditions matches.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Workflow
+ * @package Netzmacht\Workflow\Flow\Workflow
  */
 class OrCondition extends ConditionCollection
 {

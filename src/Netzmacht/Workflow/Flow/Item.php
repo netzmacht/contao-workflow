@@ -16,7 +16,7 @@ use Netzmacht\Workflow\Data\Entity;
 /**
  * Class Item stores workflow related data of an entity. It knows the state history and the current state.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 class Item
 {

@@ -18,7 +18,7 @@ use Netzmacht\Workflow\Flow\Item;
 /**
  * Interface Condition describes an condition which used for transtion conditions.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Transition
+ * @package Netzmacht\Workflow\Flow\Transition
  */
 interface Condition
 {

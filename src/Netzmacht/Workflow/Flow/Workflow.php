@@ -4,7 +4,7 @@ namespace Netzmacht\Workflow\Flow;
 
 use Netzmacht\Workflow\Acl\Role;
 use Netzmacht\Workflow\Base;
-use Netzmacht\Contao\Workflow\Exception\Flow\RoleNotFoundException;
+use Netzmacht\Workflow\Flow\Exception\RoleNotFoundException;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Workflow\Data\Entity;
@@ -15,7 +15,7 @@ use Netzmacht\Workflow\Flow\Exception\WorkflowException;
 /**
  * Class Workflow stores all information of a step processing workflow.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 class Workflow extends Base
 {

@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Workflow\Handler;
 
-use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Exception\TransitionNotFoundException;
 use Netzmacht\Workflow\Flow\Exception\WorkflowException;
@@ -24,7 +23,7 @@ use Netzmacht\Workflow\Form\Form;
 /**
  * Class TransitionHandler handles the transition to another step in the workflow.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 interface TransitionHandler
 {
@@ -98,9 +97,8 @@ interface TransitionHandler
     /**
      * Transit to next step.
      *
-     * @throws InvalidTransitionException If a invalid transition was called.
-     * @throws WorkflowException          For a workflow specific error.
-     * @throws \Exception                 For any error caused maybe by 3rd party code in the actions.
+     * @throws WorkflowException For a workflow specific error.
+     * @throws \Exception        For any error caused maybe by 3rd party code in the actions.
      *
      * @return State
      */

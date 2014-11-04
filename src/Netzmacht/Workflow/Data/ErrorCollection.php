@@ -14,7 +14,7 @@ namespace Netzmacht\Workflow\Data;
 /**
  * Class ErrorCollection collects error messages being raised during transition.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 class ErrorCollection
 {

@@ -9,10 +9,10 @@
  *
  */
 
-namespace Netzmacht\Contao\Workflow\Exception\Flow;
+namespace Netzmacht\Workflow\Flow\Exception;
 
 
-class RoleNotFoundException extends \Exception
+class RoleNotFoundException extends WorkflowException
 {
 
 }

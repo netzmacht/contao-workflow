@@ -16,7 +16,7 @@ use Netzmacht\Workflow\Flow\State;
 /**
  * Interface StateRepository stores workflow states.
  *
- * @package Netzmacht\Contao\Workflow\Model
+ * @package Netzmacht\Workflow\Model
  */
 interface StateRepository
 {
@@ -24,11 +24,10 @@ interface StateRepository
      * Find last worfklow state of an entity.
      *
      * @param EntityId $entityId   The entity id.
-     * @param bool     $successful Only get latest succesful.
      *
      * @return State[]
      */
-    public function find(EntityId $entityId, $successful = true);
+    public function find(EntityId $entityId);
 
     /**
      * Add a new state.

@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * It just dispatches events so that multiple transaction handler can subscribe to them.
  *
- * @package Netzmacht\Contao\Workflow\Transaction
+ * @package Netzmacht\Workflow\Transaction
  */
 class EventDispatchingTransactionHandler implements TransactionHandler
 {

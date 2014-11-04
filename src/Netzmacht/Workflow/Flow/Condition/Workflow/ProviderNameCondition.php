@@ -17,7 +17,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 /**
  * Class ProviderTypeCondition check if entity matches a specific provider.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Workflow\Condition
+ * @package Netzmacht\Workflow\Flow\Workflow\Condition
  */
 class ProviderNameCondition implements Condition
 {

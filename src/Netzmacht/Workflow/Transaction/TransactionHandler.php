@@ -14,7 +14,7 @@ namespace Netzmacht\Workflow\Transaction;
 /**
  * Interface TransactionHandler describes the commonly used transaction steps begin, commit and rollback.
  *
- * @package Netzmacht\Contao\Workflow\Transaction
+ * @package Netzmacht\Workflow\Transaction
  */
 interface TransactionHandler
 {

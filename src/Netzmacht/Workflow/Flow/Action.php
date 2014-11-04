@@ -19,7 +19,7 @@ use Netzmacht\Workflow\Form\Form;
 /**
  * Interface Action describes an action which is executed during transition.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\Workflow
  */
 interface Action
 {

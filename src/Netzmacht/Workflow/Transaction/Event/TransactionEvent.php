@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class TransactionEvent is dispatched by the event based transaction handler.
  *
- * @package Netzmacht\Contao\Workflow\Event
+ * @package Netzmacht\Workflow\Event
  */
 class TransactionEvent extends Event
 {

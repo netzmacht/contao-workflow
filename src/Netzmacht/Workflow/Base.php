@@ -14,7 +14,7 @@ namespace Netzmacht\Workflow;
 /**
  * Class Configurable is the base class for each flow elements.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 abstract class Base
 {

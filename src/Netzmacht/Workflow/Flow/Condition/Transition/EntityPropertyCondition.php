@@ -19,7 +19,7 @@ use Netzmacht\Workflow\Util\Comparison;
 /**
  * Class EntityPropertyCondition allows to define condition based on the entity properties.
  *
- * @package Netzmacht\Contao\Workflow\Flow\Transition\Condition
+ * @package Netzmacht\Workflow\Flow\Transition\Condition
  */
 class EntityPropertyCondition implements Condition
 {

@@ -16,7 +16,7 @@ use Netzmacht\Workflow\Base;
 /**
  * Class Role describes an user role.
  *
- * @package Netzmacht\Contao\Workflow\Acl
+ * @package Netzmacht\Workflow\Acl
  */
 class Role extends Base
 {

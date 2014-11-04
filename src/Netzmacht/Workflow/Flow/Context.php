@@ -7,7 +7,7 @@ use Netzmacht\Workflow\Data\ErrorCollection;
 /**
  * Class Context provides extra information for a transition.
  *
- * @package Netzmacht\Contao\Workflow\Flow
+ * @package Netzmacht\Workflow\Flow
  */
 class Context
 {

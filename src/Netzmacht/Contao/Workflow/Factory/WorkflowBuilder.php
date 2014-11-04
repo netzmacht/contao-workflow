@@ -29,7 +29,7 @@ use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
-use Netzmacht\Contao\Workflow\Manager;
+use Netzmacht\Workflow\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
