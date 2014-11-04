@@ -12,9 +12,9 @@
 namespace Netzmacht\Contao\Workflow\Event\Action;
 
 
-use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Item;
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Item;
 use Symfony\Component\EventDispatcher\Event;
 
 class ExecuteTransitionEvent extends Event
@@ -24,14 +24,14 @@ class ExecuteTransitionEvent extends Event
     /**
      * The executed transition.
      *
-     * @var Transition
+     * @var \Netzmacht\Workflow\Flow\Transition
      */
     private $transition;
 
     /**
      * The transition context.
      *
-     * @var Context
+     * @var \Netzmacht\Workflow\Flow\Context
      */
     private $context;
 
@@ -43,9 +43,9 @@ class ExecuteTransitionEvent extends Event
     private $item;
 
     /**
-     * @param Transition $transition The executed transition.
+     * @param \Netzmacht\Workflow\Flow\Transition $transition The executed transition.
      * @param Item       $item       The current item.
-     * @param Context    $context    The transition context.
+     * @param \Netzmacht\Workflow\Flow\Context    $context    The transition context.
      */
     public function __construct(Transition $transition, Item $item, Context $context)
     {
@@ -57,7 +57,7 @@ class ExecuteTransitionEvent extends Event
     /**
      * Get the context the transition is in.
      *
-     * @return Context
+     * @return \Netzmacht\Workflow\Flow\Context
      */
     public function getContext()
     {
@@ -77,7 +77,7 @@ class ExecuteTransitionEvent extends Event
     /**
      * Get the executed transition.
      *
-     * @return Transition
+     * @return \Netzmacht\Workflow\Flow\Transition
      */
     public function getTransition()
     {

@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

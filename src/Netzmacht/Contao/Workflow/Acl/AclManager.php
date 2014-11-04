@@ -11,7 +11,8 @@
 
 namespace Netzmacht\Contao\Workflow\Acl;
 
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Acl\Role;
 
 /**
  * Interface AclManager handles all roles for a workflow.

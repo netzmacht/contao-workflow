@@ -12,7 +12,8 @@
 namespace Netzmacht\Contao\Workflow\Acl;
 
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Acl\Role;
 
 /**
  * Class AbstractContaoAclManager implements the acl manager as base class for frontend/backend users.

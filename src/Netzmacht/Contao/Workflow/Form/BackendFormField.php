@@ -12,6 +12,8 @@
 namespace Netzmacht\Contao\Workflow\Form;
 
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\Properties\DefaultProperty;
+use Netzmacht\Workflow\Form\Form;
+use Netzmacht\Workflow\Form\FormField;
 
 class BackendFormField extends DefaultProperty implements FormField
 {

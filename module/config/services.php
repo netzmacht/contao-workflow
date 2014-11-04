@@ -3,7 +3,7 @@
 use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
 use Netzmacht\Contao\Workflow\Entity\EntityManager;
 use Netzmacht\Contao\Workflow\Factory;
-use Netzmacht\Contao\Workflow\Transaction\EventBasedTransactionHandler;
+use Netzmacht\Workflow\Transaction\EventDispatchingTransactionHandler;
 
 /** @var \Pimple $container */
 global $container;
@@ -31,7 +31,7 @@ $container['workflow.transition-handler-factory'] = $container->share(
 
 $container['workflow.transaction-handler'] = $container->share(
     function($container) {
-        return new EventBasedTransactionHandler($container['event-dispatcher']);
+        return new EventDispatchingTransactionHandler($container['event-dispatcher']);
     }
 );
 

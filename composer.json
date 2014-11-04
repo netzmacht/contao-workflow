@@ -35,7 +35,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "psr-0": { "Netzmacht\\Contao\\Workflow\\": "src/" }
+        "psr-0": { "Netzmacht\\Contao\\Workflow\\": "src/",
+            "Netzmacht\\Workflow\\": "src/"
+        }
     },
     "config": {
         "bin-dir": "bin"

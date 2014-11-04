@@ -15,7 +15,7 @@ use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateFormEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
@@ -91,7 +91,7 @@ class Factory
     /**
      * @param $type
      *
-     * @return Form\Form
+     * @return \Netzmacht\Workflow\Form\Form
      */
     public function createForm($type)
     {

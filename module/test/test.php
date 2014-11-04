@@ -1,9 +1,9 @@
 <?php
 
 use Netzmacht\Contao\Workflow\Factory;
-use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Form\Form;
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Item;
 
 define('TL_MODE', 'BE');
@@ -68,9 +68,9 @@ class MyAction extends \Netzmacht\Contao\Workflow\Action\AbstractAction
     /**
      * Transit will execute the action.
      *
-     * @param Transition $transition Current transition.
+     * @param \Netzmacht\Workflow\Flow\Transition $transition Current transition.
      * @param Item            $item       The passed item.
-     * @param Context    $context    Transition context.
+     * @param \Netzmacht\Workflow\Flow\Context    $context    Transition context.
      *
      * @return void
      */

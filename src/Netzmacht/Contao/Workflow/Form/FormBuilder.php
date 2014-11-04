@@ -11,6 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow\Form;
 
+use Netzmacht\Workflow\Form\Form;
+use Netzmacht\Workflow\Form\Form;
+
 /**
  * Interface FormBuilder describes the formbuilder being used to build the form instance.
  *

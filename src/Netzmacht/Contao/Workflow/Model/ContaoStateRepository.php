@@ -13,8 +13,9 @@ namespace Netzmacht\Contao\Workflow\Model;
 
 use Netzmacht\Contao\Workflow\Contao\Model\StateModel;
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
-use Netzmacht\Contao\Workflow\Entity\EntityId;
-use Netzmacht\Contao\Workflow\Model\State;
+use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\StateRepository;
+use Netzmacht\Workflow\Flow\State;
 
 /**
  * Class StateRepository stores workflow states.
@@ -65,7 +66,7 @@ class ContaoStateRepository implements StateRepository
     /**
      * {@inheritdoc}
      */
-    public function add(State $state)
+    public function add(\Netzmacht\Workflow\Flow\State $state)
     {
         $model = new StateModel();
 
@@ -92,14 +93,14 @@ class ContaoStateRepository implements StateRepository
      *
      * @param StateModel $model The state model.
      *
-     * @return State
+     * @return \Netzmacht\Workflow\Flow\State
      */
     private function createState(StateModel $model)
     {
         $reachedAt = new \DateTime();
         $reachedAt->setTimestamp($model->reachedAt);
 
-        $state = new State(
+        $state = new \Netzmacht\Workflow\Flow\State(
             EntityId::fromScalars($model->providerName, $model->entityId),
             $model->workflowName,
             $model->transitionName,

@@ -12,8 +12,8 @@
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
 
-use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;
 
 class CreateStepEvent extends Event
@@ -21,18 +21,18 @@ class CreateStepEvent extends Event
     const NAME = 'workflow.factory.create-step';
 
     /**
-     * @var Workflow
+     * @var \Netzmacht\Workflow\Flow\Workflow
      */
     private $workflow;
 
     /**
-     * @var Step
+     * @var \Netzmacht\Workflow\Flow\Step
      */
     private $step;
 
     /**
      * @param Workflow $workflow
-     * @param Step     $step
+     * @param \Netzmacht\Workflow\Flow\Step     $step
      */
     public function __construct(Workflow $workflow, Step $step)
     {

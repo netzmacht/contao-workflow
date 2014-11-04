@@ -11,8 +11,8 @@
 
 namespace Netzmacht\Contao\Workflow\Action;
 
-use Netzmacht\Contao\Workflow\Action;
-use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Flow\Transition;
 use Netzmacht\Contao\Workflow\Item;
 

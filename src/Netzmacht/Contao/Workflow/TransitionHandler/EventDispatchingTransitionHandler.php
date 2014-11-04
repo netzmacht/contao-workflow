@@ -11,19 +11,19 @@
 
 namespace Netzmacht\Contao\Workflow\TransitionHandler;
 
-use Netzmacht\Contao\Workflow\Event\TransitionHandler\BuildFormEvent;
-use Netzmacht\Contao\Workflow\Event\TransitionHandler\ValidateTransitionEvent;
-use Netzmacht\Contao\Workflow\Event\TransitionHandler\StepReachedEvent;
+use Netzmacht\Workflow\Handler\Event\BuildFormEvent;
+use Netzmacht\Workflow\Handler\Event\ValidateTransitionEvent;
+use Netzmacht\Workflow\Handler\Event\PostTransitionEvent;
 use Netzmacht\Contao\Workflow\Flow;
-use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
 use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Form\Form;
-use Netzmacht\Contao\Workflow\Item;
-use Netzmacht\Contao\Workflow\Model\State;
-use Netzmacht\Contao\Workflow\TransitionHandler;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Form\Form;
+use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Flow\State;
+use Netzmacht\Workflow\Handler\TransitionHandler;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
@@ -36,7 +36,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * The transition handler being internally used.
      *
-     * @var TransitionHandler
+     * @var \Netzmacht\Workflow\Flow\\Netzmacht\Workflow\\Netzmacht\Workflow\Handler\TransitionHandler
      */
     private $transitionHandler;
 
@@ -71,7 +71,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Construct.
      *
-     * @param TransitionHandler $transitionHandler The internally used transition handler.
+     * @param \Netzmacht\Workflow\Flow\\Netzmacht\Workflow\\Netzmacht\Workflow\Handler\TransitionHandler $transitionHandler The internally used transition handler.
      * @param EventDispatcher   $eventDispatcher   The event dispatcher for dispatching the evens.
      */
     public function __construct(TransitionHandler $transitionHandler, EventDispatcher $eventDispatcher)
@@ -83,7 +83,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Get the workflow.
      *
-     * @return Workflow
+     * @return \Netzmacht\Workflow\Flow\Workflow
      */
     public function getWorkflow()
     {
@@ -124,7 +124,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Get the transition.
      *
-     * @return Transition
+     * @return \Netzmacht\Workflow\Flow\Transition
      *
      * @throws \Netzmacht\Contao\Workflow\Exception\Flow\TransitionNotFoundException If transition was not found.
      */
@@ -136,7 +136,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Get current step. Will return null if workflow is not started yet.
      *
-     * @return Flow\Step|null
+     * @return \Netzmacht\Workflow\Flow\Step|null
      */
     public function getCurrentStep()
     {
@@ -170,7 +170,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     /**
      * Get the context.
      *
-     * @return Context
+     * @return \Netzmacht\Workflow\Flow\Context
      */
     public function getContext()
     {
@@ -234,7 +234,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
      */
     private function dispatchStepReachedEvent(State $state)
     {
-        $event = new StepReachedEvent($this->getWorkflow(), $this->getItem(), $state);
+        $event = new PostTransitionEvent($this->getWorkflow(), $this->getItem(), $state);
         $this->eventDispatcher->dispatch($event::NAME, $event);
     }
 }

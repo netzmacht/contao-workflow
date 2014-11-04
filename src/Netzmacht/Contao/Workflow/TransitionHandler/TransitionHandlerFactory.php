@@ -13,12 +13,13 @@ namespace Netzmacht\Contao\Workflow\TransitionHandler;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\InputProvider;
 use Netzmacht\Contao\Workflow\Entity\EntityManager;
-use Netzmacht\Contao\Workflow\Flow\Context;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Item;
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
-use Netzmacht\Contao\Workflow\Transaction\TransactionHandler;
-use Netzmacht\Contao\Workflow\TransitionHandler;
+use Netzmacht\Workflow\Handler\AbstractTransitionHandler;
+use Netzmacht\Workflow\Transaction\TransactionHandler;
+use Netzmacht\Workflow\Handler\TransitionHandler;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
@@ -38,7 +39,7 @@ class TransitionHandlerFactory
     /**
      * The transaction handler.
      *
-     * @var TransactionHandler
+     * @var \Netzmacht\Workflow\Transaction\TransactionHandler
      */
     private $transactionHandler;
 
@@ -60,7 +61,7 @@ class TransitionHandlerFactory
      * Construct.
      *
      * @param EntityManager      $entityManager      The entity manager.
-     * @param TransactionHandler $transactionHandler The transaction handler.
+     * @param \Netzmacht\Workflow\Transaction\TransactionHandler $transactionHandler The transaction handler.
      * @param EventDispatcher    $eventDispatcher    THe event dispatcher.
      */
     public function __construct(
@@ -76,13 +77,13 @@ class TransitionHandlerFactory
     /**
      * Create a new transition handler.
      *
-     * @param Item            $item            Current workflow item.
+     * @param \Netzmacht\Workflow\Flow\Item            $item            Current workflow item.
      * @param Workflow        $workflow        Current workflow.
      * @param string          $transitionName  Transition which shall be handled.
      * @param string          $providerName    The provider name.
      * @param StateRepository $stateRepository The state repository.
      *
-     * @return TransitionHandler
+     * @return \Netzmacht\Workflow\\Netzmacht\Workflow\Handler\TransitionHandler
      */
     public function createTransitionHandler(
         Item $item,
@@ -123,13 +124,13 @@ class TransitionHandlerFactory
     /**
      * Create the simple transition handler.
      *
-     * @param Item            $item            The workflow item.
+     * @param \Netzmacht\Workflow\Flow\Item            $item            The workflow item.
      * @param Workflow        $workflow        The workflow.
      * @param string          $transitionName  The name of the current transition.
      * @param string          $providerName    The name name of current provider.
      * @param StateRepository $stateRepository The state repository.
      *
-     * @return SimpleTransitionHandler
+     * @return AbstractTransitionHandler
      */
     private function createSimpleTransitionHandler(
         Item $item,
@@ -138,7 +139,7 @@ class TransitionHandlerFactory
         $providerName,
         StateRepository $stateRepository
     ) {
-        return new SimpleTransitionHandler(
+        return new AbstractTransitionHandler(
             $item,
             $workflow,
             $transitionName,

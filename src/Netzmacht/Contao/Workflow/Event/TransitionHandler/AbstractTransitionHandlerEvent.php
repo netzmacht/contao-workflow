@@ -12,8 +12,8 @@
 namespace Netzmacht\Contao\Workflow\Event\TransitionHandler;
 
 
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Item;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -56,7 +56,7 @@ class AbstractTransitionHandlerEvent extends Event
     }
 
     /**
-     * @return Transition
+     * @return \Netzmacht\Workflow\Flow\Transition
      */
     public function getTransition()
     {

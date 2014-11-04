@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
-use Netzmacht\Contao\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\EventDispatcher\Event;
 
 class CreateTransitionEvent extends Event
@@ -19,14 +19,14 @@ class CreateTransitionEvent extends Event
     const NAME = 'workflow.factory.create-transition';
 
     /**
-     * @var Transition
+     * @var \Netzmacht\Workflow\Flow\Transition
      */
     private $transition;
 
     /**
      * Construct.
      *
-     * @param Transition $transition
+     * @param \Netzmacht\Workflow\Flow\Transition $transition
      */
     function __construct(Transition $transition)
     {
@@ -34,7 +34,7 @@ class CreateTransitionEvent extends Event
     }
 
     /**
-     * @return Transition
+     * @return \Netzmacht\Workflow\Flow\Transition
      */
     public function getTransition()
     {

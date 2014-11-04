@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Acl;
 
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class BackendAclManager implements the acl manager for backend users.

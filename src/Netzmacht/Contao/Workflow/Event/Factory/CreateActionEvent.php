@@ -11,9 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
-use Netzmacht\Contao\Workflow\Action;
+use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Workflow;
 
 class CreateActionEvent
 {
@@ -31,14 +31,14 @@ class CreateActionEvent
 
     /**
      * Workflow the action is in
-     * @var Workflow
+     * @var \Netzmacht\Workflow\Flow\Workflow
      */
     private $workflow;
 
     /**
      * Construct.
      *
-     * @param Workflow    $workflow Current workflow.
+     * @param \Netzmacht\Workflow\Flow\Workflow    $workflow Current workflow.
      * @param ActionModel $model    Action model.
      */
     function __construct(Workflow $workflow, ActionModel $model)

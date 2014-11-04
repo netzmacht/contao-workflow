@@ -11,8 +11,8 @@
 
 namespace Netzmacht\Contao\Workflow\Action;
 
-use Netzmacht\Contao\Workflow\Action;
-use Netzmacht\Contao\Workflow\Form\Form;
+use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\Workflow\Form\Form;
 use Netzmacht\Contao\Workflow\Form\FormBuilder;
 use Netzmacht\Contao\Workflow\Item;
 

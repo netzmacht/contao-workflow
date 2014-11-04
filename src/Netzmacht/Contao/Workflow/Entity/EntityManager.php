@@ -16,7 +16,7 @@ use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
 use Netzmacht\Contao\Workflow\Contao\DataContainer;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateEntityRepositoryEvent;
 use Netzmacht\Contao\Workflow\Model\ContaoStateRepository;
-use Netzmacht\Contao\Workflow\Model\StateRepository;
+use Netzmacht\Workflow\Data\StateRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

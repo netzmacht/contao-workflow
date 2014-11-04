@@ -26,7 +26,9 @@ use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
 use Netzmacht\Contao\Workflow\ErrorCollection;
-use Netzmacht\Contao\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Form\Form;
+use Netzmacht\Workflow\Form\FormField;
 
 /**
  * Form implementation for a backend form.
@@ -126,7 +128,7 @@ class BackendForm implements Form
     /**
      * Validate the form.
      *
-     * @param Context $context
+     * @param \Netzmacht\Workflow\Flow\Context $context
      *
      * @return bool
      */
@@ -340,7 +342,7 @@ class BackendForm implements Form
     }
 
     /**
-     * @param Context $context
+     * @param \Netzmacht\Workflow\Flow\Context $context
      */
     private function updateContext(Context $context)
     {

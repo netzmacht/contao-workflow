@@ -5,7 +5,9 @@ namespace Netzmacht\Contao\Workflow;
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Exception\Flow\WorkflowException;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Handler\TransitionHandler;
+use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Contao\Workflow\Model\StateRepository;
 use Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory;
 
@@ -45,7 +47,7 @@ class Manager
      *
      * @param TransitionHandlerFactory $handlerFactory  The transition handler factory.
      * @param StateRepository          $stateRepository The state repository.
-     * @param Workflow[]|array         $workflows       The set of managed workflows.
+     * @param \Netzmacht\Workflow\Flow\Workflow[]|array         $workflows       The set of managed workflows.
      */
     public function __construct(
         TransitionHandlerFactory $handlerFactory,
@@ -97,7 +99,7 @@ class Manager
     /**
      * Add a workflow to the manager.
      *
-     * @param Workflow $workflow The workflow being added.
+     * @param \Netzmacht\Workflow\Flow\Workflow $workflow The workflow being added.
      *
      * @return $this
      */
@@ -183,14 +185,14 @@ class Manager
     {
         $stateHistory = $this->stateRepository->find($entity->getProviderName(), $entity->getId());
 
-        return Item::restore($entity, $stateHistory);
+        return Item::reconstitute($entity, $stateHistory);
     }
 
     /**
      * Guard that already started workflow is the same which is tried to be ran now.
      *
      * @param Item     $item     Current workflow item.
-     * @param Workflow $workflow Selected workflow.
+     * @param \Netzmacht\Workflow\Flow\Workflow $workflow Selected workflow.
      *
      * @throws WorkflowException If item workflow is not the same as current workflow.
      *

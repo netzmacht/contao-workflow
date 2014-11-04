@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
 
-use Netzmacht\Contao\Workflow\Form\Form;
+use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\Event;
 
 class CreateFormEvent extends Event
@@ -20,7 +20,7 @@ class CreateFormEvent extends Event
     const NAME = 'workflow.factory.create-form';
 
     /**
-     * @var Form
+     * @var \Netzmacht\Workflow\Form\Form
      */
     private $form;
 
@@ -38,7 +38,7 @@ class CreateFormEvent extends Event
     }
 
     /**
-     * @return Form
+     * @return \Netzmacht\Workflow\Form\Form
      */
     public function getForm()
     {
@@ -46,7 +46,7 @@ class CreateFormEvent extends Event
     }
 
     /**
-     * @param Form $form
+     * @param \Netzmacht\Workflow\Form\Form $form
      *
      * @return $this
      */

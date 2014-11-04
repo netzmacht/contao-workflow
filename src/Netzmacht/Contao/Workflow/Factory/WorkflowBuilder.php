@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Factory;
 
 use Model\Collection;
-use Netzmacht\Contao\Workflow\Acl\Role;
+use Netzmacht\Workflow\Acl\Role;
 use Netzmacht\Contao\Workflow\Action\EventDispatcherAction;
 use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
@@ -25,10 +25,10 @@ use Netzmacht\Contao\Workflow\Event\Factory\CreateTransitionEvent;
 use Netzmacht\Contao\Workflow\Factory;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateManagerEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateWorkflowEvent;
-use Netzmacht\Contao\Workflow\Flow\Step;
-use Netzmacht\Contao\Workflow\Flow\Transition;
-use Netzmacht\Contao\Workflow\Flow\Workflow;
-use Netzmacht\Contao\Workflow\Flow\Condition\Workflow\ProviderTypeCondition;
+use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
 use Netzmacht\Contao\Workflow\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -131,13 +131,13 @@ class WorkflowBuilder implements EventSubscriberInterface
      */
     private function createDefaultConditions(Workflow $workflow)
     {
-        $workflow->addCondition(new ProviderTypeCondition());
+        $workflow->addCondition(new ProviderNameCondition());
     }
 
     /**
      * Create
      *
-     * @param Workflow $workflow
+     * @param \Netzmacht\Workflow\Flow\Workflow $workflow
      */
     private function createSteps(Workflow $workflow)
     {
@@ -190,7 +190,7 @@ class WorkflowBuilder implements EventSubscriberInterface
     /**
      * Create roles from database.
      *
-     * @param Workflow $workflow
+     * @param \Netzmacht\Workflow\Flow\Workflow $workflow
      */
     private function createRoles(Workflow $workflow)
     {
@@ -208,7 +208,7 @@ class WorkflowBuilder implements EventSubscriberInterface
      * Add roles to transition.
      *
      * @param Collection $collection
-     * @param Transition $transition
+     * @param \Netzmacht\Workflow\Flow\Transition $transition
      */
     private function addRolesToTransition($collection, Transition $transition)
     {
