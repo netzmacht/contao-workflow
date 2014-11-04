@@ -13,7 +13,7 @@ namespace Netzmacht\Contao\Workflow\TransitionHandler;
 
 use Netzmacht\Contao\Workflow\Event\TransitionHandler\BuildFormEvent;
 use Netzmacht\Contao\Workflow\Event\TransitionHandler\ValidateTransitionEvent;
-use Netzmacht\Contao\Workflow\Event\TransitionHandler\SepReachedEvent;
+use Netzmacht\Contao\Workflow\Event\TransitionHandler\StepReachedEvent;
 use Netzmacht\Contao\Workflow\Flow;
 use Netzmacht\Contao\Workflow\Flow\Context;
 use Netzmacht\Contao\Workflow\Exception\Flow\InvalidTransitionException;
@@ -34,35 +34,47 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
 class EventDispatchingTransitionHandler implements TransitionHandler
 {
     /**
+     * The transition handler being internally used.
+     *
      * @var TransitionHandler
      */
     private $transitionHandler;
 
     /**
+     * The event dispatcher.
+     *
      * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
+     * Store if form was built.
+     *
      * @var bool
      */
     private $formBuilt;
 
     /**
+     * Store if input is required.
+     *
      * @var bool
      */
     private $isInputRequired;
 
     /**
+     * Store if transition got validated.
+     *
      * @var bool
      */
     private $validated;
 
     /**
-     * @param TransitionHandler $transitionHandler
-     * @param EventDispatcher   $eventDispatcher
+     * Construct.
+     *
+     * @param TransitionHandler $transitionHandler The internally used transition handler.
+     * @param EventDispatcher   $eventDispatcher   The event dispatcher for dispatching the evens.
      */
-    function __construct(TransitionHandler $transitionHandler, EventDispatcher $eventDispatcher)
+    public function __construct(TransitionHandler $transitionHandler, EventDispatcher $eventDispatcher)
     {
         $this->transitionHandler = $transitionHandler;
         $this->eventDispatcher   = $eventDispatcher;
@@ -103,7 +115,7 @@ class EventDispatchingTransitionHandler implements TransitionHandler
             $this->eventDispatcher->dispatch($event::NAME, $event);
 
             $this->isInputRequired = $event->isInputRequired();
-            $this->formBuilt = true;
+            $this->formBuilt       = true;
         }
 
         return $form;
@@ -198,24 +210,11 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     }
 
     /**
-     * @return State
-     * @throws InvalidTransitionException
-     * @throws WorkflowException
-     * @throws \Exception
-     */
-    public function start()
-    {
-        $state = $this->transitionHandler->start();
-        $this->dispatchStepReachedEvent($state);
-
-        return $state;
-    }
-
-    /**
      * Transit to next step.
      *
-     * @throws InvalidTransitionException
-     * @throws \Exception If some actions throws an unknown exception.
+     * @throws InvalidTransitionException If transition does not exists or is not allowed to be called.
+     * @throws \Exception                 If some actions throws an unknown exception.
+     *
      * @return State
      */
     public function transit()
@@ -227,11 +226,15 @@ class EventDispatchingTransitionHandler implements TransitionHandler
     }
 
     /**
-     * @param $state
+     * Dispatch a step reached event.
+     *
+     * @param State $state State being reached.
+     *
+     * @return void
      */
-    private function dispatchStepReachedEvent($state)
+    private function dispatchStepReachedEvent(State $state)
     {
-        $event = new SepReachedEvent($this->getWorkflow(), $this->getItem(), $state);
+        $event = new StepReachedEvent($this->getWorkflow(), $this->getItem(), $state);
         $this->eventDispatcher->dispatch($event::NAME, $event);
     }
 }

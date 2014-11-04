@@ -13,6 +13,7 @@ namespace Netzmacht\Contao\Workflow\Model;
 
 use Netzmacht\Contao\Workflow\Contao\Model\StateModel;
 use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
+use Netzmacht\Contao\Workflow\Entity\EntityId;
 use Netzmacht\Contao\Workflow\Model\State;
 
 /**
@@ -67,6 +68,7 @@ class ContaoStateRepository implements StateRepository
     public function add(State $state)
     {
         $model = new StateModel();
+
         $model->workflowName   = $state->getWorkflowName();
         $model->entityId       = $state->getEntityId();
         $model->providerName   = $state->getProviderName();
@@ -83,8 +85,6 @@ class ContaoStateRepository implements StateRepository
         $property  = $reflector->getProperty('stateId');
         $property->setAccessible(true);
         $property->setValue($state, $model->id);
-
-        var_dump($state);
     }
 
     /**
@@ -100,8 +100,7 @@ class ContaoStateRepository implements StateRepository
         $reachedAt->setTimestamp($model->reachedAt);
 
         $state = new State(
-            $model->entityId,
-            $model->providerName,
+            EntityId::fromScalars($model->providerName, $model->entityId),
             $model->workflowName,
             $model->transitionName,
             $model->stepName,

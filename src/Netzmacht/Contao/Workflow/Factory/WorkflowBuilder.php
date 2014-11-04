@@ -248,6 +248,8 @@ class WorkflowBuilder implements EventSubscriberInterface
 
     /**
      * @return EventDispatcher
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getEventDispatcher()
     {
@@ -257,6 +259,7 @@ class WorkflowBuilder implements EventSubscriberInterface
 
     /**
      * @return \Pimple
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getContainer()
     {

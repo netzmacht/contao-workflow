@@ -113,7 +113,7 @@ class BackendForm implements Form
         $this->environment = new DefaultEnvironment();
         $this->environment->setDataDefinition($container);
         $this->environment->setInputProvider(new InputProvider());
-        $this->environment->setEventPropagator(new EventPropagator($GLOBALS['container']['event-dispatcher']));
+        $this->environment->setEventPropagator($this->getEventDispatcher());
 
         $controller = new DefaultController();
         $controller->setEnvironment($this->environment);
@@ -202,6 +202,8 @@ class BackendForm implements Form
 
     /**
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function render()
     {
@@ -231,7 +233,7 @@ class BackendForm implements Form
      */
     private function buildWidgets()
     {
-        foreach ($this->fields as $fieldset => $fields) {
+        foreach ($this->fields as $fields) {
             foreach ($fields as $fieldName) {
                 $this->widgets[$fieldName] = $this->widgetManager->getWidget($fieldName, $this->propertyValues);
             }
@@ -358,5 +360,15 @@ class BackendForm implements Form
                 );
             }
         }
+    }
+
+    /**
+     * @return EventPropagator
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function getEventDispatcher()
+    {
+        return new EventPropagator($GLOBALS['container']['event-dispatcher']);
     }
 }

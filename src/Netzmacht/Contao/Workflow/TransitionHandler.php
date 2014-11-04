@@ -88,27 +88,20 @@ interface TransitionHandler
     /**
      * Validate the input.
      *
-     * @param Form $form
+     * @param Form $form The transition form instance.
      *
      * @return bool
      */
     public function validate(Form $form);
 
     /**
-     * @return State
-     * @throws InvalidTransitionException
-     * @throws WorkflowException
-     * @throws \Exception
-     */
-    public function start();
-
-    /**
      * Transit to next step.
      *
-     * @throws InvalidTransitionException
-     * @throws \Exception If some actions throws an unknown exception.
+     * @throws InvalidTransitionException If a invalid transition was called.
+     * @throws WorkflowException          For a workflow specific error.
+     * @throws \Exception                 For any error caused maybe by 3rd party code in the actions.
+     *
      * @return State
      */
     public function transit();
-
 }

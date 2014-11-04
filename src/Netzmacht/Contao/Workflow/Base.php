@@ -132,7 +132,7 @@ abstract class Base
     public function addConfig(array $values)
     {
         foreach ($values as $name => $value) {
-            $this->setConfigValue($name, $values);
+            $this->setConfigValue($name, $value);
         }
 
         return $this;

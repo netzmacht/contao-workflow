@@ -14,6 +14,11 @@ namespace Netzmacht\Contao\Workflow;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Contao\Workflow\Model\State;
 
+/**
+ * Class Item stores workflow related data of an entity. It knows the state history and the current state.
+ *
+ * @package Netzmacht\Contao\Workflow
+ */
 class Item
 {
     /**
@@ -47,19 +52,17 @@ class Item
     /**
      * Construct. Do not used constructor. Use named constructor static methods.
      *
-     * @param Entity $entity       The entity for which the workflow is started.
-     *
-     * @return Item
+     * @param Entity $entity The entity for which the workflow is started.
      */
     protected function __construct(Entity $entity)
     {
-        $this->entity       = $entity;
+        $this->entity = $entity;
     }
 
     /**
      * Start a new workflow.
      *
-     * @param Entity $entity       The entity for which the workflow is started.
+     * @param Entity $entity The entity for which the workflow is started.
      *
      * @return Item
      */
@@ -72,7 +75,7 @@ class Item
      * Restore an existing item.
      *
      * @param Entity        $entity       The entity.
-     * @param State[]|array $stateHistory Set or already passed states
+     * @param State[]|array $stateHistory Set or already passed states.
      *
      * @return Item
      */
@@ -109,6 +112,8 @@ class Item
     }
 
     /**
+     * Get the name of the current step.
+     *
      * @return string
      */
     public function getCurrentStepName()
@@ -117,6 +122,8 @@ class Item
     }
 
     /**
+     * Get the entity.
+     *
      * @return Entity
      */
     public function getEntity()
@@ -125,6 +132,8 @@ class Item
     }
 
     /**
+     * Get the state history.
+     *
      * @return array|Model\State[]
      */
     public function getStateHistory()
@@ -135,7 +144,7 @@ class Item
     /**
      * Get latest successful state.
      *
-     * @param bool $successfulOnly Return only success ful steps
+     * @param bool $successfulOnly Return only success ful steps.
      *
      * @return bool|State
      */
@@ -145,7 +154,7 @@ class Item
             return end($this->stateHistory);
         }
 
-        for ($index = count($this->stateHistory) - 1; $index >= 0; $index--) {
+        for ($index = (count($this->stateHistory) - 1); $index >= 0; $index--) {
             if ($this->stateHistory[$index]->isSuccessful()) {
                 return $this->stateHistory[$index];
             }

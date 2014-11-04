@@ -181,7 +181,7 @@ class SimpleTransitionHandler implements TransitionHandler
      */
     public function getCurrentStep()
     {
-        if($this->isWorkflowStarted()) {
+        if ($this->isWorkflowStarted()) {
             $stepName = $this->item->getCurrentStepName();
 
             return $this->workflow->getStep($stepName);
@@ -223,7 +223,7 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Validate the input.
      *
-     * @param Form $form
+     * @param Form $form The transition form.
      *
      * @return bool
      */
@@ -237,8 +237,7 @@ class SimpleTransitionHandler implements TransitionHandler
         if (!$this->validated) {
             if ($this->requiresInputData()) {
                 $this->validated = $this->getForm()->validate($this->context);
-            }
-            else {
+            } else {
                 $this->validated = true;
             }
         }
@@ -247,41 +246,48 @@ class SimpleTransitionHandler implements TransitionHandler
     }
 
     /**
-     * @return State
-     * @throws InvalidTransitionException
-     * @throws WorkflowException
-     * @throws \Exception
-     */
-    public function start()
-    {
-        $this->guardNotStarted();
-        $this->guardValidated();
-
-        return $this->doStateTransition(
-            function(Workflow $workflow, Item $item, Context $context) {
-                return $workflow->start($item, $context);
-            }
-        );
-    }
-
-    /**
      * Transit to next step.
      *
-     * @throws InvalidTransitionException
-     * @throws \Exception If some actions throws an unknown exception.
+     * @throws InvalidTransitionException If an invalid transition was requested.
+     * @throws \Exception                 If some actions throws an unknown exception.
      *
      * @return State
      */
     public function transit()
     {
+        // it's a start transition.
+        if (!$this->transitionName) {
+            return $this->start();
+        }
+
         $this->guardAllowedTransition($this->transitionName);
         $this->guardValidated();
 
         $transitionName = $this->transitionName;
 
         return $this->doStateTransition(
-            function (Workflow $workflow, Item $item, Context $context) use ($transitionName){
+            function (Workflow $workflow, Item $item, Context $context) use ($transitionName) {
                 return $workflow->transit($item, $transitionName, $context);
+            }
+        );
+    }
+
+    /**
+     * Start a transition.
+     *
+     * @return State
+     *
+     * @throws InvalidTransitionException If an invalid transition was requested.
+     * @throws \Exception                 If some actions throws an unknown exception.
+     */
+    private function start()
+    {
+        $this->guardNotStarted();
+        $this->guardValidated();
+
+        return $this->doStateTransition(
+            function (Workflow $workflow, Item $item, Context $context) {
+                return $workflow->start($item, $context);
             }
         );
     }
@@ -289,7 +295,8 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Build the form for a transition.
      *
-     * @throws TransitionNotFoundException
+     * @throws TransitionNotFoundException If transition is not found.
+     *
      * @return void
      */
     private function buildForm()
@@ -301,10 +308,12 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Execute a state transition. Transition will be handled as an transaction.
      *
-     * @param callable $processor
+     * @param callable $processor The processor being called to transist.
      *
      * @return State
-     * @throws \Exception
+     *
+     * @throws InvalidTransitionException If an invalid transition was requested.
+     * @throws \Exception                 If some actions throws an unknown exception.
      */
     private function doStateTransition($processor)
     {
@@ -329,14 +338,16 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Guard that transition was validated before.
      *
-     * @throws WorkflowException
+     * @throws WorkflowException If transition.
      *
      * @return void
      */
     private function guardValidated()
     {
-        if (!$this->validated) {
-            throw new WorkflowException('Transition has to be validated.');
+        if ($this->validated === null) {
+            throw new WorkflowException('Transition was not validated so far.');
+        } elseif (!$this->validated) {
+            throw new WorkflowException('Transition is in a invalid state and can\'t be processed.');
         }
     }
 
@@ -352,7 +363,8 @@ class SimpleTransitionHandler implements TransitionHandler
     private function guardAllowedTransition($transitionName)
     {
         if (!$this->isWorkflowStarted()) {
-            throw new WorkflowException(sprintf(
+            throw new WorkflowException(
+                sprintf(
                     'Not allowed to process transition "%s". Workflow "%s" not started for item "%s::%s"',
                     $transitionName,
                     $this->workflow->getName(),
@@ -365,7 +377,8 @@ class SimpleTransitionHandler implements TransitionHandler
         $step = $this->getCurrentStep();
 
         if (!$step->isTransitionAllowed($transitionName)) {
-            throw new WorkflowException(sprintf(
+            throw new WorkflowException(
+                sprintf(
                     'Not allowed to process transition "%s". Transition is not allowed in step "%s"',
                     $transitionName,
                     $step->getName()
@@ -377,14 +390,15 @@ class SimpleTransitionHandler implements TransitionHandler
     /**
      * Guard that workflow was not started.
      *
-     * @throws WorkflowException If workflow was started
+     * @throws WorkflowException If workflow was started.
      *
      * @return void
      */
     private function guardNotStarted()
     {
         if ($this->isWorkflowStarted()) {
-            throw new WorkflowException(sprintf(
+            throw new WorkflowException(
+                sprintf(
                     'Workflow "%s" for item "%s::%s" is already started',
                     $this->workflow->getName(),
                     $this->item->getEntity()->getProviderName(),
@@ -393,5 +407,4 @@ class SimpleTransitionHandler implements TransitionHandler
             );
         }
     }
-
 }

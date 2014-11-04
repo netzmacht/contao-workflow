@@ -43,9 +43,9 @@ class Manager
     /**
      * Construct.
      *
-     * @param TransitionHandlerFactory $handlerFactory
-     * @param StateRepository          $stateRepository
-     * @param Workflow[]|array         $workflows The set of managed workflows.
+     * @param TransitionHandlerFactory $handlerFactory  The transition handler factory.
+     * @param StateRepository          $stateRepository The state repository.
+     * @param Workflow[]|array         $workflows       The set of managed workflows.
      */
     public function __construct(
         TransitionHandlerFactory $handlerFactory,
@@ -64,14 +64,14 @@ class Manager
      *
      * If no matching workflow definition is found false will be returned.
      *
-     * @param Item   $item
+     * @param Item   $item           The current workflow item.
      * @param string $transitionName Transition name, required if workflow has already started.
      *
-     * @throws WorkflowException
+     * @throws WorkflowException If something went wrong.
      *
      * @return bool|TransitionHandler
      */
-    public function handle(Item $item, $transitionName = null, $formType = 'default')
+    public function handle(Item $item, $transitionName = null)
     {
         $entity   = $item->getEntity();
         $workflow = $this->getWorkflow($entity);
@@ -173,7 +173,9 @@ class Manager
     }
 
     /**
-     * @param Entity $entity
+     * Create the item for an entity.
+     *
+     * @param Entity $entity Current entity.
      *
      * @return Item
      */
@@ -185,12 +187,14 @@ class Manager
     }
 
     /**
-     * Guard that already started workflow is the same which is tried to be runned now.
+     * Guard that already started workflow is the same which is tried to be ran now.
      *
      * @param Item     $item     Current workflow item.
      * @param Workflow $workflow Selected workflow.
      *
-     * @throws WorkflowException
+     * @throws WorkflowException If item workflow is not the same as current workflow.
+     *
+     * @return void
      */
     private function guardSameWorkflow(Item $item, Workflow $workflow)
     {

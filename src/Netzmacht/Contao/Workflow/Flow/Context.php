@@ -2,7 +2,6 @@
 
 namespace Netzmacht\Contao\Workflow\Flow;
 
-use ContaoCommunityAlliance\DcGeneral\InputProviderInterface as InputProvider;
 use Netzmacht\Contao\Workflow\ErrorCollection;
 
 /**
@@ -18,13 +17,6 @@ class Context
      * @var array
      */
     private $properties = array();
-
-    /**
-     * The input provider.
-     *
-     * @var InputProvider
-     */
-    private $inputProvider;
 
     /**
      * Errors being raised during transition.
@@ -44,13 +36,11 @@ class Context
     /**
      * Construct.
      *
-     * @param InputProvider $inputProvider The input provider.
-     * @param array         $properties    The properties to be stored.
-     * @param array         $params        The given parameters.
+     * @param array $properties The properties to be stored.
+     * @param array $params     The given parameters.
      */
-    public function __construct(InputProvider $inputProvider, array $properties = array(), array $params = array())
+    public function __construct(array $properties = array(), array $params = array())
     {
-        $this->inputProvider   = $inputProvider;
         $this->properties      = $properties;
         $this->params          = $params;
         $this->errorCollection = new ErrorCollection();
@@ -107,16 +97,6 @@ class Context
     public function getProperties()
     {
         return $this->properties;
-    }
-
-    /**
-     * Get the input provider.
-     *
-     * @return InputProvider
-     */
-    public function getInputProvider()
-    {
-        return $this->inputProvider;
     }
 
     /**

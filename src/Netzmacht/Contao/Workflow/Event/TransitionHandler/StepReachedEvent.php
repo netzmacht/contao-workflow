@@ -17,7 +17,7 @@ use Netzmacht\Contao\Workflow\Item;
 use Netzmacht\Contao\Workflow\Model\State;
 use Symfony\Component\EventDispatcher\Event;
 
-class SepReachedEvent extends Event
+class StepReachedEvent extends Event
 {
     const NAME = 'workflow.transition.handler.step-reached';
 
@@ -41,9 +41,11 @@ class SepReachedEvent extends Event
      * @param Item     $item
      * @param State    $state
      */
-    function __construct(Workflow $workflow, Item $item, State $state)
+    public function __construct(Workflow $workflow, Item $item, State $state)
     {
-        $this->state = $state;
+        $this->state    = $state;
+        $this->workflow = $workflow;
+        $this->item     = $item;
     }
 
     /**
