@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Contao\Dca\Common',
+                'Netzmacht\Workflow\Contao\Dca\Table\Common',
                 'generateRow'
             )
         ),
@@ -88,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',

@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'headerFields' => array('name', 'type', 'description'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Contao\Dca\Common',
+                'Netzmacht\Workflow\Contao\Dca\Table\Common',
                 'generateRow'
             )
         ),
@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'exclude'   => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'Netzmacht\Workflow\Contao\Dca\Table\Role',
                 'getUsers',
             ),
             'eval'      => array(
@@ -144,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'exclude'   => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'Netzmacht\Workflow\Contao\Dca\Table\Role',
                 'getUserGroups',
             ),
             'eval'      => array(
@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'exclude'   => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'Netzmacht\Workflow\Contao\Dca\Table\Role',
                 'getMembers',
             ),
             'eval'      => array(
@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_workflow_role'] = array
             'exclude'   => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Role',
+                'Netzmacht\Workflow\Contao\Dca\Table\Role',
                 'getMemberGroups',
             ),
             'eval'      => array(

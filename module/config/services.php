@@ -14,6 +14,12 @@ $container['workflow.factory'] = $container->share(
     }
 );
 
+$container['worfklow.database.connection'] = $container->share(
+    function() {
+        return \Database::getInstance();
+    }
+);
+
 $container['workflow.transition-handler-factory'] = $container->share(
     function($container) {
         $factory = new \Netzmacht\Contao\Workflow\TransitionHandler\TransitionHandlerFactory(

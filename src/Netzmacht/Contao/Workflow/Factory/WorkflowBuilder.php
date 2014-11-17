@@ -12,13 +12,13 @@
 namespace Netzmacht\Contao\Workflow\Factory;
 
 use Model\Collection;
-use Netzmacht\Workflow\Acl\Role;
+use Netzmacht\Workflow\Security\Role;
 use Netzmacht\Contao\Workflow\Action\EventDispatcherAction;
-use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
-use Netzmacht\Contao\Workflow\Contao\Model\RoleModel;
-use Netzmacht\Contao\Workflow\Contao\Model\StepModel;
-use Netzmacht\Contao\Workflow\Contao\Model\TransitionModel;
-use Netzmacht\Contao\Workflow\Contao\Model\WorkflowModel;
+use Netzmacht\Workflow\Contao\Model\ActionModel;
+use Netzmacht\Workflow\Contao\Model\RoleModel;
+use Netzmacht\Workflow\Contao\Model\StepModel;
+use Netzmacht\Workflow\Contao\Model\TransitionModel;
+use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateActionEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateStepEvent;
 use Netzmacht\Contao\Workflow\Event\Factory\CreateTransitionEvent;

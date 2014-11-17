@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'search'    => true,
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'reference' => &$GLOBALS['TL_LANG']['workflow_type'],
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                'Netzmacht\Workflow\Contao\Dca\Table\Workflow',
                 'getTypes'
             ),
             'exclude'   => true,
@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'inputType' => 'multiColumnWizard',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Contao\Dca\Workflow', 'validateProcess'),
+                array('Netzmacht\Workflow\Contao\Dca\Table\Workflow', 'validateProcess'),
             ),
             'eval'      => array(
                 'tl_class'           => 'clr',
@@ -165,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                            'Netzmacht\Workflow\Contao\Dca\Table\Workflow',
                             'getStartSteps'
                         ),
                         'reference' => &$GLOBALS['TL_LANG']['tl_workflow']['process'],
@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Contao\Workflow\Contao\Dca\Workflow',
+                            'Netzmacht\Workflow\Contao\Dca\Table\Workflow',
                             'getTransitions',
                         ),
                         'eval'      => array

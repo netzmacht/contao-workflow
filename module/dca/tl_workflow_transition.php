@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Contao\Dca\Common',
+                'Netzmacht\Workflow\Contao\Dca\Table\Common',
                 'generateRow'
             )
         ),
@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Contao\Dca\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'  => 'w50',
@@ -140,7 +140,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'inputType' => 'select',
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Transition',
+                'Netzmacht\Workflow\Contao\Dca\Table\Transition',
                 'getStepsTo'
             ),
             'eval'      => array
@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'exclude'   => true,
             'options_callback' => array
             (
-                'Netzmacht\Contao\Workflow\Contao\Dca\Transition',
+                'Netzmacht\Workflow\Contao\Dca\Table\Transition',
                 'getUserRoles',
             ),
             'eval'      => array(

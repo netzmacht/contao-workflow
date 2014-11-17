@@ -12,7 +12,7 @@
 namespace Netzmacht\Contao\Workflow\Event\Factory;
 
 use Netzmacht\Workflow\Flow\Action;
-use Netzmacht\Contao\Workflow\Contao\Model\ActionModel;
+use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Flow\Workflow;
 
 class CreateActionEvent
