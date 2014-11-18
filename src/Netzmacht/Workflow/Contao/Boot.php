@@ -28,6 +28,7 @@ class Boot implements EventSubscriberInterface
     function __construct()
     {
         \Controller::loadLanguageFile('workflow');
+        \Controller::loadLanguageFile('workflow_permissions');
     }
 
     /**
