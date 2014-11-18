@@ -9,12 +9,12 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Factory;
+namespace Netzmacht\Workflow\Contao\Data;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
 use Netzmacht\Workflow\Contao\Data\EntityRepository;
 use Netzmacht\Workflow\Contao\Dca\Helper\DcaLoader;
-use Netzmacht\Workflow\Contao\Factory\Event\CreateEntityRepositoryEvent;
+use Netzmacht\Workflow\Contao\Data\Event\CreateEntityRepositoryEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class RepositoryFactory implements EventSubscriberInterface
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 

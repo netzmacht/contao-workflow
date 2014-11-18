@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Factory\Event;
+namespace Netzmacht\Workflow\Contao\Form\Event;
 
 use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\Event;

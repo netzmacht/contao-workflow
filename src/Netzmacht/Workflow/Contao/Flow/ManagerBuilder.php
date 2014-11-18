@@ -9,9 +9,9 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Builder;
+namespace Netzmacht\Workflow\Contao\Flow;
 
-use Netzmacht\Workflow\Contao\Factory\Event\CreateWorkflowEvent;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateWorkflowEvent;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
 use Netzmacht\Workflow\Flow\Workflow;

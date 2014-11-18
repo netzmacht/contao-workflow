@@ -9,13 +9,14 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Factory;
+namespace Netzmacht\Workflow\Contao\Data;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Database\Result;
 use Netzmacht\Workflow\Contao\Entity\ContaoModelEntity;
-use Netzmacht\Workflow\Contao\Factory\Event\CreateEntityEvent;
+use Netzmacht\Workflow\Contao\Flow\Event;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateEntityEvent;
 use MetaModels\DcGeneral\Data\Model as MetaModelModel;
 use MetaModels\IItem as MetaModelItem;
 use Model\Collection;

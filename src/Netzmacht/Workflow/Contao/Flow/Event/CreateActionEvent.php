@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Factory\Event;
+namespace Netzmacht\Workflow\Contao\Flow\Event;
 
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Contao\Model\ActionModel;

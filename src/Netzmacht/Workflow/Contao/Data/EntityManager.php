@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Data;
 
-use Netzmacht\Workflow\Contao\Factory\RepositoryFactory;
+use Netzmacht\Workflow\Contao\Data\RepositoryFactory;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
 use Netzmacht\Workflow\Transaction\Event\TransactionEvent;
 use Netzmacht\Workflow\Transaction\TransactionHandler;

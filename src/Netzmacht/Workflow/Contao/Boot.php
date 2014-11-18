@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Security;
+namespace Netzmacht\Workflow\Contao;
 
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Factory\Event\CreateUserEvent;
@@ -19,7 +19,7 @@ use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class Boot boots the security context.
+ * Class Boot boots the workflow security context.
  *
  * @package Netzmacht\Workflow\Contao\Security
  */

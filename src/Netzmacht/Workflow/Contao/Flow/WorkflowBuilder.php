@@ -9,12 +9,12 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Builder;
+namespace Netzmacht\Workflow\Contao\Flow;
 
-use Netzmacht\Workflow\Contao\Factory\Event\CreateActionEvent;
-use Netzmacht\Workflow\Contao\Factory\Event\CreateStepEvent;
-use Netzmacht\Workflow\Contao\Factory\Event\CreateTransitionEvent;
-use Netzmacht\Workflow\Contao\Factory\Event\CreateWorkflowEvent;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateActionEvent;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateStepEvent;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateTransitionEvent;
+use Netzmacht\Workflow\Contao\Flow\Event\CreateWorkflowEvent;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;

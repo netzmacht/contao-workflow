@@ -12,7 +12,7 @@
 namespace Netzmacht\Workflow\Contao;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Workflow\Contao\Factory\EntityFactory;
+use Netzmacht\Workflow\Contao\Data\EntityFactory;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Handler\TransitionHandler;
@@ -31,19 +31,19 @@ class Manager
     private $factory;
 
     /**
-     * @var EntityFactory
+     * @var \Netzmacht\Workflow\Contao\Data\EntityFactory
      */
     private $entityFactory;
 
     /**
      * @param User          $user
      * @param Factory       $factory
-     * @param EntityFactory $entityFactory
+     * @param \Netzmacht\Workflow\Contao\Data\EntityFactory $entityFactory
      */
     function __construct(User $user, Factory $factory, EntityFactory $entityFactory)
     {
-        $this->user    = $user;
-        $this->factory = $factory;
+        $this->user          = $user;
+        $this->factory       = $factory;
         $this->entityFactory = $entityFactory;
     }
 

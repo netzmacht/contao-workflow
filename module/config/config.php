@@ -35,9 +35,9 @@ $GLOBALS['WORKFLOW_TYPES']['default'] = '';
 /*
  * Event Subscribers
  */
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Security\Boot';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Builder\ManagerBuilder';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Builder\WorkflowBuilder';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Boot';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\ManagerBuilder';
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\WorkflowBuilder';
 
 //$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\BackendSubscriber';
 //$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\WorkflowBuilder';

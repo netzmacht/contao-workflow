@@ -2,8 +2,8 @@
 
 use Netzmacht\Workflow\Contao\Data\EntityManager;
 use Netzmacht\Workflow\Contao\Data\StateRepository;
-use Netzmacht\Workflow\Contao\Factory\EntityFactory;
-use Netzmacht\Workflow\Contao\Factory\RepositoryFactory;
+use Netzmacht\Workflow\Contao\Data\EntityFactory;
+use Netzmacht\Workflow\Contao\Data\RepositoryFactory;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Handler\Listener\EventDispatchingListener;
 use Netzmacht\Workflow\Transaction\EventDispatchingTransactionHandler;

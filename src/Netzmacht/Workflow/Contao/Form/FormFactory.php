@@ -9,9 +9,9 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Factory;
+namespace Netzmacht\Workflow\Contao\Form;
 
-use Netzmacht\Workflow\Contao\Factory\Event\CreateFormEvent;
+use Netzmacht\Workflow\Contao\Form\Event\CreateFormEvent;
 use Netzmacht\Workflow\Contao\Form\BackendForm;
 use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,7 +35,7 @@ class FormFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param CreateFormEvent $event
+     * @param \Netzmacht\Workflow\Contao\Form\Event\CreateFormEvent $event
      *
      * @return void
      */
