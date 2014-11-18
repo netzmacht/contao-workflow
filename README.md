@@ -101,10 +101,14 @@ if ($handler) {
             
             $errors = $handler->getErrorCollection();
         }
-    }
-    else {
+    } elseif ($handler->isUnserInputRequired()) {
+        // form was not submitted or has errors. recreate it
         // pass form to the view
         $rendered = $form->render();
+    } else {
+        // Something went wrong.
+        
+        $errors = $handler->getErrorCollection();
     }
 }
 
