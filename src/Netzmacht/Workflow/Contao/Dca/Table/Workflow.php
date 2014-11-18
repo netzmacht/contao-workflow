@@ -41,7 +41,7 @@ class Workflow
     {
         return array(
             'process' => array('start'),
-            'steps' => $this->getSteps()
+            'steps' => $this->getSteps(true)
         );
     }
 
@@ -112,14 +112,54 @@ class Workflow
     }
 
     /**
-     * Get steps form database.
+     * Filer and validate permission values.
+     *
+     * @param mixed $value The raw permissions value
      *
      * @return array
      */
-    private function getSteps()
+    public function validatePermissions($value)
+    {
+        $value     = deserialize($value, true);
+        $names     = array();
+        $validated = array();
+
+        foreach ($value as $row) {
+            if (!$row['name']) {
+                if (!$row['label']) {
+                    continue;
+                }
+
+                $row['name'] = standardize($row['label']);
+            }
+
+            $this->guardValidPermissionName($row, $names);
+
+            $names[]     = $row['name'];
+            $validated[] = $row;
+        }
+
+        return $validated;
+    }
+
+    /**
+     * Get steps form database.
+     *
+     * @param bool $filterFinal If true only steps which are not final are loaded
+     *
+     * @return array
+     */
+    private function getSteps($filterFinal = false)
     {
         $steps      = array();
-        $collection = StepModel::findAll(array('order' => 'name'));
+
+        if ($filterFinal) {
+            $collection = StepModel::findBy('final', '', array('order' => 'name'));
+        }
+        else {
+            $collection = StepModel::findAll(array('order' => 'name'));
+        }
+
 
         if ($collection) {
             while ($collection->next()) {
@@ -163,5 +203,20 @@ class Workflow
             throw new \Exception('There must be exactly one start transition.');
         }
 
+    }
+
+    /**
+     * @param $row
+     * @param $names
+     */
+    protected function guardValidPermissionName($row, $names)
+    {
+        $reserved  = array('contao-admin', 'contao-guest');
+
+        if (in_array($row['name'], $names)) {
+            throw new \InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));
+        } elseif (in_array($row['name'], $reserved)) {
+            throw new \InvalidArgumentException(sprintf('Permission name "%s" is reserved.', $row['name']));
+        }
     }
 }

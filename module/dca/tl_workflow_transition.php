@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Workflow\Contao\Dca\Table\Common',
+                'Netzmacht\Workflow\Contao\Dca\Common',
                 'generateRow'
             )
         ),
@@ -71,14 +71,14 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         (
             'name'        => array('label', 'name', 'description', 'stepTo'),
             'config'      => array(),
-            'permissions' => array('limitPermissions'),
+            'permissions' => array('limitPermission'),
             'properties'  => array('addPropertyConditions'),
         ),
     ),
 
     'metasubpalettes' => array
     (
-        'limitPermissions'      => array('roles'),
+        'limitPermission'      => array('permission'),
     ),
 
     'fields' => array
@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'  => 'w50',
@@ -157,32 +157,27 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             ),
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
-        'limitPermissions'      => array
+        'limitPermission'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermissions'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermission'],
             'inputType' => 'checkbox',
             'eval'      => array(
-                'tl_class'       => 'clr w50',
+                'tl_class'       => 'clr w50 m12',
                 'submitOnChange' => true,
             ),
             'sql'       => "char(1) NOT NULL default ''"
         ),
-        'roles' => array
+        'permission'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['roles'],
-            'inputType' => 'checkbox',
-            'exclude'   => true,
-            'options_callback' => array
-            (
-                'Netzmacht\Workflow\Contao\Dca\Table\Transition',
-                'getUserRoles',
-            ),
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['permission'],
+            'inputType' => 'select',
+            'options_callback' => array('Netzmacht\Workflow\Contao\Dca\Permission', 'getWorkflowPermissions'),
             'eval'      => array(
-                'tl_class'           => 'clr',
-                'multiple' => true,
-                'chosen'   => true,
+                'tl_class'       => 'w50',
+                'mandatory' => true,
+
             ),
-            'sql'       => "mediumblob NULL",
+            'sql'       => "varchar(32) NOT NULL default ''"
         ),
     ),
 );

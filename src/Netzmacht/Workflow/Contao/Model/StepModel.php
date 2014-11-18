@@ -15,6 +15,12 @@ namespace Netzmacht\Workflow\Contao\Model;
  * StepModel using Contao models.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int $id
+ * @property string $name
+ * @property string $label
+ * @property bool   $final
+ * @property bool   $limitPermission
+ * @property string $permission
  */
 class StepModel extends \Model
 {

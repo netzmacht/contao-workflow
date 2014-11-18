@@ -15,6 +15,8 @@ namespace Netzmacht\Workflow\Contao\Model;
  * Class ActionModel provides access to tl_workflow_action table.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int $id
+ * @property int $pid
  */
 class ActionModel extends \Model
 {

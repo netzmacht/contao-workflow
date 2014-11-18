@@ -21,30 +21,6 @@ use Netzmacht\Workflow\Contao\Model\StepModel;
  */
 class Transition
 {
-    /**
-     * Get user roles.
-     *
-     * @return array
-     */
-    public function getUserRoles()
-    {
-        $roles      = array();
-        $collection = RoleModel::findAll(array('order' => 'name'));
-
-        if ($collection) {
-            while ($collection->next()) {
-                $roles[$collection->id] = $collection->name;
-            }
-        }
-
-        $roles = array(
-            'system' => array('admin', 'guest'),
-            'roles'  => $roles,
-        );
-
-        return $roles;
-    }
-
     public function getStepsTo()
     {
         $steps      = array();

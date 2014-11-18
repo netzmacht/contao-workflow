@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Workflow\Contao\Dca\Table\Common',
+                'Netzmacht\Workflow\Contao\Dca\Common',
                 'generateRow'
             )
         ),
@@ -60,12 +60,21 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
         ),
     ),
 
+    'palettes' => array(
+        '__selector__' => array('limitPermission')
+    ),
+
     'metapalettes' => array
     (
         'default' => array
         (
-            'name'    => array('label', 'name', 'description', 'final'),
+            'name'       => array('label', 'name', 'description', 'final'),
+            'permission' => array('limitPermission'),
         ),
+    ),
+
+    'metasubpalettes' => array(
+        'limitPermission' => array('permission'),
     ),
 
     'fields' => array
@@ -88,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -128,6 +137,27 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
                 'submitOnChange' => true,
             ),
             'sql'       => "char(1) NOT NULL default ''"
+        ),
+        'limitPermission'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'],
+            'inputType' => 'checkbox',
+            'eval'      => array(
+                'tl_class'       => 'clr w50 m12',
+                'submitOnChange' => true,
+            ),
+            'sql'       => "char(1) NOT NULL default ''"
+        ),
+        'permission'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['permission'],
+            'inputType' => 'select',
+            'options_callback' => array('Netzmacht\Workflow\Contao\Dca\Permission', 'getWorkflowPermissions'),
+            'eval'      => array(
+                'tl_class'       => 'w50',
+                'mandatory' => true,
+            ),
+            'sql'       => "varchar(32) NOT NULL default ''"
         ),
     ),
 );

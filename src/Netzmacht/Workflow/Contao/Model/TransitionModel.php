@@ -15,6 +15,13 @@ namespace Netzmacht\Workflow\Contao\Model;
  * TransitionModel using Contao models.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int $id
+ * @property string $name
+ * @property string $label
+ * @property bool   $final
+ * @property bool   $limitPermission
+ * @property string $permission
+ * @property int    $stepTo
  */
 class TransitionModel extends \Model
 {

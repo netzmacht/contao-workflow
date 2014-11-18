@@ -15,6 +15,8 @@ namespace Netzmacht\Workflow\Contao\Model;
  * WorkflowModel using Contao models.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int   $id      The workflow id.
+ * @property array $process The process definition.
  */
 class WorkflowModel extends \Model
 {
@@ -22,21 +24,22 @@ class WorkflowModel extends \Model
      * Table name.
      *
      * @var string
+     *
      */
     protected static $strTable = 'tl_workflow';
 
-    public static function findByType($workflowType)
+    public static function findByProviderAndType($providerName, $workflowType)
     {
         return static::findBy(
-            'type', $workflowType
+            array(static::$strTable . '.providerName=?', static::$strTable . '.type=?'),
+            array($providerName, $workflowType)
         );
     }
 
-    public static function findByTypeAndProvider($workflowType, $providerName)
+    public static function findByProvider($providerName)
     {
         return static::findBy(
-            array(static::$strTable . '.type=?', static::$strTable . '.providerName=?'),
-            array($workflowType, $providerName)
+            'providerName', $providerName
         );
     }
 }

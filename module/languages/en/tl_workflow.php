@@ -5,6 +5,7 @@
  */
 $GLOBALS['TL_LANG']['tl_workflow']['name_legend'] = 'Workflow';
 $GLOBALS['TL_LANG']['tl_workflow']['process_legend'] = 'Process definition';
+$GLOBALS['TL_LANG']['tl_workflow']['permissions_legend'] = 'Permissions';
 $GLOBALS['TL_LANG']['tl_workflow']['activation_legend'] = 'Activation';
 
 /*
@@ -26,6 +27,12 @@ $GLOBALS['TL_LANG']['tl_workflow']['transition'][0]  = 'Transition';
 $GLOBALS['TL_LANG']['tl_workflow']['transition'][1]  = 'Execute the transition';
 $GLOBALS['TL_LANG']['tl_workflow']['stepTo'][0]      = 'Target';
 $GLOBALS['TL_LANG']['tl_workflow']['stepTo'][1]      = 'Step which is reached after transition.';
+$GLOBALS['TL_LANG']['tl_workflow']['permissions'][0] = 'Permissions';
+$GLOBALS['TL_LANG']['tl_workflow']['permissions'][1] = 'Define Workflow specific permissions here. They can be assigned to users, user groups and member groups.';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_label'][0] = 'Label';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_label'][1] = 'Visible label of the permission.';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_name'][0] = 'Name';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_name'][1] = 'Name of the permission has to be unique in the workflow. Changing a name will break the assignments!';
 
 /*
  * Values

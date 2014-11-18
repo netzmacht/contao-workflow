@@ -52,12 +52,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'href'  => 'table=tl_workflow_transition',
                 'icon'  => 'system/modules/workflow/assets/img/transition.png',
             ),
-            'roles' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['roles'],
-                'href'  => 'table=tl_workflow_role',
-                'icon'  => 'system/modules/workflow/assets/img/role.png',
-            ),
             'delete' => array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],
@@ -77,10 +71,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
     (
         'default' => array
         (
-            'name'       => array('name', 'type', 'description'),
-            'process'    => array('start', 'process'),
-            'config'     => array(),
-            'activation' => array('active')
+            'name'        => array('label', 'name', 'type', 'providerName', 'description'),
+            'permissions' => array('permissions'),
+            'process'     => array('start', 'process'),
+            'config'      => array(),
+            'activation'  => array('active')
         ),
     ),
 
@@ -101,10 +96,21 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'search'    => true,
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Dca\Table\Common', 'createName'),
+                array('Netzmacht\Workflow\Contao\Dca\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
+            ),
+            'sql'       => "varchar(64) NOT NULL default ''",
+        ),
+        'label'           => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['label'],
+            'inputType' => 'text',
+            'exclude'   => true,
+            'eval'      => array(
+                'tl_class'           => 'w50',
+                'maxlength' => 64,
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),
@@ -187,9 +193,53 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         ),
                         'eval'      => array
                         (
-                            'style' => 'width:350px',
+                            'style' => 'width:400px',
                             'includeBlankOption' => true,
                             'chosen' => true,
+                        ),
+                    ),
+                )
+            ),
+            'sql'       => "mediumblob NULL",
+        ),
+        'permissions'           => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permissions'],
+            'inputType' => 'multiColumnWizard',
+            'exclude'   => true,
+            'save_callback' => array(
+                array('Netzmacht\Workflow\Contao\Dca\Table\Workflow', 'validatePermissions'),
+            ),
+            'eval'      => array(
+                'tl_class'           => 'clr',
+                'columnFields' => array
+                (
+                    'label' => array
+                    (
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permission_label'],
+                        'inputType' => 'text',
+                        'options_callback' => array
+                        (
+                            'Netzmacht\Workflow\Contao\Dca\Table\Workflow',
+                            'getStartSteps'
+                        ),
+                        'eval'      => array
+                        (
+                            'style' => 'width:350px',
+                        ),
+                    ),
+                    'name' => array
+                    (
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permission_name'],
+                        'inputType' => 'text',
+                        'options_callback' => array
+                        (
+                            'Netzmacht\Workflow\Contao\Dca\Table\Workflow',
+                            'getStartSteps'
+                        ),
+                        'eval'      => array
+                        (
+                            'style' => 'width:230px',
                         ),
                     ),
                 )

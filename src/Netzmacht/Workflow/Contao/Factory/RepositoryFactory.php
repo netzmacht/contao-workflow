@@ -11,12 +11,12 @@
 
 namespace Netzmacht\Workflow\Contao\Factory;
 
-
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
 use Netzmacht\Workflow\Contao\Data\EntityRepository;
 use Netzmacht\Workflow\Contao\Dca\Helper\DcaLoader;
 use Netzmacht\Workflow\Contao\Factory\Event\CreateEntityRepositoryEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RepositoryFactory implements EventSubscriberInterface
@@ -25,6 +25,14 @@ class RepositoryFactory implements EventSubscriberInterface
      * @var EventDispatcher
      */
     private $eventDispatcher;
+
+    /**
+     * @param $eventDispatcher
+     */
+    function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @return array|void
@@ -39,7 +47,7 @@ class RepositoryFactory implements EventSubscriberInterface
     /**
      * @param CreateEntityRepositoryEvent $event
      */
-    public function handleCreateEntityRepository(Event\CreateEntityRepositoryEvent $event)
+    public function handleCreateEntityRepository(CreateEntityRepositoryEvent $event)
     {
         $providerName = $event->getProviderName();
         $driver       = $this->getDriver($providerName);

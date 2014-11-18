@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Table;
+namespace Netzmacht\Workflow\Contao\Dca;
 
 /**
  * Class Common provides common helper functionalities.
