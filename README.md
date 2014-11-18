@@ -71,7 +71,7 @@ How to use it
 
 // Get the workflow manager from the dependency container
 
-/** @var Netzmacht\Workflow\Contao\Manager;
+/** @var Netzmacht\Workflow\Contao\Manager; */
 $manager = $container['workflow.manager'];
 
 // Load model and create the entity.
