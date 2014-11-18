@@ -24,6 +24,8 @@ A workflow is defined by following concepts:
  * There can be multiple workflows.
  * Workflows are defined for an entity type (typically an database table). 
  * Workflows have a type.
+ * There can be multiple workflows for an entity type.
+ * Workflows have conditions to decide which entity they should handle.
  
 **Step**
  * A workflow has a number of steps which an entity reach during it's lifecycle
@@ -101,7 +103,7 @@ if ($handler) {
             
             $errors = $handler->getErrorCollection();
         }
-    } elseif ($handler->isUnserInputRequired()) {
+    } elseif ($handler->isUserInputRequired()) {
         // form was not submitted or has errors. recreate it
         // pass form to the view
         $rendered = $form->render();
