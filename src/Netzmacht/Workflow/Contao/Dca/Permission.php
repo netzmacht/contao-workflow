@@ -59,7 +59,7 @@ class Permission
                 $permissions = deserialize($collection->permissions, true);
 
                 foreach ($permissions as $config) {
-                    $permission = WorkflowPermission::forWorkflowNameAndPermissionId(
+                    $permission = WorkflowPermission::forWorkflowName(
                         $collection->name,
                         $config['name']
                     );

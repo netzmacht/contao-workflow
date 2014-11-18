@@ -78,7 +78,7 @@ class Boot implements EventSubscriberInterface
             $workflows = WorkflowModel::findAll();
 
             if ($workflows->next()) {
-                $permission = Permission::forWorkflowNameAndPermissionId($workflows->name, 'contao-admin');
+                $permission = Permission::forWorkflowName($workflows->name, 'contao-admin');
                 $this->addPermissionToRole($roles, $roleName, $permission, $contaoUser, $user);
             }
         }
@@ -103,7 +103,7 @@ class Boot implements EventSubscriberInterface
             $workflows = WorkflowModel::findAll();
 
             if ($workflows->next()) {
-                $permission = Permission::forWorkflowNameAndPermissionId($workflows->name, 'contao-guest');
+                $permission = Permission::forWorkflowName($workflows->name, 'contao-guest');
                 $this->addPermissionToRole($roles, $roleName, $permission, $contaoUser, $user);
             }
         }
