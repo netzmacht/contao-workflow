@@ -51,7 +51,7 @@ A workflow is defined by following concepts:
 **Entity**
  * An entity is a data being in a workflow lifecycle. 
  * [netzmacht/workflow](http://github.com/netzmacht/workflow) is totally independent of the data type.
- * nezmacht/contao-workflow uses the [ModelInterface][netzmacht/workflow](https://github.com/contao-community-alliance/dc-general/blob/develop/src/ContaoCommunityAlliance/DcGeneral/Data/ModelInterface.php)
+ * nezmacht/contao-workflow uses the [ModelInterface](https://github.com/contao-community-alliance/dc-general/blob/develop/src/ContaoCommunityAlliance/DcGeneral/Data/ModelInterface.php)
   of the DC General as convention.
  
 **State**
