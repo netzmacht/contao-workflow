@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Definition\Builder;
+namespace Netzmacht\Workflow\Contao\Definition;
 
 /**
  * Class AbstractBuilder is the base class for all workflow builders.

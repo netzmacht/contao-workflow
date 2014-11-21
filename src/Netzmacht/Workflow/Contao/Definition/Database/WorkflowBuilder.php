@@ -9,8 +9,9 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Definition\Builder;
+namespace Netzmacht\Workflow\Contao\Definition\Database;
 
+use Netzmacht\Workflow\Contao\Definition\AbstractBuilder;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateActionEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateStepEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
