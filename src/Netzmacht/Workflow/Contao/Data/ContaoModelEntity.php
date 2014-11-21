@@ -29,6 +29,12 @@ class ContaoModelEntity implements ModelInterface
      * @var Model
      */
     private $model;
+
+    /**
+     * Meta informations.
+     *
+     * @var array
+     */
     private $meta;
 
     /**
@@ -88,9 +94,13 @@ class ContaoModelEntity implements ModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setProperty($strPropertyName, $varValue)
+    public function setProperty($propertyName, $value)
     {
-        $this->model->$strPropertyName = $varValue;
+        if ($this->getProperty($propertyName) !== $value) {
+            $this->setMeta(static::IS_CHANGED, true);
+        }
+
+        $this->model->$propertyName = $value;
     }
 
     /**
@@ -124,75 +134,63 @@ class ContaoModelEntity implements ModelInterface
     }
 
     /**
-     * Fetch meta information from model.
-     *
-     * @param string $strMetaName The meta information to retrieve.
-     *
-     * @return mixed The set meta information or null if undefined.
+     * {@inheritdoc}
      */
-    public function getMeta($strMetaName)
+    public function getMeta($metaName)
     {
-        if (isset($this->meta[$strMetaName])) {
-
+        if (isset($this->meta[$metaName])) {
+            return $this->meta[$metaName];
         }
+
+        return null;
     }
 
     /**
-     * Set the id for this object.
-     *
-     * NOTE: when the Id has been set once to a non null value, it can NOT be changed anymore.
-     *
-     * Normally this should only be called from inside of the implementing provider.
-     *
-     * @param mixed $mixId Could be a integer, string or anything else - depends on the provider implementation.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function setId($mixId)
+    public function setId($modelId)
     {
-        // TODO: Implement setId() method.
+        $primaryKey = $this->model->getPk();
+
+        $this->model->$primaryKey = $modelId;
     }
 
     /**
-     * Update meta information in the model.
-     *
-     * @param string $strMetaName The meta information name.
-     *
-     * @param mixed  $varValue    The meta information value to store.
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function setMeta($strMetaName, $varValue)
+    public function setMeta($metaName, $value)
     {
-        // TODO: Implement setMeta() method.
+        $this->meta[$metaName] = $value;
     }
 
     /**
-     * Return the data provider name.
-     *
-     * @return string the name of the corresponding data provider.
+     * {@inheritdoc}
      */
     public function getProviderName()
     {
-        // TODO: Implement getProviderName() method.
+        return $this->model->getTable();
     }
 
     /**
-     * Read all values from a value bag.
-     *
-     * If the value is not present in the value bag, it will get skipped.
-     *
-     * If the value for a property in the bag is invalid, an exception will get thrown.
-     *
-     * @param PropertyValueBagInterface $valueBag The value bag where to read from.
-     *
-     * @return ModelInterface
-     *
-     * @throws DcGeneralInvalidArgumentException When a property in the value bag has been marked as invalid.
+     * {@inheritdoc}
      */
     public function readFromPropertyValueBag(PropertyValueBagInterface $valueBag)
     {
-        // TODO: Implement readFromPropertyValueBag() method.
+        $properties = array_keys($this->model->row());
+
+        foreach ($properties as $name) {
+            if (!$valueBag->hasPropertyValue($name)) {
+                continue;
+            }
+
+            if ($valueBag->isPropertyValueInvalid($name)) {
+                throw new DcGeneralInvalidArgumentException('The value for property ' . $name . ' is invalid.');
+            }
+
+            $this->setProperty($name, $valueBag->getPropertyValue($name));
+        }
+
+        return $this;
     }
 
     /**
@@ -204,6 +202,16 @@ class ContaoModelEntity implements ModelInterface
      */
     public function writeToPropertyValueBag(PropertyValueBagInterface $valueBag)
     {
-        // TODO: Implement writeToPropertyValueBag() method.
+        $properties = array_keys($this->model->row());
+
+        foreach ($properties as $name) {
+            if (!$valueBag->hasPropertyValue($name)) {
+                continue;
+            }
+
+            $valueBag->setPropertyValue($name, $this->getProperty($name));
+        }
+
+        return $this;
     }
 }
