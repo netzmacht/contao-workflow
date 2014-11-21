@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Form;
+namespace Netzmacht\Workflow\Contao\Form;
 
 /**
  * Interface FormField describes an form field which can be added to transition form.

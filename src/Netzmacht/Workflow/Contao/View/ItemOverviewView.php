@@ -11,11 +11,15 @@
 
 namespace Netzmacht\Workflow\Contao\View;
 
-
-class ItemView extends AbstractItemView
+/**
+ * Class ItemOverviewView is used to render the item overview.
+ *
+ * @package Netzmacht\Workflow\Contao\View
+ */
+class ItemOverviewView extends AbstractItemView
 {
     /**
-     * Render the view
+     * Render the view.
      *
      * @return string
      */
@@ -25,6 +29,6 @@ class ItemView extends AbstractItemView
             $this->template = 'workflow_item_overview';
         }
 
-        $this->renderTemplate();
+        return $this->renderTemplate();
     }
 }

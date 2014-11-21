@@ -11,36 +11,50 @@
 
 namespace Netzmacht\Workflow\Contao\View;
 
-
 use Netzmacht\Workflow\Contao\Data\TranslatedErrorCollection;
 
+/**
+ * Class ErrorView renders the error collection.
+ *
+ * @package Netzmacht\Workflow\Contao\View
+ */
 class ErrorView implements View
 {
     /**
+     * The translated error collection.
+     *
      * @var TranslatedErrorCollection
      */
     private $translatedErrorCollection;
 
     /**
-     * @var int $depth
+     * Default depth for reading from the error collection.
+     *
+     * @var int
      */
     private $depth = 3;
 
     /**
+     * Template name.
+     *
      * @var string
      */
     private $template = 'workflow_errors';
 
     /**
-     * @param $translatedErrorCollection
+     * Construct.
+     *
+     * @param TranslatedErrorCollection $translatedErrorCollection The error collection being displayed.
      */
-    function __construct($translatedErrorCollection)
+    public function __construct(TranslatedErrorCollection $translatedErrorCollection)
     {
         $this->translatedErrorCollection = $translatedErrorCollection;
     }
 
     /**
-     * @param string $template Template name
+     * Set the template name.
+     *
+     * @param string $template Template name.
      *
      * @return $this
      */
@@ -52,6 +66,18 @@ class ErrorView implements View
     }
 
     /**
+     * Get the template name.
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * Get the depth.
+     *
      * @return int
      */
     public function getDepth()
@@ -60,7 +86,9 @@ class ErrorView implements View
     }
 
     /**
-     * @param int $depth
+     * Set the depth.
+     *
+     * @param int $depth The new depth value.
      *
      * @return $this
      */
@@ -72,7 +100,7 @@ class ErrorView implements View
     }
 
     /**
-     * Render the view
+     * Render the view.
      *
      * @return string
      */

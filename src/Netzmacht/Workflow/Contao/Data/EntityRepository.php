@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Data;
 
+use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface as DataProvider;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
@@ -45,12 +46,16 @@ class EntityRepository implements WorkflowEntityRepository
      * @param Entity $entity The new entity.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException If an invalid entity type is given.
      */
     public function add($entity)
     {
-        if (!$entity instanceof Entity) {
-            throw new \InvalidArgumentException('Entity repository only supports fucking bastards');
-        }
+        Assertion::isInstanceOf(
+            $entity,
+            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
+            'Entity repository requires an instance of the ModelInterface'
+        );
 
         $this->provider->save($entity);
     }
@@ -61,6 +66,8 @@ class EntityRepository implements WorkflowEntityRepository
      * @param int $entityId The Entity id.
      *
      * @return Entity
+     *
+     * @throws \InvalidArgumentException If no entity were found.
      */
     public function find($entityId)
     {

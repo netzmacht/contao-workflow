@@ -11,13 +11,19 @@
 
 namespace Netzmacht\Workflow\Contao\Definition\Builder;
 
-
+/**
+ * Class AbstractBuilder is the base class for all workflow builders.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Builder
+ */
 class AbstractBuilder
 {
     const SOURCE_DATABASE = 'database';
 
     /**
-     * @param $name
+     * Get a service form the ervice container.
+     *
+     * @param string $name Name of the service.
      *
      * @return mixed
      *

@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Workflow\Contao\Definition\Builder;
 
-use Netzmacht\Workflow\Contao\Definition\Builder\AbstractBuilder;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
@@ -19,8 +18,16 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Contao\Manager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class ManagerBuilder builds a manager instance.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Builder
+ */
 class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -28,12 +35,15 @@ class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Build the manager.
+     *
+     * @param CreateManagerEvent $event The event subscribed.
+     *
+     * @return void
+     */
     public function build(CreateManagerEvent $event)
     {
-        if ($event->getManager()) {
-            return;
-        }
-
         $providerName = $event->getProviderName();
         $workflowType = $event->getWorkflowType();
         $manager      = $this->createManager();
@@ -44,6 +54,8 @@ class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
     }
 
     /**
+     * Create a new manager.
+     *
      * @return Manager
      */
     public function createManager()
@@ -58,9 +70,11 @@ class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
     /**
      * Create workflows for a manager.
      *
-     * @param Manager $manager
-     * @param string  $providerName
-     * @param string  $workflowType
+     * @param Manager $manager      The workflow manager.
+     * @param string  $providerName The provider name.
+     * @param string  $workflowType THe workflow type.
+     *
+     * @return void
      */
     private function createWorkflows(Manager $manager, $providerName, $workflowType)
     {

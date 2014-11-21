@@ -33,7 +33,9 @@ class TransitionModel extends \Model
     protected static $strTable = 'tl_workflow_transition';
 
     /**
-     * @param $workflowId
+     * Find transition by workflow id.
+     *
+     * @param int $workflowId The workflow id.
      *
      * @return \Model\Collection|null
      */

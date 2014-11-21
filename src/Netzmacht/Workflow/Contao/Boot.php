@@ -25,7 +25,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
  */
 class Boot
 {
-    function __construct()
+    /**
+     * Construct.
+     */
+    public function __construct()
     {
         \Controller::loadLanguageFile('workflow');
         \Controller::loadLanguageFile('workflow_permissions');
@@ -33,14 +36,17 @@ class Boot
 
     /**
      * Initialize the user.
-     * @param $container
+     *
+     * @param \Pimple $container The dependency container.
+     *
+     * @return void
      */
-    public function startup($container)
+    public function startup(\Pimple $container)
     {
         $contaoUser = $this->getContaoUser($container);
         $user       = $this->createUser($container['event-dispatcher'], $contaoUser);
 
-        $container['workflow.security.user'] = function() use ($user) {
+        $container['workflow.security.user'] = function () use ($user) {
             return $user;
         };
     }
@@ -51,7 +57,7 @@ class Boot
      * Load user permissions for current frontend or backend user.
      *
      * @param EventDispatcher $eventDispatcher The event dispatcher.
-     * @param \User           $contaoUser      The contao user
+     * @param \User           $contaoUser      The contao user.
      *
      * @return User
      */
@@ -75,13 +81,15 @@ class Boot
     /**
      * Create permission for the backend user.
      *
-     * @param User  $user
-     * @param \User $contaoUser
+     * @param User  $user       The security user.
+     * @param \User $contaoUser The contao user.
+     *
+     * @return void
      */
     private function createBackendUserRole(User $user, \User $contaoUser)
     {
-        $roles      = array();
-        $roleName   = 'be_user';
+        $roles    = array();
+        $roleName = 'be_user';
 
         foreach ((array) $contaoUser->workflow as $permissionName) {
             $permission = Permission::fromString($permissionName);
@@ -99,8 +107,12 @@ class Boot
     }
 
     /**
-     * @param User  $user
-     * @param \User $contaoUser
+     * Create frontend member role.
+     *
+     * @param User  $user       The security user.
+     * @param \User $contaoUser The contao user.
+     *
+     * @return void
      */
     private function createFrontendMemberRole(User $user, \User $contaoUser)
     {
@@ -124,11 +136,13 @@ class Boot
     }
 
     /**
-     * @param Role[]      $roles
-     * @param string     $roleName
-     * @param Permission $permission
-     * @param \User      $contaoUser
-     * @param User       $user
+     * Add permission to the role.
+     *
+     * @param Role[]     $roles      Already created roles.
+     * @param string     $roleName   The role name.
+     * @param Permission $permission The permission name.
+     * @param \User      $contaoUser The Contao user.
+     * @param User       $user       The security user.
      *
      * @return Role
      */
@@ -137,14 +151,12 @@ class Boot
         $workflow = $permission->getWorkflowName();
 
         if (!isset($roles[$workflow])) {
-            $label = isset($GLOBALS['TL_LANG']['workflow']['roles'][$roleName])
-                ? $GLOBALS['TL_LANG']['workflow']['roles'][$roleName]
-                : null;
+
 
             $role = new Role(
                 $roleName,
                 $permission->getWorkflowName(),
-                $label,
+                $this->translateLabel($roleName),
                 array('user' => $contaoUser)
             );
 
@@ -158,6 +170,9 @@ class Boot
     }
 
     /**
+     * Get the member permissions.
+     *
+     * @param \User $contaoUser The contao user.
      *
      * @return array
      */
@@ -178,7 +193,11 @@ class Boot
     }
 
     /**
-     * Initialize role translations
+     * Initialize role translations.
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function initializePermissionTranslations()
     {
@@ -215,8 +234,7 @@ class Boot
         try {
             /** @var \User $user */
             $user = $container['user'];
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
 
@@ -225,5 +243,21 @@ class Boot
         }
 
         return $user;
+    }
+
+    /**
+     * Get translated role name.
+     *
+     * @param string $roleName The role name.
+     *
+     * @return string|null
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function translateLabel($roleName)
+    {
+        return isset($GLOBALS['TL_LANG']['workflow']['roles'][$roleName])
+            ? $GLOBALS['TL_LANG']['workflow']['roles'][$roleName]
+            : null;
     }
 }

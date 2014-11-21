@@ -12,30 +12,37 @@
 namespace Netzmacht\Workflow\Contao\Data;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
-use Netzmacht\Workflow\Contao\Data\EntityRepository;
 use Netzmacht\Workflow\Contao\Dca\Helper\DcaLoader;
 use Netzmacht\Workflow\Contao\Data\Event\CreateEntityRepositoryEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscriber;
 
-class RepositoryFactory implements EventSubscriberInterface
+/**
+ * Class RepositoryFactory creates entity repositories.
+ *
+ * @package Netzmacht\Workflow\Contao\Data
+ */
+class RepositoryFactory implements EventSubscriber
 {
     /**
-     * @var EventDispatcherInterface
+     * The event dispatcher.
+     *
+     * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * @param $eventDispatcher
+     * Construct.
+     *
+     * @param EventDispatcher $eventDispatcher The event dispatcher.
      */
-    function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcher $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
-     * @return array|void
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -45,7 +52,11 @@ class RepositoryFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param CreateEntityRepositoryEvent $event
+     * Handle the create entity event.
+     *
+     * @param CreateEntityRepositoryEvent $event The received event.
+     *
+     * @return void
      */
     public function handleCreateEntityRepository(CreateEntityRepositoryEvent $event)
     {
@@ -59,7 +70,9 @@ class RepositoryFactory implements EventSubscriberInterface
                 break;
 
             case 'General':
+                // @codingStandardsIgnoreStart
                 // TODO: Handle DcGeneral
+                // @codingStandardsIgnoreEnd
 
             default:
                 return;
@@ -70,9 +83,13 @@ class RepositoryFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param $providerName
+     * Create an entity repository.
+     *
+     * @param string $providerName The provider name.
      *
      * @return EntityRepository
+     *
+     * @throws \RuntimeException If no repository was created.
      */
     public function create($providerName)
     {
@@ -92,17 +109,15 @@ class RepositoryFactory implements EventSubscriberInterface
      * @param string $providerName Provider name.
      *
      * @return string|null
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getDriver($providerName)
     {
-        DcaLoader::load($providerName);
+        $definition = DcaLoader::load($providerName);
 
-        if (!isset($GLOBALS['TL_DCA'][$providerName]['config']['dataContainer'])) {
-            return null;
+        if (isset($definition['config']['dataContainer'])) {
+            return $definition['config']['dataContainer'];
         }
 
-        return $GLOBALS['TL_DCA'][$providerName]['config']['dataContainer'];
+        return null;
     }
 }

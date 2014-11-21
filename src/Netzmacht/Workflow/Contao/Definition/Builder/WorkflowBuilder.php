@@ -11,11 +11,11 @@
 
 namespace Netzmacht\Workflow\Contao\Definition\Builder;
 
-use Netzmacht\Workflow\Contao\Definition\Builder\AbstractBuilder;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateActionEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateStepEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateWorkflowEvent;
+use Netzmacht\Workflow\Contao\Definition\Exception\DefinitionException;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
@@ -28,14 +28,23 @@ use Model\Collection;
 use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class WorkflowBuilder builds an workflow.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Builder
+ */
 class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterface
 {
     /**
+     * Workflow steps.
+     *
      * @var Step[]
      */
     private $steps = array();
 
     /**
+     * Workflow transitions.
+     *
      * @var Transition[]
      */
     private $transitions;
@@ -51,7 +60,11 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
     }
 
     /**
-     * @param CreateWorkflowEvent $event
+     * Handle the create workflow event.
+     *
+     * @param CreateWorkflowEvent $event The event being subscribed.
+     *
+     * @return void
      */
     public function createWorkflow(CreateWorkflowEvent $event)
     {
@@ -72,11 +85,12 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
         $this->resetBuilder();
     }
 
-
     /**
      * Add permission roles to the workflow.
      *
      * @param Workflow $workflow The workflow being created.
+     *
+     * @return void
      */
     private function addRoles(Workflow $workflow)
     {
@@ -90,12 +104,13 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
         }
     }
 
-
     /**
-     * Create
+     * Create the steps.
      *
-     * @param Workflow      $workflow
-     * @param WorkflowModel $model
+     * @param Workflow      $workflow The current workflow.
+     * @param WorkflowModel $model    The workflow model.
+     *
+     * @return void
      */
     private function createSteps(Workflow $workflow, WorkflowModel $model)
     {
@@ -135,8 +150,12 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
     /**
      * Create transitions from database.
      *
-     * @param Workflow      $workflow
-     * @param WorkflowModel $model
+     * @param Workflow      $workflow The current workflow.
+     * @param WorkflowModel $model    The workflow model.
+     *
+     * @throws DefinitionException If a target step is defined which does not exiss.
+     *
+     * @return void
      */
     private function createTransitions(Workflow $workflow, WorkflowModel $model)
     {
@@ -159,7 +178,13 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             );
 
             if (!isset($this->steps[$model->stepTo])) {
-                // TODO: Throw some error.
+                throw new DefinitionException(
+                    sprintf(
+                        'Transition "%s" refers to step "%s" which does not exists.',
+                        $transition->getName(),
+                        $model->stepTo
+                    )
+                );
             }
 
             $transition->setStepTo($this->steps[$model->stepTo]);
@@ -180,7 +205,9 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
     /**
      * Load actions for all loaded transitions.
      *
-     * @param Workflow $workflow
+     * @param Workflow $workflow The workflow being build.
+     *
+     * @throws DefinitionException If action could not be created for the action config.
      *
      * @return void
      */
@@ -199,15 +226,16 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
 
             if (!$event->getAction()) {
-                // TODO: throw error
-            }
-            else {
+                throw new DefinitionException(sprintf('No action created for action defintion ID "%s"', $model->id));
+            } else {
                 $this->transitions[$model->pid]->addAction($event->getAction());
             }
         }
     }
 
     /**
+     * Find actions from database.
+     *
      * @return Collection|null
      */
     private function findActions()
@@ -218,7 +246,8 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             return null;
         }
 
-        $collection = ActionModel::findAll(array(
+        $collection = ActionModel::findAll(
+            array(
                 'column' => 'active=1 AND pid IN (' . implode(', ', $transitionIds) . ')',
                 'order'  => 'pid, sorting',
             )
@@ -230,8 +259,10 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
     /**
      * Create Workflow process.
      *
-     * @param Workflow      $workflow
-     * @param WorkflowModel $model
+     * @param Workflow      $workflow The current workflow.
+     * @param WorkflowModel $model    The workflow model.
+     *
+     * @return void
      */
     private function createProcess(Workflow $workflow, WorkflowModel $model)
     {
@@ -241,8 +272,7 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
 
             if ($definition['step'] == 'start') {
                 $workflow->setStartTransition($this->transitions[$definition['transition']]->getName());
-            }
-            else {
+            } else {
                 $step       = $this->steps[$definition['step']];
                 $transition = $this->transitions[$definition['transition']];
 
@@ -253,6 +283,8 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
 
     /**
      * Reset the builder cache.
+     *
+     * @return void
      */
     private function resetBuilder()
     {

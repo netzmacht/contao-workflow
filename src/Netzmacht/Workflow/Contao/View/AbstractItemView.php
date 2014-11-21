@@ -11,28 +11,40 @@
 
 namespace Netzmacht\Workflow\Contao\View;
 
-
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
 
+/**
+ * Class AbstractItemView for views displaying an item.
+ *
+ * @package Netzmacht\Workflow\Contao\View
+ */
 abstract class AbstractItemView implements View
 {
     /**
+     * Current workflow.
+     *
      * @var Workflow
      */
     protected $workflow;
 
     /**
+     * The workflow item.
+     *
      * @var Item
      */
     protected $item;
 
     /**
+     * The template name.
+     *
      * @var string
      */
     protected $template;
 
     /**
+     * Get the item.
+     *
      * @return Item
      */
     public function getItem()
@@ -41,14 +53,22 @@ abstract class AbstractItemView implements View
     }
 
     /**
-     * @param Item $item
+     * Set the item.
+     *
+     * @param Item $item The workflow item.
+     *
+     * @return $this
      */
-    public function setItem($item)
+    public function setItem(Item $item)
     {
         $this->item = $item;
+
+        return $this;
     }
 
     /**
+     * Get the workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()
@@ -57,14 +77,22 @@ abstract class AbstractItemView implements View
     }
 
     /**
-     * @param Workflow $workflow
+     * Set the workflow.
+     *
+     * @param Workflow $workflow The workflow definition.
+     *
+     * @return $this
      */
-    public function setWorkflow($workflow)
+    public function setWorkflow(Workflow $workflow)
     {
         $this->workflow = $workflow;
+
+        return $this;
     }
 
     /**
+     * Get the template name.
+     *
      * @return string
      */
     public function getTemplate()
@@ -73,7 +101,9 @@ abstract class AbstractItemView implements View
     }
 
     /**
-     * @param string $template
+     * Set the template name.
+     *
+     * @param string $template The template name.
      *
      * @return $this
      */
@@ -85,7 +115,9 @@ abstract class AbstractItemView implements View
     }
 
     /**
-     * @param $params
+     * Render the template.
+     *
+     * @param array $params Optional params being rendered.
      *
      * @return string
      */

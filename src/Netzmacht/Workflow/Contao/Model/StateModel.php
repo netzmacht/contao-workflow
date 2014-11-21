@@ -11,9 +11,9 @@
 
 namespace Netzmacht\Workflow\Contao\Model;
 
-
 /**
- * Class StateModel
+ * Class StateModel.
+ *
  * @package Netzmacht\Workflow\Contao\Model
  *
  * @property string       $workflowName   The name of the workflow.
@@ -28,8 +28,9 @@ namespace Netzmacht\Workflow\Contao\Model;
 class StateModel extends \Model
 {
     /**
+     * The workflow state table.
+     *
      * @var string
      */
     protected static $strTable = 'tl_workflow_state';
-
 }

@@ -16,6 +16,11 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository as WorkflowStateRepository;
 use Netzmacht\Workflow\Flow\State;
 
+/**
+ * Class StateRepository manages workflow states.
+ *
+ * @package Netzmacht\Workflow\Contao\Data
+ */
 class StateRepository implements WorkflowStateRepository
 {
     /**

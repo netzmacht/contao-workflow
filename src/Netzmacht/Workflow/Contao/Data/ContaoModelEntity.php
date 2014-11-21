@@ -173,6 +173,8 @@ class ContaoModelEntity implements ModelInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws DcGeneralInvalidArgumentException If a property is marked as invalid.
      */
     public function readFromPropertyValueBag(PropertyValueBagInterface $valueBag)
     {

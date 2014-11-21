@@ -114,7 +114,7 @@ class Workflow
     /**
      * Filer and validate permission values.
      *
-     * @param mixed $value The raw permissions value
+     * @param mixed $value The raw permissions value.
      *
      * @return array
      */
@@ -145,21 +145,19 @@ class Workflow
     /**
      * Get steps form database.
      *
-     * @param bool $filterFinal If true only steps which are not final are loaded
+     * @param bool $filterFinal If true only steps which are not final are loaded.
      *
      * @return array
      */
     private function getSteps($filterFinal = false)
     {
-        $steps      = array();
+        $steps = array();
 
         if ($filterFinal) {
             $collection = StepModel::findBy('final', '', array('order' => 'name'));
-        }
-        else {
+        } else {
             $collection = StepModel::findAll(array('order' => 'name'));
         }
-
 
         if ($collection) {
             while ($collection->next()) {
@@ -206,12 +204,18 @@ class Workflow
     }
 
     /**
-     * @param $row
-     * @param $names
+     * Guard that a valid permission name is given.
+     *
+     * @param array $row   Current permission definition row.
+     * @param array $names All permission names so far.
+     *
+     * @throws \InvalidArgumentException If a invalid permission name is given.
+     *
+     * @return void
      */
     protected function guardValidPermissionName($row, $names)
     {
-        $reserved  = array('contao-admin', 'contao-guest');
+        $reserved = array('contao-admin', 'contao-guest');
 
         if (in_array($row['name'], $names)) {
             throw new \InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));

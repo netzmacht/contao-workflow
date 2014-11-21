@@ -21,6 +21,11 @@ use Netzmacht\Workflow\Contao\Model\StepModel;
  */
 class Transition
 {
+    /**
+     * Get steps which can be a target.
+     *
+     * @return array
+     */
     public function getStepsTo()
     {
         $steps      = array();

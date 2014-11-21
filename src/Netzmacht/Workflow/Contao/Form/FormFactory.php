@@ -16,10 +16,15 @@ use Netzmacht\Workflow\Contao\Form\BackendForm;
 use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class FormFactory create Contao forms for the frontend or the backend.
+ *
+ * @package Netzmacht\Workflow\Contao\Form
+ */
 class FormFactory implements EventSubscriberInterface
 {
-    const BE       = 'BE';
-    const FE       = 'FE';
+    const BE = 'BE';
+    const FE = 'FE';
 
     const BACKEND  = 'backend';
     const FRONTEND = 'frontend';
@@ -35,7 +40,9 @@ class FormFactory implements EventSubscriberInterface
     }
 
     /**
-     * @param \Netzmacht\Workflow\Contao\Form\Event\CreateFormEvent $event
+     * Handle the create event.
+     *
+     * @param CreateFormEvent $event The event.
      *
      * @return void
      */
@@ -45,14 +52,18 @@ class FormFactory implements EventSubscriberInterface
             return;
         }
 
-        $form = $this->create($event->getType());
+        $form = $this->createForm($event->getType());
         $event->setForm($form);
     }
 
     /**
-     * @param $type
+     * Create the form.
+     *
+     * @param string $type The form type.
      *
      * @return Form
+     *
+     * @throws \InvalidArgumentException If form type could not be created.
      */
     public function createForm($type)
     {
@@ -61,10 +72,15 @@ class FormFactory implements EventSubscriberInterface
             case static::BE:
                 return new BackendForm();
 
+//@codingStandardsIgnoreStart
 // At the moment only backend forms are supported.
 // Frontend forms still have to be implemented.
 //            case static::FRONTEND:
 //                return new FrontendForm();
+//@codingStandardsIgnoreEnd
+
+            default:
+                throw new \InvalidArgumentException(sprintf('Form type "%s" could not be created', $type));
         }
     }
 }

@@ -50,8 +50,7 @@ class PropertyAction extends AbstractAction
      *
      * If value is given, it is used. If input is required then value from the context is extracted.
      *
-     *
-     * @param Context $context
+     * @param Context $context The transition contaext.
      *
      * @return mixed
      */

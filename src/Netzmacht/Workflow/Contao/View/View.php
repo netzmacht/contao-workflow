@@ -11,18 +11,31 @@
 
 namespace Netzmacht\Workflow\Contao\View;
 
-
-interface View 
+/**
+ * Interface View describes workflow related view elements which can be used to display some informations.
+ *
+ * @package Netzmacht\Workflow\Contao\View
+ */
+interface View
 {
     /**
-     * @param string $template Template name
+     * Set the template name.
+     *
+     * @param string $template Template name.
      *
      * @return $this
      */
     public function setTemplate($template);
 
     /**
-     * Render the view
+     * Get the template name.
+     *
+     * @return string
+     */
+    public function getTemplate();
+
+    /**
+     * Render the view.
      *
      * @return string
      */

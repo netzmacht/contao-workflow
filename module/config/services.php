@@ -53,7 +53,6 @@ $container['workflow.transaction-handler'] = $container->share(
 $container['workflow.factory.repository'] = $container->share(
     function($container) {
         $factory = new RepositoryFactory($container['event-dispatcher']);
-        $container['event-dispatcher']->addSubscriber($factory);
 
         return $factory;
     }
@@ -62,7 +61,6 @@ $container['workflow.factory.repository'] = $container->share(
 $container['workflow.factory.entity'] = $container->share(
     function($container) {
         $factory = new EntityFactory();
-        $container['event-dispatcher']->addSubscriber($factory);
 
         return $factory;
     }

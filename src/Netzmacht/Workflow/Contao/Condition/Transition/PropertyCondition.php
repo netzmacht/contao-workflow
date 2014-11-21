@@ -146,7 +146,7 @@ class PropertyCondition implements Condition
     /**
      * Get value from the entity.
      *
-     * @param Entity $entity The entity
+     * @param Entity $entity The entity.
      *
      * @return mixed
      */

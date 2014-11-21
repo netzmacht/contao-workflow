@@ -27,8 +27,6 @@ use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
 use Netzmacht\Workflow\Data\ErrorCollection;
 use Netzmacht\Workflow\Flow\Context;
-use Netzmacht\Workflow\Form\Form;
-use Netzmacht\Workflow\Form\FormField;
 
 /**
  * Form implementation for a backend form.
@@ -73,7 +71,7 @@ class BackendForm implements Form
     private $fields = array();
 
     /**
-     * Created widgets.
+     * Created form widgets.
      *
      * @var array|\Widget[]
      */
@@ -94,11 +92,15 @@ class BackendForm implements Form
     private $model;
 
     /**
+     * Property values.
+     *
      * @var PropertyValueBag
      */
     private $propertyValues;
 
     /**
+     * Form error collection.
+     *
      * @var ErrorCollection
      */
     private $errorCollection;
@@ -131,7 +133,7 @@ class BackendForm implements Form
     /**
      * Validate the form.
      *
-     * @param Context $context
+     * @param Context $context The transition context.
      *
      * @return bool
      */
@@ -152,10 +154,12 @@ class BackendForm implements Form
     }
 
     /**
-     * @param string      $name
-     * @param string      $type
-     * @param array       $extra
-     * @param string|null $fieldset
+     * Create a form field.
+     *
+     * @param string      $name     The name of the form field.
+     * @param string      $type     The type of the form field.
+     * @param array       $extra    Extra informations.
+     * @param string|null $fieldset Optional a fieldset where the field is added. If null form field ist just created.
      *
      * @return FormField
      */
@@ -174,12 +178,13 @@ class BackendForm implements Form
     /**
      * Add a field to the form.
      *
-     * @param FormField $formField
-     * @param string    $fieldset
+     * @param FormField $formField The form field to add.
+     * @param string    $fieldset  The fieldset being used.
      *
      * @return $this
      */
-    public function addField(FormField $formField, $fieldset = 'default') {
+    public function addField(FormField $formField, $fieldset = 'default')
+    {
         $property = $this->convertToProperty($formField);
 
         $this->getPropertiesDefinition()->addProperty($property);
@@ -213,6 +218,8 @@ class BackendForm implements Form
     }
 
     /**
+     * Render the form.
+     *
      * @return string
      *
      * @SuppressWarnings(PHPMD.Superglobals)
@@ -240,7 +247,9 @@ class BackendForm implements Form
     }
 
     /**
+     * Build all widgets.
      *
+     * @return void
      */
     private function buildWidgets()
     {
@@ -253,6 +262,8 @@ class BackendForm implements Form
 
     /**
      * Validate widgets.
+     *
+     * @return void
      */
     private function validateWidgets()
     {
@@ -260,7 +271,9 @@ class BackendForm implements Form
     }
 
     /**
-     * @return PropertyValueBag
+     * Load property values.
+     *
+     * @return void
      */
     private function loadPropertyValues()
     {
@@ -289,12 +302,14 @@ class BackendForm implements Form
     }
 
     /**
+     * Render all fieldsets.
+     *
      * @return array
      */
     private function renderFieldSets()
     {
         $fieldSets = array();
-        $first = true;
+        $first     = true;
 
         foreach ($this->fields as $name => $widgets) {
             $fields = array();
@@ -316,8 +331,7 @@ class BackendForm implements Form
             if (isset($fieldset['class'])) {
                 $fieldset['class'] .= ' ';
                 $fieldset['class'] .= ($first) ? 'tl_tbox' : 'tl_box';
-            }
-            else {
+            } else {
                 $fieldset['class'] = ($first) ? 'tl_tbox' : 'tl_box';
             }
 
@@ -329,7 +343,10 @@ class BackendForm implements Form
     }
 
     /**
-     * @param $formField
+     * Convert a form field to the internal used property.
+     *
+     * @param FormField $formField The form field.
+     *
      * @return PropertyInterface
      */
     private function convertToProperty(FormField $formField)
@@ -351,9 +368,14 @@ class BackendForm implements Form
     }
 
     /**
+     * Update the error collection.
+     *
+     * @return void
      */
     private function updateErrorCollection()
     {
+        $this->errorCollection->reset();
+
         // copy error messages
         foreach ($this->propertyValues->getInvalidPropertyErrors() as $field => $errors) {
             foreach ($errors as $error) {
@@ -369,15 +391,22 @@ class BackendForm implements Form
     }
 
     /**
+     * Create the event propagator.
+     *
      * @return EventPropagator
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    private function getEventDispatcher()
+    private function getEventPropagator()
     {
         return new EventPropagator($GLOBALS['container']['event-dispatcher']);
     }
 
+    /**
+     * Create the environment.
+     *
+     * @return void
+     */
     private function createEnvironment()
     {
         $container = new DefaultContainer('workflow_data');
@@ -387,7 +416,7 @@ class BackendForm implements Form
         $this->environment = new DefaultEnvironment();
         $this->environment->setDataDefinition($container);
         $this->environment->setInputProvider(new InputProvider());
-        $this->environment->setEventPropagator($this->getEventDispatcher());
+        $this->environment->setEventPropagator($this->getEventPropagator());
 
         $controller = new DefaultController();
         $controller->setEnvironment($this->environment);

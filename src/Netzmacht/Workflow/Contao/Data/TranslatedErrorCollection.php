@@ -14,21 +14,37 @@ namespace Netzmacht\Workflow\Contao\Data;
 use ContaoCommunityAlliance\Translator\TranslatorInterface as Translator;
 use Netzmacht\Workflow\Data\ErrorCollection;
 
+/**
+ * Class TranslatedErrorCollection translated the error identifiers to a localized error message.
+ *
+ * @package Netzmacht\Workflow\Contao\Data
+ */
 class TranslatedErrorCollection
 {
+    /**
+     * The error message domain.
+     *
+     * @var string
+     */
     protected $domain = 'workflow_messages';
 
     /**
+     * The error collection.
+     *
      * @var ErrorCollection
      */
     private $errorCollection;
 
     /**
+     * The translator.
+     *
      * @var Translator
      */
     private $translator;
 
     /**
+     * Get all errors translated as array.
+     *
      * @return array
      */
     public function getErrors()
@@ -37,7 +53,9 @@ class TranslatedErrorCollection
     }
 
     /**
-     * @param ErrorCollection $errorCollection
+     * Translate an error collection.
+     *
+     * @param ErrorCollection $errorCollection The error collection to craeted.
      *
      * @return array
      */

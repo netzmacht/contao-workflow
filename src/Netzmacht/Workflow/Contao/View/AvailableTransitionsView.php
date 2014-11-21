@@ -14,13 +14,20 @@ namespace Netzmacht\Workflow\Contao\View;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Workflow\Flow\Exception\TransitionNotFoundException;
 
+/**
+ * Class AvailableTransitionsView is used to display an available transitions menu.
+ *
+ * @package Netzmacht\Workflow\Contao\View
+ */
 class AvailableTransitionsView extends AbstractItemView
 {
     /**
+     * Render he view.
+     *
      * @return string
      *
-     * @throws StepNotFoundException
-     * @throws TransitionNotFoundException
+     * @throws StepNotFoundException        If no step found.
+     * @throws TransitionNotFoundException  If transition is not found.
      */
     public function render()
     {
@@ -32,8 +39,7 @@ class AvailableTransitionsView extends AbstractItemView
 
         if (!$this->item->isWorkflowStarted()) {
             $transitions[] = $this->workflow->getStartTransition();
-        }
-        else {
+        } else {
             $step = $this->workflow->getStep($this->item->getCurrentStepName());
 
             foreach ($step->getAllowedTransitions() as $transitionName) {

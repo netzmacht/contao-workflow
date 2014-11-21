@@ -11,12 +11,28 @@
 
 namespace Netzmacht\Workflow\Contao\Dca\Helper;
 
-
+/**
+ * Class DcaLoader is just a helper class to overcome contao api limits.
+ *
+ * @package Netzmacht\Workflow\Contao\Dca\Helper
+ */
 class DcaLoader extends \Controller
 {
-    public static function load($dataContainerName, $noCache=false)
+    /**
+     * Load a data container definition and return it as array.
+     *
+     * @param string $dataContainerName The data container name.
+     * @param bool   $noCache           Ignore the cache.
+     *
+     * @return array
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    public static function &load($dataContainerName, $noCache = false)
     {
         $loader = new DcaLoader();
         $loader->loadDataContainer($dataContainerName, $noCache);
+
+        return $GLOBALS['TL_DCA'][$dataContainerName];
     }
 }

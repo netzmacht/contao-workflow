@@ -24,14 +24,18 @@ use Pimple;
 class ServiceProvider
 {
     /**
+     * The dependency container.
+     *
      * @var Pimple
      */
     private $container;
 
     /**
-     * @param $container
+     * Construct.
+     *
+     * @param Pimple $container The dependency container.
      */
-    function __construct(Pimple $container)
+    public function __construct(Pimple $container)
     {
         $this->container = $container;
     }

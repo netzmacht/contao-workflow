@@ -15,23 +15,35 @@ use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class CreateStepEvent is emitted when a workflow step is created.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Event
+ */
 class CreateStepEvent extends Event
 {
     const NAME = 'workflow.factory.create-step';
 
     /**
-     * @var \Netzmacht\Workflow\Flow\Workflow
+     * The workflow this step belongs to.
+     *
+     * @var Workflow
      */
     private $workflow;
 
+
     /**
-     * @var \Netzmacht\Workflow\Flow\Step
+     * The workflow step.
+     *
+     * @var Step
      */
     private $step;
 
     /**
-     * @param Workflow $workflow
-     * @param \Netzmacht\Workflow\Flow\Step     $step
+     * Construct.
+     *
+     * @param Workflow $workflow The workflow.
+     * @param Step     $step     The step which is build.
      */
     public function __construct(Workflow $workflow, Step $step)
     {
@@ -40,6 +52,8 @@ class CreateStepEvent extends Event
     }
 
     /**
+     * Get the step.
+     *
      * @return Step
      */
     public function getStep()
@@ -48,6 +62,8 @@ class CreateStepEvent extends Event
     }
 
     /**
+     * Get the workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()

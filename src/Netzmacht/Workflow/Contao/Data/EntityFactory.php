@@ -17,11 +17,9 @@ use Database\Result;
 use Netzmacht\Workflow\Contao\Entity\ContaoModelEntity;
 use Netzmacht\Workflow\Contao\Definition\Event;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateEntityEvent;
-use MetaModels\DcGeneral\Data\Model as MetaModelModel;
-use MetaModels\IItem as MetaModelItem;
+ use MetaModels\IItem as MetaModelItem;
 use Model\Collection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 
 /**
  * Class EntityFactory is responsible to createRepository the Entity for different model types.
@@ -49,9 +47,9 @@ class EntityFactory implements EventSubscriberInterface
      *
      * @param CreateEntityEvent $event Event subscribed to.
      *
-     * @return Entity
+     * @return void
      */
-    public function handleCreateEntityEvent(Event\CreateEntityEvent $event)
+    public function handleCreateEntityEvent(CreateEntityEvent $event)
     {
         $model  = $event->getModel();
         $entity = $this->createEntity($model, $event->getTable());

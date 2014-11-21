@@ -15,12 +15,13 @@ namespace Netzmacht\Workflow\Contao\Model;
  * StepModel using Contao models.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
- * @property int $id
- * @property string $name
- * @property string $label
- * @property bool   $final
- * @property bool   $limitPermission
- * @property string $permission
+ *
+ * @property int    $id              The model id.
+ * @property string $name            The step name.
+ * @property string $label           The step label.
+ * @property bool   $final           Step is a final step.
+ * @property bool   $limitPermission Limit the permission.
+ * @property string $permission      The permission id.
  */
 class StepModel extends \Model
 {
@@ -32,16 +33,14 @@ class StepModel extends \Model
     protected static $strTable = 'tl_workflow_step';
 
     /**
-     * @param $workflowId
+     * Find by workflow id.
+     *
+     * @param int $workflowId The workflow id.
      *
      * @return \Model\Collection|null
      */
     public static function findByWorkflow($workflowId)
     {
-        return static::findBy(
-            array('pid=?'),
-            $workflowId,
-            array('order' => 'name')
-        );
+        return static::findBy(array('pid=?'), $workflowId, array('order' => 'name'));
     }
 }

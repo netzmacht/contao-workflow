@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Action;
 
+use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Workflow\Contao\Form\FormBuilder;
 use Netzmacht\Workflow\Flow\Action;
@@ -32,9 +33,11 @@ abstract class AbstractAction implements Action
     private $formBuilder;
 
     /**
+     * Construct.
+     *
      * @param FormBuilder $formBuilder Optional form builder.
      */
-    function __construct(FormBuilder $formBuilder = null)
+    public function __construct(FormBuilder $formBuilder = null)
     {
         $this->formBuilder = $formBuilder;
     }
@@ -71,19 +74,18 @@ abstract class AbstractAction implements Action
      * @param Item $item Workflow item.
      *
      * @return Entity
+     *
+     * @hrows AssertionException If entity is not an Instance of
      */
     protected function getEntity(Item $item)
     {
         $entity = $item->getEntity();
 
-        if (!$entity instanceof Entity) {
-            throw new \RuntimeException(
-                sprintf(
-                    'PropertAction only supports entities of the type "%s"',
-                    'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface'
-                )
-            );
-        }
+        Assertion::isInstanceOf(
+            $entity,
+            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
+            'Invalid entity given'
+        );
 
         return $entity;
     }

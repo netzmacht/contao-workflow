@@ -21,6 +21,11 @@ use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
  */
 class Permission
 {
+    /**
+     * Get all permissions.
+     *
+     * @return array
+     */
     public function getAllPermissions()
     {
         $options    = array();
@@ -36,7 +41,7 @@ class Permission
                         ? ($collection->label . ' [' . $collection->name . ']')
                         : $collection->name;
 
-                    $name = $collection->name . ':' . $permission['name'];
+                    $name                      = $collection->name . ':' . $permission['name'];
                     $options[$workflow][$name] = $permission['label'] ?: $permission['name'];
                 }
             }
@@ -45,6 +50,13 @@ class Permission
         return $options;
     }
 
+    /**
+     * Get all permissions of a specific workflow.
+     *
+     * @param \DataContainer $dataContainer The data container driver.
+     *
+     * @return array
+     */
     public function getWorkflowPermissions($dataContainer)
     {
         if (!$dataContainer->activeRecord || !$dataContainer->activeRecord->pid) {

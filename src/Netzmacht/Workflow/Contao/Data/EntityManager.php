@@ -43,10 +43,10 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler, EventS
     /**
      * The database connection.
      *
-     * @param \Database         $connection
-     * @param RepositoryFactory $repositoryFactory
+     * @param \Database         $connection        The database connection.
+     * @param RepositoryFactory $repositoryFactory The repositroy factory.
      */
-    function __construct(\Database $connection, RepositoryFactory $repositoryFactory)
+    public function __construct(\Database $connection, RepositoryFactory $repositoryFactory)
     {
         $this->connection        = $connection;
         $this->repositoryFactory = $repositoryFactory;

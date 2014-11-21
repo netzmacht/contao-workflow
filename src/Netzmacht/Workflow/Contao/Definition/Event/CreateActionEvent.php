@@ -15,22 +15,32 @@ use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Flow\Workflow;
 
+/**
+ * Class CreateActionEvent is created when an action should be created.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Event
+ */
 class CreateActionEvent
 {
     const NAME = 'workflow.factory.create-action';
 
     /**
+     * The action model.
+     *
      * @var ActionModel
      */
     private $model;
 
     /**
+     * The created action.
+     *
      * @var Action
      */
     private $action;
 
     /**
-     * Workflow the action is in
+     * Workflow the action belongs to.
+     *
      * @var Workflow
      */
     private $workflow;
@@ -41,7 +51,7 @@ class CreateActionEvent
      * @param Workflow    $workflow Current workflow.
      * @param ActionModel $model    Action model.
      */
-    function __construct(Workflow $workflow, ActionModel $model)
+    public function __construct(Workflow $workflow, ActionModel $model)
     {
         $this->workflow = $workflow;
         $this->model    = $model;
@@ -58,6 +68,8 @@ class CreateActionEvent
     }
 
     /**
+     * Get the workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()
@@ -78,10 +90,14 @@ class CreateActionEvent
     /**
      * Set the action.
      *
-     * @param Action $action
+     * @param Action $action The action being created.
+     *
+     * @return $this
      */
     public function setAction(Action $action)
     {
         $this->action = $action;
+
+        return $this;
     }
 }

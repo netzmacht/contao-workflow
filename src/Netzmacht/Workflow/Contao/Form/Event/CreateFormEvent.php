@@ -11,32 +11,45 @@
 
 namespace Netzmacht\Workflow\Contao\Form\Event;
 
-use Netzmacht\Workflow\Form\Form;
+use Netzmacht\Workflow\Contao\Form\Form;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class CreateFormEvent is emitted when a form is created.
+ *
+ * @package Netzmacht\Workflow\Contao\Form\Event
+ */
 class CreateFormEvent extends Event
 {
     const NAME = 'workflow.factory.create-form';
 
     /**
+     * Form being created.
+     *
      * @var Form
      */
     private $form;
 
     /**
+     * Form type.
+     *
      * @var string
      */
     private $type;
 
     /**
-     * @param $type
+     * Construct.
+     *
+     * @param string $type Form type.
      */
-    function __construct($type)
+    public function __construct($type)
     {
         $this->type = $type;
     }
 
     /**
+     * Get the form.
+     *
      * @return Form
      */
     public function getForm()
@@ -45,7 +58,9 @@ class CreateFormEvent extends Event
     }
 
     /**
-     * @param Form $form
+     * Set the crated form.
+     *
+     * @param Form $form The created form.
      *
      * @return $this
      */
@@ -57,6 +72,8 @@ class CreateFormEvent extends Event
     }
 
     /**
+     * Get the form type.
+     *
      * @return string
      */
     public function getType()

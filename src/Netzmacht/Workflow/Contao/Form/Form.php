@@ -12,31 +12,15 @@
 namespace Netzmacht\Workflow\Contao\Form;
 
 use Netzmacht\Workflow\Data\ErrorCollection;
-use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Form\Form as WorkflowForm;
 
 /**
  * Interface Form describes a form instance which is used for workflow transition.
  *
  * @package Netzmacht\Workflow\Form
  */
-interface Form
+interface Form extends WorkflowForm
 {
-    /**
-     * Validate form data.
-     *
-     * @param Context $context The transition context.
-     *
-     * @return bool
-     */
-    public function validate(Context $context);
-
-    /**
-     * Render the form and return it as string.
-     *
-     * @return string
-     */
-    public function render();
-
     /**
      * Add label and description for a fieldset.
      *

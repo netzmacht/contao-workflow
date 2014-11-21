@@ -24,6 +24,8 @@ class CreateWorkflowEvent extends Event
     const NAME = 'workflow.factory.create-workflow';
 
     /**
+     * The workflow being created.
+     *
      * @var Workflow
      */
     private $workflow;

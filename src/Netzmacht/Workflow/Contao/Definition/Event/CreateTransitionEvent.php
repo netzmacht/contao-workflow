@@ -14,11 +14,18 @@ namespace Netzmacht\Workflow\Contao\Definition\Event;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class CreateTransitionEvent is emitted when transition is created.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Event
+ */
 class CreateTransitionEvent extends Event
 {
     const NAME = 'workflow.factory.create-transition';
 
     /**
+     * The created transition.
+     *
      * @var Transition
      */
     private $transition;
@@ -26,14 +33,16 @@ class CreateTransitionEvent extends Event
     /**
      * Construct.
      *
-     * @param Transition $transition
+     * @param Transition $transition Workflow transition.
      */
-    function __construct(Transition $transition)
+    public function __construct(Transition $transition)
     {
         $this->transition = $transition;
     }
 
     /**
+     * Get the transition.
+     *
      * @return Transition
      */
     public function getTransition()

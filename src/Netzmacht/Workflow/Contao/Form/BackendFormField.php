@@ -12,14 +12,19 @@
 namespace Netzmacht\Workflow\Contao\Form;
 
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\Properties\DefaultProperty;
-use Netzmacht\Workflow\Form\Form;
-use Netzmacht\Workflow\Form\FormField;
 
+/**
+ * Class BackendFormField is used for a backend form.
+ *
+ * @package Netzmacht\Workflow\Contao\Form
+ */
 class BackendFormField extends DefaultProperty implements FormField
 {
     /**
-     * @param string $name
-     * @param        $type
+     * Construct.
+     *
+     * @param string $name Name of form field.
+     * @param string $type Type of the form field.
      */
     public function __construct($name, $type)
     {
@@ -31,7 +36,8 @@ class BackendFormField extends DefaultProperty implements FormField
     /**
      * Add field to a form.
      *
-     * @param Form $form
+     * @param Form   $form     Form which will get the widget.
+     * @param string $fieldset The name of the fieldset being used.
      *
      * @return $this
      */

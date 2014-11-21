@@ -3,6 +3,7 @@
 /*
  * Backend module
  */
+
 array_insert($GLOBALS['BE_MOD'], 1, array
 (
     'workflow' => array(
@@ -36,6 +37,13 @@ $GLOBALS['WORKFLOW_TYPES']['default'] = '';
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Workflow\Contao\Boot', 'startup');
+$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
+    $eventDispatcher = $container['event-dispatcher'];
+
+    $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.repository']);
+    $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.entity']);
+};
 
 /*
  * Event Subscribers

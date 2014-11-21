@@ -26,16 +26,14 @@ class RoleModel extends \Model
     protected static $strTable = 'tl_workflow_role';
 
     /**
-     * @param $workflowId
+     * Find by workflow id.
+     *
+     * @param int $workflowId The workflow id.
      *
      * @return \Model\Collection|null
      */
     public static function findByWorkflow($workflowId)
     {
-        return static::findBy(
-            array('pid=?'),
-            $workflowId,
-            array('order' => 'name')
-        );
+        return static::findBy(array('pid=?'), $workflowId, array('order' => 'name'));
     }
 }
