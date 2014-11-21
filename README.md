@@ -73,16 +73,18 @@ How to use it
 
 // Get the workflow manager from the dependency container
 
-/** @var Netzmacht\Workflow\Contao\Manager; */
-$manager = $container['workflow.manager'];
+$provider = Netzmacht\Workflow\Contao\ServiceProvider::create();
 
 // Load model and create the entity.
-$model   = \ContentModel::findByPK(10);
-$entity  = $manager->createEntity($model);
+$model    = \ContentModel::findByPK(10);
+$entityId = Netzmacht\Workflow\Data\EntityId::fromProviderNameAndId($model->getTable(), $model->id);
+$item     = $manager->createItem($entityId, $model);
 
 // Create the transition handler to perform transition start on the entity. Optional select your workflow type
 // which your implementation supports.
-$handler = $manager->handle($entity, 'start', 'optional-workflow-type');
+$factory = $provider->getFactory();
+$manager = $factory->createManager($model->getTable());
+$handler = $manager->handle($item, 'start');
 
 // if there is no supported workflow for the entity, handler will be false
 if ($handler) {

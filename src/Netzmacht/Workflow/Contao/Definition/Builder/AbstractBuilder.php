@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Flow;
+namespace Netzmacht\Workflow\Contao\Definition\Builder;
 
 
 class AbstractBuilder

@@ -11,19 +11,19 @@
 
 namespace Netzmacht\Workflow\Contao;
 
+use Netzmacht\Workflow\Contao\Definition\Event\BuildUserEvent;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
-use Netzmacht\Workflow\Factory\Event\CreateUserEvent;
 use Netzmacht\Workflow\Security\Permission;
 use Netzmacht\Workflow\Security\Role;
 use Netzmacht\Workflow\Security\User;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * Class Boot boots the workflow security context.
  *
  * @package Netzmacht\Workflow\Contao\Security
  */
-class Boot implements EventSubscriberInterface
+class Boot
 {
     function __construct()
     {
@@ -32,13 +32,17 @@ class Boot implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Initialize the user.
+     * @param $container
      */
-    public static function getSubscribedEvents()
+    public function startup($container)
     {
-        return array(
-            CreateUserEvent::NAME => 'createUserRoles',
-        );
+        $this->initializeContaoStack($container['workflow.security.authenticate']);
+        $user = $this->createUser($container['event-dispatcher']);
+
+        $container['workflow.security.user'] = function() use ($user) {
+            return $user;
+        };
     }
 
     /**
@@ -46,18 +50,25 @@ class Boot implements EventSubscriberInterface
      *
      * Load user permissions for current frontend or backend user.
      *
-     * @param CreateUserEvent $event
+     * @param EventDispatcher $eventDispatcher The event dispatcher.
+     *
+     * @return User
      */
-    public function createUserRoles(CreateUserEvent $event)
+    public function createUser(EventDispatcher $eventDispatcher)
     {
         $this->initializePermissionTranslations();
-        $user = $event->getUser();
+        $user = new User();
 
         if (TL_MODE == 'BE') {
             $this->createBackendUserRole($user);
         } elseif (TL_MODE == 'FE') {
             $this->createFrontendMemberRole($user);
         }
+
+        $event = new BuildUserEvent($user);
+        $eventDispatcher->dispatch($event::NAME, $event);
+
+        return $user;
     }
 
     /**
@@ -186,6 +197,25 @@ class Boot implements EventSubscriberInterface
                     $GLOBALS['TL_LANG']['workflow_permissions'][$name] = $permission['label'] ?: $permission['name'];
                 }
             }
+        }
+    }
+
+    private function initializeContaoStack($authenticate = false)
+    {
+        \Config::getInstance();
+        \Environment::getInstance();
+        \Input::getInstance();
+
+        if (TL_MODE == 'BE') {
+            $user = \BackendUser::getInstance();
+        } elseif (TL_MODE == 'FE') {
+            $user = \FrontendUser::getInstance();
+        }
+
+        \Database::getInstance();
+
+        if (isset($user) & $authenticate) {
+            $user->authenticate();
         }
     }
 }

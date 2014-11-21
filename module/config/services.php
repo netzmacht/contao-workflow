@@ -17,14 +17,9 @@ $container['workflow.factory'] = $container->share(
     }
 );
 
-$container['workflow.security.user'] = $container->share(
-    function($container) {
-        /** @var Factory $factory */
-        $factory = $container['workflow.factory'];
-
-        return $factory->createUser();
-    }
-);
+$container['workflow.security.authenticate'] = function() {
+    return $GLOBALS['TL_CONFIG']['workflow_authenticateUser'];
+};
 
 $container['worfklow.database.connection'] = $container->share(
     function() {

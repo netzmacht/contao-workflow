@@ -33,11 +33,15 @@ $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
 $GLOBALS['WORKFLOW_TYPES']['default'] = '';
 
 /*
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Workflow\Contao\Boot', 'startup');
+
+/*
  * Event Subscribers
  */
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Boot';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\ManagerBuilder';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\WorkflowBuilder';
+//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\ManagerBuilder';
+//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\WorkflowBuilder';
 
 //$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\BackendSubscriber';
 //$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\WorkflowBuilder';

@@ -9,13 +9,14 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Flow;
+namespace Netzmacht\Workflow\Contao\Definition\Builder;
 
-use Netzmacht\Workflow\Contao\Flow\Event\CreateWorkflowEvent;
+use Netzmacht\Workflow\Contao\Definition\Builder\AbstractBuilder;
+use Netzmacht\Workflow\Contao\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Workflow\Manager;
+use Netzmacht\Workflow\Contao\Manager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
@@ -49,7 +50,8 @@ class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
     {
         return new Manager(
             $this->getService('workflow.factory.transition-handler'),
-            $this->getService('workflow.state-repository')
+            $this->getService('workflow.state-repository'),
+            $this->getService('workflow.factory.entity')
         );
     }
 

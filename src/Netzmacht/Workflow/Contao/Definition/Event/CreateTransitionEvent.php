@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Flow\Event;
+namespace Netzmacht\Workflow\Contao\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\EventDispatcher\Event;

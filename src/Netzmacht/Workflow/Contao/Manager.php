@@ -11,91 +11,60 @@
 
 namespace Netzmacht\Workflow\Contao;
 
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Workflow\Contao\Data\EntityFactory;
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
-use Netzmacht\Workflow\Handler\TransitionHandler;
-use Netzmacht\Workflow\Security\User;
+use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
+use Netzmacht\Workflow\Flow\Item;
 
-class Manager
+/**
+ * Class Manager adds entity handling to the manager.
+ *
+ * @package Netzmacht\Workflow\Contao
+ */
+class Manager extends \Netzmacht\Workflow\Manager
 {
     /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @var \Netzmacht\Workflow\Contao\Data\EntityFactory
+     * The entity factory.
+     *
+     * @var EntityFactory
      */
     private $entityFactory;
 
     /**
-     * @param User          $user
-     * @param Factory       $factory
-     * @param \Netzmacht\Workflow\Contao\Data\EntityFactory $entityFactory
+     * Construct.
+     *
+     * @param TransitionHandlerFactory $handlerFactory  The transition handler factory.
+     * @param StateRepository          $stateRepository The state repository.
+     * @param EntityFactory            $entityFactory   The entity factory.
+     * @param array                    $workflows       A optional set of workflows.
      */
-    function __construct(User $user, Factory $factory, EntityFactory $entityFactory)
-    {
-        $this->user          = $user;
-        $this->factory       = $factory;
+    public function __construct(
+        TransitionHandlerFactory $handlerFactory,
+        StateRepository $stateRepository,
+        EntityFactory $entityFactory,
+        $workflows = array()
+    ) {
+        parent::__construct($handlerFactory, $stateRepository, $workflows);
+
         $this->entityFactory = $entityFactory;
     }
 
     /**
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param $model
-     * @param $providerName
+     * Create the item.
      *
-     * @return Entity
-     */
-    public function createEntity($model, $providerName = null)
-    {
-        return $this->entityFactory->createEntity($model, $providerName);
-    }
-
-    /**
-     * @param Entity      $model
-     * @param string|null $transitionName
-     * @param string|null $workflowType
+     * It also converts the entity to a ModelInterface instance.
      *
-     * @return bool|TransitionHandler
-     */
-    public function handle(Entity $model, $transitionName = null, $workflowType = null)
-    {
-        // If no manager could be created that means there is no workflow registered.
-        // Catch exception and just return false
-        try {
-            $manager = $this->factory->createManager($model->getProviderName(), $workflowType);
-        } catch(\RuntimeException $e) {
-            return false;
-        }
-
-        $entityId = EntityId::fromProviderNameAndId($model->getProviderName(), $model->getId());
-        $item     = $manager->createItem($entityId, $model);
-
-        return $manager->handle($item, $transitionName);
-    }
-
-    /**
-     * @param $type
+     * @param EntityId $entityId The entity id.
+     * @param mixed    $model    The data model.
      *
-     * @return \Netzmacht\Workflow\Form\Form
+     * @return Item
      */
-    public function createForm($type)
+    public function createItem(EntityId $entityId, $model)
     {
-        return $this->factory->createForm($type);
+        $entity = $this->entityFactory->createEntity($model, $entityId->getProviderName());
+
+        return parent::createItem($entityId, $entity);
     }
 }
