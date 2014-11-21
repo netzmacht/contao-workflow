@@ -37,8 +37,8 @@ class Boot
      */
     public function startup($container)
     {
-        $this->initializeContaoStack($container['workflow.security.authenticate']);
-        $user = $this->createUser($container['event-dispatcher']);
+        $contaoUser = $this->getContaoUser($container);
+        $user       = $this->createUser($container['event-dispatcher'], $contaoUser);
 
         $container['workflow.security.user'] = function() use ($user) {
             return $user;
@@ -51,18 +51,19 @@ class Boot
      * Load user permissions for current frontend or backend user.
      *
      * @param EventDispatcher $eventDispatcher The event dispatcher.
+     * @param \User           $contaoUser      The contao user
      *
      * @return User
      */
-    public function createUser(EventDispatcher $eventDispatcher)
+    public function createUser(EventDispatcher $eventDispatcher, \User $contaoUser)
     {
         $this->initializePermissionTranslations();
         $user = new User();
 
         if (TL_MODE == 'BE') {
-            $this->createBackendUserRole($user);
+            $this->createBackendUserRole($user, $contaoUser);
         } elseif (TL_MODE == 'FE') {
-            $this->createFrontendMemberRole($user);
+            $this->createFrontendMemberRole($user, $contaoUser);
         }
 
         $event = new BuildUserEvent($user);
@@ -73,13 +74,14 @@ class Boot
 
     /**
      * Create permission for the backend user.
-     * @param User $user
+     *
+     * @param User  $user
+     * @param \User $contaoUser
      */
-    private function createBackendUserRole(User $user)
+    private function createBackendUserRole(User $user, \User $contaoUser)
     {
         $roles      = array();
         $roleName   = 'be_user';
-        $contaoUser = \BackendUser::getInstance();
 
         foreach ((array) $contaoUser->workflow as $permissionName) {
             $permission = Permission::fromString($permissionName);
@@ -97,13 +99,13 @@ class Boot
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param \User $contaoUser
      */
-    private function createFrontendMemberRole(User $user)
+    private function createFrontendMemberRole(User $user, \User $contaoUser)
     {
         $roleName    = 'fe_member';
         $roles       = array();
-        $contaoUser  = \FrontendUser::getInstance();
         $permissions = $this->getMemberPermissions($contaoUser);
 
         foreach ($permissions as $permissionName) {
@@ -200,22 +202,28 @@ class Boot
         }
     }
 
-    private function initializeContaoStack($authenticate = false)
+    /**
+     * Get the Contao user from the container.
+     *
+     * @param \Pimple $container The dependency container.
+     *
+     * @return null
+     */
+    private function getContaoUser(\Pimple $container)
     {
-        \Config::getInstance();
-        \Environment::getInstance();
-        \Input::getInstance();
-
-        if (TL_MODE == 'BE') {
-            $user = \BackendUser::getInstance();
-        } elseif (TL_MODE == 'FE') {
-            $user = \FrontendUser::getInstance();
+        // Fetch exception for unknown TL_MODE. Workflow can workflow without that, so just get null back.
+        try {
+            /** @var \User $user */
+            $user = $container['user'];
+        }
+        catch(\Exception $e) {
+            return null;
         }
 
-        \Database::getInstance();
-
-        if (isset($user) & $authenticate) {
+        if ($container['workflow.security.authenticate']) {
             $user->authenticate();
         }
+
+        return $user;
     }
 }
