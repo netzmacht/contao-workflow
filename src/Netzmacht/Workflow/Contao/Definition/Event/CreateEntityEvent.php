@@ -42,18 +42,18 @@ class CreateEntityEvent extends Event
      *
      * @var string|null
      */
-    private $table;
+    private $providerName;
 
     /**
      * Construct.
      *
-     * @param mixed       $model The data model.
-     * @param string|null $table The table name.
+     * @param mixed       $model        The data model.
+     * @param string|null $providerName The table name.
      */
-    public function __construct($model, $table = null)
+    public function __construct($model, $providerName = null)
     {
-        $this->model = $model;
-        $this->table = $table;
+        $this->model        = $model;
+        $this->providerName = $providerName;
     }
 
     /**
@@ -71,9 +71,9 @@ class CreateEntityEvent extends Event
      *
      * @return null|string
      */
-    public function getTable()
+    public function getProviderName()
     {
-        return $this->table;
+        return $this->providerName;
     }
 
     /**

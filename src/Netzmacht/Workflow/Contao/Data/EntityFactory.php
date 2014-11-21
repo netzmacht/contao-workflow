@@ -52,7 +52,7 @@ class EntityFactory implements EventSubscriberInterface
     public function handleCreateEntityEvent(CreateEntityEvent $event)
     {
         $model  = $event->getModel();
-        $entity = $this->createEntity($model, $event->getTable());
+        $entity = $this->createEntity($model, $event->getProviderName());
 
         $event->setEntity($entity);
     }
