@@ -13,6 +13,7 @@ namespace Netzmacht\Workflow\Contao\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
+use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 
 /**
@@ -25,11 +26,18 @@ class CreateActionEvent
     const NAME = 'workflow.factory.create-action';
 
     /**
-     * The action model.
+     * The action configuration.
      *
-     * @var ActionModel
+     * @var mixed
      */
-    private $model;
+    private $config;
+
+    /**
+     * The config source.
+     *
+     * @var null|string
+     */
+    private $configSource;
 
     /**
      * The created action.
@@ -46,15 +54,26 @@ class CreateActionEvent
     private $workflow;
 
     /**
+     * Workflow transition.
+     *
+     * @var Transition
+     */
+    private $transition;
+
+    /**
      * Construct.
      *
-     * @param Workflow    $workflow Current workflow.
-     * @param ActionModel $model    Action model.
+     * @param Workflow    $workflow     Current workflow.
+     * @param Transition  $transition   Current transition.
+     * @param mixed       $config       Action configuration.
+     * @param string|null $configSource Config source.
      */
-    public function __construct(Workflow $workflow, ActionModel $model)
+    public function __construct(Workflow $workflow, Transition $transition, $config, $configSource = null)
     {
-        $this->workflow = $workflow;
-        $this->model    = $model;
+        $this->workflow     = $workflow;
+        $this->config       = $config;
+        $this->configSource = $configSource;
+        $this->transition   = $transition;
     }
 
     /**
@@ -62,9 +81,19 @@ class CreateActionEvent
      *
      * @return ActionModel
      */
-    public function getModel()
+    public function getConfig()
     {
-        return $this->model;
+        return $this->config;
+    }
+
+    /**
+     * Get the config source.
+     *
+     * @return null|string
+     */
+    public function getConfigSource()
+    {
+        return $this->configSource;
     }
 
     /**
@@ -75,6 +104,16 @@ class CreateActionEvent
     public function getWorkflow()
     {
         return $this->workflow;
+    }
+
+    /**
+     * Get transition.
+     *
+     * @return Transition
+     */
+    public function getTransition()
+    {
+        return $this->transition;
     }
 
     /**

@@ -222,7 +222,13 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
         while ($collection->next()) {
             /** @var ActionModel $model */
             $model = $collection->current();
-            $event = new CreateActionEvent($workflow, $model);
+            $event = new CreateActionEvent(
+                $workflow,
+                $this->transitions[$model->pid],
+                $model->row(),
+                static::SOURCE_DATABASE
+            );
+
             $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
 
             if (!$event->getAction()) {
