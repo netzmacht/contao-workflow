@@ -67,6 +67,25 @@ class ServiceProvider
     }
 
     /**
+     * Get manager
+     *
+     * @param      $providerName
+     * @param null $type
+     *
+     * @return Manager
+     */
+    public function getManager($providerName, $type = null)
+    {
+        $service = 'workflow.mananger.' . $providerName . ($type ? ('.' . $type) : '');
+
+        if (!isset($this->container[$service])) {
+            $this->container[$service] = $this->getFactory()->createManager($providerName, $type);
+        }
+
+        return $this->container[$service];
+    }
+
+    /**
      * Get the workflow security user.
      *
      * @return User

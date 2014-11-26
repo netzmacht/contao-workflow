@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Table;
+namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
 use Netzmacht\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;

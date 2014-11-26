@@ -12,6 +12,7 @@
 namespace Netzmacht\Workflow\Contao\Definition\Database;
 
 use Netzmacht\Workflow\Contao\Definition\AbstractBuilder;
+use Netzmacht\Workflow\Contao\Definition\Definition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
@@ -90,9 +91,9 @@ class ManagerBuilder extends AbstractBuilder implements EventSubscriberInterface
                 $collection->name,
                 $collection->providerName,
                 $collection->label,
-                array(
-                    'source' => static::SOURCE_DATABASE,
-                    'model'  => $collection->current()
+                array_merge(
+                    $collection->row(),
+                    array(Definition::SOURCE => Definition::SOURCE_DATABASE)
                 )
             );
 

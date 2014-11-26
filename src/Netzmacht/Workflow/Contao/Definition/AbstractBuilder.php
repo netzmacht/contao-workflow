@@ -18,8 +18,6 @@ namespace Netzmacht\Workflow\Contao\Definition;
  */
 class AbstractBuilder
 {
-    const SOURCE_DATABASE = 'database';
-
     /**
      * Get a service form the ervice container.
      *

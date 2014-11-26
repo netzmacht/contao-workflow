@@ -11,8 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Form;
 
-use Netzmacht\Workflow\Contao\Form\Event\CreateFormEvent;
-use Netzmacht\Workflow\Contao\Form\BackendForm;
+use Netzmacht\Workflow\Factory\Event\CreateFormEvent;
 use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

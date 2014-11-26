@@ -9,10 +9,12 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Table;
+namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
+use Netzmacht\Workflow\Contao\Backend\Event\GetProviderNames;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -22,6 +24,21 @@ use Netzmacht\Workflow\Contao\Model\TransitionModel;
 class Workflow
 {
     /**
+     * The event dispatcher
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    function __construct()
+    {
+        $this->eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+    }
+
+
+    /**
      * Get names of workflow types.
      *
      * @return array
@@ -29,7 +46,19 @@ class Workflow
      */
     public function getTypes()
     {
-        return array_keys($GLOBALS['WORKFLOW_TYPES']);
+        return $GLOBALS['WORKFLOW_TYPES'];
+    }
+
+    public function getProviderNames($dc)
+    {
+        if (!$dc->activeRecord || !$dc->activeRecord->type) {
+            return array();
+        }
+
+        $event = new GetProviderNames($dc->activeRecord->type);
+        $this->eventDispatcher->dispatch($event::NAME, $event);
+
+        return $event->getProviderNames();
     }
 
     /**

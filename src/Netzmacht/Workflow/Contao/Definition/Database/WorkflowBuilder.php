@@ -12,6 +12,7 @@
 namespace Netzmacht\Workflow\Contao\Definition\Database;
 
 use Netzmacht\Workflow\Contao\Definition\AbstractBuilder;
+use Netzmacht\Workflow\Contao\Definition\Definition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateActionEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateStepEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
@@ -20,7 +21,6 @@ use Netzmacht\Workflow\Contao\Definition\Exception\DefinitionException;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
-use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -71,17 +71,15 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
     {
         $workflow = $event->getWorkflow();
 
-        if ($workflow->getConfigValue('source') != static::SOURCE_DATABASE) {
+        if ($workflow->getConfigValue(Definition::SOURCE) != Definition::SOURCE_DATABASE) {
             return;
         }
 
-        $model = $workflow->getConfigValue('model');
-
         $this->addRoles($workflow);
-        $this->createSteps($workflow, $model);
-        $this->createTransitions($workflow, $model);
+        $this->createSteps($workflow);
+        $this->createTransitions($workflow);
         $this->createActions($workflow);
-        $this->createProcess($workflow, $model);
+        $this->createProcess($workflow);
 
         $this->resetBuilder();
     }
@@ -109,13 +107,12 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
      * Create the steps.
      *
      * @param Workflow      $workflow The current workflow.
-     * @param WorkflowModel $model    The workflow model.
      *
      * @return void
      */
-    private function createSteps(Workflow $workflow, WorkflowModel $model)
+    private function createSteps(Workflow $workflow)
     {
-        $collection = StepModel::findByWorkflow($model->id);
+        $collection = StepModel::findByWorkflow($workflow->getConfigValue('id'));
 
         if (!$collection) {
             return;
@@ -127,9 +124,9 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             $step  = new Step(
                 $model->name,
                 $model->label,
-                array(
-                    'source' => static::SOURCE_DATABASE,
-                    'model'  => $collection->current()
+                array_merge(
+                    $collection->row(),
+                    array(Definition::SOURCE => Definition::SOURCE_DATABASE)
                 )
             );
 
@@ -152,15 +149,14 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
      * Create transitions from database.
      *
      * @param Workflow      $workflow The current workflow.
-     * @param WorkflowModel $model    The workflow model.
      *
      * @throws DefinitionException If a target step is defined which does not exiss.
      *
      * @return void
      */
-    private function createTransitions(Workflow $workflow, WorkflowModel $model)
+    private function createTransitions(Workflow $workflow)
     {
-        $collection = TransitionModel::findByWorkflow($model->id);
+        $collection = TransitionModel::findByWorkflow($workflow->getConfigValue('id'));
 
         if (!$collection) {
             return;
@@ -172,9 +168,9 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             $transition = new Transition(
                 $model->name,
                 $model->label,
-                array(
-                    'source' => static::SOURCE_DATABASE,
-                    'model'  => $collection->current()
+                array_merge(
+                    $collection->row(),
+                    array(Definition::SOURCE => Definition::SOURCE_DATABASE)
                 )
             );
 
@@ -227,7 +223,7 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
                 $workflow,
                 $this->transitions[$model->pid],
                 $model->row(),
-                static::SOURCE_DATABASE
+                Definition::SOURCE_DATABASE
             );
 
             $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
@@ -267,13 +263,12 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
      * Create Workflow process.
      *
      * @param Workflow      $workflow The current workflow.
-     * @param WorkflowModel $model    The workflow model.
      *
      * @return void
      */
-    private function createProcess(Workflow $workflow, WorkflowModel $model)
+    private function createProcess(Workflow $workflow)
     {
-        $process = deserialize($model->process, true);
+        $process = deserialize($workflow->getConfigValue('process'), true);
 
         foreach ($process as $definition) {
 

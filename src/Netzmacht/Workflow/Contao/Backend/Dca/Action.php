@@ -9,11 +9,11 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Table;
+namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
 use Netzmacht\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
-use Netzmacht\Workflow\Contao\Dca\Event\GetWorkflowActionsEvent;
+use Netzmacht\Workflow\Contao\Backend\Event\GetWorkflowActionsEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

@@ -15,13 +15,14 @@ use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class CreateActionEvent is created when an action should be created.
  *
  * @package Netzmacht\Workflow\Contao\Definition\Event
  */
-class CreateActionEvent
+class CreateActionEvent extends Event
 {
     const NAME = 'workflow.factory.create-action';
 

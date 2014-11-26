@@ -14,7 +14,7 @@ namespace Netzmacht\Workflow\Contao\Data;
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Database\Result;
-use Netzmacht\Workflow\Contao\Entity\ContaoModelEntity;
+use Netzmacht\Workflow\Contao\Data\ContaoModelEntity;
 use Netzmacht\Workflow\Contao\Definition\Event;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateEntityEvent;
  use MetaModels\IItem as MetaModelItem;

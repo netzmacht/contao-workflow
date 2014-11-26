@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Event;
+namespace Netzmacht\Workflow\Contao\Backend\Event;
 
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Symfony\Component\EventDispatcher\Event;

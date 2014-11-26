@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Form;
 
+use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Form\Form;
 
 /**
@@ -24,8 +25,9 @@ interface FormBuilder
      * Build a passed form.
      *
      * @param Form $form The form being build.
+     * @param Item $item Workflow item.
      *
      * @return void
      */
-    public function build(Form $form);
+    public function build(Form $form, Item $item);
 }

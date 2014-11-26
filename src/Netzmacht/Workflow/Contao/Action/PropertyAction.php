@@ -42,23 +42,70 @@ class PropertyAction extends AbstractAction
     public function transit(Transition $transition, Item $item, Context $context)
     {
         $entity = $this->getEntity($item);
-        $entity->setProperty($this->property, $this->getValue($context));
+        $entity->setProperty($this->property, $this->getValueForProperty($item, $context));
     }
 
     /**
-     * Get value for the property.
+     * @return string
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    /**
+     * Set the property name which should be updated.
+     *
+     * @param string $property The property name.
+     *
+     * @return $this
+     */
+    public function setProperty($property)
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
+     * Get the property value.
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set the value which will be set.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value for the property from the context.
      *
      * If value is given, it is used. If input is required then value from the context is extracted.
      *
+     * @param Item    $item    The workflow item.
      * @param Context $context The transition contaext.
      *
      * @return mixed
      */
-    private function getValue(Context $context)
+    private function getValueForProperty(Item $item, Context $context)
     {
         if ($this->value !== null) {
             return $this->value;
-        } elseif ($this->requiresInputData()) {
+        } elseif ($this->isInputRequired($item)) {
             return $context->getParam($this->property);
         }
 

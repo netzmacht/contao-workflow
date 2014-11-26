@@ -42,13 +42,34 @@ abstract class AbstractAction implements Action
         $this->formBuilder = $formBuilder;
     }
 
+    /**
+     * Get the form builder.
+     *
+     * @return FormBuilder
+     */
+    public function getFormBuilder()
+    {
+        return $this->formBuilder;
+    }
+
+    /**
+     * Set the form builder.
+     *
+     * @param FormBuilder $formBuilder The form builder.
+     *
+     * @return $this
+     */
+    public function setFormBuilder(FormBuilder $formBuilder)
+    {
+        $this->formBuilder = $formBuilder;
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
-     *
-     * @return bool
      */
-    public function requiresInputData()
+    public function isInputRequired(Item $item)
     {
         if ($this->formBuilder) {
             return true;
@@ -63,10 +84,9 @@ abstract class AbstractAction implements Action
     public function buildForm(Form $form, Item $item)
     {
         if ($this->formBuilder) {
-            $this->buildForm($form, $item);
+            $this->formBuilder->build($form, $item);
         }
     }
-
 
     /**
      * Get the entity of the item and protect entity type.

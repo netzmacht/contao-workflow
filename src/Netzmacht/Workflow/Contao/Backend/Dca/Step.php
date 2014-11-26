@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Table;
+namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
 /**
  * Class Step used for tl_workflow_step callbacks.

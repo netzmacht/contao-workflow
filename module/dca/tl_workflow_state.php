@@ -11,7 +11,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
             'keys' => array
             (
                 'id' => 'primary',
-                'providerName,entityId' => 'index',
+                'entityId' => 'index',
             )
         ),
     ),
@@ -30,13 +30,9 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
         (
             'sql' => "varchar(32) NOT NULL default ''"
         ),
-        'providerName'             => array
-        (
-            'sql' => "varchar(32) NOT NULL default ''"
-        ),
         'entityId'             => array
         (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
+            'sql' => "varchar(64) NOT NULL default ''"
         ),
         'transitionName'             => array
         (

@@ -7,7 +7,7 @@
 array_insert($GLOBALS['BE_MOD'], 1, array
 (
     'workflow' => array(
-        'workflow' => array(
+        'workflows' => array(
             'icon'   => 'system/modules/workflow/assets/img/workflow.png',
             'tables' => array(
                 'tl_workflow',
@@ -31,7 +31,7 @@ $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
 /*
  * Workflow types
  */
-$GLOBALS['WORKFLOW_TYPES']['default'] = '';
+$GLOBALS['WORKFLOW_TYPES'][] = 'default';
 
 /*
  * Hooks

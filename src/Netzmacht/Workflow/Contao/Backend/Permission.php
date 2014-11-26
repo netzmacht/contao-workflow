@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca;
+namespace Netzmacht\Workflow\Contao\Backend;
 
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission as WorkflowPermission;

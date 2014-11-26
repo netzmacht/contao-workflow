@@ -5,6 +5,7 @@
  */
 $GLOBALS['TL_LANG']['tl_workflow_transition']['name_legend']        = 'Transition';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend'] = 'Permssions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']     = 'Backend integration';
 
 
 /*
@@ -22,3 +23,7 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'][0] = 'Target';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'][1] = 'Step which is reached after a successfull transition.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permission'][0] = 'Permission';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permission'][1] = 'Permission which is required to perform transition.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'][0] = 'Integrate as button';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'][1] = 'Transition will be integrated as visible button.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['icon'][0] = 'Icon image';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['icon'][1] = 'Please select an icon image.';

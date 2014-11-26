@@ -16,7 +16,7 @@ foreach (array_keys($GLOBALS['TL_DCA']['tl_member_group']['palettes']) as $palet
 $GLOBALS['TL_DCA']['tl_member_group']['fields']['workflow'] = array(
     'label'     => &$GLOBALS['TL_LANG']['tl_member_group']['workflow'],
     'inputType' => 'checkbox',
-    'options_callback'   => array('Netzmacht\Workflow\Contao\Dca\Permission', 'getWorkflowPermissions'),
+    'options_callback'   => array('Netzmacht\Workflow\Contao\Backend\Permission', 'getWorkflowPermissions'),
     'eval'      => array(
         'tl_class' => 'clr',
         'multiple' => true,

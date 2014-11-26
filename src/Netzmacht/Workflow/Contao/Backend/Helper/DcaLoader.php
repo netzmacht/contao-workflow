@@ -9,7 +9,7 @@
  *
  */
 
-namespace Netzmacht\Workflow\Contao\Dca\Helper;
+namespace Netzmacht\Workflow\Contao\Backend\Helper;
 
 /**
  * Class DcaLoader is just a helper class to overcome contao api limits.
