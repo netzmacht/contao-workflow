@@ -92,6 +92,7 @@ class StateRepository implements WorkflowStateRepository
         $model->errors         = json_encode($state->getErrors());
         $model->data           = json_encode($state->getData());
         $model->reachedAt      = $state->getReachedAt()->getTimestamp();
+        $model->tstamp         = time();
 
         return $model;
     }
