@@ -11,6 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Form;
 
+use Netzmacht\Workflow\Contao\Form\Contao\BackendForm;
 use Netzmacht\Workflow\Factory\Event\CreateFormEvent;
 use Netzmacht\Workflow\Form\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -51,7 +52,7 @@ class FormFactory implements EventSubscriberInterface
             return;
         }
 
-        $form = $this->createForm($event->getType());
+        $form = $this->createForm($event->getType(), $event->getName());
         $event->setForm($form);
     }
 
@@ -59,17 +60,17 @@ class FormFactory implements EventSubscriberInterface
      * Create the form.
      *
      * @param string $type The form type.
+     * @param string $name The form name.
      *
      * @return Form
      *
-     * @throws \InvalidArgumentException If form type could not be created.
      */
-    public function createForm($type)
+    public function createForm($type, $name)
     {
         switch($type) {
             case static::BACKEND:
             case static::BE:
-                return new BackendForm();
+                return new BackendForm($name);
 
 //@codingStandardsIgnoreStart
 // At the moment only backend forms are supported.

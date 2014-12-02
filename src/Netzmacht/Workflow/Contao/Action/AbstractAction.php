@@ -13,7 +13,9 @@ namespace Netzmacht\Workflow\Contao\Action;
 
 use Assert\Assertion;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Workflow\Contao\Form\FormBuilder;
+use Netzmacht\Workflow\Base;
+use Netzmacht\Workflow\Contao\Form\ContaoForm;
+use Netzmacht\Workflow\Contao\Form\FormType;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Form\Form;
@@ -23,45 +25,50 @@ use Netzmacht\Workflow\Form\Form;
  *
  * @package Netzmacht\Workflow\Contao\Action
  */
-abstract class AbstractAction implements Action
+abstract class AbstractAction extends Base implements Action
 {
     /**
      * Optional form builder.
      *
-     * @var FormBuilder
+     * @var FormType
      */
-    private $formBuilder;
+    protected $formType;
 
     /**
      * Construct.
      *
-     * @param FormBuilder $formBuilder Optional form builder.
+     * @param string   $name     Name of the action.
+     * @param null     $label    abel of the action.
+     * @param array    $config   Iotional config.
+     * @param FormType $formType Optional form type.
      */
-    public function __construct(FormBuilder $formBuilder = null)
+    public function __construct($name, $label = null, array $config = array(), FormType $formType = null)
     {
-        $this->formBuilder = $formBuilder;
+        parent::__construct($name, $label, $config);
+
+        $this->formType = $formType;
     }
 
     /**
      * Get the form builder.
      *
-     * @return FormBuilder
+     * @return FormType
      */
-    public function getFormBuilder()
+    public function getFormType()
     {
-        return $this->formBuilder;
+        return $this->formType;
     }
 
     /**
      * Set the form builder.
      *
-     * @param FormBuilder $formBuilder The form builder.
+     * @param FormType $formType The form type.
      *
      * @return $this
      */
-    public function setFormBuilder(FormBuilder $formBuilder)
+    public function setFormType(FormType $formType)
     {
-        $this->formBuilder = $formBuilder;
+        $this->formType = $formType;
 
         return $this;
     }
@@ -71,8 +78,8 @@ abstract class AbstractAction implements Action
      */
     public function isInputRequired(Item $item)
     {
-        if ($this->formBuilder) {
-            return true;
+        if ($this->formType) {
+            return $this->formType->hasFields();
         }
 
         return false;
@@ -83,8 +90,8 @@ abstract class AbstractAction implements Action
      */
     public function buildForm(Form $form, Item $item)
     {
-        if ($this->formBuilder) {
-            $this->formBuilder->build($form, $item);
+        if ($this->formType && $form instanceof ContaoForm) {
+            $form->addForm($this->formType);
         }
     }
 

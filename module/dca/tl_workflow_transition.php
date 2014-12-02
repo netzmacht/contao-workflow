@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'mode'   => 4,
             'flag'   => 1,
             'headerFields' => array('name', 'type', 'description'),
-            'fields' => array('name'),
+            'fields' => array('sorting'),
             'disableGrouping' => true,
             'child_record_callback' => array(
                 'Netzmacht\Workflow\Contao\Backend\Common',
@@ -73,6 +73,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'config'      => array(),
             'permissions' => array('limitPermission'),
             'backend'     => array('addIcon'),
+            'activation'  => array('active')
         ),
     ),
 
@@ -95,6 +96,10 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp'         => array
+        (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'sorting'         => array
         (
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
@@ -195,12 +200,22 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['icon'],
             'inputType' => 'fileTree',
             'eval'      => array(
-                'tl_class'       => 'clr',
+                'tl_class'       => 'clr icon_selector',
                 'filesOnly' => true,
                 'fieldType' => 'radio',
                 'extensions' => 'jpg,gif,png',
             ),
             'sql'       => "binary(16) NULL"
-        )
+        ),
+        'active'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['active'],
+            'inputType' => 'checkbox',
+            'eval'      => array(
+                'tl_class'       => 'clr w50',
+                'submitOnChange' => true,
+            ),
+            'sql'       => "char(1) NOT NULL default ''"
+        ),
     ),
 );

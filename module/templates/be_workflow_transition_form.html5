@@ -1,17 +1,18 @@
 
 <form action="<?php echo $this->action; ?>" method="post" class="tl_form workflow_transition_form">
+<div class="tl_formbody_edit">
     <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->name; ?>">
     <input type="hidden" name="REQUEST_TOKEN" value="<?php echo $this->requestToken; ?>">
     <?php foreach ($this->fieldsets as $fieldset) : ?>
-    <fieldset class="<?php echo $fieldset['class']; ?>">
-        <legend><?php echo $fieldset['legend']; ?></legend>
+    <fieldset id="pal_<?php echo $fieldset['name']; ?>" class="<?php echo $fieldset['class']; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this, '<?php echo $fieldset['name']; ?>','tl_workflow_transition_form')"><?php echo $fieldset['legend']; ?></legend>
         <?php if ($fieldset['description']): ?>
-        <p class="fieldeset_description"><?php echo $fieldset['description']; ?></p>
+        <div class="fieldeset_description"><?php echo $fieldset['description']; ?></div>
         <?php endif; ?>
         <?php echo $fieldset['palette']; ?>
     </fieldset>
     <?php endforeach; ?>
-
+</div>
     <div class="tl_formbody_submit">
         <div class="tl_submit_container">
             <input type="submit" name="submit" value="<?php echo $this->submitLabel; ?>" class="tl_submit">

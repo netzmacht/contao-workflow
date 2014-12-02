@@ -138,14 +138,4 @@ interface FormField
      * @return array
      */
     public function getExtra();
-
-    /**
-     * Add field to a form.
-     *
-     * @param Form   $form     Form object.
-     * @param string $fieldset Name of the fieldset.
-     *
-     * @return $this
-     */
-    public function addToForm(Form $form, $fieldset = 'default');
 }

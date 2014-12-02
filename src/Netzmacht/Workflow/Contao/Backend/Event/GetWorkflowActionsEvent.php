@@ -56,15 +56,19 @@ class GetWorkflowActionsEvent extends Event
      * @param string $category Category.
      * @param string $name     Action name.
      *
+     * @throws \InvalidArgumentException If name does not start with 'prefix_'
+     *
      * @return $this
      */
     public function addAction($category, $name)
     {
+        if (strpos($name, $category . '_') !== 0) {
+            throw new \InvalidArgumentException('Action has to be prefixed with category');
+        }
+
         if (!isset($this->actions[$category])) {
             $this->actions[$category] = array();
         }
-
-        $name = sprintf('%s_%s', $category, $name);
 
         if (!in_array($name, $this->actions[$category])) {
             $this->actions[$category][] = $name;

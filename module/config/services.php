@@ -1,7 +1,5 @@
 <?php
 
-use ContaoCommunityAlliance\Translator\Contao\LangArrayTranslator;
-use ContaoCommunityAlliance\Translator\TranslatorChain;
 use Netzmacht\Workflow\Contao\Data\EntityManager;
 use Netzmacht\Workflow\Contao\Data\StateRepository;
 use Netzmacht\Workflow\Contao\Data\EntityFactory;

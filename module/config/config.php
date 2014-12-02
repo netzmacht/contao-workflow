@@ -9,6 +9,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
     'workflow' => array(
         'workflows' => array(
             'icon'   => 'system/modules/workflow/assets/img/workflow.png',
+            'stylesheet' => 'system/modules/workflow/assets/css/backend.css',
             'tables' => array(
                 'tl_workflow',
                 'tl_workflow_step',
@@ -23,15 +24,18 @@ array_insert($GLOBALS['BE_MOD'], 1, array
     )
 ));
 
-/**
+
+/*
  * Permissions
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
+
 
 /*
  * Workflow types
  */
 $GLOBALS['WORKFLOW_TYPES'][] = 'default';
+
 
 /*
  * Hooks
@@ -45,21 +49,6 @@ $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
     $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.entity']);
 };
 
-/*
- * Event Subscribers
- */
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\ManagerBuilder';
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\Flow\WorkflowBuilder';
-
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Workflow\Contao\BackendSubscriber';
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\WorkflowBuilder';
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\EntityFactory';
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Factory\FormFactory';
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Contao\Workflow\Entity\EntityManager';
-//
-//$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = function() {
-//    return new Netzmacht\Contao\Workflow\Transaction\DatabaseTransactionHandler(\Database::getInstance());
-//};
 
 /*
  * Models

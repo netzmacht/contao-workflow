@@ -12,23 +12,38 @@
 namespace Netzmacht\Workflow\Contao\Backend\Helper;
 
 use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Manager;
 
 class Operations
 {
     const GLOBAL_SCOPE = 'global_operations';
     const MODEL_SCOPE  = 'operations';
 
+    /**
+     * @var Manager
+     */
+    private $manager;
 
     /**
-     * @param Transition[] $transitions
-     * @param string       $providerName
-     * @param string       $scope
-     * @param null         $entityProvider
+     * @param Manager $manager
+     */
+    function __construct(Manager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
+     * @param Transition[]   $transitions
+     * @param string         $providerName
+     * @param string         $scope
+     * @param \Callable|null $callback
+     * @param null           $entityProvider
      */
     public static function addTransitions(
         array $transitions,
         $providerName,
         $scope = Operations::MODEL_SCOPE,
+        $callback = null,
         $entityProvider = null
     )
     {
@@ -39,12 +54,17 @@ class Operations
 
             $buttonName     = 'transition_' . $transition->getName();
             $entityProvider = $entityProvider ?: $providerName;
-
-            $GLOBALS['TL_DCA'][$providerName]['list'][$scope][$buttonName] = array(
+            $config         = array(
                 'label' => array($transition->getLabel(), $transition->getConfigValue('description')),
                 'icon'  => static::getTransitionIcon($transition),
                 'href'  => sprintf('table=%s&amp;key=workflow&amp;transition=%s', $entityProvider, $transition->getName())
             );
+
+            if ($callback) {
+                $config = $callback($transition, $config);
+            }
+
+            $GLOBALS['TL_DCA'][$providerName]['list'][$scope][$buttonName] = $config;
         }
     }
 

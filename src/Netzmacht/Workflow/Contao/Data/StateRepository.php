@@ -35,7 +35,7 @@ class StateRepository implements WorkflowStateRepository
         $collection = StateModel::findBy(
             array('tl_workflow_state.entityId=?'),
             array((string)$entityId),
-            array('order' => 'tl_workflow_state.id DESC')
+            array('order' => 'tl_workflow_state.reachedAt')
         );
 
         $states = array();

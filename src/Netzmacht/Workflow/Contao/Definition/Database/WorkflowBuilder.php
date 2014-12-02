@@ -48,7 +48,7 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
      *
      * @var Transition[]
      */
-    private $transitions;
+    private $transitions = array();
 
     /**
      * {@inheritdoc}
@@ -249,9 +249,10 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
             return null;
         }
 
-        $collection = ActionModel::findAll(
+        $collection = ActionModel::findBy(
+            array('active=1 AND pid IN (' . implode(', ', $transitionIds) . ')'),
+            null,
             array(
-                'column' => 'active=1 AND pid IN (' . implode(', ', $transitionIds) . ')',
                 'order'  => 'pid, sorting',
             )
         );
@@ -271,6 +272,10 @@ class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterfac
         $process = deserialize($workflow->getConfigValue('process'), true);
 
         foreach ($process as $definition) {
+            // pass not created transitions. useful to avoid errors when a transition got disabled
+            if (!isset($this->transitions[$definition['transition']])) {
+                continue;
+            }
 
             if ($definition['step'] == 'start') {
                 $workflow->setStartTransition($this->transitions[$definition['transition']]->getName());

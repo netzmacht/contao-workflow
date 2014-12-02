@@ -42,9 +42,9 @@ class TransitionModel extends \Model
     public static function findByWorkflow($workflowId)
     {
         return static::findBy(
-            array(static::$strTable . '.pid=?'),
+            array(static::$strTable . '.active=1', static::$strTable . '.pid=?'),
             $workflowId,
-            array('order' => static::$strTable . '.name')
+            array('order' => static::$strTable . '.sorting')
         );
     }
 }
