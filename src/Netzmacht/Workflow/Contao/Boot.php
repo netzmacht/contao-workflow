@@ -218,6 +218,12 @@ class Boot
                     $GLOBALS['TL_LANG']['workflow_permissions'][$name] = $permission['label'] ?: $permission['name'];
                 }
             }
+
+            $GLOBALS['TL_LANG']['workflow_permissions'][$workflows->name . ':be_admin'] =
+                $GLOBALS['TL_LANG']['workflow_permissions']['be_admin'];
+
+            $GLOBALS['TL_LANG']['workflow_permissions'][$workflows->name . ':fe_guest'] =
+                $GLOBALS['TL_LANG']['workflow_permissions']['fe_guest'];
         }
     }
 

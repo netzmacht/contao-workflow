@@ -67,6 +67,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         ),
     ),
 
+    'palettes' => array(
+        '__selector__' => array('type')
+    ),
+
     'metapalettes' => array
     (
         'default' => array

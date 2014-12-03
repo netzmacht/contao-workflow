@@ -6,6 +6,7 @@
 $GLOBALS['TL_LANG']['tl_workflow_transition']['name_legend']        = 'Transition';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend'] = 'Permssions';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']     = 'Backend integration';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['activation_legend'] = 'Activation';
 
 
 /*
@@ -27,3 +28,5 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'][0] = 'Integrate as butt
 $GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'][1] = 'Transition will be integrated as visible button.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['icon'][0] = 'Icon image';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['icon'][1] = 'Please select an icon image.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['active'][0] = 'Activate transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['active'][1] = 'A transition has to be activated to be used.';

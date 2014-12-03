@@ -18,7 +18,11 @@ $container['workflow.factory'] = $container->share(
 );
 
 $container['workflow.security.authenticate'] = function() {
-    return $GLOBALS['TL_CONFIG']['workflow_authenticateUser'];
+    if (TL_MODE === 'BE') {
+        return true;
+    }
+
+    return false;
 };
 
 $container['worfklow.database.connection'] = $container->share(
