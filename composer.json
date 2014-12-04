@@ -27,7 +27,8 @@
         "bit3/contao-meta-palettes": "~1.5",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "beberlei/assert": "~2.0",
-        "netzmacht/workflow": "~1.0"
+        "netzmacht/workflow": "~1.0",
+        "mathiasverraes/classfunctions": "~1.1"
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",

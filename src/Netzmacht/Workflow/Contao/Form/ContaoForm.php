@@ -38,15 +38,6 @@ interface ContaoForm extends Form
     public function getName();
 
     /**
-     * Set entity.
-     *
-     * @param Entity $entity
-     *
-     * @return $this
-     */
-    public function setEntity(Entity $entity);
-
-    /**
      * Get entity.
      *
      * @return Entity

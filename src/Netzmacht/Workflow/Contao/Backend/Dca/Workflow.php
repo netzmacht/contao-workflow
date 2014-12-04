@@ -37,6 +37,22 @@ class Workflow
         $this->eventDispatcher = $GLOBALS['container']['event-dispatcher'];
     }
 
+    /**
+     * Generate a row view.
+     *
+     * @param array $row Current data row.
+     *
+     * @return string
+     */
+    public function generateRow(array $row)
+    {
+        return sprintf(
+            '<strong>%s</strong> <span class="tl_gray">[%s: %s]</span><br>%s',
+            $row['label'],
+            $row['name'],
+            $row['description']
+        );
+    }
 
     /**
      * Get names of workflow types.
@@ -49,6 +65,11 @@ class Workflow
         return $GLOBALS['WORKFLOW_TYPES'];
     }
 
+    /**
+     * @param $dc
+     *
+     * @return array
+     */
     public function getProviderNames($dc)
     {
         if (!$dc->activeRecord || !$dc->activeRecord->type) {

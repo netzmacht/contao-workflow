@@ -43,6 +43,23 @@ class TranslatedErrorCollection
     private $translator;
 
     /**
+     * Construct.
+     *
+     * @param ErrorCollection $errorCollection Error collection.
+     * @param Translator      $translator      Translator.
+     * @param string|null     $domain          Optional error domain.
+     */
+    function __construct(ErrorCollection $errorCollection, Translator $translator, $domain = null)
+    {
+        $this->errorCollection = $errorCollection;
+        $this->translator      = $translator;
+
+        if ($domain) {
+            $this->domain = $domain;
+        }
+    }
+
+    /**
      * Get all errors translated as array.
      *
      * @return array
@@ -66,6 +83,7 @@ class TranslatedErrorCollection
         foreach ($errorCollection as $error) {
             list ($message, $params, $collection) = $error;
 
+            var_dump($this->domain);
             $message = $this->translator->translate($message, $this->domain, $params);
 
             if ($collection) {

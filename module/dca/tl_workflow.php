@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         'label' => array
         (
             'fields' => array('name', 'type', 'description'),
-            'format' => '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
+            'label_callback' => array('Netzmacht\Workflow\Contao\Backend\Common', 'generateRow'),
         ),
 
         'operations' => array
@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         (
             'name'        => array('label', 'name', 'type', 'providerName'),
             'description' => array(':hide', 'description'),
-            'permissions' => array('permissions'),
+            'permissions' => array('permissions', 'ignoreAdminPermission'),
             'process'     => array('start', 'process'),
             'config'      => array(),
             'activation'  => array('active')
@@ -255,6 +255,15 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 )
             ),
             'sql'       => "mediumblob NULL",
+        ),
+        'ignoreAdminPermission'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'],
+            'inputType' => 'checkbox',
+            'eval'      => array(
+                'tl_class'       => 'clr w50',
+            ),
+            'sql'       => "char(1) NOT NULL default ''"
         ),
         'active'      => array
         (

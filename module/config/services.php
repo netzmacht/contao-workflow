@@ -1,5 +1,7 @@
 <?php
 
+use ContaoCommunityAlliance\Translator\Contao\LangArrayTranslator;
+use ContaoCommunityAlliance\Translator\TranslatorChain;
 use Netzmacht\Workflow\Contao\Data\EntityManager;
 use Netzmacht\Workflow\Contao\Data\StateRepository;
 use Netzmacht\Workflow\Contao\Data\EntityFactory;
@@ -24,6 +26,15 @@ $container['workflow.security.authenticate'] = function() {
 
     return false;
 };
+
+$container['workflow.translator'] = $container->share(
+    function($container) {
+        $chain = new TranslatorChain();
+        $chain->add(new LangArrayTranslator($container['event-dispatcher']));
+
+        return $chain;
+    }
+);
 
 $container['worfklow.database.connection'] = $container->share(
     function() {

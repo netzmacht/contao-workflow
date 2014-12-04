@@ -16,6 +16,29 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
         ),
     ),
 
+    'list' => array(
+        'sorting' => array(
+            'panelLayout' => 'filter,sort',
+            'fields' => array('entityId'),
+            'mode'   => 2,
+
+        ),
+        'label' => array(
+            'fields'         => array('entityId', 'workflowName', 'transitionName', 'stepName', 'success', 'reachedAt'),
+            'label_callback' => array('Netzmacht\Workflow\Contao\Backend\Dca\State', 'generateRow'),
+            'group_callback' => array('Netzmacht\Workflow\Contao\Backend\Dca\State', 'generateGroupHeader'),
+        ),
+
+        'operations' => array(
+            'show' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_state']['show'],
+                'href'  => 'act=show',
+                'icon'  => 'show.gif',
+            ),
+        ),
+    ),
+
     'fields' => array
     (
         'id'             => array
@@ -32,18 +55,23 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
         ),
         'entityId'             => array
         (
-            'sql' => "varchar(64) NOT NULL default ''"
+            'sql' => "varchar(64) NOT NULL default ''",
+            'sorting' => true,
+            'filter' => true,
         ),
         'transitionName'             => array
         (
+            'filter' => true,
             'sql' => "varchar(32) NOT NULL default ''"
         ),
         'stepName'             => array
         (
+            'filter' => true,
             'sql' => "varchar(32) NOT NULL default ''"
         ),
         'success'             => array
         (
+            'filter' => true,
             'sql' => "char(1) NOT NULL default ''"
         ),
         'reachedAt'         => array

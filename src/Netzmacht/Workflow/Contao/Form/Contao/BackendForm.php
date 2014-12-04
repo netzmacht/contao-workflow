@@ -106,11 +106,18 @@ class BackendForm extends AbstractForm
     /**
      * {@inheritdoc}
      */
-    public function validate(Item $item, Context $context)
+    public function prepare(Item $item, Context $context)
     {
-        $this->setEntity($item->getEntity());
-        $this->loadPropertyValues();
+        parent::prepare($item, $context);
 
+        $this->loadPropertyValues();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate()
+    {
         if (!$this->isSubmit()) {
             return false;
         }
@@ -121,7 +128,7 @@ class BackendForm extends AbstractForm
 
         foreach ($this->getForms() as $form) {
             foreach ($form->getFields() as $field) {
-                $context->setParam(
+                $this->context->setParam(
                     substr($field->getName(), (strlen($form->getName()) + 1)),
                     $this->propertyValues->getPropertyValue($field->getName()),
                     $form->getName()

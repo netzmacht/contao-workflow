@@ -19,6 +19,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         ),
         'workflow_history' => array(
             'icon'   => 'system/themes/default/images/news.gif',
+            'stylesheet' => 'system/modules/workflow/assets/css/backend.css',
             'tables' => array('tl_workflow_state'),
         )
     )
@@ -44,7 +45,6 @@ $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Workf
 $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
     $eventDispatcher = $container['event-dispatcher'];
-
     $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.repository']);
     $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.entity']);
 };

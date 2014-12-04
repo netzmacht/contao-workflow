@@ -1,0 +1,24 @@
+<?php
+    $errorList = function ($errors, $level = 1) use (&$errorList) {
+        $list = '';
+
+        foreach ($errors as $error) {
+            $message = $error[0];
+
+            if ($error[1]) {
+                $message .= $errorList($error[1], $level + 1);
+            }
+
+            $list .= '<li>' . $message . '</li>';
+        }
+
+        return sprintf(
+            '<ul class="level_%s">%s</ul>',
+            $level,
+            $list
+        );
+    }
+?>
+<div class="workflow_errors">
+    <?php echo $errorList($this->errors); ?>
+</div>

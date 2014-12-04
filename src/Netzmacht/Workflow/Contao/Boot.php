@@ -43,12 +43,36 @@ class Boot
      */
     public function startup(\Pimple $container)
     {
-        $contaoUser = $this->getContaoUser($container);
-        $user       = $this->createUser($container['event-dispatcher'], $contaoUser);
+        $container['workflow.security.user'] = $container->share(
+            function () use ($container) {
+                $user = $this->createUser($container['event-dispatcher']);
 
-        $container['workflow.security.user'] = function () use ($user) {
-            return $user;
-        };
+                try {
+                    $contaoUser = $container['user'];
+                    $this->initializeContaoUser($user, $contaoUser);
+                }
+                catch(\Exception $e) {}
+
+                return $user;
+            }
+        );
+    }
+
+    /**
+     * Initialize Contao user using postLogin hook.
+     *
+     * @param User  $user       Security user.
+     * @param \user $contaoUser Contao user.
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    public function initializeContaoUser(User $user, \user $contaoUser)
+    {
+        if ($contaoUser instanceof \BackendUser) {
+            $this->createBackendUserRole($user, $contaoUser);
+        } elseif ($contaoUser instanceof \FrontendUser) {
+            $this->createFrontendMemberRole($user, $contaoUser);
+        }
     }
 
     /**
@@ -57,22 +81,16 @@ class Boot
      * Load user permissions for current frontend or backend user.
      *
      * @param EventDispatcher $eventDispatcher The event dispatcher.
-     * @param \User           $contaoUser      The contao user.
      *
      * @return User
      */
-    public function createUser(EventDispatcher $eventDispatcher, \User $contaoUser)
+    public function createUser(EventDispatcher $eventDispatcher)
     {
         $this->initializePermissionTranslations();
-        $user = new User();
 
-        if (TL_MODE == 'BE') {
-            $this->createBackendUserRole($user, $contaoUser);
-        } elseif (TL_MODE == 'FE') {
-            $this->createFrontendMemberRole($user, $contaoUser);
-        }
-
+        $user  = new User();
         $event = new BuildUserEvent($user);
+
         $eventDispatcher->dispatch($event::NAME, $event);
 
         return $user;
@@ -151,8 +169,6 @@ class Boot
         $workflow = $permission->getWorkflowName();
 
         if (!isset($roles[$workflow])) {
-
-
             $role = new Role(
                 $roleName,
                 $permission->getWorkflowName(),
@@ -225,30 +241,6 @@ class Boot
             $GLOBALS['TL_LANG']['workflow_permissions'][$workflows->name . ':fe_guest'] =
                 $GLOBALS['TL_LANG']['workflow_permissions']['fe_guest'];
         }
-    }
-
-    /**
-     * Get the Contao user from the container.
-     *
-     * @param \Pimple $container The dependency container.
-     *
-     * @return null
-     */
-    private function getContaoUser(\Pimple $container)
-    {
-        // Fetch exception for unknown TL_MODE. Workflow can workflow without that, so just get null back.
-        try {
-            /** @var \User $user */
-            $user = $container['user'];
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        if ($container['workflow.security.authenticate']) {
-            $user->authenticate();
-        }
-
-        return $user;
     }
 
     /**

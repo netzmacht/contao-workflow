@@ -4,3 +4,15 @@
     height: auto;
     padding: 5px;
 }
+
+
+.workflow_state.row {
+    clear: both;
+}
+
+.workflow_state.row div {
+    float: left;
+    padding: 4px;
+    width: 20%;
+    box-sizing: border-box;
+}

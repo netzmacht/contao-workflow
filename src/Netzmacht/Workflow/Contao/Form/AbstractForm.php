@@ -13,6 +13,8 @@ namespace Netzmacht\Workflow\Contao\Form;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Workflow\Data\ErrorCollection;
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Item;
 
 abstract class AbstractForm implements ContaoForm
 {
@@ -21,24 +23,31 @@ abstract class AbstractForm implements ContaoForm
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var FormType[]
      */
-    private $forms = array();
+    protected $forms = array();
 
     /**
-     * @var Entity
+     * @var Item
      */
-    private $entity;
+    protected $item;
 
     /**
      * Form error collection.
      *
      * @var ErrorCollection
      */
-    private $errorCollection;
+    protected $errorCollection;
+
+    /**
+     * Transition context.
+     *
+     * @var Context
+     */
+    protected $context;
 
     /**
      * @param string $name
@@ -135,7 +144,7 @@ abstract class AbstractForm implements ContaoForm
         $data = array();
 
         foreach ($this->forms as $form) {
-            $data[$form->getName()] = $form->getData($this->entity);
+            $data[$form->getName()] = $form->getData($this->item->getEntity());
         }
 
         return $data;
@@ -148,20 +157,15 @@ abstract class AbstractForm implements ContaoForm
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->item->getEntity();
     }
 
     /**
-     * Set entity.
-     *
-     * @param Entity $entity Entity.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setEntity(Entity $entity)
+    public function prepare(Item $item, Context $context)
     {
-        $this->entity = $entity;
-
-        return $this;
+        $this->item    = $item;
+        $this->context = $context;
     }
 }
