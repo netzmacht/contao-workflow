@@ -56,6 +56,11 @@ $container['workflow.transaction-handler'] = $container->share(
 
 $container['workflow.factory.repository'] = $container->share(
     function($container) {
+        // load user before database is accessed
+        try {
+            $container['user'];
+        } catch (\Exception $e) {}
+
         $factory = new RepositoryFactory($container['event-dispatcher']);
 
         return $factory;
@@ -63,7 +68,7 @@ $container['workflow.factory.repository'] = $container->share(
 );
 
 $container['workflow.factory.entity'] = $container->share(
-    function($container) {
+    function() {
         $factory = new EntityFactory();
 
         return $factory;
