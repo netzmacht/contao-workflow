@@ -3,5 +3,6 @@
     <div class="providerName"><?php echo $this->workflowName; ?></div>
     <div class="providerName"><?php echo $this->transitionName; ?></div>
     <div class="currentStepName"><?php echo $this->stepName; ?></div>
-    <div class="reachedAt"><?php echo $this->formatDate($this->reachedAt); ?></div>
+    <div class="success"><?php echo $this->success; ?></div>
+    <div class="reachedAt"><?php echo $this->reachedAt; ?></div>
 </div>

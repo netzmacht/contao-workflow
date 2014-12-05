@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'mode'   => 4,
             'flag'   => 1,
             'fields' => array('name'),
-            'headerFields' => array('name', 'type', 'description'),
+            'headerFields' => array('label', 'name', 'type', 'description'),
             'disableGrouping' => true,
             'child_record_callback' => array(
                 'Netzmacht\Workflow\Contao\Backend\Common',

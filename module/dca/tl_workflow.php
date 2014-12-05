@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         ),
         'label' => array
         (
-            'fields' => array('name', 'type', 'description'),
+            'fields'         => array('name', 'type', 'description'),
             'label_callback' => array('Netzmacht\Workflow\Contao\Backend\Common', 'generateRow'),
         ),
 
@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['type'],
             'inputType' => 'select',
             'filter'    => true,
-            'reference' => &$GLOBALS['TL_LANG']['workflow_type'],
+            'reference' => &$GLOBALS['TL_LANG']['workflow']['types'],
             'options_callback' => array
             (
                 'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',

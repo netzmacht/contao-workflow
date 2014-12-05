@@ -6,6 +6,12 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
     (
         'dataContainer' => 'Table',
         'closed' => true,
+        'onload_callback' => array(
+            array(
+                'Netzmacht\Workflow\Contao\Backend\Dca\State',
+                'applyFilter'
+            )
+        ),
         'sql'           => array
         (
             'keys' => array
@@ -18,10 +24,9 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
 
     'list' => array(
         'sorting' => array(
-            'panelLayout' => 'filter,sort',
+            'panelLayout' => 'filter;sort,limit',
             'fields' => array('entityId'),
             'mode'   => 2,
-
         ),
         'label' => array(
             'fields'         => array('entityId', 'workflowName', 'transitionName', 'stepName', 'success', 'reachedAt'),

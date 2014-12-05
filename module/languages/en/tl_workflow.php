@@ -10,6 +10,22 @@ $GLOBALS['TL_LANG']['tl_workflow']['activation_legend']  = 'Activation';
 $GLOBALS['TL_LANG']['tl_workflow']['description_legend'] = 'Description';
 
 /*
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_workflow']['new'][0] = 'Create workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['new'][1] = 'Create a new workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['edit'][0] = 'Edit workflow configurations';
+$GLOBALS['TL_LANG']['tl_workflow']['edit'][1] = 'Edit workflow ID "%s" configurations';
+$GLOBALS['TL_LANG']['tl_workflow']['steps'][0] = 'Manage workflow steps';
+$GLOBALS['TL_LANG']['tl_workflow']['steps'][1] = 'Manage workflow ID "%s" steps';
+$GLOBALS['TL_LANG']['tl_workflow']['transitions'][0] = 'Mange workflow transitions';
+$GLOBALS['TL_LANG']['tl_workflow']['transitions'][1] = 'Mange workflow ID "%s"  transitions';
+$GLOBALS['TL_LANG']['tl_workflow']['show'][0] = 'Show workflow details';
+$GLOBALS['TL_LANG']['tl_workflow']['show'][1] = 'Workflow details';
+$GLOBALS['TL_LANG']['tl_workflow']['delete'][0] = 'Edit workflow configurations';
+$GLOBALS['TL_LANG']['tl_workflow']['delete'][1] = 'Delete workflow ID "%s"';
+
+/*
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_workflow']['process'][0]          = 'Workflow process';
