@@ -33,6 +33,11 @@ class ExpressionCondition implements Condition
     private $expression;
 
     /**
+     * @var string
+     */
+    private $message = 'transition.condition.expression.failed';
+
+    /**
      * Compiled expression
      *
      * @var string
@@ -57,10 +62,10 @@ class ExpressionCondition implements Condition
     public function setExpression($expression)
     {
         $this->expression = $expression;
-        $this->compiled   = $this->expressionLanguage->compile(
+        $this->compiled   = 'return ' . $this->expressionLanguage->compile(
             $expression,
             array('transition', 'item', 'entity', 'entityId', 'context', 'errorCollection')
-        );
+        ) . ';';
 
         return $this;
     }
@@ -97,6 +102,11 @@ class ExpressionCondition implements Condition
         $entity   = $item->getEntity();
         $entityId = $item->getEntityId();
 
-        return eval($this->compiled);
+        if (eval($this->compiled)) {
+            return true;
+        }
+
+        $errorCollection->addError($this->message, array($this->expression));
+        return false;
     }
 }

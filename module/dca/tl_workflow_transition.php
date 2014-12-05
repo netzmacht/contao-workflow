@@ -73,7 +73,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'name'        => array('label', 'name', 'description', 'stepTo'),
             'config'      => array(),
             'permissions' => array('limitPermission'),
-            'conditions'  => array('addPropertyConditions', 'addExpressionCondition'),
+            'conditions'  => array('addPropertyConditions', 'addExpressionConditions'),
             'backend'     => array('addIcon'),
             'activation'  => array('active')
         ),
@@ -81,10 +81,10 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
 
     'metasubpalettes' => array
     (
-        'limitPermission'        => array('permission'),
-        'addIcon'                => array('icon'),
-        'addPropertyConditions'  => array('propertyConditions'),
-        'addExpressionCondition' => array('expressionCondition'),
+        'limitPermission'         => array('permission'),
+        'addIcon'                 => array('icon'),
+        'addPropertyConditions'   => array('propertyConditions'),
+        'addExpressionConditions' => array('expressionConditions'),
     ),
 
     'fields' => array
@@ -279,9 +279,9 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             ),
             'sql'       => "mediumblob NULL"
         ),
-        'addExpressionCondition'      => array
+        'addExpressionConditions'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addExpressionCondition'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addExpressionConditions'],
             'inputType' => 'checkbox',
             'eval'      => array(
                 'tl_class'       => 'clr w50',
@@ -289,14 +289,36 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             ),
             'sql'       => "char(1) NOT NULL default ''"
         ),
-        'expressionCondition'      => array
+        'expressionConditions'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['expressionCondition'],
-            'inputType' => 'textarea',
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],
+            'inputType' => 'multiColumnWizard',
             'eval'      => array(
-                'tl_class'       => 'clr long',
+                'tl_class'       => 'clr',
+                'columnFields'   => array(
+                    'type' => array(
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionType'],
+                        'inputType' => 'select',
+                        'options'   => array('pre', 'con'),
+                        'eval'      => array
+                        (
+                            'mandatory' => true,
+                            'style' => 'width: 150px',
+                        ),
+                    ),
+                    'expression' => array(
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['expression'],
+                        'inputType' => 'text',
+                        'eval'      => array
+                        (
+                            'style' => 'width: 400px',
+                            'preserveTags' => true,
+                            'allowHtml' => true,
+                        ),
+                    ),
+                )
             ),
-            'sql'       => "text NULL"
+            'sql'       => "mediumblob NULL"
         ),
     ),
 );

@@ -36,7 +36,7 @@ class ConditionBuilder implements EventSubscriberInterface
         return array(
             CreateTransitionEvent::NAME => array(
                 array('createPropertyConditions'),
-                array('createExpressionCondition'),
+                array('createExpressionConditions'),
             )
         );
     }
@@ -71,16 +71,24 @@ class ConditionBuilder implements EventSubscriberInterface
      *
      * @param CreateTransitionEvent $event
      */
-    public function createExpressionCondition(CreateTransitionEvent $event)
+    public function createExpressionConditions(CreateTransitionEvent $event)
     {
         $transition = $event->getTransition();
 
-        if ($transition->getConfigValue('addExpressionCondition')) {
-            $language  = $this->getService('workflow.transition.expression-language');
-            $condition = new ExpressionCondition($language);
-            $condition->setExpression($transition->getConfigValue('expressionCondition'));
+        if ($transition->getConfigValue('addExpressionConditions')) {
+            $language   = $this->getService('workflow.transition.expression-language');
+            $definition = deserialize($transition->getConfigValue('expressionConditions'), true);
 
-            $transition->addCondition($condition);
+            foreach ($definition as $config) {
+                $condition = new ExpressionCondition($language);
+                $condition->setExpression($config['expression']);
+
+                if ($config['type'] === 'pre') {
+                    $transition->addPreCondition($condition);
+                } else {
+                    $transition->addCondition($condition);
+                }
+            }
         }
     }
 

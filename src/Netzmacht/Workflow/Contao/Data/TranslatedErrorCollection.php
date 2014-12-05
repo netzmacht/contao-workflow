@@ -83,7 +83,6 @@ class TranslatedErrorCollection
         foreach ($errorCollection as $error) {
             list ($message, $params, $collection) = $error;
 
-            var_dump($this->domain);
             $message = $this->translator->translate($message, $this->domain, $params);
 
             if ($collection) {
