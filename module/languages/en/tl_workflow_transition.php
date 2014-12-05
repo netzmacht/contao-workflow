@@ -8,6 +8,19 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend'] = 'Permssion
 $GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']     = 'Backend integration';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['activation_legend'] = 'Activation';
 
+/*
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][0]    = 'Create transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][1]    = 'Create a new transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['paste'][0]  = 'Create transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['paste'][1]  = 'Create a new transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][0]   = 'Edit transition settings';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][1]   = 'Edit transition ID "%s" settings';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][0]   = 'Show transition details';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][1]   = 'transition details';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][0] = 'Delte transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][1] = 'Delete transition ID "%s"';
 
 /*
  * Fields

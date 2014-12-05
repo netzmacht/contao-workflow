@@ -98,3 +98,10 @@ $container['workflow.entity-manager'] = $container->share(
 $container['workflow.state-repository'] = function() {
     return new StateRepository();
 };
+
+
+$container['workflow.transition.expression-language'] = $container->share(
+    function($container) {
+        return new \Symfony\Component\ExpressionLanguage\ExpressionLanguage();
+    }
+);

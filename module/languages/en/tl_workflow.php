@@ -30,6 +30,8 @@ $GLOBALS['TL_LANG']['tl_workflow']['delete'][1] = 'Delete workflow ID "%s"';
  */
 $GLOBALS['TL_LANG']['tl_workflow']['process'][0]          = 'Workflow process';
 $GLOBALS['TL_LANG']['tl_workflow']['process'][1]          = 'Please define transitions between one step to another. There has to be exactly one start transition.';
+$GLOBALS['TL_LANG']['tl_workflow']['label'][0]            = 'Label';
+$GLOBALS['TL_LANG']['tl_workflow']['label'][1]            = 'Workflow label.';
 $GLOBALS['TL_LANG']['tl_workflow']['name'][0]             = 'Name';
 $GLOBALS['TL_LANG']['tl_workflow']['name'][1]             = 'Please define a workflow name.';
 $GLOBALS['TL_LANG']['tl_workflow']['type'][0]             = 'Type';
