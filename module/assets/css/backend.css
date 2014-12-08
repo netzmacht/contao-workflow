@@ -5,6 +5,14 @@
     padding: 5px;
 }
 
+.icon_selector .selector_container ul {
+    float: left;
+}
+
+.icon_selector .selector_container p {
+    float: left;
+    margin-top: 4px;
+}
 
 .workflow_state.row {
     clear: both;
