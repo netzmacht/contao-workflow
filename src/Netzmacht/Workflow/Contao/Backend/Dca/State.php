@@ -31,6 +31,8 @@ class State extends Base
 
             $filter['tl_workflow_state'] = array('entityId' => (string) $entityId);
             $session->set('filter', $filter);
+
+            \Backend::redirect(\Backend::addToUrl('providerName=', true, array('providerName', 'id')));
         }
     }
 
