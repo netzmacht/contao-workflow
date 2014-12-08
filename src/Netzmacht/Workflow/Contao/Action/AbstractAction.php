@@ -166,7 +166,7 @@ abstract class AbstractAction extends Base implements Action
             $namespace = $this->getLogNamespace();
 
             foreach ($values as $name => $value) {
-                $context->setProperty($name, $values, $namespace);
+                $context->setProperty($name, $value, $namespace);
             }
         }
 
