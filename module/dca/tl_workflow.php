@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'name'        => array('label', 'name', 'type', 'providerName'),
             'description' => array(':hide', 'description'),
             'permissions' => array('permissions', 'ignoreAdminPermission'),
-            'process'     => array('start', 'process'),
+            'process'     => array('process', 'logChanges'),
             'config'      => array(),
             'activation'  => array('active')
         ),
@@ -265,6 +265,17 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'tl_class'       => 'clr w50',
             ),
             'sql'       => "char(1) NOT NULL default ''"
+        ),
+        'logChanges'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['logChanges'],
+            'inputType' => 'checkbox',
+            'default'   => '1',
+            'eval'      => array(
+                'tl_class'       => 'w50',
+                'submitOnChange' => true,
+            ),
+            'sql'       => "char(8) NOT NULL default '1'"
         ),
         'active'      => array
         (

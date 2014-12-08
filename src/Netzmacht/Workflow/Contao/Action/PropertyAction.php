@@ -42,7 +42,10 @@ class PropertyAction extends AbstractAction
     public function transit(Transition $transition, Item $item, Context $context)
     {
         $entity = $this->getEntity($item);
-        $entity->setProperty($this->property, $this->getValueForProperty($item, $context));
+        $value  = $this->getValueForProperty($item, $context);
+
+        $entity->setProperty($this->property, $value);
+        $this->logChanges($this->property, $value, $context);
     }
 
     /**

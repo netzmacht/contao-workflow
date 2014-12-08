@@ -17,8 +17,10 @@ use Netzmacht\Workflow\Base;
 use Netzmacht\Workflow\Contao\Form\ContaoForm;
 use Netzmacht\Workflow\Contao\Form\FormType;
 use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Form\Form;
+use Verraes\ClassFunctions\ClassFunctions;
 
 /**
  * Class AbstractAction which uses an form builder to create user input form data.
@@ -35,6 +37,20 @@ abstract class AbstractAction extends Base implements Action
     protected $formType;
 
     /**
+     * Log changed values as workflow data
+     *
+     * @var bool
+     */
+    private $logChanges = true;
+
+    /**
+     * Log namespace is used as property namespace if logging in enabled.
+     *
+     * @var string
+     */
+    private $logNamespace;
+
+    /**
      * Construct.
      *
      * @param string   $name     Name of the action.
@@ -46,7 +62,8 @@ abstract class AbstractAction extends Base implements Action
     {
         parent::__construct($name, $label, $config);
 
-        $this->formType = $formType;
+        $this->formType     = $formType;
+        $this->logNamespace = $this->createDefaultLogNamespace();
     }
 
     /**
@@ -69,6 +86,89 @@ abstract class AbstractAction extends Base implements Action
     public function setFormType(FormType $formType)
     {
         $this->formType = $formType;
+
+        return $this;
+    }
+
+    /**
+     * Consider if changes are logged.
+     *
+     * @return boolean
+     */
+    public function isLogChanges()
+    {
+        return $this->logChanges;
+    }
+
+    /**
+     * Set log changes.
+     *
+     * @param boolean $logChanges Log changes.
+     *
+     * @return $this
+     */
+    public function setLogChanges($logChanges)
+    {
+        $this->logChanges = (bool) $logChanges;
+
+        return $this;
+    }
+
+    /**
+     * Get log namespace.
+     *
+     * @return string
+     */
+    public function getLogNamespace()
+    {
+        return $this->logNamespace;
+    }
+
+    /**
+     * Set new log namespace.
+     *
+     * @param string $logNamespace New log namespace.
+     */
+    public function setLogNamespace($logNamespace)
+    {
+        $this->logNamespace = $logNamespace;
+    }
+
+    /**
+     * Log changes if enabled.
+     *
+     * @param string  $property Property name.
+     * @param mixed   $value    Property value.
+     * @param Context $context  Transition context.
+     *
+     * @return $this
+     */
+    protected function logChanges($property, $value, Context $context)
+    {
+        if ($this->isLogChanges()) {
+            $context->setProperty($property, $value, $this->getLogNamespace());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Log multiple changes.
+     *
+     * @param array   $values  Changes propertys as associated array['name' => 'val'].
+     * @param Context $context Transition context.
+     *
+     * @return $this
+     */
+    protected function logMultipleChanges(array $values, Context $context)
+    {
+        if ($this->isLogChanges()) {
+            $namespace = $this->getLogNamespace();
+
+            foreach ($values as $name => $value) {
+                $context->setProperty($name, $values, $namespace);
+            }
+        }
 
         return $this;
     }
@@ -115,5 +215,17 @@ abstract class AbstractAction extends Base implements Action
         );
 
         return $entity;
+    }
+
+    /**
+     * Create default log namespace.
+     *
+     * @return string
+     */
+    private function createDefaultLogNamespace()
+    {
+        $className = ClassFunctions::underscore(ClassFunctions::short($this));
+
+        return preg_replace('/_action$/', '', $className, 1);
     }
 }

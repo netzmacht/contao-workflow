@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
     (
         'default' => array
         (
-            'name'        => array('label', 'name', 'type'),
+            'name'        => array('label', 'name', 'type', 'logChanges'),
             'description' => array(':hide', 'description'),
             'config'      => array(),
             'activation'  => array('active'),
@@ -146,6 +146,18 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
                 'maxlength' => 255,
             ),
             'sql'       => "varchar(255) NOT NULL default ''",
+        ),
+        'logChanges'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'],
+            'inputType' => 'select',
+            'default'   => 'inherit',
+            'options'   => array('inherit', 'active', 'disable'),
+            'eval'      => array(
+                'tl_class'       => 'w50',
+                'submitOnChange' => true,
+            ),
+            'sql'       => "char(8) NOT NULL default 'inherit'"
         ),
         'active'      => array
         (
