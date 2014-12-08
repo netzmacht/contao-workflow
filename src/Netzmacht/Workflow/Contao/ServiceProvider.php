@@ -67,22 +67,6 @@ class ServiceProvider
     }
 
     /**
-     * Create the service provider.
-     *
-     * @param Pimple $container Dependency injection container.
-     *
-     * @return static
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public static function create(Pimple $container = null)
-    {
-        $container = $container ?: $GLOBALS['container'];
-
-        return new static($container);
-    }
-
-    /**
      * Get the factory.
      *
      * @return Factory
