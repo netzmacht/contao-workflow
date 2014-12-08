@@ -103,7 +103,6 @@ class ExpressionCondition implements Condition
         }
 
         // Vars are created so that eval can access them.
-        // Allow eval here.
         $entity   = $item->getEntity();
         $entityId = $item->getEntityId();
 
