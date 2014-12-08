@@ -112,8 +112,18 @@ class ServiceProvider
      *
      * @return mixed
      */
-    private function getService($service)
+    public function getService($service)
     {
         return $this->container[$service];
+    }
+
+    /**
+     * Get the service container.
+     *
+     * @return \Pimple
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }
