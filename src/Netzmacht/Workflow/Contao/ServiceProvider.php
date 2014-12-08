@@ -43,7 +43,6 @@ class ServiceProvider
         $this->container = $container;
     }
 
-
     /**
      * Get the service container.
      *
