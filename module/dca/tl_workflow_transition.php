@@ -233,7 +233,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         ),
         'propertyConditions'        => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['propertyConditions'],
             'inputType' => 'multiColumnWizard',
             'eval'      => array(
                 'tl_class'       => 'clr',
@@ -257,6 +257,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
                     'operator' => array(
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['operator'],
                         'inputType' => 'select',
+                        'reference' => &$GLOBALS['TL_LANG']['tl_workflow_transition'],
                         'options' => array
                         (
                             'eq', 'lt', 'lte', 'gt', 'gte', 'neq'
@@ -291,7 +292,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         ),
         'expressionConditions'      => array
         (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['expressionConditions'],
             'inputType' => 'multiColumnWizard',
             'eval'      => array(
                 'tl_class'       => 'clr',
