@@ -6,6 +6,8 @@ use Netzmacht\Workflow\Contao\Data\EntityManager;
 use Netzmacht\Workflow\Contao\Data\StateRepository;
 use Netzmacht\Workflow\Contao\Data\EntityFactory;
 use Netzmacht\Workflow\Contao\Data\RepositoryFactory;
+use Netzmacht\Workflow\Contao\ManagerRegistry;
+use Netzmacht\Workflow\Contao\ServiceProvider;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Handler\Listener\EventDispatchingListener;
 use Netzmacht\Workflow\Transaction\EventDispatchingTransactionHandler;
@@ -15,13 +17,19 @@ global $container;
 
 $container['workflow.service-provider'] = $container->share(
     function($container) {
-        return new \Netzmacht\Workflow\Contao\ServiceProvider($container);
+        return new ServiceProvider($container);
     }
 );
 
 $container['workflow.factory'] = $container->share(
     function($container) {
         return new Factory($container['event-dispatcher']);
+    }
+);
+
+$container['workflow.manager-registroy'] = $container->share(
+    function() {
+        return new ManagerRegistry();
     }
 );
 

@@ -38,6 +38,8 @@ class Operations
      * @param string         $scope
      * @param \Callable|null $callback
      * @param null           $entityProvider
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function addTransitions(
         array $transitions,

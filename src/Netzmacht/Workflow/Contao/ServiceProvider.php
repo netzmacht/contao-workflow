@@ -102,13 +102,17 @@ class ServiceProvider
      */
     public function getManager($providerName, $type = null)
     {
-        $service = 'workflow.mananger.' . $providerName . ($type ? ('.' . $type) : '');
+        /** @var ManagerRegistry $registry */
+        $registry = $this->getService('workflow.manager-registry');
 
-        if (!isset($this->container[$service])) {
-            $this->container[$service] = $this->getFactory()->createManager($providerName, $type);
+        if (!$registry->has($providerName, $type)) {
+            $manager = $this->getFactory()->createManager($providerName, $type);
+            $registry->set($providerName, $type, $manager);
+
+            return $manager;
         }
 
-        return $this->container[$service];
+        return $registry->get($providerName, $type);
     }
 
     /**

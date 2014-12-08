@@ -11,7 +11,7 @@
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
-use Netzmacht\Workflow\Contao\Backend\Event\GetProviderNames;
+use Netzmacht\Workflow\Contao\Backend\Event\GetProviderNamesEvent;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
@@ -66,17 +66,17 @@ class Workflow
     }
 
     /**
-     * @param $dc
+     * @param $dataContainer
      *
      * @return array
      */
-    public function getProviderNames($dc)
+    public function getProviderNames($dataContainer)
     {
-        if (!$dc->activeRecord || !$dc->activeRecord->type) {
+        if (!$dataContainer->activeRecord || !$dataContainer->activeRecord->type) {
             return array();
         }
 
-        $event = new GetProviderNames($dc->activeRecord->type);
+        $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
         $this->eventDispatcher->dispatch($event::NAME, $event);
 
         return $event->getProviderNames();

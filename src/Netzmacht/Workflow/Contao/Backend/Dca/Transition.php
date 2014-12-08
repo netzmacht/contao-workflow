@@ -11,9 +11,9 @@
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
-use Netzmacht\Workflow\Contao\Model\RoleModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
@@ -22,6 +22,8 @@ use Netzmacht\Workflow\Contao\Model\WorkflowModel;
  */
 class Transition
 {
+    use ServiceContainerTrait;
+
     /**
      * @var \Database
      */
@@ -32,7 +34,7 @@ class Transition
      */
     public function __construct()
     {
-        $this->database = $GLOBALS['container']['database.connection'];
+        $this->database = $this->getService('database.connection');
     }
 
     /**
@@ -59,14 +61,14 @@ class Transition
     }
 
     /**
-     * @param $dc
+     * @param $dataContainer
      *
      * @return array
      */
-    public function getEntityProperties($dc)
+    public function getEntityProperties($dataContainer)
     {
-        if ($dc->activeRecord) {
-            $workflow = WorkflowModel::findByPk($dc->activeRecord->pid);
+        if ($dataContainer->activeRecord) {
+            $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
 
             if ($workflow) {
                 return array_map(

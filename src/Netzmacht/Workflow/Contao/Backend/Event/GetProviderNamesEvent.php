@@ -13,7 +13,7 @@ namespace Netzmacht\Workflow\Contao\Backend\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class GetProviderNames extends Event
+class GetProviderNamesEvent extends Event
 {
     const NAME = 'workflow.backend.get-provider-names';
     /**

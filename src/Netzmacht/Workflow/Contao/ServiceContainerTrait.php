@@ -12,7 +12,11 @@
 namespace Netzmacht\Workflow\Contao;
 
 /**
- * Class ServiceProviderTrait
+ * Class ServiceProviderTrait.
+ *
+ * Injecting the container or use the Container as a service locator is a bad thing. This is used because Contao
+ * does not provide dependency injection.
+ *
  * @package Netzmacht\Workflow\Contao
  */
 trait ServiceContainerTrait
@@ -21,6 +25,8 @@ trait ServiceContainerTrait
      * Get the service provider.
      *
      * @return ServiceProvider
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected function getServiceProvider()
     {

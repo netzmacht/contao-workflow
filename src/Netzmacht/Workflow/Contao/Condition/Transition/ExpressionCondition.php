@@ -92,6 +92,9 @@ class ExpressionCondition implements Condition
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @SuppressWarnings(PHPMD.EvalExpression)
      */
     public function match(Transition $transition, Item $item, Context $context, ErrorCollection $errorCollection)
     {
@@ -99,6 +102,8 @@ class ExpressionCondition implements Condition
             return false;
         }
 
+        // Vars are created so that eval can access them.
+        // Allow eval here.
         $entity   = $item->getEntity();
         $entityId = $item->getEntityId();
 

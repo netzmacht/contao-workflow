@@ -78,7 +78,7 @@ class State extends Base
         $template->setData($row);
 
         if (is_numeric($row['reachedAt'])) {
-            $template->reachedAt = \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $row['reachedAt']);
+            $template->reachedAt = \Date::parse(\Config::get('datimFormat'), $row['reachedAt']);
         }
 
         return $template->parse();

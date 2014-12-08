@@ -54,6 +54,7 @@ abstract class AbstractForm implements ContaoForm
      */
     function __construct($name)
     {
+        $this->name            = $name;
         $this->errorCollection = new ErrorCollection();
     }
 
