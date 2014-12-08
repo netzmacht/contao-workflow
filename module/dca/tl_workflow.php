@@ -273,7 +273,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'default'   => '1',
             'eval'      => array(
                 'tl_class'       => 'w50',
-                'submitOnChange' => true,
             ),
             'sql'       => "char(8) NOT NULL default '1'"
         ),
