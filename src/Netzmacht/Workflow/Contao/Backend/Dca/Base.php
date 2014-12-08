@@ -13,10 +13,13 @@ namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
 
 use ContaoCommunityAlliance\Translator\TranslatorInterface;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Verraes\ClassFunctions\ClassFunctions;
 
 class Base
 {
+    use ServiceContainerTrait;
+
     /**
      * @var TranslatorInterface
      */
@@ -24,9 +27,12 @@ class Base
 
     protected $defaultDomain;
 
+    /**
+     *
+     */
     function __construct()
     {
-        $this->translator    = $GLOBALS['container']['workflow.translator'];
+        $this->translator = $this->getService('workflow.translator');
 
         if (!$this->defaultDomain) {
             $this->defaultDomain = 'tl_workflow_' . strtolower(ClassFunctions::short($this));

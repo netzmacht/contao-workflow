@@ -24,7 +24,7 @@ trait ServiceContainerTrait
      */
     protected function getServiceProvider()
     {
-        return $GLOBALS['workflow.service-provider'];
+        return $GLOBALS['container']['workflow.service-provider'];
     }
 
     /**

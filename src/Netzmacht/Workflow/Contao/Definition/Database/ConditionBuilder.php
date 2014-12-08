@@ -14,11 +14,14 @@ namespace Netzmacht\Workflow\Contao\Definition\Database;
 use Netzmacht\Workflow\Contao\Condition\Transition\ExpressionCondition;
 use Netzmacht\Workflow\Contao\Condition\Transition\PropertyCondition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
 class ConditionBuilder implements EventSubscriberInterface
 {
+    use ServiceContainerTrait;
+
     protected static $operators = array(
         'eq'  => '==',
         'neq' => '!=',
@@ -106,20 +109,6 @@ class ConditionBuilder implements EventSubscriberInterface
         }
 
         return null;
-    }
-
-    /**
-     * Get service.
-     *
-     * @param string $name Service name
-     *
-     * @return mixed
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    private function getService($name)
-    {
-        return $GLOBALS['container'][$name];
     }
 }
 

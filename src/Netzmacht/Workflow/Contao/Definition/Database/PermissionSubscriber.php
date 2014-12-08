@@ -11,17 +11,18 @@
 
 namespace Netzmacht\Workflow\Contao\Definition\Database;
 
-
 use Netzmacht\Workflow\Contao\Backend\Event\GetWorkflowPermissionsEvent;
-use Netzmacht\Workflow\Contao\Definition\AbstractBuilder;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Netzmacht\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
 use Netzmacht\Workflow\Security\Permission;
 use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PermissionSubscriber extends AbstractBuilder implements EventSubscriberInterface
+class PermissionSubscriber  implements EventSubscriberInterface
 {
+    use ServiceContainerTrait;
+
     public static function getSubscribedEvents()
     {
         return array(

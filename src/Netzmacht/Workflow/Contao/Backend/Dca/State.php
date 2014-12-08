@@ -11,26 +11,10 @@
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
-use Netzmacht\Workflow\Contao\ServiceProvider;
 use Netzmacht\Workflow\Data\EntityId;
 
 class State extends Base
 {
-    /**
-     * @var ServiceProvider
-     */
-    private $serviceProvider;
-
-    /**
-     *
-     */
-    function __construct()
-    {
-        parent::__construct();
-
-        $this->serviceProvider = ServiceProvider::create();
-    }
-
     /**
      * Apply a filter when looking at the history.
      */
@@ -51,7 +35,7 @@ class State extends Base
     }
 
 
-    public function generateGroupHeader($label, $foo, $column, $row)
+    public function generateGroupHeader($label)
     {
         $header = array(
             'entityId'       => $this->translate('entityId.0'),
@@ -72,8 +56,8 @@ class State extends Base
     {
         try {
             $entityId = EntityId::fromString($row['entityId']);
-            $manager  = $this->serviceProvider->getManager($entityId->getProviderName());
-            $entity   = $this->serviceProvider
+            $manager  = $this->getServiceProvider()->getManager($entityId->getProviderName());
+            $entity   = $this->getServiceProvider()
                 ->getEntityManager()
                 ->getRepository($entityId->getProviderName())
                 ->find($entityId->getIdentifier());

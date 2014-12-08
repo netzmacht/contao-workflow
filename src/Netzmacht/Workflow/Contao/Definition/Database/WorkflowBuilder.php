@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Workflow\Contao\Definition\Database;
 
-use Netzmacht\Workflow\Contao\Definition\AbstractBuilder;
 use Netzmacht\Workflow\Contao\Definition\Definition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateActionEvent;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateStepEvent;
@@ -21,6 +20,7 @@ use Netzmacht\Workflow\Contao\Definition\Exception\DefinitionException;
 use Netzmacht\Workflow\Contao\Model\ActionModel;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -34,8 +34,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @package Netzmacht\Workflow\Contao\Definition\Builder
  */
-class WorkflowBuilder extends AbstractBuilder implements EventSubscriberInterface
+class WorkflowBuilder  implements EventSubscriberInterface
 {
+    use ServiceContainerTrait;
+
     /**
      * Workflow steps.
      *

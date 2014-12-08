@@ -11,8 +11,11 @@
 
 namespace Netzmacht\Workflow\Contao;
 
+use Netzmacht\Workflow\Contao\Data\EntityFactory;
 use Netzmacht\Workflow\Data\EntityManager;
+use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
+use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
 use Netzmacht\Workflow\Security\User;
 use Pimple;
 
@@ -38,6 +41,29 @@ class ServiceProvider
     public function __construct(Pimple $container)
     {
         $this->container = $container;
+    }
+
+
+    /**
+     * Get the service container.
+     *
+     * @return \Pimple
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Get a service from the DI.
+     *
+     * @param string $service Service name.
+     *
+     * @return mixed
+     */
+    public function getService($service)
+    {
+        return $this->container[$service];
     }
 
     /**
@@ -106,24 +132,30 @@ class ServiceProvider
     }
 
     /**
-     * Get a service from the DI.
+     * Get state repository.
      *
-     * @param string $service Service name.
-     *
-     * @return mixed
+     * @return StateRepository
      */
-    public function getService($service)
+    public function getStateRepository()
     {
-        return $this->container[$service];
+        return $this->getService('workflow.state-repository');
     }
 
     /**
-     * Get the service container.
-     *
-     * @return \Pimple
+     * @return TransitionHandlerFactory
      */
-    public function getContainer()
+    public function getTransitionHandlerFactory()
     {
-        return $this->container;
+        return $this->getService('workflow.factory.transition-handler');
+    }
+
+    /**
+     * Get entity factory.
+     *
+     * @return EntityFactory
+     */
+    public function getEntityFactory()
+    {
+        return $this->getService('workflow.factory.entity');
     }
 }

@@ -13,6 +13,12 @@ use Netzmacht\Workflow\Transaction\EventDispatchingTransactionHandler;
 /** @var \Pimple $container */
 global $container;
 
+$container['workflow.service-provider'] = $container->share(
+    function($container) {
+        return new \Netzmacht\Workflow\Contao\ServiceProvider($container);
+    }
+);
+
 $container['workflow.factory'] = $container->share(
     function($container) {
         return new Factory($container['event-dispatcher']);
