@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = array
     'list' => array(
         'sorting' => array(
             'panelLayout' => 'filter;sort,limit',
-            'fields' => array('entityId', 'reachedAt'),
+            'fields' => array('entityId', 'reachedAt DESC'),
             'mode'   => 2,
         ),
         'label' => array(
