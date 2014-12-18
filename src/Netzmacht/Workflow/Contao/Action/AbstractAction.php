@@ -222,7 +222,7 @@ abstract class AbstractAction extends Base implements Action
      *
      * @return string
      */
-    private function createDefaultLogNamespace()
+    protected function createDefaultLogNamespace()
     {
         $className = ClassFunctions::underscore(ClassFunctions::short($this));
 
