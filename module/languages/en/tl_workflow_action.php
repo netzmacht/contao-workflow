@@ -8,6 +8,18 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['activation_legend'] = 'Activation';
 $GLOBALS['TL_LANG']['tl_workflow_action']['description_legend'] = 'Description';
 
 /*
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_workflow_action']['new'][0]    = 'New action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['new'][1]    = 'Create new action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['edit'][0]   = 'Edit action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['edit'][1]   = 'Edit action %s';
+$GLOBALS['TL_LANG']['tl_workflow_action']['delete'][0] = 'Delete action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['delete'][1] = 'Delete action %s';
+$GLOBALS['TL_LANG']['tl_workflow_action']['show'][0]   = 'Show details';
+$GLOBALS['TL_LANG']['tl_workflow_action']['show'][1]   = 'Show details action %s ';
+
+/*
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_workflow_action']['label'][0]       = 'Label';
