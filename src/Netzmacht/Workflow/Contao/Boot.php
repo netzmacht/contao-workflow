@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao;
@@ -50,8 +52,9 @@ class Boot
                 try {
                     $contaoUser = $container['user'];
                     $this->initializeContaoUser($user, $contaoUser);
+                } catch (\Exception $e) {
+                    // Ignore error. Fetching user from container could throw an error for a unknown TL_MODE.
                 }
-                catch(\Exception $e) {}
 
                 return $user;
             }
@@ -63,6 +66,8 @@ class Boot
      *
      * @param User  $user       Security user.
      * @param \user $contaoUser Contao user.
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */

@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Condition\Transition;
@@ -18,27 +20,36 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
+/**
+ * ExpressionCondition uses the symfony expression syntax for defining conditions.
+ *
+ * @package Netzmacht\Workflow\Contao\Condition\Transition
+ */
 class ExpressionCondition implements Condition
 {
     /**
+     * The expression language. The language is injected by dependency so that features can be added.
+     *
      * @var ExpressionLanguage
      */
     private $expressionLanguage;
 
     /**
-     * Plain expression
+     * Plain expression.
      *
      * @var string
      */
     private $expression;
 
     /**
+     * The message key.
+     *
      * @var string
      */
     private $message = 'transition.condition.expression.failed';
 
     /**
-     * Compiled expression
+     * Compiled expression.
      *
      * @var string
      */
@@ -49,13 +60,15 @@ class ExpressionCondition implements Condition
      *
      * @param ExpressionLanguage $expressionLanguage The expression language.
      */
-    function __construct(ExpressionLanguage $expressionLanguage)
+    public function __construct(ExpressionLanguage $expressionLanguage)
     {
         $this->expressionLanguage = $expressionLanguage;
     }
 
     /**
-     * @param $expression
+     * Set the expression.
+     *
+     * @param string $expression The expression.
      *
      * @return $this
      */
@@ -106,7 +119,9 @@ class ExpressionCondition implements Condition
         $entity   = $item->getEntity();
         $entityId = $item->getEntityId();
 
+        // @codingStandardsIgnoreStart
         if (eval($this->compiled)) {
+            // @codingStandardsIgnoreEnd
             return true;
         }
 

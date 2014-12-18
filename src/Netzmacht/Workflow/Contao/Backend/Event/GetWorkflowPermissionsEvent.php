@@ -1,37 +1,49 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Event;
-
 
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class GetWorkflowPermissionsEvent is emitted when workflow permissions are collected.
+ *
+ * @package Netzmacht\Workflow\Contao\Backend\Event
+ */
 class GetWorkflowPermissionsEvent extends Event
 {
     const NAME = 'workflow.get-workflow-permissions';
 
     /**
+     * Workflow model.
+     *
      * @var WorkflowModel
      */
     private $workflowModel;
 
     /**
+     * Permissions.
+     *
      * @var Permission[]
      */
     private $permissions = array();
 
     /**
-     * @param $workflowModel
+     * Construct.
+     *
+     * @param WorkflowModel $workflowModel The workflow model.
      */
     public function __construct(WorkflowModel $workflowModel)
     {
@@ -39,6 +51,8 @@ class GetWorkflowPermissionsEvent extends Event
     }
 
     /**
+     * Get the workflow model.
+     *
      * @return WorkflowModel
      */
     public function getWorkflowModel()
@@ -47,7 +61,10 @@ class GetWorkflowPermissionsEvent extends Event
     }
 
     /**
-     * @param $permissionId
+     * Add a permission.
+     *
+     * @param string $permissionId The permission id.
+     * @param string $group        Permission group.
      *
      * @return $this
      */
@@ -59,6 +76,8 @@ class GetWorkflowPermissionsEvent extends Event
     }
 
     /**
+     * Get all permissions.
+     *
      * @return Permission[]
      */
     public function getPermissions()

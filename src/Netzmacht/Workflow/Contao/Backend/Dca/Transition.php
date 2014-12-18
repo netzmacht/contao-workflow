@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
@@ -25,12 +27,14 @@ class Transition
     use ServiceContainerTrait;
 
     /**
+     * The database connection.
+     *
      * @var \Database
      */
     private $database;
 
     /**
-     *
+     * Construct.
      */
     public function __construct()
     {
@@ -61,7 +65,9 @@ class Transition
     }
 
     /**
-     * @param $dataContainer
+     * Get entity properties.
+     *
+     * @param \DataContainer $dataContainer Data container driver.
      *
      * @return array
      */
@@ -72,12 +78,12 @@ class Transition
 
             if ($workflow) {
                 return array_map(
-                    function($info) {
+                    function ($info) {
                         return $info['name'];
                     },
                     array_filter(
                         $this->database->listFields($workflow->providerName),
-                        function($info) {
+                        function ($info) {
                             return $info['type'] !== 'index';
                         }
                     )

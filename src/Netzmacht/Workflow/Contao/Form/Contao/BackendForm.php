@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Form\Contao;
@@ -87,11 +89,11 @@ class BackendForm extends AbstractForm
     /**
      * Construct.
      *
-     * @param string          $name
-     * @param ErrorCollection $errorCollection
-     * @param null            $prefix
+     * @param string          $name            The form name.
+     * @param ErrorCollection $errorCollection The error collection.
+     * @param string|null     $prefix          The form field prefix.
      */
-    function __construct($name, ErrorCollection $errorCollection = null, $prefix = null)
+    public function __construct($name, ErrorCollection $errorCollection = null, $prefix = null)
     {
         parent::__construct($name, $errorCollection, $prefix);
 
@@ -326,6 +328,13 @@ class BackendForm extends AbstractForm
         $this->environment->setController($controller);
     }
 
+    /**
+     * Flatten the form data.
+     *
+     * @param array $data Raw form data.
+     *
+     * @return array
+     */
     private function flatten($data)
     {
         $flatten = array();
@@ -340,6 +349,8 @@ class BackendForm extends AbstractForm
     }
 
     /**
+     * Check if form was submitted.
+     *
      * @return bool
      */
     public function isSubmit()

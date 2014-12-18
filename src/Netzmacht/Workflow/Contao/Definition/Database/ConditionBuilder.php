@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Definition\Database;
@@ -17,11 +19,20 @@ use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
+/**
+ * Class ConditionBuilder builds the workflow conditions.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Database
+ */
 class ConditionBuilder implements EventSubscriberInterface
 {
     use ServiceContainerTrait;
 
+    /**
+     * Comparator operations.
+     *
+     * @var array
+     */
     protected static $operators = array(
         'eq'  => '==',
         'neq' => '!=',
@@ -45,7 +56,11 @@ class ConditionBuilder implements EventSubscriberInterface
     }
 
     /**
-     * @param CreateTransitionEvent $event
+     * Create property conditions.
+     *
+     * @param CreateTransitionEvent $event The subscribed event.
+     *
+     * @return void
      */
     public function createPropertyConditions(CreateTransitionEvent $event)
     {
@@ -72,7 +87,9 @@ class ConditionBuilder implements EventSubscriberInterface
     /**
      * Add expression conditions.
      *
-     * @param CreateTransitionEvent $event
+     * @param CreateTransitionEvent $event The subscribed event.
+     *
+     * @return void
      */
     public function createExpressionConditions(CreateTransitionEvent $event)
     {
@@ -111,4 +128,3 @@ class ConditionBuilder implements EventSubscriberInterface
         return null;
     }
 }
-

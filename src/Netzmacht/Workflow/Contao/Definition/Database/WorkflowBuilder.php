@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Definition\Database;
@@ -34,7 +36,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @package Netzmacht\Workflow\Contao\Definition\Builder
  */
-class WorkflowBuilder  implements EventSubscriberInterface
+class WorkflowBuilder implements EventSubscriberInterface
 {
     use ServiceContainerTrait;
 
@@ -108,7 +110,7 @@ class WorkflowBuilder  implements EventSubscriberInterface
     /**
      * Create the steps.
      *
-     * @param Workflow      $workflow The current workflow.
+     * @param Workflow $workflow The current workflow.
      *
      * @return void
      */
@@ -150,7 +152,7 @@ class WorkflowBuilder  implements EventSubscriberInterface
     /**
      * Create transitions from database.
      *
-     * @param Workflow      $workflow The current workflow.
+     * @param Workflow $workflow The current workflow.
      *
      * @throws DefinitionException If a target step is defined which does not exiss.
      *
@@ -265,7 +267,7 @@ class WorkflowBuilder  implements EventSubscriberInterface
     /**
      * Create Workflow process.
      *
-     * @param Workflow      $workflow The current workflow.
+     * @param Workflow $workflow The current workflow.
      *
      * @return void
      */

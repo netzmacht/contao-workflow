@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Event;
@@ -56,7 +58,7 @@ class GetWorkflowActionsEvent extends Event
      * @param string $category Category.
      * @param string $name     Action name.
      *
-     * @throws \InvalidArgumentException If name does not start with 'prefix_'
+     * @throws \InvalidArgumentException If name does not start with 'prefix_'.
      *
      * @return $this
      */

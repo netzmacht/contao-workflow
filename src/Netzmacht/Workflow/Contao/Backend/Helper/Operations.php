@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Helper;
@@ -14,41 +16,53 @@ namespace Netzmacht\Workflow\Contao\Backend\Helper;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager;
 
+/**
+ * Class Operations helper.
+ *
+ * @package Netzmacht\Workflow\Contao\Backend\Helper
+ */
 class Operations
 {
     const GLOBAL_SCOPE = 'global_operations';
     const MODEL_SCOPE  = 'operations';
 
     /**
+     * Workflow manager.
+     *
      * @var Manager
      */
     private $manager;
 
     /**
-     * @param Manager $manager
+     * Construct.
+     *
+     * @param Manager $manager Workflow manager.
      */
-    function __construct(Manager $manager)
+    public function __construct(Manager $manager)
     {
         $this->manager = $manager;
     }
 
     /**
-     * @param Transition[]   $transitions
-     * @param string         $providerName
-     * @param string         $scope
-     * @param \Callable|null $callback
-     * @param null           $entityProvider
+     * Add transitions as operations.
+     *
+     * @param Transition[]   $transitions    Workflow transitions.
+     * @param string         $providerName   Provider name.
+     * @param string         $scope          Operation scope.
+     * @param \Callable|null $callback       Filter callback.
+     * @param string|null    $entityProvider Optional different entity provider name.
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function addTransitions(
-        array $transitions,
+        $transitions,
         $providerName,
-        $scope = Operations::MODEL_SCOPE,
+        $scope = self::MODEL_SCOPE,
         $callback = null,
         $entityProvider = null
-    )
-    {
+    ) {
         foreach ($transitions as $transition) {
             if (!$transition->getConfigValue('addIcon')) {
                 continue;
@@ -59,7 +73,11 @@ class Operations
             $config         = array(
                 'label' => array($transition->getLabel(), $transition->getConfigValue('description')),
                 'icon'  => static::getTransitionIcon($transition),
-                'href'  => sprintf('table=%s&amp;key=workflow&amp;transition=%s', $entityProvider, $transition->getName())
+                'href'  => sprintf(
+                    'table=%s&amp;key=workflow&amp;transition=%s',
+                    $entityProvider,
+                    $transition->getName()
+                )
             );
 
             if ($callback) {
@@ -71,7 +89,11 @@ class Operations
     }
 
     /**
-     * @param $transition
+     * Get a transition icon.
+     *
+     * Try to get the transition icon from the config. Use the default one if none is defined.
+     *
+     * @param Transition $transition The workflow transition.
      *
      * @return string
      */
@@ -89,5 +111,4 @@ class Operations
 
         return 'system/modules/workflow/assets/img/transition.png';
     }
-
 }

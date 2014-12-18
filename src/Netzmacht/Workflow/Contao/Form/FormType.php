@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Form;
@@ -14,6 +16,11 @@ namespace Netzmacht\Workflow\Contao\Form;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Netzmacht\Workflow\Contao\Form\Contao\ContaoFormField;
 
+/**
+ * Class FormType is used for sub forms of the contao form integration.
+ *
+ * @package Netzmacht\Workflow\Contao\Form
+ */
 class FormType
 {
     /**
@@ -24,7 +31,7 @@ class FormType
     private $name;
 
     /**
-     * Form name prefix
+     * Form name prefix.
      *
      * @var string
      */
@@ -52,6 +59,8 @@ class FormType
     private $data = array();
 
     /**
+     * Form fields.
+     *
      * @var FormField[]
      */
     private $fields = array();
@@ -64,10 +73,12 @@ class FormType
     protected $bindValues = array();
 
     /**
+     * Construct.
+     *
      * @param string $name   Form type name.
      * @param null   $prefix Name prefix.
      */
-    function __construct($name, $prefix = null)
+    public function __construct($name, $prefix = null)
     {
         $this->name   = $name;
         $this->prefix = $prefix;
@@ -146,7 +157,7 @@ class FormType
     /**
      * Set form description.
      *
-     * @param string $description New description
+     * @param string $description New description.
      *
      * @return $this
      */
@@ -208,6 +219,8 @@ class FormType
         $fieldName = $fieldName ?: $property;
 
         $this->bindValues[$fieldName] = $property;
+
+        return $this;
     }
 
     /**
@@ -255,7 +268,7 @@ class FormType
     /**
      * Get form field.
      *
-     * @param $name
+     * @param string $name The field name.
      *
      * @return FormField
      *
@@ -273,6 +286,8 @@ class FormType
     }
 
     /**
+     * Get all fields.
+     *
      * @return FormField[]
      */
     public function getFields()
@@ -281,7 +296,8 @@ class FormType
     }
 
     /**
-     * Consider if type has fields.
+     * Check if type has fields.
+     *
      * @return bool
      */
     public function hasFields()

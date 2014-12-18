@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
@@ -14,7 +16,7 @@ namespace Netzmacht\Workflow\Contao\Backend\Dca;
 use Netzmacht\Workflow\Contao\Backend\Event\GetProviderNamesEvent;
 use Netzmacht\Workflow\Contao\Model\StepModel;
 use Netzmacht\Workflow\Contao\Model\TransitionModel;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -23,19 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
  */
 class Workflow
 {
-    /**
-     * The event dispatcher
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
-
-    /**
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    function __construct()
-    {
-        $this->eventDispatcher = $GLOBALS['container']['event-dispatcher'];
-    }
+    use ServiceContainerTrait;
 
     /**
      * Generate a row view.
@@ -66,7 +56,9 @@ class Workflow
     }
 
     /**
-     * @param $dataContainer
+     * Get all provider names.
+     *
+     * @param \DataContainer $dataContainer Data container driver.
      *
      * @return array
      */
@@ -77,7 +69,7 @@ class Workflow
         }
 
         $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
-        $this->eventDispatcher->dispatch($event::NAME, $event);
+        $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
 
         return $event->getProviderNames();
     }

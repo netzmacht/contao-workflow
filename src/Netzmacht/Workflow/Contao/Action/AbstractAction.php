@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Action;
@@ -37,7 +39,7 @@ abstract class AbstractAction extends Base implements Action
     protected $formType;
 
     /**
-     * Log changed values as workflow data
+     * Log changed values as workflow data.
      *
      * @var bool
      */
@@ -54,8 +56,8 @@ abstract class AbstractAction extends Base implements Action
      * Construct.
      *
      * @param string   $name     Name of the action.
-     * @param null     $label    abel of the action.
-     * @param array    $config   Iotional config.
+     * @param null     $label    Label of the action.
+     * @param array    $config   Optional config.
      * @param FormType $formType Optional form type.
      */
     public function __construct($name, $label = null, array $config = array(), FormType $formType = null)
@@ -128,10 +130,14 @@ abstract class AbstractAction extends Base implements Action
      * Set new log namespace.
      *
      * @param string $logNamespace New log namespace.
+     *
+     * @return $this
      */
     public function setLogNamespace($logNamespace)
     {
         $this->logNamespace = $logNamespace;
+
+        return $this;
     }
 
     /**

@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Form;
@@ -16,6 +18,11 @@ use Netzmacht\Workflow\Data\ErrorCollection;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 
+/**
+ * AbstractForm is the base form implementation of the contao form.
+ *
+ * @package Netzmacht\Workflow\Contao\Form
+ */
 abstract class AbstractForm implements ContaoForm
 {
     /**
@@ -26,11 +33,15 @@ abstract class AbstractForm implements ContaoForm
     protected $name;
 
     /**
+     * Sub form types.
+     *
      * @var FormType[]
      */
     protected $forms = array();
 
     /**
+     * Workflow item.
+     *
      * @var Item
      */
     protected $item;
@@ -50,9 +61,11 @@ abstract class AbstractForm implements ContaoForm
     protected $context;
 
     /**
-     * @param string $name
+     * Construct.
+     *
+     * @param string $name Form name.
      */
-    function __construct($name)
+    public function __construct($name)
     {
         $this->name            = $name;
         $this->errorCollection = new ErrorCollection();
@@ -107,6 +120,7 @@ abstract class AbstractForm implements ContaoForm
     }
 
     /**
+     * Get a sub form.
      *
      * @param string $name Form name.
      *

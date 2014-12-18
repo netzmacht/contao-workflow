@@ -1,22 +1,31 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
 use Netzmacht\Workflow\Data\EntityId;
 
+/**
+ * Class State provides helpers for tl_workflow_state.
+ *
+ * @package Netzmacht\Workflow\Contao\Backend\Dca
+ */
 class State extends Base
 {
     /**
      * Apply a filter when looking at the history.
+     *
+     * @return void
      */
     public function applyFilter()
     {
@@ -36,7 +45,13 @@ class State extends Base
         }
     }
 
-
+    /**
+     * Generate group header.
+     *
+     * @param string $label Current label.
+     *
+     * @return string
+     */
     public function generateGroupHeader($label)
     {
         $header = array(
@@ -54,6 +69,13 @@ class State extends Base
         return $label . $template->parse();
     }
 
+    /**
+     * Generate the row.
+     *
+     * @param array $row Row.
+     *
+     * @return string
+     */
     public function generateRow($row)
     {
         try {
@@ -71,8 +93,9 @@ class State extends Base
                 $row['transitionName'] = $workflow->getTransition($row['transitionName'])->getLabel();
                 $row['stepName']       = $workflow->getStep($row['stepName'])->getLabel();
             }
+        } catch (\Exception $e) {
+            // Catch exception here so if the definition has changes no error is thrown.
         }
-        catch(\Exception $e) {}
 
         $row['success'] = $this->translate($row['success'] ? 'yes' : 'no', array(), 'MSC');
 

@@ -1,12 +1,14 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Definition\Database;
@@ -19,10 +21,18 @@ use Netzmacht\Workflow\Security\Permission;
 use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PermissionSubscriber  implements EventSubscriberInterface
+/**
+ * Class PermissionSubscriber integrates default permission features.
+ *
+ * @package Netzmacht\Workflow\Contao\Definition\Database
+ */
+class PermissionSubscriber implements EventSubscriberInterface
 {
     use ServiceContainerTrait;
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -31,6 +41,13 @@ class PermissionSubscriber  implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Get workflow permissions.
+     *
+     * @param GetWorkflowPermissionsEvent $event The subscribed event.
+     *
+     * @return void
+     */
     public function getPermissions(GetWorkflowPermissionsEvent $event)
     {
         $workflow    = $event->getWorkflowModel();

@@ -1,12 +1,14 @@
 <?php
 
 /**
- * @package    dev
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2014 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
 
 namespace Netzmacht\Workflow\Contao\Data;
@@ -49,7 +51,7 @@ class TranslatedErrorCollection
      * @param Translator      $translator      Translator.
      * @param string|null     $domain          Optional error domain.
      */
-    function __construct(ErrorCollection $errorCollection, Translator $translator, $domain = null)
+    public function __construct(ErrorCollection $errorCollection, Translator $translator, $domain = null)
     {
         $this->errorCollection = $errorCollection;
         $this->translator      = $translator;
