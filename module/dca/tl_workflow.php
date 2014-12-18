@@ -106,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
+                'mandatory' => true,
             ),
             'sql'       => "varchar(64) NOT NULL default ''",
         ),
