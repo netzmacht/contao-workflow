@@ -24,6 +24,8 @@ $GLOBALS['TL_LANG']['tl_workflow']['show'][0]        = 'Show workflow details';
 $GLOBALS['TL_LANG']['tl_workflow']['show'][1]        = 'Workflow details';
 $GLOBALS['TL_LANG']['tl_workflow']['delete'][0]      = 'Edit workflow configurations';
 $GLOBALS['TL_LANG']['tl_workflow']['delete'][1]      = 'Delete workflow ID "%s"';
+$GLOBALS['TL_LANG']['tl_workflow']['toggle'][0]      = 'Activate/deactive workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['toggle'][1]      = 'Activate/deactive workflow ID "%s"';
 
 /*
  * Fields

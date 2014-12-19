@@ -22,6 +22,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['show'][0]   = 'Show transition de
 $GLOBALS['TL_LANG']['tl_workflow_transition']['show'][1]   = 'transition details';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][0] = 'Delte transition';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][1] = 'Delete transition ID "%s"';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][0] = 'Activate/deactive transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][1] = 'Activate/deactive transition ID %s';
 
 /*
  * Fields

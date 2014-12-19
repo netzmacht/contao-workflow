@@ -18,6 +18,8 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['delete'][0] = 'Delete action';
 $GLOBALS['TL_LANG']['tl_workflow_action']['delete'][1] = 'Delete action %s';
 $GLOBALS['TL_LANG']['tl_workflow_action']['show'][0]   = 'Show details';
 $GLOBALS['TL_LANG']['tl_workflow_action']['show'][1]   = 'Show details action %s ';
+$GLOBALS['TL_LANG']['tl_workflow_action']['toggle'][0] = 'Activate/deactive action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['toggle'][1] = 'Activate/deactive action ID %s';
 
 /*
  * Fields
