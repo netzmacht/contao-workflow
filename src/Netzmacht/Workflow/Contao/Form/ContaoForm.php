@@ -74,6 +74,13 @@ interface ContaoForm extends Form
     public function getForms();
 
     /**
+     * Check if form was submitted.
+     *
+     * @return bool
+     */
+    public function isSubmit();
+
+    /**
      * Render the form.
      *
      * @return string
