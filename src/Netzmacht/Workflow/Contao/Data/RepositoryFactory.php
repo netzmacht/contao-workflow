@@ -14,7 +14,7 @@
 namespace Netzmacht\Workflow\Contao\Data;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
-use Netzmacht\Workflow\Contao\Backend\Helper\DcaLoader;
+use Netzmacht\Contao\DevTools\Dca;
 use Netzmacht\Workflow\Contao\Data\Event\CreateEntityRepositoryEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscriber;
@@ -114,7 +114,7 @@ class RepositoryFactory implements EventSubscriber
      */
     private function getDriver($providerName)
     {
-        $definition = DcaLoader::load($providerName);
+        $definition = Dca::load($providerName);
 
         if (isset($definition['config']['dataContainer'])) {
             return $definition['config']['dataContainer'];
