@@ -70,6 +70,18 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'icon'  => 'delete.gif',
                 'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
             ),
+            'toggle' => array
+            (
+                'label'      => &$GLOBALS['TL_LANG']['tl_workflow']['toggle'],
+                'icon'       => 'visible.gif',
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback' => \Netzmacht\Contao\DevTools\Dca::createToggleIconCallback(
+                    'tl_workflow',
+                    'active',
+                    false,
+                    'invisible.gif'
+                )
+            ),
             'show' => array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['show'],
