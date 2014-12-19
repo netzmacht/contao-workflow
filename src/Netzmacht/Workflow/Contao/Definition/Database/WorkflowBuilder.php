@@ -230,11 +230,19 @@ class WorkflowBuilder implements EventSubscriberInterface
                 Definition::SOURCE_DATABASE
             );
 
+            if ($model->postAction) {
+                $event->setPostAction(true);
+            }
+
             $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
 
             if (!$event->getAction()) {
                 throw new DefinitionException(sprintf('No action created for action defintion ID "%s"', $model->id));
-            } else {
+            }
+            elseif ($event->isPostAction()) {
+                $this->transitions[$model->pid]->addPostAction($event->getAction());
+            }
+            else {
                 $this->transitions[$model->pid]->addAction($event->getAction());
             }
         }

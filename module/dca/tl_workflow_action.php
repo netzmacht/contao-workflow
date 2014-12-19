@@ -34,13 +34,13 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         (
             'mode'   => 4,
             'flag'   => 1,
-            'fields' => array('name'),
+            'fields' => array('postAction', 'sorting'),
             'headerFields' => array('label', 'name', 'type', 'description'),
-            'disableGrouping' => true,
             'child_record_callback' => array(
                 'Netzmacht\Workflow\Contao\Backend\Common',
                 'generateRow'
-            )
+            ),
+            'panelLayout' => 'filter;search,limit'
         ),
         'label' => array
         (
@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
     (
         'default' => array
         (
-            'name'        => array('label', 'name', 'type', 'logChanges'),
+            'name'        => array('label', 'name', 'type', 'postAction', 'logChanges', 'sorting'),
             'description' => array(':hide', 'description'),
             'config'      => array(),
             'activation'  => array('active'),
@@ -111,6 +111,15 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
         ),
         'sorting'             => array
         (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['sorting'],
+            'inputType' => 'text',
+            'exclude'   => true,
+            'eval'      => array(
+                'tl_class'  => 'w50',
+                'rgxp'      => 'digit',
+                'maxlength' => 64,
+            ),
+
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp'         => array
@@ -168,6 +177,17 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
                 'maxlength' => 255,
             ),
             'sql'       => "varchar(255) NOT NULL default ''",
+        ),
+        'postAction'      => array
+        (
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['postAction'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'filter'    => true,
+            'eval'      => array(
+                'tl_class'       => 'w50 m12',
+            ),
+            'sql'       => "char(1) NOT NULL default ''"
         ),
         'logChanges'      => array
         (

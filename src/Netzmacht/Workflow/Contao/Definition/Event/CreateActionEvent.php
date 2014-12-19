@@ -64,11 +64,18 @@ class CreateActionEvent extends Event
     private $transition;
 
     /**
+     * Mark action as post action.
+     *
+     * @var bool
+     */
+    private $postAction = false;
+
+    /**
      * Construct.
      *
      * @param Workflow    $workflow     Current workflow.
      * @param Transition  $transition   Current transition.
-     * @param mixed       $config       Action configuration.
+     * @param array       $config       Action configuration.
      * @param string|null $configSource Config source.
      */
     public function __construct(Workflow $workflow, Transition $transition, $config, $configSource = null)
@@ -82,7 +89,7 @@ class CreateActionEvent extends Event
     /**
      * Get the action model.
      *
-     * @return ActionModel
+     * @return array
      */
     public function getConfig()
     {
@@ -141,5 +148,24 @@ class CreateActionEvent extends Event
         $this->action = $action;
 
         return $this;
+    }
+
+    /**
+     * Mark action as post action.
+     *
+     * @param bool $isPostAction Mark as post action.
+     *
+     * @return $this
+     */
+    public function setPostAction($isPostAction)
+    {
+        $this->postAction = (bool) $isPostAction;
+
+        return $this;
+    }
+
+    public function isPostAction()
+    {
+        return $this->postAction;
     }
 }
