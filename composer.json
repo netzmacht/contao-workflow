@@ -33,8 +33,8 @@
         "symfony/expression-language": "~2.4"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.1.*@dev",
-        "netzmacht/contao-build-tools": "dev-master"
+        "phpspec/phpspec": "~2.1",
+        "netzmacht/contao-build-tools": "~1.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
