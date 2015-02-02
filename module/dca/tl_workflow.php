@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow']['toggle'],
                 'icon'       => 'visible.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => \Netzmacht\Contao\DevTools\Dca::createToggleIconCallback(
+                'button_callback' => \Netzmacht\Contao\Toolkit\Dca::createToggleIconCallback(
                     'tl_workflow',
                     'active'
                 )

@@ -14,7 +14,7 @@
 namespace Netzmacht\Workflow\Contao\Data;
 
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultDataProvider;
-use Netzmacht\Contao\DevTools\Dca;
+use Netzmacht\Contao\Toolkit\Dca;
 use Netzmacht\Workflow\Contao\Data\Event\CreateEntityRepositoryEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscriber;

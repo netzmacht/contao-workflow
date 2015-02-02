@@ -28,7 +28,7 @@
         "menatwork/contao-multicolumnwizard": "~3.2",
         "beberlei/assert": "~2.0",
         "netzmacht/workflow": "~1.0",
-        "netzmacht/contao-dev-tools": "~1.0",
+        "netzmacht/contao-toolkit": "~1.0",
         "mathiasverraes/classfunctions": "~1.1",
         "symfony/expression-language": "~2.4"
     },
