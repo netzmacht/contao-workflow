@@ -62,6 +62,10 @@ class RepositoryFactory implements EventSubscriber
      */
     public function handleCreateEntityRepository(CreateEntityRepositoryEvent $event)
     {
+        if ($event->getRepository()) {
+            return;
+        }
+
         $providerName = $event->getProviderName();
         $driver       = $this->getDriver($providerName);
 
