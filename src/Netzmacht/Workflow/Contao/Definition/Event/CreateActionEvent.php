@@ -164,6 +164,11 @@ class CreateActionEvent extends Event
         return $this;
     }
 
+    /**
+     * Check is action is marked as post action.
+     *
+     * @return bool
+     */
     public function isPostAction()
     {
         return $this->postAction;

@@ -21,6 +21,8 @@ use ContaoCommunityAlliance\Translator\TranslatorInterface;
 class LocalizedFormType extends FormType
 {
     /**
+     * The translator.
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -28,11 +30,11 @@ class LocalizedFormType extends FormType
     /**
      * Construct.
      *
-     * @param TranslatorInterface $translator
-     * @param null                $name
-     * @param null                $prefix
+     * @param TranslatorInterface $translator The translator.
+     * @param string              $name       The form type name.
+     * @param string|null         $prefix     The prefix.
      */
-    function __construct(TranslatorInterface $translator, $name, $prefix = null)
+    public function __construct(TranslatorInterface $translator, $name, $prefix = null)
     {
         $this->translator = $translator;
 

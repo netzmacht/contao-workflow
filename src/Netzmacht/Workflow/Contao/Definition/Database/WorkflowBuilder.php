@@ -238,11 +238,9 @@ class WorkflowBuilder implements EventSubscriberInterface
 
             if (!$event->getAction()) {
                 throw new DefinitionException(sprintf('No action created for action defintion ID "%s"', $model->id));
-            }
-            elseif ($event->isPostAction()) {
+            } elseif ($event->isPostAction()) {
                 $this->transitions[$model->pid]->addPostAction($event->getAction());
-            }
-            else {
+            } else {
                 $this->transitions[$model->pid]->addAction($event->getAction());
             }
         }
