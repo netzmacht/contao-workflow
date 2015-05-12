@@ -30,7 +30,8 @@
         "netzmacht/workflow": "~1.0",
         "netzmacht/contao-toolkit": "~1.0",
         "mathiasverraes/classfunctions": "~1.1",
-        "symfony/expression-language": "~2.4"
+        "symfony/expression-language": "~2.4",
+        "contao-legacy/associategroups": "~1"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",

@@ -21,6 +21,9 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['workflow'] = array(
     'label'     => &$GLOBALS['TL_LANG']['tl_user']['workflow'],
     'inputType' => 'checkbox',
     'options_callback'   => array('Netzmacht\Workflow\Contao\Backend\Permission', 'getAllPermissions'),
+    'save_callback' => array(
+        new \Netzmacht\Workflow\Contao\Backend\Dca\SavePermissionsCallback('tl_user')
+    ),
     'eval'      => array(
         'tl_class' => 'clr',
         'multiple' => true,

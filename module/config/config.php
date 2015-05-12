@@ -67,3 +67,4 @@ $GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Workflow\Contao\Mod
 $GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Workflow\Contao\Model\StepModel';
 $GLOBALS['TL_MODELS']['tl_workflow_state']      = 'Netzmacht\Workflow\Contao\Model\StateModel';
 $GLOBALS['TL_MODELS']['tl_workflow_transition'] = 'Netzmacht\Workflow\Contao\Model\TransitionModel';
+$GLOBALS['TL_MODELS']['tl_workflow_permission'] = 'Netzmacht\Workflow\Contao\Model\PermissionModel';

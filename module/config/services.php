@@ -181,3 +181,18 @@ $container['workflow.transition.expression-language'] = $container->share(
         return new ExpressionLanguage();
     }
 );
+
+
+/**
+ * The Contao user repository.
+ *
+ * @return \Netzmacht\Workflow\Contao\Repository\UserRepository
+ */
+$container['workflow.repository.user'] = $container->share(
+    function ($container) {
+        return new \Netzmacht\Workflow\Contao\Repository\UserRepository(
+            $container['worfklow.database.connection'],
+            \Model\Registry::getInstance()
+        );
+    }
+);
