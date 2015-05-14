@@ -148,6 +148,7 @@ class EntityFactory implements EventSubscriberInterface
     {
         $model = new DefaultModel();
         $model->setProviderName($tableName);
+        $model->setID($row['id']);
 
         foreach ($row as $name => $value) {
             $model->setPropertyRaw($name, $value);
