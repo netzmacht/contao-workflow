@@ -16,10 +16,9 @@ namespace Netzmacht\Workflow\Contao\Data;
 use ContaoCommunityAlliance\DcGeneral\Data\DefaultModel;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
 use Database\Result;
-use Netzmacht\Workflow\Contao\Data\ContaoModelEntity;
 use Netzmacht\Workflow\Contao\Definition\Event;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateEntityEvent;
- use MetaModels\IItem as MetaModelItem;
+use MetaModels\IItem as MetaModelItem;
 use Model\Collection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -148,7 +147,7 @@ class EntityFactory implements EventSubscriberInterface
     {
         $model = new DefaultModel();
         $model->setProviderName($tableName);
-        $model->setID($row['id']);
+        $model->setId($row['id']);
 
         foreach ($row as $name => $value) {
             $model->setPropertyRaw($name, $value);
