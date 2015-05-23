@@ -91,8 +91,8 @@ class StateRepository implements WorkflowStateRepository
         $model->transitionName = $state->getTransitionName();
         $model->stepName       = $state->getStepName();
         $model->success        = $state->isSuccessful();
-        $model->errors         = json_encode($state->getErrors());
-        $model->data           = json_encode($state->getData());
+        $model->errors         = $this->serialize($state->getErrors());
+        $model->data           = $this->serialize($state->getData());
         $model->reachedAt      = $state->getReachedAt()->getTimestamp();
         $model->tstamp         = time();
 
@@ -124,5 +124,39 @@ class StateRepository implements WorkflowStateRepository
         );
 
         return $state;
+    }
+
+    /**
+     * Serialize data.
+     *
+     * @param mixed $data The data being serialized.
+     *
+     * @return string
+     */
+    private function serialize($data)
+    {
+        $data = $this->prepareSerialize($data);
+
+        return json_encode($data);
+    }
+
+    /**
+     * Prepare serializsation.
+     *
+     * @param mixed $data The data being serialized.
+     *
+     * @return mixed
+     */
+    private function prepareSerialize($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->prepareSerialize($value);
+            }
+        } elseif(\Validator::isBinaryUuid($data)) {
+            $data = \String::binToUuid($data);
+        }
+
+        return $data;
     }
 }
