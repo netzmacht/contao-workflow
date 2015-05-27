@@ -14,6 +14,7 @@
 namespace Netzmacht\Workflow\Contao\Definition\Database;
 
 use Netzmacht\Workflow\Contao\Backend\Event\GetWorkflowPermissionsEvent;
+use Netzmacht\Workflow\Contao\Condition\Transition\ContaoTransitionPermissionCondition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Netzmacht\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
@@ -76,15 +77,10 @@ class PermissionSubscriber implements EventSubscriberInterface
 
         /** @var User $user */
         $user  = $this->getService('workflow.security.user');
-        $admin = Permission::forWorkflowName($workflow->getName(), 'contao-admin');
 
-        // Usually Admins can follow every transition. This can be disabled by ignoreAdminPermission.
-        // If disabled and user is an admin do not add the permission.
-        if ($workflow->getConfigValue('ignoreAdminPermission') || !$user->hasPermission($admin)) {
-            $condition = new TransitionPermissionCondition($user);
-            $condition->grantAccessByDefault(true);
+        $condition = new ContaoTransitionPermissionCondition($user);
+        $condition->grantAccessByDefault(true);
 
-            $transition->addPreCondition($condition);
-        }
+        $transition->addPreCondition($condition);
     }
 }

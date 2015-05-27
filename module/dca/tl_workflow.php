@@ -99,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         (
             'name'        => array('label', 'name', 'type', 'providerName'),
             'description' => array(':hide', 'description'),
-            'permissions' => array('permissions', 'ignoreAdminPermission'),
+            'permissions' => array('permissions'),
             'process'     => array('process', 'logChanges'),
             'config'      => array(),
             'activation'  => array('active')
@@ -279,15 +279,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                 )
             ),
             'sql'       => "mediumblob NULL",
-        ),
-        'ignoreAdminPermission'      => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'],
-            'inputType' => 'checkbox',
-            'eval'      => array(
-                'tl_class'       => 'clr w50',
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
         ),
         'logChanges'      => array
         (
