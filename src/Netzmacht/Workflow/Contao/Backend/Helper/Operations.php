@@ -71,7 +71,10 @@ class Operations
             $buttonName     = 'transition_' . $transition->getName();
             $entityProvider = $entityProvider ?: $providerName;
             $config         = array(
-                'label' => array($transition->getLabel(), $transition->getConfigValue('description')),
+                'label' => array(
+                    $transition->getLabel(),
+                    $transition->getConfigValue('description') ?: $transition->getLabel()
+                ),
                 'icon'  => static::getTransitionIcon($transition),
                 'href'  => sprintf(
                     'table=%s&amp;key=workflow&amp;transition=%s',
