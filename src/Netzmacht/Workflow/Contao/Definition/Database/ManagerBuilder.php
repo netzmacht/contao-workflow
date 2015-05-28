@@ -71,7 +71,7 @@ class ManagerBuilder implements EventSubscriberInterface
         return new Manager(
             $serviceProvider->getTransitionHandlerFactory(),
             $serviceProvider->getStateRepository(),
-            $serviceProvider->getEntityFactory()
+            $serviceProvider->getService('event-dispatcher')
         );
     }
 

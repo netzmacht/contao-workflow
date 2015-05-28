@@ -14,11 +14,13 @@
 namespace Netzmacht\Workflow\Contao;
 
 use Netzmacht\Workflow\Contao\Data\EntityFactory;
+use Netzmacht\Workflow\Contao\Definition\Event\CreateEntityEvent;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
 use Netzmacht\Workflow\Flow\Item;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
  * Class Manager adds entity handling to the manager.
@@ -35,22 +37,29 @@ class Manager extends \Netzmacht\Workflow\Manager
     private $entityFactory;
 
     /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * Construct.
      *
      * @param TransitionHandlerFactory $handlerFactory  The transition handler factory.
      * @param StateRepository          $stateRepository The state repository.
-     * @param EntityFactory            $entityFactory   The entity factory.
+     * @param EventDispatcher          $eventDispatcher The event dispatcher.
      * @param array                    $workflows       A optional set of workflows.
      */
     public function __construct(
         TransitionHandlerFactory $handlerFactory,
         StateRepository $stateRepository,
-        EntityFactory $entityFactory,
+        EventDispatcher $eventDispatcher,
         $workflows = array()
     ) {
         parent::__construct($handlerFactory, $stateRepository, $workflows);
 
-        $this->entityFactory = $entityFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -65,8 +74,9 @@ class Manager extends \Netzmacht\Workflow\Manager
      */
     public function createItem(EntityId $entityId, $model)
     {
-        $entity = $this->entityFactory->createEntity($model, $entityId->getProviderName());
+        $event = new CreateEntityEvent($model, $entityId->getProviderName());
+        $this->eventDispatcher->dispatch($event::NAME, $event);
 
-        return parent::createItem($entityId, $entity);
+        return parent::createItem($entityId, $event->getEntity());
     }
 }
