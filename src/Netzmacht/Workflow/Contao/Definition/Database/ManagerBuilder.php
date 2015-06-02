@@ -15,11 +15,13 @@ namespace Netzmacht\Workflow\Contao\Definition\Database;
 
 use Netzmacht\Workflow\Contao\Definition\Definition;
 use Netzmacht\Workflow\Contao\Definition\Event\CreateWorkflowEvent;
+use Netzmacht\Workflow\Contao\Manager as ContaoWorkflowManager;
 use Netzmacht\Workflow\Contao\Model\WorkflowModel;
 use Netzmacht\Workflow\Contao\ServiceContainerTrait;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Workflow\Contao\Manager;
+use Netzmacht\Workflow\Manager\Manager;
+use Netzmacht\Workflow\Manager\CachedManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -68,10 +70,12 @@ class ManagerBuilder implements EventSubscriberInterface
     {
         $serviceProvider = $this->getServiceProvider();
 
-        return new Manager(
-            $serviceProvider->getTransitionHandlerFactory(),
-            $serviceProvider->getStateRepository(),
-            $serviceProvider->getService('event-dispatcher')
+        return new CachedManager(
+            new ContaoWorkflowManager(
+                $serviceProvider->getTransitionHandlerFactory(),
+                $serviceProvider->getStateRepository(),
+                $serviceProvider->getService('event-dispatcher')
+            )
         );
     }
 
