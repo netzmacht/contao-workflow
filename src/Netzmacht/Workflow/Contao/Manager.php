@@ -20,6 +20,7 @@ use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
 use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Manager\WorkflowManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**
@@ -27,15 +28,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
  *
  * @package Netzmacht\Workflow\Contao
  */
-class Manager extends \Netzmacht\Workflow\Manager
+class Manager extends WorkflowManager
 {
-    /**
-     * The entity factory.
-     *
-     * @var EntityFactory
-     */
-    private $entityFactory;
-
     /**
      * The event dispatcher.
      *

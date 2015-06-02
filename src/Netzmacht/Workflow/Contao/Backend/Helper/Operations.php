@@ -14,7 +14,7 @@
 namespace Netzmacht\Workflow\Contao\Backend\Helper;
 
 use Netzmacht\Workflow\Flow\Transition;
-use Netzmacht\Workflow\Manager;
+use Netzmacht\Workflow\Manager\Manager;
 
 /**
  * Class Operations helper.
