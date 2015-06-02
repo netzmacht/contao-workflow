@@ -13,6 +13,8 @@
 
 namespace Netzmacht\Workflow\Contao;
 
+use Netzmacht\Workflow\Manager\Manager;
+
 /**
  * Class ManagerRegistry stores created managers.
  *
