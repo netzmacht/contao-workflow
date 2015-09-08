@@ -44,12 +44,14 @@ class Transition
     /**
      * Get steps which can be a target.
      *
+     * @param \DataContainer $dataContainer Data container driver.
+     *
      * @return array
      */
-    public function getStepsTo()
+    public function getStepsTo($dataContainer)
     {
         $steps      = array();
-        $collection = StepModel::findAll(array('order' => 'name'));
+        $collection = StepModel::findBy(['pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
 
         if ($collection) {
             while ($collection->next()) {
