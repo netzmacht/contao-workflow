@@ -117,4 +117,22 @@ class EntityRepository implements WorkflowEntityRepository
 
         return $filtered;
     }
+
+    /**
+     * Remove an entity.
+     *
+     * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException If an invalid entity type is given.
+     */
+    public function remove($entity)
+    {
+        Assertion::isInstanceOf(
+            $entity,
+            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
+            'Entity repository requires an instance of the ModelInterface'
+        );
+
+        $this->provider->delete($entity);
+    }
 }
