@@ -77,24 +77,28 @@ class Workflow
     /**
      * Get all start steps.
      *
+     * @param \DataContainer $dataContainer The data container driver.
+     *
      * @return array
      */
-    public function getStartSteps()
+    public function getStartSteps($dataContainer)
     {
         return array(
             'process' => array('start'),
-            'steps' => $this->getSteps(true)
+            'steps' => $this->getSteps($dataContainer->id, true)
         );
     }
 
     /**
      * Get all end steps.
      *
+     * @param \DataContainer $dataContainer The data container driver.
+     *
      * @return array
      */
-    public function getEndSteps()
+    public function getEndSteps($dataContainer)
     {
-        return $this->getSteps();
+        return $this->getSteps($dataContainer->id);
     }
 
     /**
@@ -187,18 +191,19 @@ class Workflow
     /**
      * Get steps form database.
      *
+     * @param int  $parentId    The parent id.
      * @param bool $filterFinal If true only steps which are not final are loaded.
      *
      * @return array
      */
-    private function getSteps($filterFinal = false)
+    private function getSteps($parentId, $filterFinal = false)
     {
         $steps = array();
 
         if ($filterFinal) {
-            $collection = StepModel::findBy('final', '', array('order' => 'name'));
+            $collection = StepModel::findBy(['pid=?', 'final=?'], [$parentId, ''], ['order' => 'name']);
         } else {
-            $collection = StepModel::findAll(array('order' => 'name'));
+            $collection = StepModel::findBy(['pid=?'], [$parentId], ['order' => 'name']);
         }
 
         if ($collection) {
