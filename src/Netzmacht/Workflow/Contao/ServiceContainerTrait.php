@@ -23,27 +23,15 @@ namespace Netzmacht\Workflow\Contao;
  */
 trait ServiceContainerTrait
 {
+    use \Netzmacht\Contao\Toolkit\ServiceContainerTrait;
+
     /**
      * Get the service provider.
      *
      * @return ServiceProvider
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected function getServiceProvider()
     {
-        return $GLOBALS['container']['workflow.service-provider'];
-    }
-
-    /**
-     * Get a service from the service provider.
-     *
-     * @param string $name Name of the service.
-     *
-     * @return mixed
-     */
-    protected function getService($name)
-    {
-        return $this->getServiceProvider()->getService($name);
+        return $this->getService('workflow.service-provider');
     }
 }
