@@ -109,7 +109,6 @@ class EntityFactory implements EventSubscriberInterface
         return new ContaoModelEntity($model);
     }
 
-
     /**
      * Create an entity from a metamodel.
      *

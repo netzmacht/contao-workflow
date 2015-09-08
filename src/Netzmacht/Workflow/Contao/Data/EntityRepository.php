@@ -14,9 +14,12 @@
 namespace Netzmacht\Workflow\Contao\Data;
 
 use Assert\Assertion;
+use ContaoCommunityAlliance\DcGeneral\Data\CollectionInterface;
 use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface as DataProvider;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
+use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
+use Netzmacht\Workflow\Data\Specification;
 
 /**
  * Class EntityRepository stores an entity.
@@ -83,5 +86,35 @@ class EntityRepository implements WorkflowEntityRepository
         }
 
         return $model;
+    }
+
+    /**
+     * Find by a specification.
+     *
+     * It is highly recommend to pass a QuerySpecification. Otherwise all items have to be loaded!.
+     *
+     * @param Specification $specification The specification.
+     *
+     * @return array|CollectionInterface|ModelInterface[]|\string[]
+     */
+    public function findBySpecification(Specification $specification)
+    {
+        if ($specification instanceof QuerySpecification) {
+            $config = $this->provider->getEmptyConfig();
+            $specification->prepare($config);
+
+            return $this->provider->fetchAll($config);
+        }
+
+        $result   = $this->provider->fetchAll($this->provider->getEmptyConfig());
+        $filtered = array();
+
+        foreach ($result as $entity) {
+            if ($specification->isSatisfiedBy($entity)) {
+                $filtered[] = $entity;
+            }
+        }
+
+        return $filtered;
     }
 }
