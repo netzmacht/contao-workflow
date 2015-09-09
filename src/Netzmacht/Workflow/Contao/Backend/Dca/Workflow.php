@@ -85,7 +85,7 @@ class Workflow
     {
         return array(
             'process' => array('start'),
-            'steps' => $this->getSteps($dataContainer->id, true)
+            'steps' => $this->getSteps($dataContainer->activeRecord->id, true)
         );
     }
 
@@ -98,7 +98,7 @@ class Workflow
      */
     public function getEndSteps($dataContainer)
     {
-        return $this->getSteps($dataContainer->id);
+        return $this->getSteps($dataContainer->activeRecord->id);
     }
 
     /**
