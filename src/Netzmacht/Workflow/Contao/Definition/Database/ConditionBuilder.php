@@ -96,7 +96,7 @@ class ConditionBuilder implements EventSubscriberInterface
         $transition = $event->getTransition();
 
         if ($transition->getConfigValue('addExpressionConditions')) {
-            $language   = $this->getService('workflow.transition.expression-language');
+            $language   = $this->getServiceContainer()->getService('workflow.transition.expression-language');
             $definition = deserialize($transition->getConfigValue('expressionConditions'), true);
 
             foreach ($definition as $config) {

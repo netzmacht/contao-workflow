@@ -32,6 +32,6 @@ trait ServiceContainerTrait
      */
     protected function getServiceProvider()
     {
-        return $this->getService('workflow.service-provider');
+        return $this->getServiceContainer()->getService('workflow.service-provider');
     }
 }

@@ -69,7 +69,7 @@ class Workflow
         }
 
         $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
-        $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
+        $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
 
         return $event->getProviderNames();
     }

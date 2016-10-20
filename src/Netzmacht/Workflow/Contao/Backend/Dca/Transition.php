@@ -38,7 +38,7 @@ class Transition
      */
     public function __construct()
     {
-        $this->database = $this->getService('database.connection');
+        $this->database = $this->getServiceContainer()->getDatabaseConnection();
     }
 
     /**

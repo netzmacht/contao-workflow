@@ -45,7 +45,7 @@ class Base
      */
     public function __construct()
     {
-        $this->translator = $this->getService('workflow.translator');
+        $this->translator = $this->getServiceContainer()->getTranslator();
 
         if (!$this->defaultDomain) {
             $this->defaultDomain = 'tl_workflow_' . strtolower(ClassFunctions::short($this));

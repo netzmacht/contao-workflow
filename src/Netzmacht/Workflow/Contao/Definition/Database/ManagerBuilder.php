@@ -108,7 +108,7 @@ class ManagerBuilder implements EventSubscriberInterface
             );
 
             $event = new CreateWorkflowEvent($workflow);
-            $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
+            $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
 
             $manager->addWorkflow($workflow);
         }

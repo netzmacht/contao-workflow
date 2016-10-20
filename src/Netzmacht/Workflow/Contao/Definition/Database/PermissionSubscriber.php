@@ -76,7 +76,7 @@ class PermissionSubscriber implements EventSubscriberInterface
         $workflow   = $transition->getWorkflow();
 
         /** @var User $user */
-        $user  = $this->getService('workflow.security.user');
+        $user  = $this->getServiceContainer()->getService('workflow.security.user');
 
         $condition = new ContaoTransitionPermissionCondition($user);
         $condition->grantAccessByDefault(true);

@@ -98,7 +98,7 @@ class WorkflowBuilder implements EventSubscriberInterface
     private function addRoles(Workflow $workflow)
     {
         /** @var User $user */
-        $user = $this->getService('workflow.security.user');
+        $user = $this->getServiceContainer()->getService('workflow.security.user');
 
         foreach ($user->getRoles() as $role) {
             if ($role->getWorkflowName() == $workflow->getName()) {
@@ -143,7 +143,7 @@ class WorkflowBuilder implements EventSubscriberInterface
             $workflow->addStep($step);
 
             $event = new CreateStepEvent($workflow, $step);
-            $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
+            $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
 
             $this->steps[$model->id] = $step;
         }
@@ -197,7 +197,7 @@ class WorkflowBuilder implements EventSubscriberInterface
             $workflow->addTransition($transition);
 
             $event = new CreateTransitionEvent($transition);
-            $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
+            $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
 
             $this->transitions[$model->id] = $transition;
         }
@@ -234,7 +234,7 @@ class WorkflowBuilder implements EventSubscriberInterface
                 $event->setPostAction(true);
             }
 
-            $this->getService('event-dispatcher')->dispatch($event::NAME, $event);
+            $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
 
             if (!$event->getAction()) {
                 throw new DefinitionException(sprintf('No action created for action defintion ID "%s"', $model->id));
