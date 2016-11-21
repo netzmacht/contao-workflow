@@ -31,7 +31,7 @@
         "netzmacht/contao-toolkit": "~1.0",
         "mathiasverraes/classfunctions": "~1.1",
         "symfony/expression-language": "~2.4",
-        "friends-of-contao/contao-associategroups ": "~1.0"
+        "friends-of-contao/contao-associategroups": "~1.0"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
