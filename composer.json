@@ -31,18 +31,12 @@
         "netzmacht/contao-toolkit": "~1.0",
         "mathiasverraes/classfunctions": "~1.1",
         "symfony/expression-language": "~2.4",
-        "contao-legacy/associategroups": "~1"
+        "friends-of-contao/contao-associategroups ": "~1.0"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
         "netzmacht/contao-build-tools": "~1.1"
     },
-    "repositories": [
-      {
-        "type": "composer",
-        "url": "https://legacy-packages-via.contao-community-alliance.org/"
-      }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
