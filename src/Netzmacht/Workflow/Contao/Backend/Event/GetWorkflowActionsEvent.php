@@ -33,6 +33,13 @@ class GetWorkflowActionsEvent extends Event
     private $actions = array();
 
     /**
+     * Workflow model.
+     *
+     * @var WorkflowModel
+     */
+    private $workflowModel;
+
+    /**
      * Construct.
      *
      * @param WorkflowModel $workflowModel Current workflow model.
