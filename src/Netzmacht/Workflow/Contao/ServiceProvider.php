@@ -14,6 +14,7 @@
 namespace Netzmacht\Workflow\Contao;
 
 use Netzmacht\Workflow\Contao\Data\EntityFactory;
+use Netzmacht\Workflow\Contao\Type\WorkflowTypeProvider;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
@@ -148,5 +149,15 @@ class ServiceProvider
     public function getEntityFactory()
     {
         return $this->getService('workflow.factory.entity');
+    }
+
+    /**
+     * Get workflow type provider.
+     *
+     * @return WorkflowTypeProvider
+     */
+    public function getTypeProvider()
+    {
+        return $this->getService('workflow.type-provider');
     }
 }

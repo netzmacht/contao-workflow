@@ -43,7 +43,7 @@ $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
 /*
  * Workflow types
  */
-$GLOBALS['WORKFLOW_TYPES'][] = 'default';
+$GLOBALS['WORKFLOW_TYPES'][] = 'Netzmacht\Workflow\Contao\Type\DefaultWorkflowType';
 
 
 /*

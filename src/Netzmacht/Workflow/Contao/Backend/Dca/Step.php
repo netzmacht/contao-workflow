@@ -13,6 +13,9 @@
 
 namespace Netzmacht\Workflow\Contao\Backend\Dca;
 
+use Netzmacht\Workflow\Contao\Model\WorkflowModel;
+use Netzmacht\Workflow\Contao\ServiceContainerTrait;
+
 /**
  * Class Step used for tl_workflow_step callbacks.
  *
@@ -20,5 +23,34 @@ namespace Netzmacht\Workflow\Contao\Backend\Dca;
  */
 class Step
 {
+    use ServiceContainerTrait;
 
+    /**
+     * Adjust the input mask.
+     *
+     * @param \DataContainer $dataContainer Data container.
+     *
+     * @return void
+     */
+    public function adjustEditMask($dataContainer)
+    {
+        $workflow     = WorkflowModel::findByPk(CURRENT_ID);
+        $typeProvider = $this->getServiceProvider()->getTypeProvider();
+
+        if (!$workflow || !$typeProvider->hasType($workflow->type)) {
+            return;
+        }
+
+        $workflowType = $typeProvider->getType($workflow->type);
+        if ($workflowType->hasFixedSteps()) {
+            $GLOBALS['TL_DCA']['tl_workflow_step']['fields']['name']['inputType']                  = 'select';
+            $GLOBALS['TL_DCA']['tl_workflow_step']['fields']['name']['options']                    = $workflowType->getStepNames();
+            $GLOBALS['TL_DCA']['tl_workflow_step']['fields']['name']['eval']['includeBlankOption'] = true;
+        } else {
+            $GLOBALS['TL_DCA']['tl_workflow_step']['fields']['name']['save_callback'][] = array(
+                'Netzmacht\Workflow\Contao\Backend\Common',
+                'createName'
+            );
+        }
+    }
 }

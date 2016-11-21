@@ -21,6 +21,7 @@ use Netzmacht\Workflow\Contao\Data\EntityFactory;
 use Netzmacht\Workflow\Contao\Data\RepositoryFactory;
 use Netzmacht\Workflow\Contao\ManagerRegistry;
 use Netzmacht\Workflow\Contao\ServiceProvider;
+use Netzmacht\Workflow\Contao\Type\WorkflowTypeProvider;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Handler\Listener;
 use Netzmacht\Workflow\Handler\Listener\EventDispatchingListener;
@@ -194,5 +195,23 @@ $container['workflow.repository.user'] = $container->share(
             $container['worfklow.database.connection'],
             \Model\Registry::getInstance()
         );
+    }
+);
+
+/**
+ * Workflow type provider.
+ *
+ * @return WorkflowTypeProvider
+ */
+$container['workflow.type-provider'] = $container->share(
+    function () {
+        $types = array_map(
+            function($typeClass) {
+                return new $typeClass;
+            },
+            (array) $GLOBALS['WORKFLOW_TYPES']
+        );
+
+        return new WorkflowTypeProvider($types);
     }
 );

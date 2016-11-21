@@ -18,6 +18,9 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
     (
         'dataContainer' => 'Table',
         'ptable' => 'tl_workflow',
+        'onload_callback' => array(
+            array('Netzmacht\Workflow\Contao\Backend\Dca\Transition', 'adjustEditMask'),
+        ),
         'sql'           => array
         (
             'keys' => array
@@ -134,9 +137,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['name'],
             'inputType' => 'text',
             'exclude'   => true,
-            'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Backend\Common', 'createName'),
-            ),
             'eval'      => array(
                 'tl_class'  => 'w50',
                 'maxlength' => 64,

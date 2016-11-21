@@ -48,11 +48,10 @@ class Workflow
      * Get names of workflow types.
      *
      * @return array
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getTypes()
     {
-        return $GLOBALS['WORKFLOW_TYPES'];
+        return $this->getServiceProvider()->getTypeProvider()->getTypeNames();
     }
 
     /**

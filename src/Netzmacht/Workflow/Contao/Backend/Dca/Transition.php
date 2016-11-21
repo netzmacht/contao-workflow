@@ -42,6 +42,33 @@ class Transition
     }
 
     /**
+     * Adjust the input mask.
+     *
+     * @return void
+     */
+    public function adjustEditMask()
+    {
+        $workflow     = WorkflowModel::findByPk(CURRENT_ID);
+        $typeProvider = $this->getServiceProvider()->getTypeProvider();
+
+        if (!$workflow || !$typeProvider->hasType($workflow->type)) {
+            return;
+        }
+
+        $workflowType = $typeProvider->getType($workflow->type);
+        if ($workflowType->hasFixedTransitions()) {
+            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['inputType']                  = 'select';
+            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['options']                    = $workflowType->getTransitionNames();
+            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['eval']['includeBlankOption'] = true;
+        } else {
+            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['save_callback'][] = array(
+                'Netzmacht\Workflow\Contao\Backend\Common',
+                'createName'
+            );
+        }
+    }
+
+    /**
      * Get steps which can be a target.
      *
      * @param \DataContainer $dataContainer Data container driver.
