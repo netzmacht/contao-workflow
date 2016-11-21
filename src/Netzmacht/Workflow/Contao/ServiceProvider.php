@@ -19,6 +19,7 @@ use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Factory\TransitionHandlerFactory;
+use Netzmacht\Workflow\Manager\Manager;
 use Netzmacht\Workflow\Security\User;
 use Pimple;
 
