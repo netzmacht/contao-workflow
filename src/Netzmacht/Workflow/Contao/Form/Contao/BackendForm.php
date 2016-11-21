@@ -24,7 +24,6 @@ use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefaultBasicDefi
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\DefaultPropertiesDefinition;
 use ContaoCommunityAlliance\DcGeneral\DefaultEnvironment;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
-use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
 use Netzmacht\Workflow\Contao\Form\AbstractForm;
 use Netzmacht\Workflow\Data\ErrorCollection;
 use Netzmacht\Workflow\Flow\Context;
@@ -295,18 +294,6 @@ class BackendForm extends AbstractForm
     }
 
     /**
-     * Create the event propagator.
-     *
-     * @return EventPropagator
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    private function getEventPropagator()
-    {
-        return new EventPropagator($GLOBALS['container']['event-dispatcher']);
-    }
-
-    /**
      * Create the environment.
      *
      * @return void
@@ -320,7 +307,6 @@ class BackendForm extends AbstractForm
         $this->environment = new DefaultEnvironment();
         $this->environment->setDataDefinition($container);
         $this->environment->setInputProvider(new InputProvider());
-        $this->environment->setEventPropagator($this->getEventPropagator());
 
         $controller = new DefaultController();
         $controller->setEnvironment($this->environment);
