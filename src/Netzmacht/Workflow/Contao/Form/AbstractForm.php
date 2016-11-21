@@ -63,12 +63,13 @@ abstract class AbstractForm implements ContaoForm
     /**
      * Construct.
      *
-     * @param string $name Form name.
+     * @param string          $name            Form name.
+     * @param ErrorCollection $errorCollection Error collection.
      */
-    public function __construct($name)
+    public function __construct($name, ErrorCollection $errorCollection = null)
     {
         $this->name            = $name;
-        $this->errorCollection = new ErrorCollection();
+        $this->errorCollection = $errorCollection ?: new ErrorCollection();
     }
 
     /**
