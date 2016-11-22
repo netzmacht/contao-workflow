@@ -35,15 +35,15 @@ class Permission
 
 
         if ($collection) {
-            while ($collection->next()) {
-                $permissions = deserialize($collection->permissions, true);
+            foreach ($collection as $workflow) {
+                $permissions = deserialize($workflow->permissions, true);
 
                 foreach ($permissions as $permission) {
-                    $workflow = $collection->label
-                        ? ($collection->label . ' [' . $collection->name . ']')
-                        : $collection->name;
+                    $workflow = $workflow->label
+                        ? ($workflow->label . ' [' . $workflow->name . ']')
+                        : $workflow->name;
 
-                    $name                      = $collection->name . ':' . $permission['name'];
+                    $name                      = $workflow->name . ':' . $permission['name'];
                     $options[$workflow][$name] = $permission['label'] ?: $permission['name'];
                 }
             }
@@ -65,21 +65,19 @@ class Permission
             return array();
         }
 
-        $collection = WorkflowModel::findBy('id', $dataContainer->activeRecord->pid);
-        $options    = array();
+        $workflow = WorkflowModel::findBy('id', $dataContainer->activeRecord->pid);
+        $options  = array();
 
-        if ($collection) {
-            while ($collection->next()) {
-                $permissions = deserialize($collection->permissions, true);
+        if ($workflow) {
+            $permissions = deserialize($workflow->permissions, true);
 
-                foreach ($permissions as $config) {
-                    $permission = WorkflowPermission::forWorkflowName(
-                        $collection->name,
-                        $config['name']
-                    );
+            foreach ($permissions as $config) {
+                $permission = WorkflowPermission::forWorkflowName(
+                    $workflow->name,
+                    $config['name']
+                );
 
-                    $options[(string) $permission] = $config['label'] ?: $config['name'];
-                }
+                $options[(string) $permission] = $config['label'] ?: $config['name'];
             }
         }
 
