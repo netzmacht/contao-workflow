@@ -55,13 +55,13 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['steps'],
                 'href'  => 'table=tl_workflow_step',
-                'icon'  => 'system/modules/workflow/assets/img/step.png',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/step.png',
             ),
             'transitions' => array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['transitions'],
                 'href'  => 'table=tl_workflow_transition',
-                'icon'  => 'system/modules/workflow/assets/img/transition.png',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/transition.png',
             ),
             'delete' => array
             (

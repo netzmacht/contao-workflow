@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
                 'href'  => 'table=tl_workflow_action',
-                'icon'  => 'system/modules/workflow/assets/img/action.png',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
             ),
             'delete' => array
             (

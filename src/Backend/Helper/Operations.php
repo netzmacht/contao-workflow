@@ -112,6 +112,6 @@ class Operations
             }
         }
 
-        return 'system/modules/workflow/assets/img/transition.png';
+        return 'bundles/netzmachtcontaoworkflow/img/transition.png';
     }
 }

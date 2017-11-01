@@ -16,8 +16,8 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 (
     'workflow' => array(
         'workflows' => array(
-            'icon'   => 'system/modules/workflow/assets/img/workflow.png',
-            'stylesheet' => 'system/modules/workflow/assets/css/backend.css',
+            'icon'   => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
+            'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
             'tables' => array(
                 'tl_workflow',
                 'tl_workflow_step',
@@ -27,7 +27,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         ),
         'workflow_history' => array(
             'icon'   => 'system/themes/default/images/news.gif',
-            'stylesheet' => 'system/modules/workflow/assets/css/backend.css',
+            'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
             'tables' => array('tl_workflow_state'),
         )
     )
