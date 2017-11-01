@@ -2,14 +2,13 @@
     "name":"netzmacht/contao-workflow",
     "description":"Library for supporting customized Contao form rendering",
     "keywords":["contao", "workflow", "data flow"],
-    "type":"contao-module",
+    "type":"contao-bundle",
     "license":"LGPL-3.0+",
     "authors":[
         {
             "name":"David Molineus",
             "email":"mail@netzmacht.de",
-            "homepage":"http://www.netzmacht.de",
-            "role":"Project leader"
+            "homepage":"https://netzmacht.de"
         }
     ],
     "support":{
@@ -18,41 +17,27 @@
         "source":"https://github.com/netzmacht/contao-workflow"
     },
     "require":{
-        "php":">=5.4",
-        "contao/core":"~3.2",
-        "contao-community-alliance/dependency-container":"~1.6",
-        "contao-community-alliance/event-dispatcher":"~1.3",
-        "contao-community-alliance/composer-plugin": "~2.0",
-        "contao-community-alliance/dc-general": "2.0.*@dev",
-        "contao-community-alliance/meta-palettes": "~1.5",
-        "menatwork/contao-multicolumnwizard": "~3.2",
+        "php":">=7.1",
+        "contao/core-bundle":"~4.4",
+        "contao-community-alliance/meta-palettes": "~1.10",
+        "menatwork/contao-multicolumnwizard": "^3.3.14",
         "beberlei/assert": "~2.0",
-        "netzmacht/workflow": "~1.0",
-        "netzmacht/contao-toolkit": "~1.0",
+        "netzmacht/workflow": "~2.0@dev",
+        "netzmacht/contao-toolkit": "~3.0@beta",
         "mathiasverraes/classfunctions": "~1.1",
         "symfony/expression-language": "~2.4",
-        "friends-of-contao/contao-associategroups": "~1.0"
+        "friends-of-contao/contao-associategroups": "~1.3@dev"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1",
-        "netzmacht/contao-build-tools": "~1.1"
+        "phpcq/all-tasks": "^1.2"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "autoload": {
-        "psr-0": { "Netzmacht\\Workflow\\Contao": "src/" }
-    },
-    "config": {
-        "bin-dir": "bin"
+        "psr-4": { "Netzmacht\\Contao\\Workflow\\": "src/" }
     },
     "extra":{
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        },
-        "contao": {
-            "sources":{
-                "module": "system/modules/workflow"
-            }
+            "dev-master": "1.0.x-dev",
+            "dev-develop": "2.0.x-dev"
         }
     }
 }
