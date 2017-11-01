@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
         'dataContainer' => 'Table',
         'ptable' => 'tl_workflow',
         'onload_callback' => array(
-            array('Netzmacht\Workflow\Contao\Backend\Dca\Step', 'adjustEditMask'),
+            array('Netzmacht\Contao\Workflow\Backend\Dca\Step', 'adjustEditMask'),
         ),
         'sql'           => array
         (
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
             'fields' => array('name'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Workflow\Contao\Backend\Common',
+                'Netzmacht\Contao\Workflow\Backend\Common',
                 'generateRow'
             )
         ),
@@ -165,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['permission'],
             'inputType' => 'select',
-            'options_callback' => array('Netzmacht\Workflow\Contao\Backend\Permission', 'getWorkflowPermissions'),
+            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'),
             'eval'      => array(
                 'tl_class'       => 'w50',
                 'mandatory' => true,

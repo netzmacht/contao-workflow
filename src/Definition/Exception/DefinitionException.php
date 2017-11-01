@@ -11,10 +11,13 @@
  * @filesource
  */
 
-return array(
-    'Netzmacht\Contao\Workflow\Definition\Database\ManagerBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\WorkflowBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\PermissionSubscriber',
-    'Netzmacht\Contao\Workflow\Definition\Database\ConditionBuilder',
-    'Netzmacht\Contao\Workflow\Form\FormFactory',
-);
+namespace Netzmacht\Contao\Workflow\Definition\Exception;
+
+/**
+ * Class DefinitionException is thrown when an invalid workflow definition is detected.
+ *
+ * @package Netzmacht\Contao\Workflow\Definition\Exception
+ */
+class DefinitionException extends \Exception
+{
+}

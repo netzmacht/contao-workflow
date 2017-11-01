@@ -43,13 +43,13 @@ $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
 /*
  * Workflow types
  */
-$GLOBALS['WORKFLOW_TYPES'][] = 'Netzmacht\Workflow\Contao\Type\DefaultWorkflowType';
+$GLOBALS['WORKFLOW_TYPES'][] = 'Netzmacht\Contao\Workflow\Type\DefaultWorkflowType';
 
 
 /*
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Workflow\Contao\Boot', 'startup');
+$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Contao\Workflow\Boot', 'startup');
 $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
     $eventDispatcher = $container['event-dispatcher'];
@@ -61,10 +61,10 @@ $GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
 /*
  * Models
  */
-$GLOBALS['TL_MODELS']['tl_workflow']            = 'Netzmacht\Workflow\Contao\Model\WorkflowModel';
-$GLOBALS['TL_MODELS']['tl_workflow_action']     = 'Netzmacht\Workflow\Contao\Model\ActionModel';
-$GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Workflow\Contao\Model\RoleModel';
-$GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Workflow\Contao\Model\StepModel';
-$GLOBALS['TL_MODELS']['tl_workflow_state']      = 'Netzmacht\Workflow\Contao\Model\StateModel';
-$GLOBALS['TL_MODELS']['tl_workflow_transition'] = 'Netzmacht\Workflow\Contao\Model\TransitionModel';
-$GLOBALS['TL_MODELS']['tl_workflow_permission'] = 'Netzmacht\Workflow\Contao\Model\PermissionModel';
+$GLOBALS['TL_MODELS']['tl_workflow']            = 'Netzmacht\Contao\Workflow\Model\WorkflowModel';
+$GLOBALS['TL_MODELS']['tl_workflow_action']     = 'Netzmacht\Contao\Workflow\Model\ActionModel';
+$GLOBALS['TL_MODELS']['tl_workflow_role']       = 'Netzmacht\Contao\Workflow\Model\RoleModel';
+$GLOBALS['TL_MODELS']['tl_workflow_step']       = 'Netzmacht\Contao\Workflow\Model\StepModel';
+$GLOBALS['TL_MODELS']['tl_workflow_state']      = 'Netzmacht\Contao\Workflow\Model\StateModel';
+$GLOBALS['TL_MODELS']['tl_workflow_transition'] = 'Netzmacht\Contao\Workflow\Model\TransitionModel';
+$GLOBALS['TL_MODELS']['tl_workflow_permission'] = 'Netzmacht\Contao\Workflow\Model\PermissionModel';

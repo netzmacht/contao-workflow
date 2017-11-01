@@ -11,10 +11,18 @@
  * @filesource
  */
 
-return array(
-    'Netzmacht\Contao\Workflow\Definition\Database\ManagerBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\WorkflowBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\PermissionSubscriber',
-    'Netzmacht\Contao\Workflow\Definition\Database\ConditionBuilder',
-    'Netzmacht\Contao\Workflow\Form\FormFactory',
-);
+namespace Netzmacht\Contao\Workflow\Definition;
+
+/**
+ * Class Definition stores definition constants.
+ *
+ * @package Netzmacht\Contao\Workflow\Definition
+ */
+class Definition
+{
+    const SOURCE = '__source__';
+
+    const SOURCE_DATABASE = 'database';
+
+    const SOURCE_DCA = 'dca';
+}

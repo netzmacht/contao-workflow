@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         'dataContainer' => 'Table',
         'ptable' => 'tl_workflow',
         'onload_callback' => array(
-            array('Netzmacht\Workflow\Contao\Backend\Dca\Transition', 'adjustEditMask'),
+            array('Netzmacht\Contao\Workflow\Backend\Dca\Transition', 'adjustEditMask'),
         ),
         'sql'           => array
         (
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'fields' => array('sorting'),
             'disableGrouping' => true,
             'child_record_callback' => array(
-                'Netzmacht\Workflow\Contao\Backend\Common',
+                'Netzmacht\Contao\Workflow\Backend\Common',
                 'generateRow'
             )
         ),
@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
             'inputType' => 'select',
             'options_callback' => array
             (
-                'Netzmacht\Workflow\Contao\Backend\Dca\Transition',
+                'Netzmacht\Contao\Workflow\Backend\Dca\Transition',
                 'getStepsTo'
             ),
             'eval'      => array
@@ -203,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['permission'],
             'inputType' => 'select',
-            'options_callback' => array('Netzmacht\Workflow\Contao\Backend\Permission', 'getWorkflowPermissions'),
+            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'),
             'eval'      => array(
                 'tl_class'       => 'w50',
                 'mandatory' => true,
@@ -265,7 +265,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Workflow\Contao\Backend\Dca\Transition',
+                            'Netzmacht\Contao\Workflow\Backend\Dca\Transition',
                             'getEntityProperties'
                         ),
                         'eval'      => array

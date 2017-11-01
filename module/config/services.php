@@ -15,13 +15,13 @@
 use ContaoCommunityAlliance\Translator\Contao\LangArrayTranslator;
 use ContaoCommunityAlliance\Translator\TranslatorChain;
 use ContaoCommunityAlliance\Translator\TranslatorInterface;
-use Netzmacht\Workflow\Contao\Data\EntityManager;
-use Netzmacht\Workflow\Contao\Data\StateRepository;
-use Netzmacht\Workflow\Contao\Data\EntityFactory;
-use Netzmacht\Workflow\Contao\Data\RepositoryFactory;
-use Netzmacht\Workflow\Contao\ManagerRegistry;
-use Netzmacht\Workflow\Contao\ServiceProvider;
-use Netzmacht\Workflow\Contao\Type\WorkflowTypeProvider;
+use Netzmacht\Contao\Workflow\Data\EntityManager;
+use Netzmacht\Contao\Workflow\Data\StateRepository;
+use Netzmacht\Contao\Workflow\Data\EntityFactory;
+use Netzmacht\Contao\Workflow\Data\RepositoryFactory;
+use Netzmacht\Contao\Workflow\ManagerRegistry;
+use Netzmacht\Contao\Workflow\ServiceProvider;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
 use Netzmacht\Workflow\Factory;
 use Netzmacht\Workflow\Handler\Listener;
 use Netzmacht\Workflow\Handler\Listener\EventDispatchingListener;
@@ -187,11 +187,11 @@ $container['workflow.transition.expression-language'] = $container->share(
 /**
  * The Contao user repository.
  *
- * @return \Netzmacht\Workflow\Contao\Repository\UserRepository
+ * @return \Netzmacht\Contao\Workflow\Repository\UserRepository
  */
 $container['workflow.repository.user'] = $container->share(
     function ($container) {
-        return new \Netzmacht\Workflow\Contao\Repository\UserRepository(
+        return new \Netzmacht\Contao\Workflow\Repository\UserRepository(
             $container['worfklow.database.connection'],
             \Model\Registry::getInstance()
         );

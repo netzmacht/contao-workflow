@@ -11,10 +11,21 @@
  * @filesource
  */
 
-return array(
-    'Netzmacht\Contao\Workflow\Definition\Database\ManagerBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\WorkflowBuilder',
-    'Netzmacht\Contao\Workflow\Definition\Database\PermissionSubscriber',
-    'Netzmacht\Contao\Workflow\Definition\Database\ConditionBuilder',
-    'Netzmacht\Contao\Workflow\Form\FormFactory',
-);
+namespace Netzmacht\Contao\Workflow\Model;
+
+/**
+ * Class ActionModel provides access to tl_workflow_action table.
+ *
+ * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int $id
+ * @property int $pid
+ */
+class ActionModel extends \Model
+{
+    /**
+     * Action model table name.
+     *
+     * @var string
+     */
+    protected static $strTable = 'tl_workflow_action';
+}

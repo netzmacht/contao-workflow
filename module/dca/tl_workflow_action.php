@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'fields' => array('postAction', 'sorting'),
             'headerFields' => array('label', 'name', 'type', 'description'),
             'child_record_callback' => array(
-                'Netzmacht\Workflow\Contao\Backend\Common',
+                'Netzmacht\Contao\Workflow\Backend\Common',
                 'generateRow'
             ),
             'panelLayout' => 'filter;search,limit'
@@ -144,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'inputType' => 'text',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Backend\Common', 'createName'),
+                array('Netzmacht\Contao\Workflow\Backend\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -157,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
             'inputType' => 'select',
             'exclude'   => true,
-            'options_callback' => array('Netzmacht\Workflow\Contao\Backend\Dca\Action', 'getTypes'),
+            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Dca\Action', 'getTypes'),
             'eval'      => array(
                 'tl_class'           => 'w50',
                 'mandatory' => true,

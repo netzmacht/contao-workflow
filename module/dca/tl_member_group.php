@@ -27,9 +27,9 @@ foreach (array_keys($GLOBALS['TL_DCA']['tl_member_group']['palettes']) as $palet
 $GLOBALS['TL_DCA']['tl_member_group']['fields']['workflow'] = array(
     'label'            => &$GLOBALS['TL_LANG']['tl_member_group']['workflow'],
     'inputType'        => 'checkbox',
-    'options_callback' => array('Netzmacht\Workflow\Contao\Backend\Permission', 'getAllPermissions'),
+    'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Permission', 'getAllPermissions'),
     'save_callback' => array(
-        new \Netzmacht\Workflow\Contao\Backend\Dca\SavePermissionsCallback('tl_member_group')
+        new \Netzmacht\Contao\Workflow\Backend\Dca\SavePermissionsCallback('tl_member_group')
     ),
     'eval'             => array(
         'tl_class' => 'clr',

@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
         'label' => array
         (
             'fields'         => array('name', 'type', 'description'),
-            'label_callback' => array('Netzmacht\Workflow\Contao\Backend\Common', 'generateRow'),
+            'label_callback' => array('Netzmacht\Contao\Workflow\Backend\Common', 'generateRow'),
         ),
 
         'operations' => array
@@ -123,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'search'    => true,
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Backend\Common', 'createName'),
+                array('Netzmacht\Contao\Workflow\Backend\Common', 'createName'),
             ),
             'eval'      => array(
                 'tl_class'           => 'w50',
@@ -150,7 +150,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'reference' => &$GLOBALS['TL_LANG']['workflow']['types'],
             'options_callback' => array
             (
-                'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                 'getTypes'
             ),
             'exclude'   => true,
@@ -168,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'search'    => true,
             'exclude'   => true,
             'options_callback' => array(
-                'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                 'getProviderNames'
             ),
             'eval'      => array(
@@ -193,7 +193,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'inputType' => 'multiColumnWizard',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Backend\Dca\Workflow', 'validateProcess'),
+                array('Netzmacht\Contao\Workflow\Backend\Dca\Workflow', 'validateProcess'),
             ),
             'eval'      => array(
                 'tl_class'           => 'clr',
@@ -205,7 +205,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                             'getStartSteps'
                         ),
                         'reference' => &$GLOBALS['TL_LANG']['tl_workflow']['process'],
@@ -222,7 +222,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'select',
                         'options_callback' => array
                         (
-                            'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                             'getTransitions',
                         ),
                         'eval'      => array
@@ -242,7 +242,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
             'inputType' => 'multiColumnWizard',
             'exclude'   => true,
             'save_callback' => array(
-                array('Netzmacht\Workflow\Contao\Backend\Dca\Workflow', 'validatePermissions'),
+                array('Netzmacht\Contao\Workflow\Backend\Dca\Workflow', 'validatePermissions'),
             ),
             'eval'      => array(
                 'tl_class'           => 'clr',
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'text',
                         'options_callback' => array
                         (
-                            'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                             'getStartSteps'
                         ),
                         'eval'      => array
@@ -268,7 +268,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = array
                         'inputType' => 'text',
                         'options_callback' => array
                         (
-                            'Netzmacht\Workflow\Contao\Backend\Dca\Workflow',
+                            'Netzmacht\Contao\Workflow\Backend\Dca\Workflow',
                             'getStartSteps'
                         ),
                         'eval'      => array
