@@ -6,14 +6,20 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\EntityManager;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Symfony\Component\Templating\EngineInterface as TemplateEngine;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class State provides helpers for tl_workflow_state.
@@ -23,11 +29,49 @@ use Netzmacht\Workflow\Data\EntityId;
 class State extends Base
 {
     /**
+     * Template engine.
+     *
+     * @var TemplateEngine
+     */
+    private $templateEngine;
+
+    /**
+     * Entity manager.
+     *
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @var WorkflowManager
+     */
+    private $manager;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param TemplateEngine      $templateEngine
+     * @param EntityManager       $entityManager
+     * @param WorkflowManager     $manager
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        TemplateEngine $templateEngine,
+        EntityManager $entityManager,
+        WorkflowManager $manager
+    ) {
+        parent::__construct($translator);
+
+        $this->templateEngine = $templateEngine;
+        $this->entityManager  = $entityManager;
+        $this->manager        = $manager;
+    }
+
+    /**
      * Apply a filter when looking at the history.
      *
      * @return void
      */
-    public function applyFilter()
+    public function applyFilter(): void
     {
         if (\Input::get('providerName') && \Input::get('id')) {
             $entityId = EntityId::fromProviderNameAndId(
@@ -38,10 +82,10 @@ class State extends Base
             $session = \Session::getInstance();
             $filter  = $session->get('filter');
 
-            $filter['tl_workflow_state'] = array('entityId' => (string) $entityId);
+            $filter['tl_workflow_state'] = ['entityId' => (string) $entityId];
             $session->set('filter', $filter);
 
-            \Backend::redirect(\Backend::addToUrl('providerName=', true, array('providerName', 'id')));
+            \Backend::redirect(\Backend::addToUrl('providerName=', true, ['providerName', 'id']));
         }
     }
 
@@ -52,21 +96,18 @@ class State extends Base
      *
      * @return string
      */
-    public function generateGroupHeader($label)
+    public function generateGroupHeader(string $label): string
     {
-        $header = array(
+        $header = [
             'entityId'       => $this->translate('entityId.0'),
             'workflowName'   => $this->translate('workflowName.0'),
             'transitionName' => $this->translate('transitionName.0'),
             'stepName'       => $this->translate('stepName.0'),
             'success'        => $this->translate('success.0'),
             'reachedAt'      => $this->translate('reachedAt.0'),
-        );
+        ];
 
-        $template = new \BackendTemplate('be_workflow_state_row');
-        $template->setData($header);
-
-        return $label . $template->parse();
+        return $label . $this->templateEngine->render('toolkit:be:be_workflow_state_row.html5', $header);
     }
 
     /**
@@ -76,17 +117,15 @@ class State extends Base
      *
      * @return string
      */
-    public function generateRow($row)
+    public function generateRow(array $row): string
     {
         try {
             $entityId = EntityId::fromString($row['entityId']);
-            $manager  = $this->getServiceProvider()->getManager($entityId->getProviderName());
-            $entity   = $this->getServiceProvider()
-                ->getEntityManager()
+            $entity   = $this->entityManager
                 ->getRepository($entityId->getProviderName())
                 ->find($entityId->getIdentifier());
 
-            $workflow = $manager->getWorkflow($entityId, $entity);
+            $workflow = $this->manager->getWorkflow($entityId, $entity);
 
             if ($workflow) {
                 $row['workflowName']   = $workflow->getLabel();
@@ -97,15 +136,12 @@ class State extends Base
             // Catch exception here so if the definition has changes no error is thrown.
         }
 
-        $row['success'] = $this->translate($row['success'] ? 'yes' : 'no', array(), 'MSC');
-
-        $template = new \BackendTemplate('be_workflow_state_row');
-        $template->setData($row);
+        $row['success'] = $this->translate($row['success'] ? 'yes' : 'no', [], 'MSC');
 
         if (is_numeric($row['reachedAt'])) {
-            $template->reachedAt = \Date::parse(\Config::get('datimFormat'), $row['reachedAt']);
+            $row['reachedAt'] = \Date::parse(\Config::get('datimFormat'), $row['reachedAt']);
         }
 
-        return $template->parse();
+        return $this->templateEngine->render('toolkit:be:be_workflow_state_row.html5', $row);
     }
 }

@@ -6,17 +6,22 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Contao\StringUtil;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Backend\Event\GetProviderNamesEvent;
 use Netzmacht\Contao\Workflow\Model\StepModel;
 use Netzmacht\Contao\Workflow\Model\TransitionModel;
-use Netzmacht\Contao\Workflow\ServiceContainerTrait;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -25,7 +30,43 @@ use Netzmacht\Contao\Workflow\ServiceContainerTrait;
  */
 class Workflow
 {
-    use ServiceContainerTrait;
+    /**
+     * Workflow type provider.
+     *
+     * @var WorkflowTypeProvider
+     */
+    private $typeProvider;
+
+    /**
+     * Event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Workflow constructor.
+     *
+     * @param WorkflowTypeProvider     $typeProvider      Workflow type provider.
+     * @param EventDispatcherInterface $eventDispatcher   Event dispatcher.
+     * @param RepositoryManager        $repositoryManager Repository manager.
+     */
+    public function __construct(
+        WorkflowTypeProvider $typeProvider,
+        EventDispatcherInterface $eventDispatcher,
+        RepositoryManager $repositoryManager
+    ) {
+        $this->typeProvider      = $typeProvider;
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->repositoryManager = $repositoryManager;
+    }
 
     /**
      * Generate a row view.
@@ -34,7 +75,7 @@ class Workflow
      *
      * @return string
      */
-    public function generateRow(array $row)
+    public function generateRow(array $row): string
     {
         return sprintf(
             '<strong>%s</strong> <span class="tl_gray">[%s: %s]</span><br>%s',
@@ -49,9 +90,9 @@ class Workflow
      *
      * @return array
      */
-    public function getTypes()
+    public function getTypes(): array
     {
-        return $this->getServiceProvider()->getTypeProvider()->getTypeNames();
+        return $this->typeProvider->getTypeNames();
     }
 
     /**
@@ -61,14 +102,14 @@ class Workflow
      *
      * @return array
      */
-    public function getProviderNames($dataContainer)
+    public function getProviderNames($dataContainer): array
     {
         if (!$dataContainer->activeRecord || !$dataContainer->activeRecord->type) {
-            return array();
+            return [];
         }
 
         $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
-        $this->getServiceContainer()->getEventDispatcher()->dispatch($event::NAME, $event);
+        $this->eventDispatcher->dispatch($event::NAME, $event);
 
         return $event->getProviderNames();
     }
@@ -80,12 +121,12 @@ class Workflow
      *
      * @return array
      */
-    public function getStartSteps($dataContainer)
+    public function getStartSteps($dataContainer): array
     {
-        return array(
-            'process' => array('start'),
-            'steps' => $this->getSteps($dataContainer->activeRecord->id, true)
-        );
+        return [
+            'process' => ['start'],
+            'steps'   => $this->getSteps((int) $dataContainer->activeRecord->id, true),
+        ];
     }
 
     /**
@@ -95,9 +136,9 @@ class Workflow
      *
      * @return array
      */
-    public function getEndSteps($dataContainer)
+    public function getEndSteps($dataContainer): array
     {
-        return $this->getSteps($dataContainer->activeRecord->id);
+        return $this->getSteps((int) $dataContainer->activeRecord->id);
     }
 
     /**
@@ -107,12 +148,13 @@ class Workflow
      *
      * @return array
      */
-    public function getTransitions($dataContainer)
+    public function getTransitions($dataContainer): array
     {
-        $options = array();
+        $options = [];
 
         if ($dataContainer->activeRecord) {
-            $collection = TransitionModel::findBy('pid', $dataContainer->activeRecord->id);
+            $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+            $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->id]);
 
             if ($collection) {
                 while ($collection->next()) {
@@ -163,11 +205,11 @@ class Workflow
      *
      * @return array
      */
-    public function validatePermissions($value)
+    public function validatePermissions($value): array
     {
         $value     = deserialize($value, true);
-        $names     = array();
-        $validated = array();
+        $names     = [];
+        $validated = [];
 
         foreach ($value as $row) {
             if (!$row['name']) {
@@ -175,7 +217,7 @@ class Workflow
                     continue;
                 }
 
-                $row['name'] = standardize($row['label']);
+                $row['name'] = StringUtil::standardize($row['label']);
             }
 
             $this->guardValidPermissionName($row, $names);
@@ -195,14 +237,15 @@ class Workflow
      *
      * @return array
      */
-    private function getSteps($parentId, $filterFinal = false)
+    private function getSteps(int $parentId, bool $filterFinal = false): array
     {
-        $steps = array();
+        $steps      = [];
+        $repository = $this->repositoryManager->getRepository(StepModel::class);
 
         if ($filterFinal) {
-            $collection = StepModel::findBy(['pid=?', 'final=?'], [$parentId, ''], ['order' => 'name']);
+            $collection = $repository->findBy(['pid=?', 'final=?'], [$parentId, ''], ['order' => 'name']);
         } else {
-            $collection = StepModel::findBy(['pid=?'], [$parentId], ['order' => 'name']);
+            $collection = $repository->findBy(['pid=?'], [$parentId], ['order' => 'name']);
         }
 
         if ($collection) {
@@ -227,7 +270,7 @@ class Workflow
      *
      * @return void
      */
-    private function guardStartStepDefined($process)
+    private function guardStartStepDefined(array $process): void
     {
         if (!$process) {
             return;
@@ -246,7 +289,6 @@ class Workflow
         } elseif ($count > 1) {
             throw new \Exception('There must be exactly one start transition.');
         }
-
     }
 
     /**
@@ -259,9 +301,9 @@ class Workflow
      *
      * @return void
      */
-    protected function guardValidPermissionName($row, $names)
+    protected function guardValidPermissionName(array $row, array $names): void
     {
-        $reserved = array('contao-admin', 'contao-guest');
+        $reserved = ['contao-admin', 'contao-guest'];
 
         if (in_array($row['name'], $names)) {
             throw new \InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));

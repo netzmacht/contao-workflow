@@ -6,16 +6,20 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Model\TransitionModel;
 use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
+use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,20 +30,44 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Action
 {
     /**
+     * Event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Action constructor.
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param RepositoryManager        $repositoryManager
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher, RepositoryManager $repositoryManager)
+    {
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->repositoryManager = $repositoryManager;
+    }
+
+    /**
      * Get all available types.
      *
      * @param \DataContainer $dataContainer The datacontainer.
      *
      * @return array
      */
-    public function getTypes($dataContainer)
+    public function getTypes($dataContainer): array
     {
         $workflowModel = $this->getWorkflowModel($dataContainer);
+        $event         = new GetWorkflowActionsEvent($workflowModel);
 
-        $eventDispatcher = $this->getEventDispatcher();
-        $event           = new GetWorkflowActionsEvent($workflowModel);
-
-        $eventDispatcher->dispatch($event::NAME, $event);
+        $this->eventDispatcher->dispatch($event::NAME, $event);
 
         return $event->getActions();
     }
@@ -51,7 +79,7 @@ class Action
      *
      * @return array
      */
-    public function getRoles($dataContainer)
+    public function getRoles($dataContainer): array
     {
         $workflowModel = $this->getWorkflowModel($dataContainer);
         $collection    = RoleModel::findBy('pid', $workflowModel->id, array('order' => 'label'));
@@ -65,29 +93,18 @@ class Action
     }
 
     /**
-     * Get the event dispatcher from the DIC.
-     *
-     * @return EventDispatcherInterface
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    private function getEventDispatcher()
-    {
-        return $GLOBALS['container']['event-dispatcher'];
-    }
-
-    /**
      * Get the workflow model.
      *
      * @param \DataContainer $dataContainer The data container driver.
      *
-     * @return \Model|\Model\Collection
+     * @return WorkflowModel|null
      *
      * @throws \Exception If relation could not be resolved.
      */
-    protected function getWorkflowModel($dataContainer)
+    protected function getWorkflowModel($dataContainer):? WorkflowModel
     {
-        $transitionModel = TransitionModel::findByPk($dataContainer->activeRecord->pid);
+        $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
+        $transitionModel = $repository->find($dataContainer->activeRecord->pid);
         $workflowModel   = $transitionModel->getRelated('pid');
 
         return $workflowModel;

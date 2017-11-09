@@ -1,16 +1,22 @@
 <?php
 
 /**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2015 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
- *
  */
+
+declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Doctrine\DBAL\Connection;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Model\PermissionModel;
 
 /**
@@ -20,13 +26,6 @@ use Netzmacht\Contao\Workflow\Model\PermissionModel;
  */
 class SavePermissionsCallback
 {
-    /**
-     * Database connection.
-     *
-     * @var \Database
-     */
-    private $database;
-
     /**
      * The source table.
      *
@@ -42,14 +41,22 @@ class SavePermissionsCallback
     private $permissions = array();
 
     /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
      * Construct.
      *
-     * @param string $source The source table.
+     * @param RepositoryManager $repositoryManager
+     * @param string            $source The source table.
      */
-    public function __construct($source)
+    public function __construct(RepositoryManager $repositoryManager, $source)
     {
-        $this->database = \Database::getInstance();
-        $this->source   = $source;
+        $this->repositoryManager = $repositoryManager;
+        $this->source            = $source;
     }
 
     /**
@@ -76,14 +83,14 @@ class SavePermissionsCallback
      *
      * @return void
      */
-    private function loadPermissions($rowId)
+    private function loadPermissions(int $rowId): void
     {
         $permissions = array();
-        $result      = $this->database
-            ->prepare('SELECT * FROM tl_workflow_permission WHERE source=? AND source_id=?')
-            ->execute($this->source, $rowId);
+        $query      = 'SELECT * FROM tl_workflow_permission WHERE source=:source AND source_id=:source_id';
+        $statement  = $this->repositoryManager->getConnection()->prepare($query);
+        $statement->execute(['source' => $this->source, 'source_id' => $rowId]);
 
-        while ($result->next()) {
+        while ($result = $statement->fetch(\PDO::FETCH_OBJ)) {
             $permissions[$result->permission] = $result->id;
         }
 
@@ -95,18 +102,18 @@ class SavePermissionsCallback
      *
      * @return void
      */
-    private function deleteRemovedPermissions()
+    private function deleteRemovedPermissions(): void
     {
         if (!$this->permissions) {
             return;
         }
 
-        $query = sprintf(
-            'DELETE FROM tl_workflow_permission where id IN(\'%s\')',
-            implode('\',\'', $this->permissions)
-        );
+        $statement = $this->repositoryManager
+            ->getConnection()
+            ->prepare('DELETE FROM tl_workflow_permission WHERE id IN (:ids)');
 
-        $this->database->query($query);
+        $statement->bindValue('ids', $this->permissions, Connection::PARAM_INT_ARRAY);
+        $statement->execute();
     }
 
     /**
@@ -117,7 +124,7 @@ class SavePermissionsCallback
      *
      * @return void
      */
-    private function createNewPermissions($value, $dataContainer)
+    private function createNewPermissions($value, $dataContainer): void
     {
         foreach (deserialize($value, true) as $permission) {
             if (isset($this->permissions[$permission])) {
@@ -130,7 +137,7 @@ class SavePermissionsCallback
                 $model->source_id  = $dataContainer->id;
                 $model->permission = $permission;
 
-                $model->save();
+                $this->repositoryManager->getRepository(PermissionModel::class)->save($model);
             }
         }
     }

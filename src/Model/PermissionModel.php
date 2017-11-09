@@ -14,6 +14,10 @@ namespace Netzmacht\Contao\Workflow\Model;
 /**
  * Class PermissionModel.
  *
+ * @property int    tstamp
+ * @property string source
+ * @property int    source_id
+ * @property  permission
  * @package Netzmacht\Contao\Workflow\Model
  */
 class PermissionModel extends \Model

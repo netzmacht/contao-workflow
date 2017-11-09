@@ -6,15 +6,16 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
-use ContaoCommunityAlliance\Translator\TranslatorInterface;
-use Netzmacht\Contao\Workflow\ServiceContainerTrait;
+use Symfony\Component\Translation\TranslatorInterface;
 use Verraes\ClassFunctions\ClassFunctions;
 
 /**
@@ -24,8 +25,6 @@ use Verraes\ClassFunctions\ClassFunctions;
  */
 class Base
 {
-    use ServiceContainerTrait;
-
     /**
      * The translator.
      *
@@ -42,31 +41,31 @@ class Base
 
     /**
      * Construct.
+     *
+     * @param TranslatorInterface $translator Translator.
      */
-    public function __construct()
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translator = $this->getServiceContainer()->getTranslator();
-
         if (!$this->defaultDomain) {
-            $this->defaultDomain = 'tl_workflow_' . strtolower(ClassFunctions::short($this));
+            $this->defaultDomain = 'contao_tl_workflow_' . strtolower(ClassFunctions::short($this));
         }
     }
 
     /**
      * Translate a string.
      *
-     * @param string $name   The string to translate.
-     * @param array  $params Translation params.
-     * @param null   $domain Translation domain.
+     * @param string      $name   The string to translate.
+     * @param array       $params Translation params.
+     * @param string|null $domain Translation domain.
      *
-     * @return mixed
+     * @return string
      */
-    public function translate($name, $params = array(), $domain = null)
+    public function translate(string $name, array $params = array(), ?string $domain = null): string
     {
         if (!$domain) {
             $domain = $this->defaultDomain;
         }
 
-        return $this->translator->translate($name, $domain, $params);
+        return $this->translator->trans($name, $params, $domain);
     }
 }

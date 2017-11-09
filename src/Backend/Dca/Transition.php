@@ -6,16 +6,22 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Doctrine\DBAL\Connection;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
+use Netzmacht\Contao\Workflow\Backend\Common;
 use Netzmacht\Contao\Workflow\Model\StepModel;
 use Netzmacht\Contao\Workflow\Model\WorkflowModel;
-use Netzmacht\Contao\Workflow\ServiceContainerTrait;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
@@ -24,21 +30,52 @@ use Netzmacht\Contao\Workflow\ServiceContainerTrait;
  */
 class Transition
 {
-    use ServiceContainerTrait;
-
     /**
-     * The database connection.
+     * Type provider.
      *
-     * @var \Database
+     * @var WorkflowTypeProvider
      */
-    private $database;
+    private $typeProvider;
 
     /**
-     * Construct.
+     * Database connection.
+     *
+     * @var Connection
      */
-    public function __construct()
-    {
-        $this->database = $this->getServiceContainer()->getDatabaseConnection();
+    private $connection;
+
+    /**
+     * Data container manager.
+     *
+     * @var DcaManager
+     */
+    private $dcaManager;
+
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Transition constructor.
+     *
+     * @param WorkflowTypeProvider $typeProvider
+     * @param Connection           $connection
+     * @param DcaManager           $dcaManager
+     * @param RepositoryManager    $repositoryManager
+     */
+    public function __construct(
+        WorkflowTypeProvider $typeProvider,
+        Connection $connection,
+        DcaManager $dcaManager,
+        RepositoryManager $repositoryManager
+    ) {
+        $this->typeProvider      = $typeProvider;
+        $this->connection        = $connection;
+        $this->dcaManager        = $dcaManager;
+        $this->repositoryManager = $repositoryManager;
     }
 
     /**
@@ -46,25 +83,30 @@ class Transition
      *
      * @return void
      */
-    public function adjustEditMask()
+    public function adjustEditMask(): void
     {
-        $workflow     = WorkflowModel::findByPk(CURRENT_ID);
-        $typeProvider = $this->getServiceProvider()->getTypeProvider();
+        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->find(CURRENT_ID);
 
-        if (!$workflow || !$typeProvider->hasType($workflow->type)) {
+        if (!$workflow || !$this->typeProvider->hasType($workflow->type)) {
             return;
         }
 
-        $workflowType = $typeProvider->getType($workflow->type);
+        $workflowType = $this->typeProvider->getType($workflow->type);
+        $definition   = $this->dcaManager->getDefinition('tl_workflow_transition');
+
         if ($workflowType->hasFixedTransitions()) {
-            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['inputType']                  = 'select';
-            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['options']                    = $workflowType->getTransitionNames();
-            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['eval']['includeBlankOption'] = true;
+            $dca = (array) $definition->get(['fields', 'name']);
+
+            $dca['inputType']                  = 'select';
+            $dca['options']                    = $workflowType->getTransitionNames();
+            $dca['eval']['includeBlankOption'] = true;
+
+            $definition->set(['fields', 'name'], $dca);
         } else {
-            $GLOBALS['TL_DCA']['tl_workflow_transition']['fields']['name']['save_callback'][] = array(
-                'Netzmacht\Contao\Workflow\Backend\Common',
-                'createName'
-            );
+            $callbacks   = $definition->get(['fields', 'name', 'save_callback']);
+            $callbacks[] = [Common::class, 'createName'];
+
+            $definition->set(['fields', 'name', 'save_callback'], $callbacks);
         }
     }
 
@@ -75,10 +117,11 @@ class Transition
      *
      * @return array
      */
-    public function getStepsTo($dataContainer)
+    public function getStepsTo($dataContainer): array
     {
-        $steps      = array();
-        $collection = StepModel::findBy(['pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
+        $steps      = [];
+        $repository = $this->repositoryManager->getRepository(StepModel::class);
+        $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
 
         if ($collection) {
             while ($collection->next()) {
@@ -100,26 +143,22 @@ class Transition
      *
      * @return array
      */
-    public function getEntityProperties($dataContainer)
+    public function getEntityProperties($dataContainer): array
     {
         if ($dataContainer->activeRecord) {
-            $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
+            $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+            $workflow   = $repository->find($dataContainer->activeRecord->pid);
 
             if ($workflow) {
                 return array_map(
                     function ($info) {
                         return $info['name'];
                     },
-                    array_filter(
-                        $this->database->listFields($workflow->providerName),
-                        function ($info) {
-                            return $info['type'] !== 'index';
-                        }
-                    )
+                    array_keys($this->connection->getSchemaManager()->listTableColumns($workflow->providerName))
                 );
             }
         }
 
-        return array();
+        return [];
     }
 }
