@@ -6,15 +6,14 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
 namespace Netzmacht\Contao\Workflow\Condition\Transition;
 
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use Netzmacht\Workflow\Data\ErrorCollection;
+use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -154,11 +153,6 @@ class PropertyCondition implements Condition
      */
     protected function getEntityValue(Entity $entity)
     {
-        // no access to id by the entity
-        if ($this->property == 'id') {
-            return $entity->getId();
-        }
-
         return $entity->getProperty($this->property);
     }
 }
