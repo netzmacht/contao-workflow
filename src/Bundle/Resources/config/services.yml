@@ -1,0 +1,3 @@
+services:
+  netzmacht.contao_workflow.user:
+    class: Netzmacht\Workflow\Security\User

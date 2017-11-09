@@ -1,0 +1,11 @@
+services:
+  netzmacht.contao_workflow.listners.create_user_roles_listener:
+    class: Netzmacht\Contao\Workflow\Listener\CreateUserRolesListener
+    arguments:
+      - '@contao.framework'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.user'
+      - '@translator'
+    tags:
+      - { name: 'contao.hook', hook: 'initializeSystem' }
