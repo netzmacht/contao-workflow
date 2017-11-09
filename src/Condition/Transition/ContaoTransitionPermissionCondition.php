@@ -11,7 +11,6 @@
 
 namespace Netzmacht\Contao\Workflow\Condition\Transition;
 
-use Netzmacht\Workflow\Data\ErrorCollection;
 use Netzmacht\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -28,7 +27,7 @@ class ContaoTransitionPermissionCondition extends TransitionPermissionCondition
     /**
      * {@inheritdoc}
      */
-    public function match(Transition $transition, Item $item, Context $context, ErrorCollection $errorCollection)
+    public function match(Transition $transition, Item $item, Context $context): bool
     {
         $permission = Permission::forWorkflowName($transition->getWorkflow()->getName(), 'contao-admin');
 
@@ -36,6 +35,6 @@ class ContaoTransitionPermissionCondition extends TransitionPermissionCondition
             return true;
         }
 
-        return parent::match($transition, $item, $context, $errorCollection);
+        return parent::match($transition, $item, $context);
     }
 }

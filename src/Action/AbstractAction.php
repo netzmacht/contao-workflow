@@ -21,7 +21,6 @@ use Netzmacht\Contao\Workflow\Form\FormType;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
-use Netzmacht\Workflow\Form\Form;
 use Verraes\ClassFunctions\ClassFunctions;
 
 /**
@@ -56,11 +55,11 @@ abstract class AbstractAction extends Base implements Action
      * Construct.
      *
      * @param string   $name     Name of the action.
-     * @param null     $label    Label of the action.
+     * @param string   $label    Label of the action.
      * @param array    $config   Optional config.
      * @param FormType $formType Optional form type.
      */
-    public function __construct($name, $label = null, array $config = array(), FormType $formType = null)
+    public function __construct(string $name, string $label = '', array $config = array(), FormType $formType = null)
     {
         parent::__construct($name, $label, $config);
 

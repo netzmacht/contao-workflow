@@ -13,7 +13,6 @@
 
 namespace Netzmacht\Contao\Workflow\Condition\Transition;
 
-use Netzmacht\Workflow\Data\ErrorCollection;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -109,7 +108,7 @@ class ExpressionCondition implements Condition
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @SuppressWarnings(PHPMD.EvalExpression)
      */
-    public function match(Transition $transition, Item $item, Context $context, ErrorCollection $errorCollection)
+    public function match(Transition $transition, Item $item, Context $context): bool
     {
         if (!$this->compiled) {
             return false;
@@ -125,7 +124,8 @@ class ExpressionCondition implements Condition
             return true;
         }
 
-        $errorCollection->addError($this->message, array($this->expression));
+        $context->addError($this->message, [$this->expression]);
+
         return false;
     }
 }

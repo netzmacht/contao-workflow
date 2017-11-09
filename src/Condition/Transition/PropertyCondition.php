@@ -124,7 +124,7 @@ class PropertyCondition implements Condition
     /**
      * {@inheritdoc}
      */
-    public function match(Transition $transition, Item $item, Context $context, ErrorCollection $errorCollection)
+    public function match(Transition $transition, Item $item, Context $context): bool
     {
         $value = $this->getEntityValue($item->getEntity());
 
@@ -132,7 +132,7 @@ class PropertyCondition implements Condition
             return true;
         }
 
-        $errorCollection->addError(
+        $context->addError(
             'transition.condition.property.failed',
             array(
                 $this->property,
