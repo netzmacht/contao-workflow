@@ -41,55 +41,15 @@ class ExpressionCondition implements Condition
     private $expression;
 
     /**
-     * The message key.
-     *
-     * @var string
-     */
-    private $message = 'transition.condition.expression.failed';
-
-    /**
-     * Compiled expression.
-     *
-     * @var string
-     */
-    private $compiled;
-
-    /**
      * Construct.
      *
      * @param ExpressionLanguage $expressionLanguage The expression language.
+     * @param string             $expression         The expression.
      */
-    public function __construct(ExpressionLanguage $expressionLanguage)
+    public function __construct(ExpressionLanguage $expressionLanguage, string $expression)
     {
         $this->expressionLanguage = $expressionLanguage;
-    }
-
-    /**
-     * Set the expression.
-     *
-     * @param string $expression The expression.
-     *
-     * @return $this
-     */
-    public function setExpression($expression)
-    {
-        $this->expression = $expression;
-        $this->compiled   = 'return ' . $this->expressionLanguage->compile(
-            $expression,
-            array('transition', 'item', 'entity', 'entityId', 'context', 'errorCollection')
-        ) . ';';
-
-        return $this;
-    }
-
-    /**
-     * Get compiled expression.
-     *
-     * @return mixed
-     */
-    public function getCompiled()
-    {
-        return $this->compiled;
+        $this->expression         = $expression;
     }
 
     /**
@@ -110,21 +70,19 @@ class ExpressionCondition implements Condition
      */
     public function match(Transition $transition, Item $item, Context $context): bool
     {
-        if (!$this->compiled) {
-            return false;
-        }
+        $values = [
+            'transition' => $transition,
+            'item'       => $item,
+            'context'    => $context,
+            'entity'     => $item->getEntity(),
+            'entityId'   => $item->getEntityId()
+        ];
 
-        // Vars are created so that eval can access them.
-        $entity   = $item->getEntity();
-        $entityId = $item->getEntityId();
-
-        // @codingStandardsIgnoreStart
-        if (eval($this->compiled)) {
-            // @codingStandardsIgnoreEnd
+        if ($this->expressionLanguage->evaluate($this->expression, $values)) {
             return true;
         }
 
-        $context->addError($this->message, [$this->expression]);
+        $context->addError('transition.condition.expression.failed', [$this->expression]);
 
         return false;
     }
