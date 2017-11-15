@@ -24,15 +24,8 @@ use Netzmacht\Contao\Workflow\Model\PermissionModel;
  *
  * @package Netzmacht\Contao\Workflow\Backend\Dca
  */
-class SavePermissionsCallback
+class SavePermissionsCallbackListener
 {
-    /**
-     * The source table.
-     *
-     * @var string
-     */
-    private $source;
-
     /**
      * The loaded permissions.
      *
@@ -51,12 +44,10 @@ class SavePermissionsCallback
      * Construct.
      *
      * @param RepositoryManager $repositoryManager
-     * @param string            $source The source table.
      */
-    public function __construct(RepositoryManager $repositoryManager, $source)
+    public function __construct(RepositoryManager $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
-        $this->source            = $source;
     }
 
     /**
@@ -67,9 +58,9 @@ class SavePermissionsCallback
      *
      * @return mixed
      */
-    public function __invoke($value, $dataContainer)
+    public function onSaveCallback($value, $dataContainer)
     {
-        $this->loadPermissions($dataContainer->id);
+        $this->loadPermissions($dataContainer->table, (int) $dataContainer->id);
         $this->createNewPermissions($value, $dataContainer);
         $this->deleteRemovedPermissions();
 
@@ -79,16 +70,17 @@ class SavePermissionsCallback
     /**
      * Load permissions for the given row id.
      *
-     * @param int $rowId The road id.
+     * @param string $source The source of the permissions.
+     * @param int    $rowId  The road id.
      *
      * @return void
      */
-    private function loadPermissions(int $rowId): void
+    private function loadPermissions(string $source, int $rowId): void
     {
         $permissions = array();
         $query      = 'SELECT * FROM tl_workflow_permission WHERE source=:source AND source_id=:source_id';
         $statement  = $this->repositoryManager->getConnection()->prepare($query);
-        $statement->execute(['source' => $this->source, 'source_id' => $rowId]);
+        $statement->execute(['source' => $source, 'source_id' => $rowId]);
 
         while ($result = $statement->fetch(\PDO::FETCH_OBJ)) {
             $permissions[$result->permission] = $result->id;
@@ -133,7 +125,7 @@ class SavePermissionsCallback
                 $model = new PermissionModel();
 
                 $model->tstamp     = time();
-                $model->source     = $this->source;
+                $model->source     = $dataContainer->table;
                 $model->source_id  = $dataContainer->id;
                 $model->permission = $permission;
 
