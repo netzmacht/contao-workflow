@@ -77,10 +77,15 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = array
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
                 'icon'       => 'visible.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => \Netzmacht\Contao\Toolkit\Dca::createToggleIconCallback(
-                    'tl_workflow_transition',
-                    'active'
-                )
+                'button_callback' => [
+                    'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
+                    'handleButtonCallback',
+                ],
+                'toolkit'         => [
+                    'state_button' => [
+                        'active' => 'active',
+                    ],
+                ],
             ),
             'show' => array
             (
