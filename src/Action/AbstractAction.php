@@ -14,7 +14,7 @@
 namespace Netzmacht\Contao\Workflow\Action;
 
 use Assert\Assertion;
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
+use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Base;
 use Netzmacht\Contao\Workflow\Form\ContaoForm;
 use Netzmacht\Contao\Workflow\Form\FormType;
@@ -213,11 +213,7 @@ abstract class AbstractAction extends Base implements Action
     {
         $entity = $item->getEntity();
 
-        Assertion::isInstanceOf(
-            $entity,
-            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
-            'Invalid entity given'
-        );
+        Assertion::isInstanceOf($entity, Entity::class, 'Invalid entity given');
 
         return $entity;
     }

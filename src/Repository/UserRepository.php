@@ -11,7 +11,9 @@
 
 namespace Netzmacht\Contao\Workflow\Repository;
 
-use Database as Connection;
+use Contao\UserModel;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Statement;
 use Model\Registry;
 
 /**
@@ -56,14 +58,17 @@ class UserRepository
      */
     public function findUsersWithPermission($permission)
     {
-        $users  = array();
-        $result = $this->prepareStatement()->execute($permission, $permission);
+        $users     = [];
+        $statement = $this->prepareStatement();
+        $statement->execute(['permission' => $permission]);
 
-        while ($result->next()) {
-            $model = $this->registry->fetch('tl_user', $result->id);
+        while ($result = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            $model = $this->registry->fetch('tl_user', $result['id']);
 
             if (!$model) {
-                $model = new \UserModel($result);
+                $model = new UserModel();
+                $model->setRow($result);
+                $this->registry->register($model);
             }
 
             $users[] = $model;
@@ -97,7 +102,7 @@ class UserRepository
     /**
      * Prepare database query statement.
      *
-     * @return \Database\Statement
+     * @return Statement
      */
     private function prepareStatement()
     {
@@ -106,7 +111,7 @@ SELECT u.* FROM tl_user u
 LEFT JOIN tl_workflow_permission p ON p.source = 'tl_user' AND p.source_id=u.id
 LEFT JOIN tl_user_to_group g ON g.user_id = u.id
 LEFT JOIN tl_workflow_permission z ON z.source = 'tl_user_group' AND z.source_id=g.group_id
-WHERE p.permission=? OR z.permission=?
+WHERE p.permission=:permission OR z.permission=:permission
 GROUP BY u.id
 SQL;
 
