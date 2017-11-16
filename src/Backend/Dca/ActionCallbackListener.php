@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class Action
+class ActionCallbackListener
 {
     /**
      * Event dispatcher.
@@ -82,7 +82,8 @@ class Action
     public function getRoles($dataContainer): array
     {
         $workflowModel = $this->getWorkflowModel($dataContainer);
-        $collection    = RoleModel::findBy('pid', $workflowModel->id, array('order' => 'label'));
+        $repository    = $this->repositoryManager->getRepository(RoleModel::class);
+        $collection    = $repository->findBy(['.pid=?'], [$workflowModel->id], ['order' => 'label']);
         $options       = array();
 
         while ($collection && $collection->next()) {
@@ -104,7 +105,7 @@ class Action
     protected function getWorkflowModel($dataContainer):? WorkflowModel
     {
         $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
-        $transitionModel = $repository->find($dataContainer->activeRecord->pid);
+        $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
         $workflowModel   = $transitionModel->getRelated('pid');
 
         return $workflowModel;

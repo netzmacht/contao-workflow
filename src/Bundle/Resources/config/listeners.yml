@@ -17,3 +17,33 @@ services:
     class: Netzmacht\Contao\Workflow\Backend\Dca\SavePermissionsCallbackListener
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
+
+  netzmacht.contao_workflow.listeners.dca.common:
+    class: Netzmacht\Contao\Workflow\Backend\CommonListener
+
+  netzmacht.contao_workflow.listeners.dca.workflow:
+    class: Netzmacht\Contao\Workflow\Backend\Dca\WorkflowCallbackListener
+    arguments:
+      - '@netzmacht.contao_workflow.type_provider'
+      - '@event_dispatcher'
+      - '@netzmacht.contao_toolkit.repository_manager'
+
+  netzmacht.contao_workflow.listeners.dca.step:
+    class: Netzmacht\Contao\Workflow\Backend\Dca\StepCallbackListener
+    arguments:
+      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+
+  netzmacht.contao_workflow.listeners.dca.transition:
+    class: Netzmacht\Contao\Workflow\Backend\Dca\TransitionCallbackListener
+    arguments:
+      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+
+  netzmacht.contao_workflow.listeners.dca.action:
+    class: Netzmacht\Contao\Workflow\Backend\Dca\ActionCallbackListener
+    arguments:
+      - '@event_dispatcher'
+      - '@netzmacht.contao_toolkit.repository_manager'

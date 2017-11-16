@@ -59,5 +59,4 @@ class DefaultWorkflowType implements WorkflowType
     {
         return [];
     }
-
 }

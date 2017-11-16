@@ -6,215 +6,189 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
 
-$GLOBALS['TL_DCA']['tl_workflow_action'] = array
-(
-    'config' => array
-    (
+$GLOBALS['TL_DCA']['tl_workflow_action'] = [
+    'config' => [
         'dataContainer' => 'Table',
-        'ptable' => 'tl_workflow_transition',
-        'sql'           => array
-        (
-            'keys' => array
-            (
+        'ptable'        => 'tl_workflow_transition',
+        'sql'           => [
+            'keys' => [
                 'id'  => 'primary',
-                'pid' => 'index'
-            )
-        ),
-    ),
+                'pid' => 'index',
+            ],
+        ],
+    ],
 
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'   => 4,
-            'flag'   => 1,
-            'fields' => array('postAction', 'sorting'),
-            'headerFields' => array('label', 'name', 'type', 'description'),
-            'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Backend\Common',
-                'generateRow'
-            ),
-            'panelLayout' => 'filter;search,limit'
-        ),
-        'label' => array
-        (
-            'fields' => array('name'),
+    'list' => [
+        'sorting' => [
+            'mode'                  => 4,
+            'flag'                  => 1,
+            'fields'                => ['postAction', 'sorting'],
+            'headerFields'          => ['label', 'name', 'type', 'description'],
+            'child_record_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.common',
+                'generateRow',
+            ],
+            'panelLayout'           => 'filter;search,limit',
+        ],
+        'label'   => [
+            'fields' => ['name'],
             'format' => '%s',
-        ),
+        ],
 
-        'operations' => array
-        (
-            'edit' => array
-            (
+        'operations' => [
+            'edit'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
-            ),
-            'delete' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['delete'],
-                'href'  => 'act=delete',
-                'icon'  => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
-            ),
-            'toggle' => array
-            (
-                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['toggle'],
-                'icon'       => 'visible.gif',
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+            ],
+            'delete' => [
+                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['delete'],
+                'href'       => 'act=delete',
+                'icon'       => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+            ],
+            'toggle' => [
+                'label'           => &$GLOBALS['TL_LANG']['tl_workflow_action']['toggle'],
+                'icon'            => 'visible.gif',
+                'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
                     'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
                     'handleButtonCallback',
                 ],
                 'toolkit'         => [
                     'state_button' => [
-                        'active' => 'active',
+                        'stateColumn' => 'active',
                     ],
                 ],
-            ),
-            'show' => array
-            (
+            ],
+            'show'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
 
-    'palettes' => array(
-        '__selector__' => array('type'),
-    ),
+    'palettes' => [
+        '__selector__' => ['type'],
+    ],
 
-    'metapalettes' => array
-    (
-        'default' => array
-        (
-            'name'        => array('label', 'name', 'type', 'postAction', 'logChanges', 'sorting'),
-            'description' => array(':hide', 'description'),
-            'config'      => array(),
-            'activation'  => array('active'),
-        ),
-    ),
+    'metapalettes' => [
+        'default' => [
+            'name'        => ['label', 'name', 'type', 'postAction', 'logChanges', 'sorting'],
+            'description' => [':hide', 'description'],
+            'config'      => [],
+            'activation'  => ['active'],
+        ],
+    ],
 
-    'fields' => array
-    (
-        'id'             => array
-        (
-            'sql' => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'pid'         => array
-        (
-            'relation' => array('type' => 'hasOne', 'load' => 'lazy'),
+    'fields' => [
+        'id'          => [
+            'sql' => "int(10) unsigned NOT NULL auto_increment",
+        ],
+        'pid'         => [
+            'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'sorting'             => array
-        (
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'sorting'     => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['sorting'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'  => 'w50',
                 'rgxp'      => 'digit',
                 'maxlength' => 64,
-            ),
+            ],
 
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'tstamp'         => array
-        (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'label'           => array
-        (
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'tstamp'      => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'label'       => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['label'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'w50',
+            'eval'      => [
+                'tl_class'  => 'w50',
                 'mandatory' => true,
                 'maxlength' => 64,
-            ),
+            ],
             'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'name'           => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['name'],
-            'inputType' => 'text',
-            'exclude'   => true,
-            'save_callback' => array(
-                array('Netzmacht\Contao\Workflow\Backend\Common', 'createName'),
-            ),
-            'eval'      => array(
-                'tl_class'           => 'w50',
+        ],
+        'name'        => [
+            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_action']['name'],
+            'inputType'     => 'text',
+            'exclude'       => true,
+            'save_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.common', 'createName'],
+            ],
+            'eval'          => [
+                'tl_class'  => 'w50',
                 'maxlength' => 64,
-            ),
-            'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'type'           => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
-            'inputType' => 'select',
-            'exclude'   => true,
-            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Dca\Action', 'getTypes'),
-            'eval'      => array(
+            ],
+            'sql'           => "varchar(64) NOT NULL default ''",
+        ],
+        'type'        => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
+            'inputType'        => 'select',
+            'exclude'          => true,
+            'options_callback' => ['netzmacht.contao_workflow.listeners.dca.action', 'getTypes'],
+            'eval'             => [
                 'tl_class'           => 'w50',
-                'mandatory' => true,
+                'mandatory'          => true,
                 'includeBlankOption' => true,
-                'submitOnChange' => true,
-                'chosen' => true,
-            ),
-            'sql'       => "varchar(32) NOT NULL default ''",
-        ),
-        'description'           => array
-        (
+                'submitOnChange'     => true,
+                'chosen'             => true,
+            ],
+            'sql'              => "varchar(32) NOT NULL default ''",
+        ],
+        'description' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['description'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'clr long',
+            'eval'      => [
+                'tl_class'  => 'clr long',
                 'maxlength' => 255,
-            ),
+            ],
             'sql'       => "varchar(255) NOT NULL default ''",
-        ),
-        'postAction'      => array
-        (
+        ],
+        'postAction'  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['postAction'],
             'inputType' => 'checkbox',
             'exclude'   => true,
             'filter'    => true,
-            'eval'      => array(
-                'tl_class'       => 'w50 m12',
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'logChanges'      => array
-        (
+            'eval'      => [
+                'tl_class' => 'w50 m12',
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'logChanges'  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'],
             'inputType' => 'select',
             'default'   => 'inherit',
-            'options'   => array('inherit', 'active', 'disable'),
-            'eval'      => array(
+            'options'   => ['inherit', 'active', 'disable'],
+            'eval'      => [
                 'tl_class'       => 'w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(8) NOT NULL default 'inherit'"
-        ),
-        'active'      => array
-        (
+            ],
+            'sql'       => "char(8) NOT NULL default 'inherit'",
+        ],
+        'active'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-    ),
-);
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+    ],
+];

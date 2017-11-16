@@ -6,347 +6,309 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
 
-$GLOBALS['TL_DCA']['tl_workflow_transition'] = array
-(
-    'config' => array
-    (
-        'dataContainer' => 'Table',
-        'ptable' => 'tl_workflow',
-        'onload_callback' => array(
-            array('Netzmacht\Contao\Workflow\Backend\Dca\Transition', 'adjustEditMask'),
-        ),
-        'sql'           => array
-        (
-            'keys' => array
-            (
+$GLOBALS['TL_DCA']['tl_workflow_transition'] = [
+    'config' => [
+        'dataContainer'   => 'Table',
+        'ptable'          => 'tl_workflow',
+        'onload_callback' => [
+            ['netzmacht.contao_workflow.listeners.dca.transition', 'adjustEditMask'],
+        ],
+        'sql'             => [
+            'keys' => [
                 'id'  => 'primary',
-                'pid' => 'index'
-            )
-        ),
-    ),
+                'pid' => 'index',
+            ],
+        ],
+    ],
 
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'   => 4,
-            'flag'   => 1,
-            'headerFields' => array('name', 'type', 'description'),
-            'fields' => array('sorting'),
-            'disableGrouping' => true,
-            'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Backend\Common',
-                'generateRow'
-            )
-        ),
-        'label' => array
-        (
-            'fields' => array('label', 'name', 'description'),
+    'list' => [
+        'sorting' => [
+            'mode'                  => 4,
+            'flag'                  => 1,
+            'headerFields'          => ['name', 'type', 'description'],
+            'fields'                => ['sorting'],
+            'disableGrouping'       => true,
+            'child_record_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.common',
+                'generateRow',
+            ],
+        ],
+        'label'   => [
+            'fields' => ['label', 'name', 'description'],
             'format' => '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
-        ),
+        ],
 
-        'operations' => array
-        (
-            'edit' => array
-            (
+        'operations' => [
+            'edit'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
-            ),
-            'actions' => array
-            (
+            ],
+            'actions' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
                 'href'  => 'table=tl_workflow_action',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
-            ),
-            'delete' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
-                'href'  => 'act=delete',
-                'icon'  => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
-            ),
-            'toggle' => array
-            (
-                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
-                'icon'       => 'visible.gif',
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+            ],
+            'delete'  => [
+                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
+                'href'       => 'act=delete',
+                'icon'       => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+            ],
+            'toggle'  => [
+                'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
+                'icon'            => 'visible.gif',
+                'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
                     'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
                     'handleButtonCallback',
                 ],
                 'toolkit'         => [
                     'state_button' => [
-                        'active' => 'active',
+                        'stateColumn' => 'active',
                     ],
                 ],
-            ),
-            'show' => array
-            (
+            ],
+            'show'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
 
-    'metapalettes' => array
-    (
-        'default' => array
-        (
-            'name'        => array('label', 'name', 'description', 'stepTo'),
-            'config'      => array(),
-            'permissions' => array('limitPermission'),
-            'conditions'  => array('addPropertyConditions', 'addExpressionConditions'),
-            'backend'     => array('addIcon'),
-            'activation'  => array('active')
-        ),
-    ),
+    'metapalettes' => [
+        'default' => [
+            'name'        => ['label', 'name', 'description', 'stepTo'],
+            'config'      => [],
+            'permissions' => ['limitPermission'],
+            'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
+            'backend'     => ['addIcon'],
+            'activation'  => ['active'],
+        ],
+    ],
 
-    'metasubpalettes' => array
-    (
-        'limitPermission'         => array('permission'),
-        'addIcon'                 => array('icon'),
-        'addPropertyConditions'   => array('propertyConditions'),
-        'addExpressionConditions' => array('expressionConditions'),
-    ),
+    'metasubpalettes' => [
+        'limitPermission'         => ['permission'],
+        'addIcon'                 => ['icon'],
+        'addPropertyConditions'   => ['propertyConditions'],
+        'addExpressionConditions' => ['expressionConditions'],
+    ],
 
-    'fields' => array
-    (
-        'id'             => array
-        (
-            'sql' => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'pid'         => array
-        (
-            'relation' => array('type' => 'hasOne', 'load' => 'lazy'),
+    'fields' => [
+        'id'                      => [
+            'sql' => "int(10) unsigned NOT NULL auto_increment",
+        ],
+        'pid'                     => [
+            'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'tstamp'         => array
-        (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'sorting'         => array
-        (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'name'           => array
-        (
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'tstamp'                  => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'sorting'                 => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'name'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['name'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'  => 'w50',
                 'maxlength' => 64,
-            ),
+            ],
             'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'label'           => array
-        (
+        ],
+        'label'                   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['label'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'w50',
+            'eval'      => [
+                'tl_class'  => 'w50',
                 'mandatory' => true,
                 'maxlength' => 64,
-            ),
+            ],
             'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'description'           => array
-        (
+        ],
+        'description'             => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['description'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'clr long',
+            'eval'      => [
+                'tl_class'  => 'clr long',
                 'maxlength' => 255,
-            ),
+            ],
             'sql'       => "varchar(255) NOT NULL default ''",
-        ),
-        'stepTo' => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'],
-            'inputType' => 'select',
-            'options_callback' => array
-            (
-                'Netzmacht\Contao\Workflow\Backend\Dca\Transition',
-                'getStepsTo'
-            ),
-            'eval'      => array
-            (
-                'mandatory' => true,
-                'tl_class' => 'w50',
+        ],
+        'stepTo'                  => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'],
+            'inputType'        => 'select',
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.transition',
+                'getStepsTo',
+            ],
+            'eval'             => [
+                'mandatory'          => true,
+                'tl_class'           => 'w50',
                 'includeBlankOption' => true,
-                'chosen' => true,
-            ),
-            'relation' => array(
-                'type' => 'hasOne',
-                'table'    => 'tl_workflow_step',
-                'load'     => 'eager'
-            ),
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'limitPermission'      => array
-        (
+                'chosen'             => true,
+            ],
+            'relation'         => [
+                'type'  => 'hasOne',
+                'table' => 'tl_workflow_step',
+                'load'  => 'eager',
+            ],
+            'sql'              => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'limitPermission'         => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermission'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50 m12',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'permission'      => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['permission'],
-            'inputType' => 'select',
-            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'),
-            'eval'      => array(
-                'tl_class'       => 'w50',
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'permission'              => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['permission'],
+            'inputType'        => 'select',
+            'options_callback' => ['Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'],
+            'eval'             => [
+                'tl_class'  => 'w50',
                 'mandatory' => true,
 
-            ),
-            'sql'       => "varchar(32) NOT NULL default ''"
-        ),
-        'addIcon'      => array
-        (
+            ],
+            'sql'              => "varchar(32) NOT NULL default ''",
+        ],
+        'addIcon'                 => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50 m12',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'icon' => array
-        (
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'icon'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['icon'],
             'inputType' => 'fileTree',
-            'eval'      => array(
-                'tl_class'       => 'clr icon_selector',
-                'filesOnly' => true,
-                'fieldType' => 'radio',
+            'eval'      => [
+                'tl_class'   => 'clr icon_selector',
+                'filesOnly'  => true,
+                'fieldType'  => 'radio',
                 'extensions' => 'jpg,gif,png',
-            ),
-            'sql'       => "binary(16) NULL"
-        ),
-        'active'      => array
-        (
+            ],
+            'sql'       => "binary(16) NULL",
+        ],
+        'active'                  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['active'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'addPropertyConditions'      => array
-        (
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'addPropertyConditions'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'propertyConditions'        => array
-        (
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'propertyConditions'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['propertyConditions'],
             'inputType' => 'multiColumnWizard',
-            'eval'      => array(
-                'tl_class'       => 'clr',
-                'columnFields'   => array(
-                    'property' => array(
-                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['entityProperty'],
-                        'inputType' => 'select',
-                        'options_callback' => array
-                        (
-                            'Netzmacht\Contao\Workflow\Backend\Dca\Transition',
-                            'getEntityProperties'
-                        ),
-                        'eval'      => array
-                        (
-                            'mandatory' => true,
+            'eval'      => [
+                'tl_class'     => 'clr',
+                'columnFields' => [
+                    'property' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['entityProperty'],
+                        'inputType'        => 'select',
+                        'options_callback' => [
+                            'netzmacht.contao_workflow.listeners.dca.transition',
+                            'getEntityProperties',
+                        ],
+                        'eval'             => [
+                            'mandatory'          => true,
                             'includeBlankOption' => true,
-                            'chosen' => true,
-                            'style' => 'width: 200px',
-                        ),
-                    ),
-                    'operator' => array(
+                            'chosen'             => true,
+                            'style'              => 'width: 200px',
+                        ],
+                    ],
+                    'operator' => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['operator'],
                         'inputType' => 'select',
                         'reference' => &$GLOBALS['TL_LANG']['tl_workflow_transition'],
-                        'options' => array
-                        (
-                            'eq', 'lt', 'lte', 'gt', 'gte', 'neq'
-                        ),
-                        'eval'      => array
-                        (
+                        'options'   => [
+                            'eq',
+                            'lt',
+                            'lte',
+                            'gt',
+                            'gte',
+                            'neq',
+                        ],
+                        'eval'      => [
                             'mandatory' => true,
-                            'style' => 'width: 120px',
-                        ),
-                    ),
-                    'value' => array(
+                            'style'     => 'width: 120px',
+                        ],
+                    ],
+                    'value'    => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'],
                         'inputType' => 'text',
-                        'eval'      => array
-                        (
+                        'eval'      => [
                             'style' => 'width: 200px',
-                        ),
-                    ),
-                )
-            ),
-            'sql'       => "mediumblob NULL"
-        ),
-        'addExpressionConditions'      => array
-        (
+                        ],
+                    ],
+                ],
+            ],
+            'sql'       => "mediumblob NULL",
+        ],
+        'addExpressionConditions' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addExpressionConditions'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'expressionConditions'      => array
-        (
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'expressionConditions'    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['expressionConditions'],
             'inputType' => 'multiColumnWizard',
-            'eval'      => array(
-                'tl_class'       => 'clr',
-                'columnFields'   => array(
-                    'type' => array(
+            'eval'      => [
+                'tl_class'     => 'clr',
+                'columnFields' => [
+                    'type'       => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionType'],
                         'inputType' => 'select',
-                        'options'   => array('pre', 'con'),
-                        'eval'      => array
-                        (
+                        'options'   => ['pre', 'con'],
+                        'eval'      => [
                             'mandatory' => true,
-                            'style' => 'width: 150px',
-                        ),
-                    ),
-                    'expression' => array(
+                            'style'     => 'width: 150px',
+                        ],
+                    ],
+                    'expression' => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['expression'],
                         'inputType' => 'text',
-                        'eval'      => array
-                        (
-                            'style' => 'width: 400px',
+                        'eval'      => [
+                            'style'        => 'width: 400px',
                             'preserveTags' => true,
-                            'allowHtml' => true,
-                        ),
-                    ),
-                )
-            ),
-            'sql'       => "mediumblob NULL"
-        ),
-    ),
-);
+                            'allowHtml'    => true,
+                        ],
+                    ],
+                ],
+            ],
+            'sql'       => "mediumblob NULL",
+        ],
+    ],
+];

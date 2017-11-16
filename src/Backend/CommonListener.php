@@ -13,12 +13,15 @@
 
 namespace Netzmacht\Contao\Workflow\Backend;
 
+use Contao\DataContainer;
+use Contao\StringUtil;
+
 /**
  * Class Common provides common helper functionalities.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class Common
+class CommonListener
 {
     /**
      * Generate a row view.
@@ -27,7 +30,7 @@ class Common
      *
      * @return string
      */
-    public function generateRow(array $row)
+    public function generateRow(array $row): string
     {
         return sprintf(
             '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
@@ -40,17 +43,17 @@ class Common
     /**
      * Create the name.
      *
-     * @param string         $value         Current name value.
-     * @param \DataContainer $dataContainer The Dc_Table.
+     * @param string        $value         Current name value.
+     * @param DataContainer $dataContainer The Dc_Table.
      *
      * @return string
      */
-    public function createName($value, $dataContainer)
+    public function createName($value, $dataContainer): string
     {
         if (!$value) {
             $value = $dataContainer->activeRecord->label;
         }
 
-        return standardize($value);
+        return StringUtil::standardize($value);
     }
 }

@@ -6,171 +6,148 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
 
-$GLOBALS['TL_DCA']['tl_workflow_step'] = array
-(
-    'config' => array
-    (
-        'dataContainer' => 'Table',
-        'ptable' => 'tl_workflow',
-        'onload_callback' => array(
-            array('Netzmacht\Contao\Workflow\Backend\Dca\Step', 'adjustEditMask'),
-        ),
-        'sql'           => array
-        (
-            'keys' => array
-            (
+$GLOBALS['TL_DCA']['tl_workflow_step'] = [
+    'config' => [
+        'dataContainer'   => 'Table',
+        'ptable'          => 'tl_workflow',
+        'onload_callback' => [
+            ['netzmacht.contao_workflow.listeners.dca.step', 'adjustEditMask'],
+        ],
+        'sql'             => [
+            'keys' => [
                 'id'  => 'primary',
-                'pid' =>'index'
-            )
-        ),
-    ),
+                'pid' => 'index',
+            ],
+        ],
+    ],
 
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'   => 4,
-            'flag'   => 1,
-            'headerFields' => array('label', 'name', 'type', 'description'),
-            'fields' => array('name'),
-            'disableGrouping' => true,
-            'child_record_callback' => array(
-                'Netzmacht\Contao\Workflow\Backend\Common',
-                'generateRow'
-            )
-        ),
-        'label' => array
-        (
-            'fields' => array('label', 'name', 'description'),
+    'list' => [
+        'sorting' => [
+            'mode'                  => 4,
+            'flag'                  => 1,
+            'headerFields'          => ['label', 'name', 'type', 'description'],
+            'fields'                => ['name'],
+            'disableGrouping'       => true,
+            'child_record_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.common',
+                'generateRow',
+            ],
+        ],
+        'label'   => [
+            'fields' => ['label', 'name', 'description'],
             'format' => '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
 
-        ),
+        ],
 
-        'operations' => array
-        (
-            'edit' => array
-            (
+        'operations' => [
+            'edit'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_step']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
-            ),
-            'delete' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_step']['delete'],
-                'href'  => 'act=delete',
-                'icon'  => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
-            ),
-            'show' => array
-            (
+            ],
+            'delete' => [
+                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_step']['delete'],
+                'href'       => 'act=delete',
+                'icon'       => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+            ],
+            'show'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_step']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
 
-    'palettes' => array(
-        '__selector__' => array('limitPermission')
-    ),
+    'palettes' => [
+        '__selector__' => ['limitPermission'],
+    ],
 
-    'metapalettes' => array
-    (
-        'default' => array
-        (
-            'name'       => array('label', 'name', 'description', 'final'),
-            'permission' => array('limitPermission'),
-        ),
-    ),
+    'metapalettes' => [
+        'default' => [
+            'name'       => ['label', 'name', 'description', 'final'],
+            'permission' => ['limitPermission'],
+        ],
+    ],
 
-    'metasubpalettes' => array(
-        'limitPermission' => array('permission'),
-    ),
+    'metasubpalettes' => [
+        'limitPermission' => ['permission'],
+    ],
 
-    'fields' => array
-    (
-        'id'             => array
-        (
-            'sql' => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'pid'         => array
-        (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'tstamp'         => array
-        (
-            'sql' => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'name'           => array
-        (
+    'fields' => [
+        'id'              => [
+            'sql' => "int(10) unsigned NOT NULL auto_increment",
+        ],
+        'pid'             => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'tstamp'          => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'name'            => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['name'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'w50',
+            'eval'      => [
+                'tl_class'  => 'w50',
                 'maxlength' => 64,
-            ),
+            ],
             'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'label'           => array
-        (
+        ],
+        'label'           => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['label'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'w50',
+            'eval'      => [
+                'tl_class'  => 'w50',
                 'mandatory' => true,
                 'maxlength' => 64,
-            ),
+            ],
             'sql'       => "varchar(64) NOT NULL default ''",
-        ),
-        'description'           => array
-        (
+        ],
+        'description'     => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['description'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => array(
-                'tl_class'           => 'clr long',
+            'eval'      => [
+                'tl_class'  => 'clr long',
                 'maxlength' => 255,
-            ),
+            ],
             'sql'       => "varchar(255) NOT NULL default ''",
-        ),
-        'final'      => array
-        (
+        ],
+        'final'           => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['final'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'limitPermission'      => array
-        (
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'limitPermission' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'],
             'inputType' => 'checkbox',
-            'eval'      => array(
+            'eval'      => [
                 'tl_class'       => 'clr w50 m12',
                 'submitOnChange' => true,
-            ),
-            'sql'       => "char(1) NOT NULL default ''"
-        ),
-        'permission'      => array
-        (
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['permission'],
-            'inputType' => 'select',
-            'options_callback' => array('Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'),
-            'eval'      => array(
-                'tl_class'       => 'w50',
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'permission'      => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_step']['permission'],
+            'inputType'        => 'select',
+            'options_callback' => ['Netzmacht\Contao\Workflow\Backend\Permission', 'getWorkflowPermissions'],
+            'eval'             => [
+                'tl_class'  => 'w50',
                 'mandatory' => true,
-            ),
-            'sql'       => "varchar(32) NOT NULL default ''"
-        ),
-    ),
-);
+            ],
+            'sql'              => "varchar(32) NOT NULL default ''",
+        ],
+    ],
+];

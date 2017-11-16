@@ -15,10 +15,9 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
-use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
-use Netzmacht\Contao\Workflow\Backend\Common;
+use Netzmacht\Contao\Workflow\Backend\CommonListener;
 use Netzmacht\Contao\Workflow\Model\StepModel;
 use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
@@ -28,7 +27,7 @@ use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class Transition
+class TransitionCallbackListener
 {
     /**
      * Type provider.
@@ -36,13 +35,6 @@ class Transition
      * @var WorkflowTypeProvider
      */
     private $typeProvider;
-
-    /**
-     * Database connection.
-     *
-     * @var Connection
-     */
-    private $connection;
 
     /**
      * Data container manager.
@@ -62,18 +54,15 @@ class Transition
      * Transition constructor.
      *
      * @param WorkflowTypeProvider $typeProvider
-     * @param Connection           $connection
      * @param DcaManager           $dcaManager
      * @param RepositoryManager    $repositoryManager
      */
     public function __construct(
         WorkflowTypeProvider $typeProvider,
-        Connection $connection,
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager
     ) {
         $this->typeProvider      = $typeProvider;
-        $this->connection        = $connection;
         $this->dcaManager        = $dcaManager;
         $this->repositoryManager = $repositoryManager;
     }
@@ -85,7 +74,7 @@ class Transition
      */
     public function adjustEditMask(): void
     {
-        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->find(CURRENT_ID);
+        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->find((int) CURRENT_ID);
 
         if (!$workflow || !$this->typeProvider->hasType($workflow->type)) {
             return;
@@ -104,7 +93,7 @@ class Transition
             $definition->set(['fields', 'name'], $dca);
         } else {
             $callbacks   = $definition->get(['fields', 'name', 'save_callback']);
-            $callbacks[] = [Common::class, 'createName'];
+            $callbacks[] = ['netzmacht.contao_workflow.listeners.dca.common', 'createName'];
 
             $definition->set(['fields', 'name', 'save_callback'], $callbacks);
         }
@@ -121,7 +110,7 @@ class Transition
     {
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
+        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
 
         if ($collection) {
             while ($collection->next()) {
@@ -147,14 +136,16 @@ class Transition
     {
         if ($dataContainer->activeRecord) {
             $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-            $workflow   = $repository->find($dataContainer->activeRecord->pid);
+            $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
 
             if ($workflow) {
+                $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
+
                 return array_map(
                     function ($info) {
                         return $info['name'];
                     },
-                    array_keys($this->connection->getSchemaManager()->listTableColumns($workflow->providerName))
+                    array_keys($schemaManager->listTableColumns($workflow->providerName))
                 );
             }
         }

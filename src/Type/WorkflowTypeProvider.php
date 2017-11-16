@@ -27,7 +27,7 @@ class WorkflowTypeProvider
      *
      * @param array|WorkflowType[] $types
      */
-    public function __construct($types)
+    public function __construct(array $types)
     {
         $this->types = $types;
     }

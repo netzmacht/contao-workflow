@@ -17,7 +17,7 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
-use Netzmacht\Contao\Workflow\Backend\Common;
+use Netzmacht\Contao\Workflow\Backend\CommonListener;
 use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
 
@@ -26,7 +26,7 @@ use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class Step
+class StepCallbackListener
 {
     /**
      * Type provider.
@@ -73,7 +73,7 @@ class Step
      */
     public function adjustEditMask(): void
     {
-        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->findOneBy(['id=?'], CURRENT_ID);
+        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->find((int) CURRENT_ID);
 
         if (!$workflow || !$this->typeProvider->hasType($workflow->type)) {
             return;
@@ -92,7 +92,7 @@ class Step
             $definition->set(['fields', 'name'], $dca);
         } else {
             $callbacks   = $definition->get(['fields', 'name', 'save_callback']);
-            $callbacks[] = [Common::class, 'createName'];
+            $callbacks[] = [CommonListener::class, 'createName'];
 
             $definition->set(['fields', 'name', 'save_callback'], $callbacks);
         }

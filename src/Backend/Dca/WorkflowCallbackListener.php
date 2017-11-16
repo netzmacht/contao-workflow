@@ -28,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class Workflow
+class WorkflowCallbackListener
 {
     /**
      * Workflow type provider.
@@ -111,7 +111,7 @@ class Workflow
         $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
         $this->eventDispatcher->dispatch($event::NAME, $event);
 
-        return $event->getProviderNames();
+        return array_merge($event->getProviderNames(), ['tl_test']);
     }
 
     /**
@@ -154,7 +154,7 @@ class Workflow
 
         if ($dataContainer->activeRecord) {
             $repository = $this->repositoryManager->getRepository(TransitionModel::class);
-            $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->id]);
+            $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->id]);
 
             if ($collection) {
                 while ($collection->next()) {
