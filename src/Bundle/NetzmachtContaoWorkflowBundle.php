@@ -1,25 +1,34 @@
 <?php
 
 /**
- * contao-workflow.
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
  *
- * @package    contao-workflow
+ * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2017 netzmacht David Molineus. All rights reserved.
- * @license    LGPL-3.0 https://github.com/netzmacht/contao-leaflet-maps/blob/master/LICENSE
+ * @copyright  2014-2017 netzmacht David Molineus
+ * @license    LGPL 3.0
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Bundle;
 
+use Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass\WorkflowTypePass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class NetzmachtContaoWorkflowBundle
- *
- * @package Netzmacht\Contao\Workflow
  */
 class NetzmachtContaoWorkflowBundle extends Bundle
 {
-
+    /**
+     * {@inheritDoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new WorkflowTypePass());
+    }
 }

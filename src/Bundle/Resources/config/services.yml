@@ -1,3 +1,13 @@
 services:
   netzmacht.contao_workflow.user:
     class: Netzmacht\Workflow\Security\User
+
+  netzmacht.contao_workflow.type_provider:
+    class: Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.type.default:
+    class: Netzmacht\Contao\Workflow\Type\DefaultWorkflowType
+    tags:
+      - { name: 'netzmacht.contao_workflow.type' }
