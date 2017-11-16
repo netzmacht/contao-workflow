@@ -13,11 +13,12 @@
 
 namespace Netzmacht\Contao\Workflow\Definition\Database;
 
+use Contao\StringUtil;
 use Netzmacht\Contao\Workflow\Condition\Transition\ExpressionCondition;
 use Netzmacht\Contao\Workflow\Condition\Transition\PropertyCondition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
-use Netzmacht\Contao\Workflow\ServiceContainerTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * Class ConditionBuilder builds the workflow conditions.
@@ -26,7 +27,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConditionBuilder implements EventSubscriberInterface
 {
-    use ServiceContainerTrait;
+    /**
+     * @var ExpressionLanguage
+     */
+    private $expressionLanguage;
 
     /**
      * Comparator operations.
@@ -43,15 +47,25 @@ class ConditionBuilder implements EventSubscriberInterface
     );
 
     /**
+     * ConditionBuilder constructor.
+     *
+     * @param ExpressionLanguage $expressionLanguage
+     */
+    public function __construct(ExpressionLanguage $expressionLanguage)
+    {
+        $this->expressionLanguage = $expressionLanguage;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return array(
-            CreateTransitionEvent::NAME => array(
-                array('createPropertyConditions'),
-                array('createExpressionConditions'),
-            )
+            CreateTransitionEvent::NAME => [
+                ['createPropertyConditions'],
+                ['createExpressionConditions'],
+            ]
         );
     }
 
@@ -67,7 +81,7 @@ class ConditionBuilder implements EventSubscriberInterface
         $transition = $event->getTransition();
 
         if ($transition->getConfigValue('addPropertyConditions')) {
-            $config = deserialize($transition->getConfigValue('propertyConditions'), true);
+            $config = StringUtil::deserialize($transition->getConfigValue('propertyConditions'), true);
 
             foreach ($config as $row) {
                 $condition = new PropertyCondition();
@@ -76,7 +90,7 @@ class ConditionBuilder implements EventSubscriberInterface
                     $condition
                         ->setProperty($row['property'])
                         ->setOperator($this->parseOperator($row['operator']))
-                        ->getValue($row['value']);
+                        ->setValue($row['value']);
 
                     $transition->addCondition($condition);
                 }
@@ -96,12 +110,10 @@ class ConditionBuilder implements EventSubscriberInterface
         $transition = $event->getTransition();
 
         if ($transition->getConfigValue('addExpressionConditions')) {
-            $language   = $this->getServiceContainer()->getService('workflow.transition.expression-language');
-            $definition = deserialize($transition->getConfigValue('expressionConditions'), true);
+            $definition = StringUtil::deserialize($transition->getConfigValue('expressionConditions'), true);
 
             foreach ($definition as $config) {
-                $condition = new ExpressionCondition($language);
-                $condition->setExpression($config['expression']);
+                $condition = new ExpressionCondition($this->expressionLanguage, $config['expression']);
 
                 if ($config['type'] === 'pre') {
                     $transition->addPreCondition($condition);
