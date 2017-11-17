@@ -26,8 +26,10 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @package Netzmacht\Contao\Workflow\Backend\Dca
  */
-class State extends Base
+class StateCallbackListener
 {
+    use TranslatePlugin;
+
     /**
      * Template engine.
      *
@@ -55,15 +57,15 @@ class State extends Base
      */
     public function __construct(
         TranslatorInterface $translator,
-        TemplateEngine $templateEngine,
-        EntityManager $entityManager,
-        WorkflowManager $manager
+        TemplateEngine $templateEngine
+//        EntityManager $entityManager,
+//        WorkflowManager $manager
     ) {
-        parent::__construct($translator);
-
+        $this->translator     = $translator;
+        $this->defaultDomain  = 'contao_tl_workflow_state';
         $this->templateEngine = $templateEngine;
-        $this->entityManager  = $entityManager;
-        $this->manager        = $manager;
+//        $this->entityManager  = $entityManager;
+//        $this->manager        = $manager;
     }
 
     /**
@@ -119,6 +121,8 @@ class State extends Base
      */
     public function generateRow(array $row): string
     {
+        return $row['stepName'];
+
         try {
             $entityId = EntityId::fromString($row['entityId']);
             $entity   = $this->entityManager

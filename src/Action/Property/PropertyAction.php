@@ -11,8 +11,11 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Action;
+declare(strict_types=1);
 
+namespace Netzmacht\Contao\Workflow\Action\Property;
+
+use Netzmacht\Contao\Workflow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
@@ -75,6 +78,20 @@ class PropertyAction extends AbstractAction
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getRequiredPayloadProperties(Item $item): array
+    {
+        if ($this->value !== null) {
+            return [];
+        }
+
+        return [
+            $this->getName() . '_value'
+        ];
+    }
+
+    /**
      * Get the property value.
      *
      * @return mixed
@@ -112,8 +129,8 @@ class PropertyAction extends AbstractAction
     {
         if ($this->value !== null) {
             return $this->value;
-        } elseif ($this->isInputRequired($item)) {
-            return $context->getParam($this->property);
+        } elseif ($this->getRequiredPayloadProperties($item)) {
+            return $context->getPayload()->get($this->getName() . '_value');
         }
 
         return null;

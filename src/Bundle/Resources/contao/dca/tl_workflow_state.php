@@ -17,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
         'closed'          => true,
         'onload_callback' => [
             [
-                'Netzmacht\Contao\Workflow\Backend\Dca\State',
+                'netzmacht.contao_workflow.listeners.dca.state',
                 'applyFilter',
             ],
         ],
@@ -37,8 +37,8 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
         ],
         'label'   => [
             'fields'         => ['entityId', 'workflowName', 'transitionName', 'stepName', 'success', 'reachedAt'],
-            'label_callback' => ['Netzmacht\Contao\Workflow\Backend\Dca\State', 'generateRow'],
-            'group_callback' => ['Netzmacht\Contao\Workflow\Backend\Dca\State', 'generateGroupHeader'],
+            'label_callback' => ['netzmacht.contao_workflow.listeners.dca.state', 'generateRow'],
+            'group_callback' => ['netzmacht.contao_workflow.listeners.dca.state', 'generateGroupHeader'],
         ],
 
         'operations' => [

@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Bundle;
 
+use Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass\ActionFactoriesPass;
 use Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass\WorkflowTypePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -30,5 +31,6 @@ class NetzmachtContaoWorkflowBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new WorkflowTypePass());
+        $container->addCompilerPass(new ActionFactoriesPass());
     }
 }

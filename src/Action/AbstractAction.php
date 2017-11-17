@@ -16,8 +16,6 @@ namespace Netzmacht\Contao\Workflow\Action;
 use Assert\Assertion;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Base;
-use Netzmacht\Contao\Workflow\Form\ContaoForm;
-use Netzmacht\Contao\Workflow\Form\FormType;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -30,13 +28,6 @@ use Verraes\ClassFunctions\ClassFunctions;
  */
 abstract class AbstractAction extends Base implements Action
 {
-    /**
-     * Optional form builder.
-     *
-     * @var FormType
-     */
-    protected $formType;
-
     /**
      * Log changed values as workflow data.
      *
@@ -57,38 +48,12 @@ abstract class AbstractAction extends Base implements Action
      * @param string   $name     Name of the action.
      * @param string   $label    Label of the action.
      * @param array    $config   Optional config.
-     * @param FormType $formType Optional form type.
      */
-    public function __construct(string $name, string $label = '', array $config = array(), FormType $formType = null)
+    public function __construct(string $name, string $label = '', array $config = array())
     {
         parent::__construct($name, $label, $config);
 
-        $this->formType     = $formType;
         $this->logNamespace = $this->createDefaultLogNamespace();
-    }
-
-    /**
-     * Get the form builder.
-     *
-     * @return FormType
-     */
-    public function getFormType()
-    {
-        return $this->formType;
-    }
-
-    /**
-     * Set the form builder.
-     *
-     * @param FormType $formType The form type.
-     *
-     * @return $this
-     */
-    public function setFormType(FormType $formType)
-    {
-        $this->formType = $formType;
-
-        return $this;
     }
 
     /**
@@ -151,7 +116,7 @@ abstract class AbstractAction extends Base implements Action
     protected function logChanges($property, $value, Context $context)
     {
         if ($this->isLogChanges()) {
-            $context->setProperty($property, $value, $this->getLogNamespace());
+            $context->getProperties()->set($property, $value, $this->getLogNamespace());
         }
 
         return $this;
@@ -171,33 +136,11 @@ abstract class AbstractAction extends Base implements Action
             $namespace = $this->getLogNamespace();
 
             foreach ($values as $name => $value) {
-                $context->setProperty($name, $value, $namespace);
+                $context->getProperties()->set($name, $value, $namespace);
             }
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isInputRequired(Item $item)
-    {
-        if ($this->formType) {
-            return $this->formType->hasFields();
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(Form $form, Item $item)
-    {
-        if ($this->formType && $form instanceof ContaoForm) {
-            $form->addForm($this->formType);
-        }
     }
 
     /**

@@ -16,14 +16,13 @@ declare(strict_types=1);
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Symfony\Component\Translation\TranslatorInterface;
-use Verraes\ClassFunctions\ClassFunctions;
 
 /**
  * Class Base is a base dca helper class.
  *
  * @package Netzmacht\Contao\Workflow\Backend\Dca
  */
-class Base
+trait TranslatePlugin
 {
     /**
      * The translator.
@@ -40,18 +39,6 @@ class Base
     protected $defaultDomain;
 
     /**
-     * Construct.
-     *
-     * @param TranslatorInterface $translator Translator.
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        if (!$this->defaultDomain) {
-            $this->defaultDomain = 'contao_tl_workflow_' . strtolower(ClassFunctions::short($this));
-        }
-    }
-
-    /**
      * Translate a string.
      *
      * @param string      $name   The string to translate.
@@ -62,10 +49,6 @@ class Base
      */
     public function translate(string $name, array $params = array(), ?string $domain = null): string
     {
-        if (!$domain) {
-            $domain = $this->defaultDomain;
-        }
-
-        return $this->translator->trans($name, $params, $domain);
+        return $this->translator->trans($name, $params, $domain ?: $this->defaultDomain);
     }
 }

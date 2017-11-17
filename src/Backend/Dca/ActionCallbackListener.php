@@ -58,7 +58,7 @@ class ActionCallbackListener
     /**
      * Get all available types.
      *
-     * @param \DataContainer $dataContainer The datacontainer.
+     * @param \DataContainer $dataContainer The data container.
      *
      * @return array
      */

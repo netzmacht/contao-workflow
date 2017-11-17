@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class GetWorkflowActionsEvent extends Event
 {
-    const NAME = 'workflow.backend.get-workflow-types';
+    const NAME = 'netzmacht.contao_workflow.get_workflow_types';
 
     /**
      * Collected workflow actions.
