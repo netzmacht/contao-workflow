@@ -20,7 +20,7 @@ use Contao\Model;
  *
  * @package Netzmacht\Contao\Workflow\Entity
  */
-class ContaoModelEntity implements Entity, \IteratorAggregate
+class ContaoModelEntity implements \IteratorAggregate, Entity
 {
     /**
      * @var Model
