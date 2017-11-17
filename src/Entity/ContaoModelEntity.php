@@ -20,7 +20,7 @@ use Contao\Model;
  *
  * @package Netzmacht\Contao\Workflow\Entity
  */
-class ContaoModelEntity implements Entity
+class ContaoModelEntity implements Entity, \IteratorAggregate
 {
     /**
      * @var Model
@@ -79,5 +79,13 @@ class ContaoModelEntity implements Entity
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->model->row());
     }
 }
