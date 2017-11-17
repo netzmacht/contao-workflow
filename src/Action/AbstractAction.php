@@ -19,7 +19,6 @@ use Netzmacht\Workflow\Base;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
-use Verraes\ClassFunctions\ClassFunctions;
 
 /**
  * Class AbstractAction which uses an form builder to create user input form data.
@@ -36,13 +35,6 @@ abstract class AbstractAction extends Base implements Action
     private $logChanges = true;
 
     /**
-     * Log namespace is used as property namespace if logging in enabled.
-     *
-     * @var string
-     */
-    private $logNamespace;
-
-    /**
      * Construct.
      *
      * @param string   $name     Name of the action.
@@ -52,8 +44,6 @@ abstract class AbstractAction extends Base implements Action
     public function __construct(string $name, string $label = '', array $config = array())
     {
         parent::__construct($name, $label, $config);
-
-        $this->logNamespace = $this->createDefaultLogNamespace();
     }
 
     /**
@@ -81,30 +71,6 @@ abstract class AbstractAction extends Base implements Action
     }
 
     /**
-     * Get log namespace.
-     *
-     * @return string
-     */
-    public function getLogNamespace()
-    {
-        return $this->logNamespace;
-    }
-
-    /**
-     * Set new log namespace.
-     *
-     * @param string $logNamespace New log namespace.
-     *
-     * @return $this
-     */
-    public function setLogNamespace($logNamespace)
-    {
-        $this->logNamespace = $logNamespace;
-
-        return $this;
-    }
-
-    /**
      * Log changes if enabled.
      *
      * @param string  $property Property name.
@@ -116,7 +82,7 @@ abstract class AbstractAction extends Base implements Action
     protected function logChanges($property, $value, Context $context)
     {
         if ($this->isLogChanges()) {
-            $context->getProperties()->set($property, $value, $this->getLogNamespace());
+            $context->getProperties()->set($property, $value, $this->getName());
         }
 
         return $this;
@@ -133,10 +99,8 @@ abstract class AbstractAction extends Base implements Action
     protected function logMultipleChanges(array $values, Context $context)
     {
         if ($this->isLogChanges()) {
-            $namespace = $this->getLogNamespace();
-
             foreach ($values as $name => $value) {
-                $context->getProperties()->set($name, $value, $namespace);
+                $context->getProperties()->set($name, $value, $this->getName());
             }
         }
 
@@ -159,17 +123,5 @@ abstract class AbstractAction extends Base implements Action
         Assertion::isInstanceOf($entity, Entity::class, 'Invalid entity given');
 
         return $entity;
-    }
-
-    /**
-     * Create default log namespace.
-     *
-     * @return string
-     */
-    protected function createDefaultLogNamespace()
-    {
-        $className = ClassFunctions::underscore(ClassFunctions::short($this));
-
-        return preg_replace('/_action$/', '', $className, 1);
     }
 }
