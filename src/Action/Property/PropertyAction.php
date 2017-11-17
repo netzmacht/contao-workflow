@@ -92,6 +92,14 @@ class PropertyAction extends AbstractAction
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function validate(Item $item, Context $context): bool
+    {
+        return $context->getProperties()->has($this->getName() . '_value');
+    }
+
+    /**
      * Get the property value.
      *
      * @return mixed
