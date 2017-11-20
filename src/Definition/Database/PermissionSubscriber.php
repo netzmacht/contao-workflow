@@ -27,8 +27,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class PermissionSubscriber implements EventSubscriberInterface
 {
-    use ServiceContainerTrait;
-
     /**
      * {@inheritdoc}
      */

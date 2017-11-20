@@ -6,12 +6,16 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht creative David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Model;
+declare(strict_types=1);
+
+namespace Netzmacht\Contao\Workflow\Model\Action;
+
+use Contao\Model;
 
 /**
  * Class ActionModel provides access to tl_workflow_action table.
@@ -20,7 +24,7 @@ namespace Netzmacht\Contao\Workflow\Model;
  * @property int $id
  * @property int $pid
  */
-class ActionModel extends \Model
+class ActionModel extends Model
 {
     /**
      * Action model table name.

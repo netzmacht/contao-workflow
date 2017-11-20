@@ -13,7 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Backend;
 
-use Netzmacht\Contao\Workflow\Model\WorkflowModel;
+use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
 
 /**

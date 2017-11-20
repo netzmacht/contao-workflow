@@ -11,13 +11,15 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class CreateWorkflowEvent is dispatched when creating a worfklow.
+ * Class CreateWorkflowEvent is dispatched when creating a workflow.
  *
  * @package Netzmacht\Contao\Workflow\Factory\Event
  */
@@ -47,7 +49,7 @@ class CreateWorkflowEvent extends Event
      *
      * @return Workflow
      */
-    public function getWorkflow()
+    public function getWorkflow(): Workflow
     {
         return $this->workflow;
     }

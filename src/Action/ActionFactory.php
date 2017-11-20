@@ -109,16 +109,15 @@ class ActionFactory
      *
      * @param string     $type       The action type.
      * @param array      $config     The action config.
-     * @param Workflow   $workflow   Workflow in which the action occurs.
      * @param Transition $transition Transition to which the action belongs.
      *
      * @return Action
      */
-    public function create(string $type, array $config, Workflow $workflow, Transition $transition): Action
+    public function create(string $type, array $config, Transition $transition): Action
     {
         foreach ($this->factories as $factory) {
             if ($factory->getName() === $type) {
-                return $factory->create($config, $workflow, $transition);
+                return $factory->create($config, $transition);
             }
         }
 
@@ -131,12 +130,13 @@ class ActionFactory
      * @param FormBuilder $formBuilder The form builder.
      * @param string      $type        The action type.
      * @param array       $config      The action config.
+     * @param Transition  $transition  Workflow transition.
      */
-    public function buildForm(FormBuilder $formBuilder, string $type, array $config): void
+    public function buildForm(FormBuilder $formBuilder, string $type, array $config, Transition $transition): void
     {
         foreach ($this->factories as $factory) {
             if ($factory->getName() === $type) {
-                $factory->buildForm($formBuilder, $config);
+                $factory->buildForm($formBuilder, $config, $transition);
 
                 break;
             }

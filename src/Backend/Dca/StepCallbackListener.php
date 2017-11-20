@@ -18,7 +18,7 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Workflow\Backend\CommonListener;
-use Netzmacht\Contao\Workflow\Model\WorkflowModel;
+use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
 
 /**

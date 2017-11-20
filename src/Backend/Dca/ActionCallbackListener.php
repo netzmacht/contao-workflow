@@ -19,8 +19,8 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
 use Netzmacht\Contao\Workflow\Model\RoleModel;
-use Netzmacht\Contao\Workflow\Model\TransitionModel;
-use Netzmacht\Contao\Workflow\Model\WorkflowModel;
+use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
+use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -80,27 +80,6 @@ class ActionCallbackListener
         $this->eventDispatcher->dispatch($event::NAME, $event);
 
         return $event->getActions();
-    }
-
-    /**
-     * Get workflow roles.
-     *
-     * @param \DataContainer $dataContainer The data container driver.
-     *
-     * @return array
-     */
-    public function getRoles($dataContainer): array
-    {
-        $workflowModel = $this->getWorkflowModel($dataContainer);
-        $repository    = $this->repositoryManager->getRepository(RoleModel::class);
-        $collection    = $repository->findBy(['.pid=?'], [$workflowModel->id], ['order' => 'label']);
-        $options       = [];
-
-        while ($collection && $collection->next()) {
-            $options[$collection->id] = $collection->label;
-        }
-
-        return $options;
     }
 
     /**

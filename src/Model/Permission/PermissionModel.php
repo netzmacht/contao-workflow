@@ -11,23 +11,27 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Definition;
+declare(strict_types=1);
 
-use Netzmacht\Workflow\Flow\Workflow;
+namespace Netzmacht\Contao\Workflow\Model\Permission;
+
+use Contao\Model;
 
 /**
- * Interface WorkflowLoader
+ * Class PermissionModel.
  *
- * @package Netzmacht\Contao\Workflow\Definition
+ * @property int    tstamp
+ * @property string source
+ * @property int    source_id
+ * @property string $permission
+ * @package Netzmacht\Contao\Workflow\Model
  */
-interface WorkflowLoader
+class PermissionModel extends Model
 {
     /**
-     * Load the workflows optional limited for a provider.
+     * The database table.
      *
-     * @param string|null $providerName Provider name.
-     *
-     * @return Workflow[]|array
+     * @var string
      */
-    public function load(?string $providerName = null): array;
+    protected static $strTable = 'tl_workflow_permission';
 }

@@ -12,7 +12,9 @@
  */
 
 
-namespace Netzmacht\Contao\Workflow\Model;
+namespace Netzmacht\Contao\Workflow\Model\Step;
+
+use Contao\Model;
 
 /**
  * StepModel using Contao models.
@@ -26,7 +28,7 @@ namespace Netzmacht\Contao\Workflow\Model;
  * @property bool   $limitPermission Limit the permission.
  * @property string $permission      The permission id.
  */
-class StepModel extends \Model
+class StepModel extends Model
 {
     /**
      * Table name.
@@ -34,16 +36,4 @@ class StepModel extends \Model
      * @var string
      */
     protected static $strTable = 'tl_workflow_step';
-
-    /**
-     * Find by workflow id.
-     *
-     * @param int $workflowId The workflow id.
-     *
-     * @return \Model\Collection|null
-     */
-    public static function findByWorkflow($workflowId)
-    {
-        return static::findBy(array('pid=?'), $workflowId, array('order' => 'name'));
-    }
 }

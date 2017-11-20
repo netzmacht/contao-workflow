@@ -11,24 +11,33 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Model;
+namespace Netzmacht\Contao\Workflow\Model\Transition;
+
+use Contao\Model;
 
 /**
- * RoleModel using Contao models.
+ * TransitionModel using Contao models.
  *
  * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @property int $id
+ * @property string $name
+ * @property string $label
+ * @property bool   $final
+ * @property bool   $limitPermission
+ * @property string $permission
+ * @property int    $stepTo
  */
-class RoleModel extends \Model
+class TransitionModel extends Model
 {
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_workflow_role';
+    protected static $strTable = 'tl_workflow_transition';
 
     /**
-     * Find by workflow id.
+     * Find transition by workflow id.
      *
      * @param int $workflowId The workflow id.
      *
@@ -36,6 +45,10 @@ class RoleModel extends \Model
      */
     public static function findByWorkflow($workflowId)
     {
-        return static::findBy(array('pid=?'), $workflowId, array('order' => 'name'));
+        return static::findBy(
+            array(static::$strTable . '.active=1', static::$strTable . '.pid=?'),
+            $workflowId,
+            array('order' => static::$strTable . '.sorting')
+        );
     }
 }

@@ -13,6 +13,8 @@
 
 namespace Netzmacht\Contao\Workflow\Model\State;
 
+use Contao\Model;
+
 /**
  * Class StateModel.
  *
@@ -27,7 +29,7 @@ namespace Netzmacht\Contao\Workflow\Model\State;
  * @property string|array $data           Json encoded workflow data.
  * @property int          $reachedAt      Timestamp when step was reached.
  */
-class StateModel extends \Model
+class StateModel extends Model
 {
     /**
      * The workflow state table.

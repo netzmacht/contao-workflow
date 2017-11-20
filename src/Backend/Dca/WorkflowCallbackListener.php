@@ -18,8 +18,8 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Backend\Event\GetProviderNamesEvent;
-use Netzmacht\Contao\Workflow\Model\StepModel;
-use Netzmacht\Contao\Workflow\Model\TransitionModel;
+use Netzmacht\Contao\Workflow\Model\Step\StepModel;
+use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

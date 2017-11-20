@@ -13,7 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Backend\Event;
 
-use Netzmacht\Contao\Workflow\Model\WorkflowModel;
+use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission;
 use Symfony\Component\EventDispatcher\Event;
 

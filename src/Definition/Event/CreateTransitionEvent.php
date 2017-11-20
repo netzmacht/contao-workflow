@@ -6,10 +6,12 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
+
+declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Definition\Event;
 
@@ -23,7 +25,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateTransitionEvent extends Event
 {
-    const NAME = 'workflow.factory.create-transition';
+    const NAME = 'netzmacht.contao_workflow.create_transition';
 
     /**
      * The created transition.
@@ -47,7 +49,7 @@ class CreateTransitionEvent extends Event
      *
      * @return Transition
      */
-    public function getTransition()
+    public function getTransition(): Transition
     {
         return $this->transition;
     }

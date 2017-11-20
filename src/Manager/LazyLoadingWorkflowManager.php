@@ -67,7 +67,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function handle(Item $item, string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
     {
-        $this->loadWorkflowDefinitions();
+        $this->loadWorkflowDefinitions($item->getEntityId()->getProviderName());
 
         return $this->inner->handle($item, $transitionName, $changeWorkflow);
     }
@@ -87,7 +87,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function getWorkflow(EntityId $entityId, $entity): Workflow
     {
-        $this->loadWorkflowDefinitions();
+        $this->loadWorkflowDefinitions($entityId->getProviderName());
 
         return $this->inner->getWorkflow($entityId, $entity);
     }
@@ -107,7 +107,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function getWorkflowByItem(Item $item): Workflow
     {
-        $this->loadWorkflowDefinitions();
+        $this->loadWorkflowDefinitions($item->getEntityId()->getProviderName());
 
         return $this->inner->getWorkflowByItem($item);
     }
@@ -117,7 +117,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function hasWorkflow(EntityId $entityId, $entity): bool
     {
-        $this->loadWorkflowDefinitions();
+        $this->loadWorkflowDefinitions($entityId->getProviderName());
 
         return $this->inner->hasWorkflow($entityId, $entityId);
     }
@@ -142,17 +142,30 @@ class LazyLoadingWorkflowManager implements Manager
 
     /**
      * Load all workflow definitions.
-     * 
+     *
+     * @param null|string $providerName Provider name.
+     *
      * @return void
      */
-    private function loadWorkflowDefinitions(): void
+    private function loadWorkflowDefinitions(?string $providerName = null): void
     {
-        static $loaded = false;
-        
-        if ($loaded) {
+        static $all    = false;
+        static $loaded = [];
+
+        if ($providerName === null) {
+            if ($all) {
+                return;
+            }
+
+            $all = true;
+        } elseif (array_key_exists($providerName, $loaded)) {
             return;
         }
-        
-        $this->workflowLoader->load($this);
+
+        foreach ($this->workflowLoader->load($providerName) as $workflow) {
+            $loaded[$workflow->getProviderName()][] = true;
+
+            $this->addWorkflow($workflow);
+        }
     }
 }

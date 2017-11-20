@@ -17,7 +17,7 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Model\PermissionModel;
+use Netzmacht\Contao\Workflow\Model\Permission\PermissionModel;
 
 /**
  * Class SavePermissionsCallback stores the permission in the association group table.
