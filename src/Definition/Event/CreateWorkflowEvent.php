@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class CreateWorkflowEvent extends Event
 {
-    const NAME = 'workflow.factory.create-workflow';
+    const NAME = 'netzmacht.contao_workflow.create_workflow';
 
     /**
      * The workflow being created.

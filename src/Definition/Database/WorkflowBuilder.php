@@ -89,6 +89,8 @@ class WorkflowBuilder
      * @param EventDispatcher     $eventDispatcher The event dispatcher.
      *
      * @return void
+     *
+     * @Suppress(PHPMD.UnusedFormalParameter)
      */
     public function createWorkflow(
         CreateWorkflowEvent $event,
@@ -138,7 +140,7 @@ class WorkflowBuilder
                 )
             );
 
-            $step->setFinal($model->final);
+            $step->setFinal((bool) $model->final);
 
             if ($model->limitPermission) {
                 $step->setPermission(Permission::fromString($model->permission));

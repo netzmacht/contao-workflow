@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Contao\DataContainer;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Manager\Manager;
@@ -69,7 +70,7 @@ class ActionCallbackListener
     /**
      * Get all available types.
      *
-     * @param \DataContainer $dataContainer The data container.
+     * @param DataContainer $dataContainer The data container.
      *
      * @return array
      */

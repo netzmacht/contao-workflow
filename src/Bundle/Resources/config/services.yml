@@ -83,19 +83,33 @@ services:
   netzmacht.contao_workflow.model.workflow_repository:
     class: Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository
     tags:
-      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow' }
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel'
+        }
 
   netzmacht.contao_workflow.model.action_repository:
     class: Netzmacht\Contao\Workflow\Model\Action\ActionRepository
     tags:
-      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_action' }
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\Contao\Workflow\Model\Action\ActionModel'
+        }
 
   netzmacht.contao_workflow.model.step_repository:
     class: Netzmacht\Contao\Workflow\Model\Step\StepRepository
+    tags:
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\Contao\Workflow\Model\Step\StepModel'
+        }
     tags:
       - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_step' }
 
   netzmacht.contao_workflow.model.transition_repository:
     class: Netzmacht\Contao\Workflow\Model\Transition\TransitionRepository
     tags:
-      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_transition' }
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\Contao\Workflow\Model\Transition\TransitionModel'
+        }

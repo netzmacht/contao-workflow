@@ -48,4 +48,16 @@ services:
   netzmacht.contao_workflow.listeners.workflow_actions:
     class: Netzmacht\Contao\Workflow\Backend\EventListener\WorkflowActionsListener
     tags:
-      - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.get_workflow_types', method: 'onGetWorkflowActions' }
+      - {
+          name: 'kernel.event_listener',
+          event: 'netzmacht.contao_workflow.get_workflow_types',
+          method: 'onGetWorkflowActions'
+        }
+
+  netzmacht.contao_workflow.listeners.builder.workflow_builder:
+    class: Netzmacht\Contao\Workflow\Definition\Database\WorkflowBuilder
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.action_factory'
+    tags:
+      - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_workflow', method: 'createWorkflow' }
