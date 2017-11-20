@@ -13,8 +13,6 @@
 
 namespace Netzmacht\Contao\Workflow\View;
 
-use Netzmacht\Contao\Workflow\Data\TranslatedErrorCollection;
-
 /**
  * Class ErrorView renders the error collection.
  *

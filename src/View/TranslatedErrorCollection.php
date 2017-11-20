@@ -11,10 +11,10 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Data;
+namespace Netzmacht\Contao\Workflow\View;
 
-use ContaoCommunityAlliance\Translator\TranslatorInterface as Translator;
-use Netzmacht\Workflow\Data\ErrorCollection;
+use Netzmacht\Workflow\Flow\Context\ErrorCollection;
+use Symfony\Component\Translation\TranslatorInterface as Translator;
 
 /**
  * Class TranslatedErrorCollection translated the error identifiers to a localized error message.
@@ -28,7 +28,7 @@ class TranslatedErrorCollection
      *
      * @var string
      */
-    protected $domain = 'workflow_messages';
+    protected $domain = 'contao_workflow_messages';
 
     /**
      * The error collection.
@@ -51,7 +51,7 @@ class TranslatedErrorCollection
      * @param Translator      $translator      Translator.
      * @param string|null     $domain          Optional error domain.
      */
-    public function __construct(ErrorCollection $errorCollection, Translator $translator, $domain = null)
+    public function __construct(ErrorCollection $errorCollection, Translator $translator, ?string $domain = null)
     {
         $this->errorCollection = $errorCollection;
         $this->translator      = $translator;
@@ -85,7 +85,7 @@ class TranslatedErrorCollection
         foreach ($errorCollection as $error) {
             list ($message, $params, $collection) = $error;
 
-            $message = $this->translator->translate($message, $this->domain, $params);
+            $message = $this->translator->trans($message, $params, $this->domain);
 
             if ($collection) {
                 $collection = $this->translateErrorCollection($collection);
