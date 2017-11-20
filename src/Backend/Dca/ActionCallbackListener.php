@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Workflow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Model\TransitionModel;
 use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
@@ -42,17 +43,26 @@ class ActionCallbackListener
      * @var RepositoryManager
      */
     private $repositoryManager;
+    /**
+     * @var ActionFactory
+     */
+    private $actionFactory;
 
     /**
      * Action constructor.
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param RepositoryManager        $repositoryManager
+     * @param ActionFactory            $actionFactory
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RepositoryManager $repositoryManager)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RepositoryManager $repositoryManager,
+        ActionFactory $actionFactory
+    ) {
         $this->eventDispatcher   = $eventDispatcher;
         $this->repositoryManager = $repositoryManager;
+        $this->actionFactory     = $actionFactory;
     }
 
     /**
@@ -84,7 +94,7 @@ class ActionCallbackListener
         $workflowModel = $this->getWorkflowModel($dataContainer);
         $repository    = $this->repositoryManager->getRepository(RoleModel::class);
         $collection    = $repository->findBy(['.pid=?'], [$workflowModel->id], ['order' => 'label']);
-        $options       = array();
+        $options       = [];
 
         while ($collection && $collection->next()) {
             $options[$collection->id] = $collection->label;

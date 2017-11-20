@@ -23,9 +23,21 @@ use Contao\Model;
 class ContaoModelEntity implements \IteratorAggregate, Entity
 {
     /**
+     * The decorated model.
+     *
      * @var Model
      */
     private $model;
+
+    /**
+     * ContaoModelEntity constructor.
+     *
+     * @param Model $model The model.
+     */
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
 
     /**
      * {@inheritDoc}

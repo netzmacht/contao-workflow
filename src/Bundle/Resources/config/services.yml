@@ -21,3 +21,13 @@ services:
     class: Netzmacht\Contao\Workflow\Action\Property\PropertyActionFactory
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.entity.factory:
+    class: Netzmacht\Contao\Workflow\Entity\DelegatingEntityFactory
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.entity.factory.contao_model:
+    class: Netzmacht\Contao\Workflow\Entity\ContaoModelEntityFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.entity.factory' }

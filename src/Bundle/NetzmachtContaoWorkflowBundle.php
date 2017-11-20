@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Bundle;
 
+use Netzmacht\Contao\Toolkit\Bundle\DependencyInjection\Compiler\AddTaggedServicesAsArgumentPass;
 use Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass\ActionFactoriesPass;
 use Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass\WorkflowTypePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,5 +33,12 @@ class NetzmachtContaoWorkflowBundle extends Bundle
     {
         $container->addCompilerPass(new WorkflowTypePass());
         $container->addCompilerPass(new ActionFactoriesPass());
+
+        $container->addCompilerPass(
+            new AddTaggedServicesAsArgumentPass(
+                'netzmacht.contao_workflow.entity.factory',
+                'netzmacht.contao_workflow.entity.factory'
+            )
+        );
     }
 }

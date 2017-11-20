@@ -66,7 +66,7 @@ class Manager extends WorkflowManager
      *
      * @return Item
      */
-    public function createItem(EntityId $entityId, $model)
+    public function createItem(EntityId $entityId, $model): Item
     {
         $event = new CreateEntityEvent($model, $entityId->getProviderName());
         $this->eventDispatcher->dispatch($event::NAME, $event);
