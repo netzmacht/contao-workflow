@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Model;
+namespace Netzmacht\Contao\Workflow\Model\State;
 
 /**
  * Class StateModel.

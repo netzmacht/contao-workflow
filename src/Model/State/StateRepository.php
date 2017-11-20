@@ -11,9 +11,13 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Data;
+namespace Netzmacht\Contao\Workflow\Model\State;
 
-use Netzmacht\Contao\Workflow\Model\StateModel;
+use Contao\Model;
+use Contao\StringUtil;
+use Contao\Validator;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Workflow\Model\State\StateModel;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository as WorkflowStateRepository;
 use Netzmacht\Workflow\Flow\State;
@@ -26,6 +30,23 @@ use Netzmacht\Workflow\Flow\State;
 class StateRepository implements WorkflowStateRepository
 {
     /**
+     * Contao model repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * StateRepository constructor.
+     *
+     * @param RepositoryManager $repositoryManager Contao model repository manager.
+     */
+    public function __construct(RepositoryManager $repositoryManager)
+    {
+        $this->repositoryManager = $repositoryManager;
+    }
+
+    /**
      * Find last worfklow state of an entity.
      *
      * @param EntityId $entityId The entity id.
@@ -34,10 +55,11 @@ class StateRepository implements WorkflowStateRepository
      */
     public function find(EntityId $entityId)
     {
-        $collection = StateModel::findBy(
-            array('tl_workflow_state.entityId=?'),
-            array((string) $entityId),
-            array('order' => 'tl_workflow_state.reachedAt')
+        $repository = $this->repositoryManager->getRepository(StateModel::class);
+        $collection = $repository->findBy(
+            ['.entityId=?'],
+            [(string) $entityId],
+            ['order' => 'tl_workflow_state.reachedAt']
         );
 
         $states = array();
@@ -58,7 +80,7 @@ class StateRepository implements WorkflowStateRepository
      *
      * @return void
      */
-    public function add(State $state)
+    public function add(State $state): void
     {
         // state is immutable. only store new states.
         if ($state->getStateId()) {
@@ -66,7 +88,7 @@ class StateRepository implements WorkflowStateRepository
         }
 
         $model = $this->convertStateToModel($state);
-        $model->save();
+        $this->repositoryManager->getRepository(StateModel::class)->save($model);
 
         // dynamically add state id.
         $reflector = new \ReflectionObject($state);
@@ -102,7 +124,7 @@ class StateRepository implements WorkflowStateRepository
     /**
      * Create the state object.
      *
-     * @param StateModel $model The state model.
+     * @param StateModel|Model $model The state model.
      *
      * @return State
      */
@@ -110,6 +132,7 @@ class StateRepository implements WorkflowStateRepository
     {
         $reachedAt = new \DateTime();
         $reachedAt->setTimestamp($model->reachedAt);
+        $reachedAt = \DateTimeImmutable::createFromMutable($reachedAt);
 
         $state = new State(
             EntityId::fromString($model->entityId),
@@ -153,8 +176,8 @@ class StateRepository implements WorkflowStateRepository
             foreach ($data as $key => $value) {
                 $data[$key] = $this->prepareSerialize($value);
             }
-        } elseif(\Validator::isBinaryUuid($data)) {
-            $data = \String::binToUuid($data);
+        } elseif(Validator::isBinaryUuid($data)) {
+            $data = StringUtil::binToUuid($data);
         }
 
         return $data;

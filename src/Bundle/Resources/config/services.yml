@@ -46,11 +46,16 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.entity_manager'
 
+  netzmacht.contao_workflow.state_repository:
+    class: Netzmacht\Contao\Workflow\Model\State\StateRepository
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+
   netzmacht.contao_workflow.manager:
     class: Netzmacht\Contao\Workflow\Manager\ContaoWorkflowManager
     arguments:
       - '@netzmacht.contao_workflow.transition_handler_factory'
-      - ''
+      - '@netzmacht.contao_workflow.state_repository'
       - '@netzmacht.contao_workflow.entity_factory'
       - []
 
