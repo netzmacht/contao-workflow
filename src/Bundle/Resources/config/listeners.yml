@@ -2,17 +2,6 @@ services:
   _defaults:
     public: true
 
-  netzmacht.contao_workflow.listeners.create_user_roles_listener:
-    class: Netzmacht\Contao\Workflow\Listener\CreateUserRolesListener
-    arguments:
-      - '@contao.framework'
-      - '@netzmacht.contao_toolkit.routing.scope_matcher'
-      - '@netzmacht.contao_toolkit.repository_manager'
-      - '@netzmacht.contao_workflow.user'
-      - '@translator'
-    tags:
-      - { name: 'contao.hook', hook: 'initializeSystem' }
-
   netzmacht.contao_workflow.listeners.dca.save_permission_callback:
     class: Netzmacht\Contao\Workflow\Backend\Dca\SavePermissionsCallbackListener
     arguments:

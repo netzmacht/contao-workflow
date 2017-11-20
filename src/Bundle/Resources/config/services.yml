@@ -65,3 +65,13 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.manager.lazy.inner'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
+
+  netzmacht.contao_workflow.security.step_voter:
+    class: Netzmacht\Contao\Workflow\Security\StepPermissionVoter
+    tags:
+      - { name: 'security.voter' }
+
+  netzmacht.contao_workflow.security.transition_voter:
+    class: Netzmacht\Contao\Workflow\Security\TransitionPermissionVoter
+    tags:
+      - { name: 'security.voter' }
