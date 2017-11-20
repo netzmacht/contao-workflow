@@ -6,18 +6,15 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Data;
+namespace Netzmacht\Contao\Workflow\Entity;
 
 use Assert\Assertion;
-use ContaoCommunityAlliance\DcGeneral\Data\CollectionInterface;
-use ContaoCommunityAlliance\DcGeneral\Data\DataProviderInterface as DataProvider;
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface as Entity;
-use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
+use Netzmacht\Contao\Toolkit\Data\Model\Repository;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
 
@@ -29,20 +26,20 @@ use Netzmacht\Workflow\Data\Specification;
 class EntityRepository implements WorkflowEntityRepository
 {
     /**
-     * The used data provider.
+     * Contao model repository.
      *
-     * @var DataProvider
+     * @var Repository
      */
-    private $provider;
+    private $repository;
 
     /**
      * Construct.
      *
-     * @param DataProvider $provider The data provider.
+     * @param Repository $repository Contao model repository.
      */
-    public function __construct(DataProvider $provider)
+    public function __construct(Repository $repository)
     {
-        $this->provider = $provider;
+        $this->repository = $repository;
     }
 
     /**
@@ -58,11 +55,12 @@ class EntityRepository implements WorkflowEntityRepository
     {
         Assertion::isInstanceOf(
             $entity,
-            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
-            'Entity repository requires an instance of the ModelInterface'
+            ContaoModelEntity::class,
+            'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        $this->provider->save($entity);
+        /** @var ContaoModelEntity $entity */
+        $this->repository->save($entity->getModel());
     }
 
     /**
@@ -76,16 +74,13 @@ class EntityRepository implements WorkflowEntityRepository
      */
     public function find($entityId)
     {
-        $config = $this->provider->getEmptyConfig();
-        $config->setId($entityId);
-
-        $model = $this->provider->fetch($config);
+        $model = $this->repository->find((int) $entityId);
 
         if (!$model) {
             throw new \InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
         }
 
-        return $model;
+        return new ContaoModelEntity($model);
     }
 
     /**
@@ -95,27 +90,13 @@ class EntityRepository implements WorkflowEntityRepository
      *
      * @param Specification $specification The specification.
      *
-     * @return array|CollectionInterface|ModelInterface[]|\string[]
+     * @return array|Entity|\string[]
      */
     public function findBySpecification(Specification $specification)
     {
-        if ($specification instanceof QuerySpecification) {
-            $config = $this->provider->getEmptyConfig();
-            $specification->prepare($config);
+        // Todo: Implement.
 
-            return $this->provider->fetchAll($config);
-        }
-
-        $result   = $this->provider->fetchAll($this->provider->getEmptyConfig());
-        $filtered = array();
-
-        foreach ($result as $entity) {
-            if ($specification->isSatisfiedBy($entity)) {
-                $filtered[] = $entity;
-            }
-        }
-
-        return $filtered;
+        throw new \RuntimeException('Not implemented yet.');
     }
 
     /**
@@ -129,10 +110,11 @@ class EntityRepository implements WorkflowEntityRepository
     {
         Assertion::isInstanceOf(
             $entity,
-            'ContaoCommunityAlliance\DcGeneral\Data\ModelInterface',
-            'Entity repository requires an instance of the ModelInterface'
+            ContaoModelEntity::class,
+            'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        $this->provider->delete($entity);
+        /** @var ContaoModelEntity $entity */
+        $this->repository->delete($entity->getModel());
     }
 }

@@ -100,4 +100,14 @@ class ContaoModelEntity implements \IteratorAggregate, Entity
     {
         return new \ArrayIterator($this->model->row());
     }
+
+    /**
+     * Get the wrapped model.
+     *
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
 }

@@ -31,3 +31,11 @@ services:
     class: Netzmacht\Contao\Workflow\Entity\ContaoModelEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity.factory' }
+
+  netzmacht.contao_workflow.transition_handler_factory:
+    class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory
+
+  netzmacht.contao_workflow.manager:
+    class: Netzmacht\Contao\Workflow\Manager\ContaoWorkflowManager
+    arguments:
+      -

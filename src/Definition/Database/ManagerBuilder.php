@@ -15,7 +15,7 @@ namespace Netzmacht\Contao\Workflow\Definition\Database;
 
 use Netzmacht\Contao\Workflow\Definition\Definition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
-use Netzmacht\Contao\Workflow\Manager as ContaoWorkflowManager;
+use Netzmacht\Contao\Workflow\Manager\ContaoWorkflowManager as ContaoWorkflowManager;
 use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\ServiceContainerTrait;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;

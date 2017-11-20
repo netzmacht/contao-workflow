@@ -15,7 +15,7 @@
 use ContaoCommunityAlliance\Translator\Contao\LangArrayTranslator;
 use ContaoCommunityAlliance\Translator\TranslatorChain;
 use ContaoCommunityAlliance\Translator\TranslatorInterface;
-use Netzmacht\Contao\Workflow\Data\EntityManager;
+use Netzmacht\Contao\Workflow\Entity\EntityManager;
 use Netzmacht\Contao\Workflow\Data\StateRepository;
 use Netzmacht\Contao\Workflow\Data\EntityFactory;
 use Netzmacht\Contao\Workflow\Data\RepositoryFactory;

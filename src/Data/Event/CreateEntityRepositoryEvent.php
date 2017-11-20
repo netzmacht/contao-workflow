@@ -13,7 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Data\Event;
 
-use Netzmacht\Contao\Workflow\Data\EntityRepository;
+use Netzmacht\Contao\Workflow\Entity\EntityRepository;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

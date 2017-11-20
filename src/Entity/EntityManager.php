@@ -11,11 +11,13 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Data;
+namespace Netzmacht\Contao\Workflow\Entity;
 
-use Netzmacht\Contao\Workflow\Data\RepositoryFactory;
+use Contao\CoreBundle\Framework\Adapter;
+use Contao\Model;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
-use Netzmacht\Workflow\Transaction\Event\TransactionEvent;
+use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Transaction\TransactionHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscriber;
 
@@ -29,49 +31,48 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscribe
 class EntityManager implements WorkflowEntityManager, TransactionHandler, EventSubscriber
 {
     /**
-     * The database connection.
-     *
-     * @var \Database
+     * @var RepositoryManager
      */
-    private $connection;
+    private $repositoryManager;
 
     /**
-     * The repository factory.
+     * Contao model adapter.
      *
-     * @var RepositoryFactory
+     * @var Adapter|Model
      */
-    private $repositoryFactory;
+    private $modelAdapter;
+
+    /**
+     * Entity repositories.
+     *
+     * @var EntityRepository[]|array
+     */
+    private $repositories = [];
 
     /**
      * The database connection.
      *
-     * @param \Database         $connection        The database connection.
-     * @param RepositoryFactory $repositoryFactory The repositroy factory.
+     * @param RepositoryManager $repositoryManager Repository manager.
+     * @param Adapter|Model     $modelAdapter      Model adapter.
      */
-    public function __construct(\Database $connection, RepositoryFactory $repositoryFactory)
+    public function __construct(RepositoryManager $repositoryManager, $modelAdapter)
     {
-        $this->connection        = $connection;
-        $this->repositoryFactory = $repositoryFactory;
+        $this->repositoryManager = $repositoryManager;
+        $this->modelAdapter      = $modelAdapter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public function getRepository(string $providerName): EntityRepository
     {
-        return array(
-            TransactionEvent::TRANSACTION_BEGIN    => 'begin',
-            TransactionEvent::TRANSACTION_COMMIT   => 'commit',
-            TransactionEvent::TRANSACTION_ROLLBACK => 'rollback',
-        );
-    }
+        if (isset($this->repositories[$providerName])) {
+            return $this->repositories[$providerName];
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRepository($providerName)
-    {
-        return $this->repositoryFactory->create($providerName);
+        $modelClass = $this->modelAdapter->getClassFromTable($providerName);
+
+        return $this->repositoryManager->getRepository($modelClass);
     }
 
     /**
