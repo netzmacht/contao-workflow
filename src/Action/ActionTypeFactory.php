@@ -26,6 +26,13 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 interface ActionTypeFactory
 {
     /**
+     * Get the category.
+     *
+     * @return string
+     */
+    public function getCategory(): string;
+
+    /**
      * Get name of the action.
      *
      * @return string
@@ -33,23 +40,32 @@ interface ActionTypeFactory
     public function getName(): string;
 
     /**
+     * Check if workflow is supported.
+     *
+     * @param Workflow $workflow The workflow in which the action should be handled.
+     *
+     * @return bool
+     */
+    public function supports(Workflow $workflow): bool;
+
+    /**
      * Create an action.
      *
      * @param array      $config     Action config.
-     * @param Workflow   $workflow   Workflow in which the action occurs.
      * @param Transition $transition Transition to which the action belongs.
      *
      * @return Action
      */
-    public function create(array $config, Workflow $workflow, Transition $transition): Action;
+    public function create(array $config, Transition $transition): Action;
 
     /**
      * Build the form.
      *
      * @param FormBuilder $formBuilder The form builder.
      * @param array       $config      The action config.
+     * @param Transition  $transition  Transition to which the action belongs.
      *
      * @return void
      */
-    public function buildForm(FormBuilder $formBuilder, array $config): void;
+    public function buildForm(FormBuilder $formBuilder, array $config, Transition $transition): void;
 }

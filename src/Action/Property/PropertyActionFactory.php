@@ -32,15 +32,31 @@ class PropertyActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
-    public function getName(): string
+    public function getCategory(): string
     {
-        return 'default_property';
+        return 'default';
     }
 
     /**
      * {@inheritDoc}
      */
-    public function create(array $config, Workflow $workflow, Transition $transition): Action
+    public function getName(): string
+    {
+        return 'property';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supports(Workflow $workflow): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function create(array $config, Transition $transition): Action
     {
         $action = new PropertyAction($config['name'] ?: $config['id'],
             $config['label'],
@@ -63,7 +79,7 @@ class PropertyActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $formBuilder, array $config): void
+    public function buildForm(FormBuilder $formBuilder, array $config, Transition $transition): void
     {
         if (!empty($config['value'])) {
             return;

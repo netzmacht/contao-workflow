@@ -60,6 +60,51 @@ class ActionFactory
     }
 
     /**
+     * Get the supported type names.
+     *
+     * @param Workflow $workflow The workflow.
+     * @param bool     $categorized If true the type names are grouped by category.
+     *
+     * @return array|ActionTypeFactory[]|ActionTypeFactory[][]
+     */
+    public function getSupportedTypeNames(Workflow $workflow, bool $categorized = false): array
+    {
+        if (!$categorized) {
+            return array_map(
+                function (ActionTypeFactory $factory) {
+                    return $factory->getName();
+                },
+                $this->getSupportedTypes($workflow)
+            );
+        }
+
+        $names = [];
+
+        foreach ($this->getSupportedTypes($workflow) as $factory) {
+            $names[$factory->getCategory()][] = $factory->getName();
+        }
+
+        return $names;
+    }
+
+    /**
+     * Get all supported workflow types.
+     *
+     * @param Workflow $workflow The workflow.
+     *
+     * @return array|ActionTypeFactory[]
+     */
+    public function getSupportedTypes(Workflow $workflow): array
+    {
+        return array_filter(
+            $this->factories,
+            function (ActionTypeFactory $factory) use ($workflow) {
+                return $factory->supports($workflow);
+            }
+        );
+    }
+
+    /**
      * Create an action.
      *
      * @param string     $type       The action type.
