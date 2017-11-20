@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

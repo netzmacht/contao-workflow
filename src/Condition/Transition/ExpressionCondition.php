@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Condition\Transition;
 
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
@@ -57,7 +59,7 @@ class ExpressionCondition implements Condition
      *
      * @return string
      */
-    public function getExpression()
+    public function getExpression(): string
     {
         return $this->expression;
     }

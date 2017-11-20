@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Backend;
 
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;

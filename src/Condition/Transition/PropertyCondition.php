@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Condition\Transition;
 
 use Netzmacht\Contao\Workflow\Entity\Entity;
@@ -53,7 +55,7 @@ class PropertyCondition implements Condition
      *
      * @return string
      */
-    public function getOperator()
+    public function getOperator(): string
     {
         return $this->operator;
     }
@@ -65,7 +67,7 @@ class PropertyCondition implements Condition
      *
      * @return $this
      */
-    public function setOperator($operator)
+    public function setOperator(string $operator): self
     {
         $this->operator = $operator;
 
@@ -77,7 +79,7 @@ class PropertyCondition implements Condition
      *
      * @return string
      */
-    public function getProperty()
+    public function getProperty(): ?string
     {
         return $this->property;
     }
@@ -89,7 +91,7 @@ class PropertyCondition implements Condition
      *
      * @return $this
      */
-    public function setProperty($property)
+    public function setProperty(string $property): self
     {
         $this->property = $property;
 
@@ -113,7 +115,7 @@ class PropertyCondition implements Condition
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->value = $value;
 

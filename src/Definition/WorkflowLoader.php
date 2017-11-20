@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Definition;
 
 use Netzmacht\Workflow\Flow\Workflow;
