@@ -15,6 +15,7 @@ namespace Netzmacht\Contao\Workflow\Entity;
 
 use Assert\Assertion;
 use Netzmacht\Contao\Toolkit\Data\Model\Repository;
+use Netzmacht\Contao\Toolkit\Data\Model\Specification as ModelSpecification;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
 
@@ -90,13 +91,34 @@ class EntityRepository implements WorkflowEntityRepository
      *
      * @param Specification $specification The specification.
      *
-     * @return array|Entity|\string[]
+     * @return Entity[]
      */
     public function findBySpecification(Specification $specification)
     {
-        // Todo: Implement.
+        if ($specification instanceof ModelSpecification) {
+            $models   = $this->repository->findBySpecification($specification) ?: [];
+            $entities = [];
 
-        throw new \RuntimeException('Not implemented yet.');
+            foreach ($models as $model) {
+                $entities[] = new ContaoModelEntity($model);
+            }
+
+            return $entities;
+        }
+
+        $models   = $this->repository->findAll() ?: [];
+        $entities = [];
+
+        foreach ($models as $model) {
+            $entities[] = new ContaoModelEntity($model);
+        }
+
+        return array_filter(
+            $entities,
+            function (Entity $entity) use ($specification) {
+                return $specification->isSatisfiedBy($entity);
+            }
+        );
     }
 
     /**
