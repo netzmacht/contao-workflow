@@ -6,11 +6,10 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014 netzmacht creative David Molineus
+ * @copyright  2014-2017 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
-
 
 array_insert($GLOBALS['BE_MOD'], 1, array
 (
@@ -38,24 +37,6 @@ array_insert($GLOBALS['BE_MOD'], 1, array
  * Permissions
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
-
-
-/*
- * Workflow types
- */
-$GLOBALS['WORKFLOW_TYPES'][] = 'Netzmacht\Contao\Workflow\Type\DefaultWorkflowType';
-
-
-/*
- * Hooks
- */
-$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = array('Netzmacht\Contao\Workflow\Boot', 'startup');
-$GLOBALS['TL_HOOKS']['initializeDependencyContainer'][] = function($container) {
-    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
-    $eventDispatcher = $container['event-dispatcher'];
-    $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.repository']);
-    $eventDispatcher->addSubscriber($GLOBALS['container']['workflow.factory.entity']);
-};
 
 
 /*
