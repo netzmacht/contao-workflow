@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Action;
 
 use Netzmacht\Contao\Toolkit\Assertion\Assertion;
@@ -62,7 +64,7 @@ class ActionFactory
     /**
      * Get the supported type names.
      *
-     * @param Workflow $workflow The workflow.
+     * @param Workflow $workflow    The workflow.
      * @param bool     $categorized If true the type names are grouped by category.
      *
      * @return array|ActionTypeFactory[]|ActionTypeFactory[][]
@@ -112,6 +114,8 @@ class ActionFactory
      * @param Transition $transition Transition to which the action belongs.
      *
      * @return Action
+     *
+     * @throws UnsupportedActionType When no action could be created.
      */
     public function create(string $type, array $config, Transition $transition): Action
     {
@@ -131,6 +135,8 @@ class ActionFactory
      * @param string      $type        The action type.
      * @param array       $config      The action config.
      * @param Transition  $transition  Workflow transition.
+     *
+     * @return void
      */
     public function buildForm(FormBuilder $formBuilder, string $type, array $config, Transition $transition): void
     {

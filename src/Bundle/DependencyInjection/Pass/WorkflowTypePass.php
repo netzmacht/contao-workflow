@@ -37,7 +37,7 @@ class WorkflowTypePass implements CompilerPassInterface
         $serviceIds = $container->findTaggedServiceIds('netzmacht.contao_workflow.type');
         $types      = (array) $definition->getArgument(0);
 
-        foreach ($serviceIds as $serviceId => $tags) {
+        foreach (array_keys($serviceIds) as $serviceId) {
             $types[] = new Reference($serviceId);
         }
 

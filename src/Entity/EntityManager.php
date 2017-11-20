@@ -31,6 +31,8 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
 class EntityManager implements WorkflowEntityManager, TransactionHandler
 {
     /**
+     * Contao model repository manager.
+     *
      * @var RepositoryManager
      */
     private $repositoryManager;

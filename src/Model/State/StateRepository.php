@@ -46,7 +46,7 @@ class StateRepository implements WorkflowStateRepository
     }
 
     /**
-     * Find last worfklow state of an entity.
+     * Find last workflow state of an entity.
      *
      * @param EntityId $entityId The entity id.
      *
@@ -175,7 +175,7 @@ class StateRepository implements WorkflowStateRepository
             foreach ($data as $key => $value) {
                 $data[$key] = $this->prepareSerialize($value);
             }
-        } elseif(Validator::isBinaryUuid($data)) {
+        } elseif (Validator::isBinaryUuid($data)) {
             $data = StringUtil::binToUuid($data);
         }
 

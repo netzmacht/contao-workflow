@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Workflow\Model\Step\StepModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
@@ -26,21 +27,21 @@ use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
  *
  * @package Netzmacht\Contao\Workflow\Contao\Dca
  */
-class TransitionCallbackListener
+class TransitionCallbackListener extends AbstractListener
 {
+    /**
+     * Table name.
+     *
+     * @var string
+     */
+    protected static $name = 'tl_workflow_transition';
+
     /**
      * Type provider.
      *
      * @var WorkflowTypeProvider
      */
     private $typeProvider;
-
-    /**
-     * Data container manager.
-     *
-     * @var DcaManager
-     */
-    private $dcaManager;
 
     /**
      * Repository manager.
@@ -52,50 +53,19 @@ class TransitionCallbackListener
     /**
      * Transition constructor.
      *
-     * @param WorkflowTypeProvider $typeProvider
-     * @param DcaManager           $dcaManager
-     * @param RepositoryManager    $repositoryManager
+     * @param WorkflowTypeProvider $typeProvider      Type provider.
+     * @param DcaManager           $dcaManager        Data container manager.
+     * @param RepositoryManager    $repositoryManager Repository manager.
      */
     public function __construct(
         WorkflowTypeProvider $typeProvider,
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager
     ) {
+        parent::__construct($dcaManager);
+
         $this->typeProvider      = $typeProvider;
-        $this->dcaManager        = $dcaManager;
         $this->repositoryManager = $repositoryManager;
-    }
-
-    /**
-     * Adjust the input mask.
-     *
-     * @return void
-     */
-    public function adjustEditMask(): void
-    {
-        $workflow = $this->repositoryManager->getRepository(WorkflowModel::class)->find((int) CURRENT_ID);
-
-        if (!$workflow || !$this->typeProvider->hasType($workflow->type)) {
-            return;
-        }
-
-        $workflowType = $this->typeProvider->getType($workflow->type);
-        $definition   = $this->dcaManager->getDefinition('tl_workflow_transition');
-
-        if ($workflowType->hasFixedTransitions()) {
-            $dca = (array) $definition->get(['fields', 'name']);
-
-            $dca['inputType']                  = 'select';
-            $dca['options']                    = $workflowType->getTransitionNames();
-            $dca['eval']['includeBlankOption'] = true;
-
-            $definition->set(['fields', 'name'], $dca);
-        } else {
-            $callbacks   = $definition->get(['fields', 'name', 'save_callback']);
-            $callbacks[] = ['netzmacht.contao_workflow.listeners.dca.common', 'createName'];
-
-            $definition->set(['fields', 'name', 'save_callback'], $callbacks);
-        }
     }
 
     /**

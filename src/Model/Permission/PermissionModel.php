@@ -24,7 +24,6 @@ use Contao\Model;
  * @property string source
  * @property int    source_id
  * @property string $permission
- * @package Netzmacht\Contao\Workflow\Model
  */
 class PermissionModel extends Model
 {

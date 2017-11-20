@@ -52,7 +52,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
 
     'fields' => [
         'id'             => [
-            'sql' => "int(10) unsigned NOT NULL auto_increment",
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'tstamp'         => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -81,10 +81,10 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'data'           => [
-            'sql' => "text NULL",
+            'sql' => 'text NULL',
         ],
         'errors'         => [
-            'sql' => "text NULL",
+            'sql' => 'text NULL',
         ],
     ],
 

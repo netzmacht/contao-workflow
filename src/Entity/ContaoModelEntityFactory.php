@@ -34,6 +34,8 @@ class ContaoModelEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnsupportedEntity When no entity could be created.
      */
     public function create(EntityId $entityId, $data): Entity
     {

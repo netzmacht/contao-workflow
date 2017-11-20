@@ -43,7 +43,7 @@ class SavePermissionsCallbackListener
     /**
      * Construct.
      *
-     * @param RepositoryManager $repositoryManager
+     * @param RepositoryManager $repositoryManager Repository manager.
      */
     public function __construct(RepositoryManager $repositoryManager)
     {
@@ -78,8 +78,8 @@ class SavePermissionsCallbackListener
     private function loadPermissions(string $source, int $rowId): void
     {
         $permissions = array();
-        $query      = 'SELECT * FROM tl_workflow_permission WHERE source=:source AND source_id=:source_id';
-        $statement  = $this->repositoryManager->getConnection()->prepare($query);
+        $query       = 'SELECT * FROM tl_workflow_permission WHERE source=:source AND source_id=:source_id';
+        $statement   = $this->repositoryManager->getConnection()->prepare($query);
         $statement->execute(['source' => $source, 'source_id' => $rowId]);
 
         while ($result = $statement->fetch(\PDO::FETCH_OBJ)) {

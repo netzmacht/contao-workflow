@@ -14,12 +14,12 @@
 namespace Netzmacht\Contao\Workflow\Model\Transition;
 
 use Contao\Model;
+use Contao\Model\Collection;
 
 /**
  * TransitionModel using Contao models.
  *
- * @package Netzmacht\Contao\Workflow\Contao\Model
- * @property int $id
+ * @property int    $id
  * @property string $name
  * @property string $label
  * @property bool   $final
@@ -41,7 +41,7 @@ class TransitionModel extends Model
      *
      * @param int $workflowId The workflow id.
      *
-     * @return \Model\Collection|null
+     * @return TransitionModel[]|Collection|null
      */
     public static function findByWorkflow($workflowId)
     {

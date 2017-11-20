@@ -45,27 +45,31 @@ class StateCallbackListener
     private $entityManager;
 
     /**
+     * Workflow manager.
+     *
      * @var WorkflowManager
      */
     private $manager;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param TemplateEngine      $templateEngine
-     * @param EntityManager       $entityManager
-     * @param WorkflowManager     $manager
+     * Construct.
+     *
+     * @param TranslatorInterface $translator     The translator.
+     * @param TemplateEngine      $templateEngine The template engine.
+     * @param EntityManager       $entityManager  The entity manager.
+     * @param WorkflowManager     $manager        The workflow manager.
      */
     public function __construct(
         TranslatorInterface $translator,
-        TemplateEngine $templateEngine
-//        EntityManager $entityManager,
-//        WorkflowManager $manager
+        TemplateEngine $templateEngine,
+        EntityManager $entityManager,
+        WorkflowManager $manager
     ) {
         $this->translator     = $translator;
         $this->defaultDomain  = 'contao_tl_workflow_state';
         $this->templateEngine = $templateEngine;
-//        $this->entityManager  = $entityManager;
-//        $this->manager        = $manager;
+        $this->entityManager  = $entityManager;
+        $this->manager        = $manager;
     }
 
     /**
@@ -123,6 +127,7 @@ class StateCallbackListener
     {
         return $row['stepName'];
 
+        /* @codingStandardsIgnoreStart */
         try {
             $entityId = EntityId::fromString($row['entityId']);
             $entity   = $this->entityManager
@@ -147,5 +152,6 @@ class StateCallbackListener
         }
 
         return $this->templateEngine->render('toolkit:be:be_workflow_state_row.html5', $row);
+        /* @codingStandardsIgnoreEnd */
     }
 }

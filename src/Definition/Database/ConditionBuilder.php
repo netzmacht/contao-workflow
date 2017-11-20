@@ -28,6 +28,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 class ConditionBuilder implements EventSubscriberInterface
 {
     /**
+     * The expression language.
+     *
      * @var ExpressionLanguage
      */
     private $expressionLanguage;
@@ -49,7 +51,7 @@ class ConditionBuilder implements EventSubscriberInterface
     /**
      * ConditionBuilder constructor.
      *
-     * @param ExpressionLanguage $expressionLanguage
+     * @param ExpressionLanguage $expressionLanguage The expression language.
      */
     public function __construct(ExpressionLanguage $expressionLanguage)
     {

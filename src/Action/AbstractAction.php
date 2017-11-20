@@ -35,18 +35,6 @@ abstract class AbstractAction extends Base implements Action
     private $logChanges = true;
 
     /**
-     * Construct.
-     *
-     * @param string   $name     Name of the action.
-     * @param string   $label    Label of the action.
-     * @param array    $config   Optional config.
-     */
-    public function __construct(string $name, string $label = '', array $config = array())
-    {
-        parent::__construct($name, $label, $config);
-    }
-
-    /**
      * Consider if changes are logged.
      *
      * @return boolean

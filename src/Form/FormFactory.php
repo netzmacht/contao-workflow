@@ -70,7 +70,7 @@ class FormFactory implements EventSubscriberInterface
      */
     public function createForm($type, $name)
     {
-        switch($type) {
+        switch ($type) {
             case static::BACKEND:
             case static::BE:
                 return new BackendForm($name);

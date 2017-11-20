@@ -11,37 +11,42 @@
  * @filesource
  */
 
-array_insert($GLOBALS['BE_MOD'], 1, array
-(
-    'workflow' => array(
-        'workflows' => array(
-            'icon'   => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
-            'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
-            'tables' => array(
-                'tl_workflow',
-                'tl_workflow_step',
-                'tl_workflow_transition',
-                'tl_workflow_action',
-            ),
-        ),
-        'workflow_history' => array(
-            'icon'   => 'system/themes/default/images/news.gif',
-            'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
-            'tables' => array('tl_workflow_state'),
-        )
-    )
-));
+array_insert(
+    $GLOBALS['BE_MOD'],
+    1,
+    [
+        'workflow' => [
+            'workflows'        => [
+                'icon'       => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
+                'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
+                'tables'     => [
+                    'tl_workflow',
+                    'tl_workflow_step',
+                    'tl_workflow_transition',
+                    'tl_workflow_action',
+                ],
+            ],
+            'workflow_history' => [
+                'icon'       => 'system/themes/default/images/news.gif',
+                'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
+                'tables'     => ['tl_workflow_state'],
+            ],
+        ],
+    ]
+);
 
 
 /*
  * Permissions
  */
+
 $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
 
 
 /*
  * Models
  */
+
 $GLOBALS['TL_MODELS']['tl_workflow']            = \Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel::class;
 $GLOBALS['TL_MODELS']['tl_workflow_action']     = \Netzmacht\Contao\Workflow\Model\Action\ActionModel::class;
 $GLOBALS['TL_MODELS']['tl_workflow_step']       = \Netzmacht\Contao\Workflow\Model\Step\StepModel::class;

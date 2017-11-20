@@ -90,7 +90,7 @@ class WorkflowBuilder
      *
      * @return void
      *
-     * @Suppress(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function createWorkflow(
         CreateWorkflowEvent $event,

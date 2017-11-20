@@ -58,7 +58,8 @@ class PropertyActionFactory implements ActionTypeFactory
      */
     public function create(array $config, Transition $transition): Action
     {
-        $action = new PropertyAction($config['name'] ?: $config['id'],
+        $action = new PropertyAction(
+            $config['name'] ?: $config['id'],
             $config['label'],
             $config
         );

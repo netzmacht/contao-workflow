@@ -21,7 +21,7 @@ namespace Netzmacht\Contao\Workflow\Type;
 class DefaultWorkflowType implements WorkflowType
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -29,7 +29,7 @@ class DefaultWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasFixedSteps()
     {
@@ -37,7 +37,7 @@ class DefaultWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getStepNames()
     {
@@ -45,7 +45,7 @@ class DefaultWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasFixedTransitions()
     {
@@ -53,7 +53,7 @@ class DefaultWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getTransitionNames()
     {

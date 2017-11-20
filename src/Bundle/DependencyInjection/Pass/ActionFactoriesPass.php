@@ -35,7 +35,7 @@ class ActionFactoriesPass implements CompilerPassInterface
         $factories  = (array) $definition->getArgument(0);
         $serviceIds = $container->findTaggedServiceIds('netzmacht.contao_workflow.action');
 
-        foreach ($serviceIds as $serviceId => $tags) {
+        foreach (array_keys($serviceIds) as $serviceId) {
             $factories[] = new Reference($serviceId);
         }
 

@@ -13,6 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
+use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
 
 /**
@@ -39,6 +40,8 @@ interface EntityFactory
      * @param mixed    $data     The entity data.
      *
      * @return Entity
+     *
+     * @throws UnsupportedEntity When no entity could be created.
      */
     public function create(EntityId $entityId, $data): Entity;
 }

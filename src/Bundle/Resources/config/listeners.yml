@@ -43,7 +43,8 @@ services:
     arguments:
       - '@translator'
       - '@templating'
-      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.manager'
 
   netzmacht.contao_workflow.listeners.workflow_actions:
     class: Netzmacht\Contao\Workflow\Backend\EventListener\WorkflowActionsListener

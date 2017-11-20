@@ -53,9 +53,9 @@ class ActionCallbackListener
     /**
      * Action constructor.
      *
-     * @param RepositoryManager $repositoryManager
-     * @param Manager           $manager
-     * @param ActionFactory     $actionFactory
+     * @param RepositoryManager $repositoryManager Repository manager.
+     * @param Manager           $manager           Workflow manager.
+     * @param ActionFactory     $actionFactory     The action factory.
      */
     public function __construct(
         RepositoryManager $repositoryManager,

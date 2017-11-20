@@ -36,6 +36,7 @@ class LazyLoadingWorkflowManager implements Manager
 
     /**
      * The workflow definition loader.
+     *
      * @var WorkflowLoader
      */
     private $workflowLoader;
