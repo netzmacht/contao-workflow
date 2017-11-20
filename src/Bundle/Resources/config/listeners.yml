@@ -34,8 +34,9 @@ services:
   netzmacht.contao_workflow.listeners.dca.action:
     class: Netzmacht\Contao\Workflow\Backend\Dca\ActionCallbackListener
     arguments:
-      - '@event_dispatcher'
       - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.action_factory'
 
   netzmacht.contao_workflow.listeners.dca.state:
     class: Netzmacht\Contao\Workflow\Backend\Dca\StateCallbackListener

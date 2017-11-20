@@ -46,6 +46,7 @@ services:
 
   netzmacht.contao_workflow.transition_handler_factory:
     class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory
+    arguments:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.entity_manager'
 
@@ -83,6 +84,11 @@ services:
     class: Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository
     tags:
       - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow' }
+
+  netzmacht.contao_workflow.model.action_repository:
+    class: Netzmacht\Contao\Workflow\Model\Action\ActionRepository
+    tags:
+      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_action' }
 
   netzmacht.contao_workflow.model.step_repository:
     class: Netzmacht\Contao\Workflow\Model\Step\StepRepository

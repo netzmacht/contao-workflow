@@ -17,11 +17,9 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Action\ActionFactory;
-use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
-use Netzmacht\Contao\Workflow\Model\RoleModel;
+use Netzmacht\Contao\Workflow\Manager\Manager;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class Action is used for tl_workflow_action callbacks.
@@ -31,19 +29,22 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ActionCallbackListener
 {
     /**
-     * Event dispatcher.
-     *
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * Repository manager.
      *
      * @var RepositoryManager
      */
     private $repositoryManager;
+
     /**
+     * Workflow manager.
+     *
+     * @var Manager
+     */
+    private $manager;
+
+    /**
+     * The action factory.
+     *
      * @var ActionFactory
      */
     private $actionFactory;
@@ -51,17 +52,17 @@ class ActionCallbackListener
     /**
      * Action constructor.
      *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RepositoryManager        $repositoryManager
-     * @param ActionFactory            $actionFactory
+     * @param RepositoryManager $repositoryManager
+     * @param Manager           $manager
+     * @param ActionFactory     $actionFactory
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         RepositoryManager $repositoryManager,
+        Manager $manager,
         ActionFactory $actionFactory
     ) {
-        $this->eventDispatcher   = $eventDispatcher;
         $this->repositoryManager = $repositoryManager;
+        $this->manager           = $manager;
         $this->actionFactory     = $actionFactory;
     }
 
@@ -74,12 +75,17 @@ class ActionCallbackListener
      */
     public function getTypes($dataContainer): array
     {
-        $workflowModel = $this->getWorkflowModel($dataContainer);
-        $event         = new GetWorkflowActionsEvent($workflowModel);
+        $transition = $this->repositoryManager
+            ->getRepository(TransitionModel::class)
+            ->find((int) $dataContainer->activeRecord->pid);
 
-        $this->eventDispatcher->dispatch($event::NAME, $event);
+        if (!$transition) {
+            return [];
+        }
 
-        return $event->getActions();
+        $workflow = $this->manager->getWorkflowById((int) $transition->pid);
+
+        return $this->actionFactory->getSupportedTypeNames($workflow, true);
     }
 
     /**

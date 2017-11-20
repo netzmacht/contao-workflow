@@ -84,7 +84,7 @@ class DatabaseDrivenWorkflowLoader implements WorkflowLoader
                 $event = new CreateWorkflowEvent($workflow);
                 $this->eventDispatcher->dispatch($event::NAME, $event);
 
-                $workflow[] = $workflow;
+                $workflows[] = $workflow;
             }
         }
 
