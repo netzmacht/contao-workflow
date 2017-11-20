@@ -13,6 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Definition\Database;
 
+use Model\Collection;
 use Netzmacht\Contao\Workflow\Definition\Definition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateActionEvent;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateStepEvent;
@@ -27,7 +28,6 @@ use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Security\Permission;
-use Model\Collection;
 use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

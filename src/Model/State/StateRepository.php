@@ -17,7 +17,6 @@ use Contao\Model;
 use Contao\StringUtil;
 use Contao\Validator;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Model\State\StateModel;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository as WorkflowStateRepository;
 use Netzmacht\Workflow\Flow\State;

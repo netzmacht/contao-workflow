@@ -18,7 +18,6 @@ namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Verraes\ClassFunctions\ClassFunctions;
 
 /**
  * Class WorkflowTypePass

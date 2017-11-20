@@ -17,8 +17,6 @@ use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowPermissionsEvent;
 use Netzmacht\Contao\Workflow\Condition\Transition\ContaoTransitionPermissionCondition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Contao\Workflow\ServiceContainerTrait;
-use Netzmacht\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
-use Netzmacht\Workflow\Security\Permission;
 use Netzmacht\Workflow\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

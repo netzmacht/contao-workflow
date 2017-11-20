@@ -13,8 +13,8 @@
 
 namespace Netzmacht\Contao\Workflow\Manager;
 
-use Netzmacht\Contao\Workflow\Entity\EntityFactory;
 use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\Contao\Workflow\Entity\EntityFactory;
 use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository;

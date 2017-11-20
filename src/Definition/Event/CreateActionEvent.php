@@ -14,7 +14,6 @@
 namespace Netzmacht\Contao\Workflow\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Action;
-use Netzmacht\Contao\Workflow\Model\ActionModel;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\Event;

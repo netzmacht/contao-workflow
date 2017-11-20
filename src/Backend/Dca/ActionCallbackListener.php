@@ -17,9 +17,9 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Action\ActionFactory;
+use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
 use Netzmacht\Contao\Workflow\Model\RoleModel;
 use Netzmacht\Contao\Workflow\Model\TransitionModel;
-use Netzmacht\Contao\Workflow\Backend\Event\GetWorkflowActionsEvent;
 use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

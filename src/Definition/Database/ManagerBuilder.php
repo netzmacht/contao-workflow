@@ -20,8 +20,8 @@ use Netzmacht\Contao\Workflow\Model\WorkflowModel;
 use Netzmacht\Contao\Workflow\ServiceContainerTrait;
 use Netzmacht\Workflow\Factory\Event\CreateManagerEvent;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Workflow\Manager\Manager;
 use Netzmacht\Workflow\Manager\CachedManager;
+use Netzmacht\Workflow\Manager\Manager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
