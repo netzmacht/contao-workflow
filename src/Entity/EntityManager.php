@@ -16,10 +16,10 @@ namespace Netzmacht\Contao\Workflow\Entity;
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\Model;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Workflow\Entity\EntityRepository as ContaoEntityRepository;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Transaction\TransactionHandler;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscriber;
 
 /**
  * Class EntityManager is the entity manager implementation for Contao.
@@ -28,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface as EventSubscribe
  *
  * @package Netzmacht\Contao\Workflow\Data
  */
-class EntityManager implements WorkflowEntityManager, TransactionHandler, EventSubscriber
+class EntityManager implements WorkflowEntityManager, TransactionHandler
 {
     /**
      * @var RepositoryManager
@@ -70,32 +70,36 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler, EventS
             return $this->repositories[$providerName];
         }
 
-        $modelClass = $this->modelAdapter->getClassFromTable($providerName);
+        $modelClass       = $this->modelAdapter->getClassFromTable($providerName);
+        $repository       = $this->repositoryManager->getRepository($modelClass);
+        $entityRepository = new ContaoEntityRepository($repository);
 
-        return $this->repositoryManager->getRepository($modelClass);
+        $this->repositories[$providerName] = $entityRepository;
+
+        return $entityRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function begin()
+    public function begin(): void
     {
-        $this->connection->beginTransaction();
+        $this->repositoryManager->getConnection()->beginTransaction();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function commit()
+    public function commit(): void
     {
-        $this->connection->commitTransaction();
+        $this->repositoryManager->getConnection()->commit();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rollback()
+    public function rollback(): void
     {
-        $this->connection->rollbackTransaction();
+        $this->repositoryManager->getConnection()->rollBack();
     }
 }

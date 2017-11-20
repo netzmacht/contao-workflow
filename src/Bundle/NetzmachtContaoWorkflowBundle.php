@@ -36,8 +36,8 @@ class NetzmachtContaoWorkflowBundle extends Bundle
 
         $container->addCompilerPass(
             new AddTaggedServicesAsArgumentPass(
-                'netzmacht.contao_workflow.entity.factory',
-                'netzmacht.contao_workflow.entity.factory'
+                'netzmacht.contao_workflow.entity_factory',
+                'netzmacht.contao_workflow.entity_factory'
             )
         );
     }

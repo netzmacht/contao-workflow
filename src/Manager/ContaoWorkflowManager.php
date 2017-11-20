@@ -13,7 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Manager;
 
-use Netzmacht\Contao\Workflow\Data\EntityFactory;
+use Netzmacht\Contao\Workflow\Entity\EntityFactory;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
@@ -72,7 +72,7 @@ class ContaoWorkflowManager extends WorkflowManager implements Manager
     public function createItem(EntityId $entityId, $model): Item
     {
         if (!$model instanceof Entity) {
-            $model = $this->entityFactory->createEntity($entityId, $model);
+            $model = $this->entityFactory->create($entityId, $model);
         }
 
         return parent::createItem($entityId, $model);

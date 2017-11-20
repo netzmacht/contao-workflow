@@ -22,20 +22,41 @@ services:
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
-  netzmacht.contao_workflow.entity.factory:
+  netzmacht.contao_workflow.definition.workflow_loader:
+    class:
+
+  netzmacht.contao_workflow.entity_factory:
     class: Netzmacht\Contao\Workflow\Entity\DelegatingEntityFactory
     arguments:
       - []
 
-  netzmacht.contao_workflow.entity.factory.contao_model:
+  netzmacht.contao_workflow.entity_factory.contao_model:
     class: Netzmacht\Contao\Workflow\Entity\ContaoModelEntityFactory
     tags:
-      - { name: 'netzmacht.contao_workflow.entity.factory' }
+      - { name: 'netzmacht.contao_workflow.entity_factory' }
+
+  netzmacht.contao_workflow.entity_manager:
+    class: Netzmacht\Contao\Workflow\Entity\EntityManager
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_toolkit.contao.model_adapter'
 
   netzmacht.contao_workflow.transition_handler_factory:
     class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.entity_manager'
 
   netzmacht.contao_workflow.manager:
     class: Netzmacht\Contao\Workflow\Manager\ContaoWorkflowManager
     arguments:
-      -
+      - '@netzmacht.contao_workflow.transition_handler_factory'
+      - ''
+      - '@netzmacht.contao_workflow.entity_factory'
+      - []
+
+  netzmacht.contao_workflow.manager.lazy:
+    class: Netzmacht\Contao\Workflow\Manager\LazyLoadingWorkflowManager
+    decorates: 'netzmacht.contao_workflow.manager'
+    arguments:
+      - '@netzmacht.contao_workflow.manager.lazy.inner'
+      - '@netzmacht.contao_workflow.definition.workflow_loader'
