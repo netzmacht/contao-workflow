@@ -11,17 +11,21 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Backend\Helper;
+declare(strict_types=1);
 
+namespace Netzmacht\Contao\Workflow\Backend\Dca;
+
+use Contao\FilesModel;
+use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager;
 
 /**
- * Class Operations helper.
- *
- * @package Netzmacht\Contao\Workflow\Backend\Helper
+ * Class Operations helper
  */
-class Operations
+class TransitionOperationBuilder
 {
     const GLOBAL_SCOPE = 'global_operations';
     const MODEL_SCOPE  = 'operations';
@@ -34,35 +38,51 @@ class Operations
     private $manager;
 
     /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Data container manager.
+     *
+     * @var DcaManager
+     */
+    private $dcaManager;
+
+    /**
      * Construct.
      *
-     * @param Manager $manager Workflow manager.
+     * @param Manager           $manager           Workflow manager.
+     * @param RepositoryManager $repositoryManager Repository manager.
+     * @param DcaManager        $dcaManager        Data container manager.
      */
-    public function __construct(Manager $manager)
+    public function __construct(Manager $manager, RepositoryManager $repositoryManager, DcaManager $dcaManager)
     {
-        $this->manager = $manager;
+        $this->manager           = $manager;
+        $this->repositoryManager = $repositoryManager;
+        $this->dcaManager        = $dcaManager;
     }
 
     /**
      * Add transitions as operations.
      *
-     * @param Transition[]   $transitions    Workflow transitions.
-     * @param string         $providerName   Provider name.
-     * @param string         $scope          Operation scope.
-     * @param \Callable|null $callback       Filter callback.
-     * @param string|null    $entityProvider Optional different entity provider name.
+     * @param Transition[]|array $transitions    Workflow transitions.
+     * @param string             $providerName   Provider name.
+     * @param string             $scope          Operation scope.
+     * @param callable|null      $callback       Filter callback.
+     * @param string|null        $entityProvider Optional different entity provider name.
      *
      * @return void
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public static function addTransitions(
-        $transitions,
-        $providerName,
-        $scope = self::MODEL_SCOPE,
-        $callback = null,
-        $entityProvider = null
-    ) {
+    public function addTransitions(
+        array $transitions,
+        string $providerName,
+        string $scope = self::MODEL_SCOPE,
+        ?callable $callback = null,
+        ?string $entityProvider = null
+    ): void {
         foreach ($transitions as $transition) {
             if (!$transition->getConfigValue('addIcon')) {
                 continue;
@@ -75,7 +95,7 @@ class Operations
                     $transition->getLabel(),
                     $transition->getConfigValue('description') ?: $transition->getLabel()
                 ),
-                'icon'  => static::getTransitionIcon($transition),
+                'icon'  => $this->getTransitionIcon($transition),
                 'href'  => sprintf(
                     'table=%s&amp;key=workflow&amp;transition=%s',
                     $entityProvider,
@@ -87,7 +107,7 @@ class Operations
                 $config = $callback($transition, $config);
             }
 
-            $GLOBALS['TL_DCA'][$providerName]['list'][$scope][$buttonName] = $config;
+            $this->dcaManager->getDefinition($providerName)->set(['list', $scope, $buttonName], $config);
         }
     }
 
@@ -100,12 +120,14 @@ class Operations
      *
      * @return string
      */
-    public static function getTransitionIcon(Transition $transition)
+    public function getTransitionIcon(Transition $transition): string
     {
         $icon = $transition->getConfigValue('icon');
 
         if ($icon) {
-            $model = \FilesModel::findByUuid($icon);
+            /** @var ContaoRepository $repository */
+            $repository = $this->repositoryManager->getRepository(FilesModel::class);
+            $model      = $repository->findByUuid($icon);
 
             if ($model) {
                 return $model->path;
