@@ -113,3 +113,6 @@ services:
           name: 'netzmacht.contao_toolkit.repository',
           model: 'Netzmacht\Contao\Workflow\Model\Transition\TransitionModel'
         }
+
+  netzmacht.contao_workflow.expression_language:
+    class: Symfony\Component\ExpressionLanguage\ExpressionLanguage

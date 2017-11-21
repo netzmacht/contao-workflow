@@ -16,24 +16,18 @@ namespace Netzmacht\Contao\Workflow\Definition\Database;
 use Contao\StringUtil;
 use Netzmacht\Contao\Workflow\Condition\Transition\ExpressionCondition;
 use Netzmacht\Contao\Workflow\Condition\Transition\PropertyCondition;
+use Netzmacht\Contao\Workflow\Condition\Transition\TransitionPermissionCondition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 
 /**
  * Class ConditionBuilder builds the workflow conditions.
  *
  * @package Netzmacht\Contao\Workflow\Definition\Database
  */
-class ConditionBuilder implements EventSubscriberInterface
+class ConditionBuilder
 {
-    /**
-     * The expression language.
-     *
-     * @var ExpressionLanguage
-     */
-    private $expressionLanguage;
-
     /**
      * Comparator operations.
      *
@@ -49,26 +43,29 @@ class ConditionBuilder implements EventSubscriberInterface
     );
 
     /**
-     * ConditionBuilder constructor.
+     * The expression language.
      *
-     * @param ExpressionLanguage $expressionLanguage The expression language.
+     * @var ExpressionLanguage
      */
-    public function __construct(ExpressionLanguage $expressionLanguage)
-    {
-        $this->expressionLanguage = $expressionLanguage;
-    }
+    private $expressionLanguage;
 
     /**
-     * {@inheritdoc}
+     * Authorization checker.
+     *
+     * @var AuthorizationChecker
      */
-    public static function getSubscribedEvents()
+    private $authorizationChecker;
+
+    /**
+     * ConditionBuilder constructor.
+     *
+     * @param ExpressionLanguage   $expressionLanguage   The expression language.
+     * @param AuthorizationChecker $authorizationChecker Authorization checker.
+     */
+    public function __construct(ExpressionLanguage $expressionLanguage, AuthorizationChecker $authorizationChecker)
     {
-        return array(
-            CreateTransitionEvent::NAME => [
-                ['createPropertyConditions'],
-                ['createExpressionConditions'],
-            ]
-        );
+        $this->expressionLanguage   = $expressionLanguage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -124,6 +121,21 @@ class ConditionBuilder implements EventSubscriberInterface
                 }
             }
         }
+    }
+
+    /**
+     * Add default transition conditions.
+     *
+     * @param CreateTransitionEvent $event The subscribed event.
+     *
+     * @return void
+     */
+    public function createTransitionPermissionCondition(CreateTransitionEvent $event)
+    {
+        $transition = $event->getTransition();
+        $transition->addPreCondition(
+            new TransitionPermissionCondition($this->authorizationChecker, true)
+        );
     }
 
     /**
