@@ -1,0 +1,8 @@
+services:
+  netzmacht.contao_workflow.backend.transit_controller:
+    class: Netzmacht\Contao\Workflow\Backend\Controller\TransitController
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.type_provider'
+      - '@templating'

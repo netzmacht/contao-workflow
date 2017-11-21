@@ -1,0 +1,29 @@
+{% extends "@ContaoCore/Backend/be_page.html.twig" %}
+
+{% block headline %}
+    {{ headline|raw }}
+{% endblock %}
+
+{% block error %}
+{% if errors %}
+    {% for error in errors %}
+        {{ error }}<br>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+<div id="tl_buttons">
+    <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
+</div>
+
+<div class="workflow-overview">
+    {% if handler.currentStep != null %}
+        {{ handler.currentStep.label }}
+    {% endif %}
+    {{ handler.transition.label }}
+</div>
+
+{{ item|raw }}
+</div>
+{% endblock %}

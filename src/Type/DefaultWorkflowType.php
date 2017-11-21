@@ -13,6 +13,8 @@
 
 namespace Netzmacht\Contao\Workflow\Type;
 
+use Netzmacht\Workflow\Flow\Item;
+
 /**
  * Class DefaultWorkflowType.
  *
@@ -51,5 +53,13 @@ class DefaultWorkflowType implements WorkflowType
     public function getProviderNames(): array
     {
         return $this->supportedProviders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRenderer(): Renderer
+    {
+        return new DefaultRenderer();
     }
 }

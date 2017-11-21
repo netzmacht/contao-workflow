@@ -33,4 +33,11 @@ interface WorkflowType
      * @return array
      */
     public function getProviderNames(): array;
+
+    /**
+     * Get the item renderer.
+     *
+     * @return Renderer
+     */
+    public function getRenderer(): Renderer;
 }
