@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             ],
             'eval'          => [
                 'tl_class'  => 'w50',
-                'mandatory' => true,
+                'mandatory' => false,
             ],
             'sql'           => "varchar(64) NOT NULL default ''",
         ],
@@ -130,6 +130,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'eval'      => [
                 'tl_class'  => 'w50',
                 'maxlength' => 64,
+                'mandatory' => true,
             ],
             'sql'       => "varchar(64) NOT NULL default ''",
         ],
