@@ -21,6 +21,23 @@ namespace Netzmacht\Contao\Workflow\Type;
 class DefaultWorkflowType implements WorkflowType
 {
     /**
+     * List of supported providers.
+     *
+     * @var string[]|array
+     */
+    private $supportedProviders;
+
+    /**
+     * DefaultWorkflowType constructor.
+     *
+     * @param array|string[] $supportedProviders
+     */
+    public function __construct(array $supportedProviders = [])
+    {
+        $this->supportedProviders = $supportedProviders;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getName()
@@ -31,32 +48,8 @@ class DefaultWorkflowType implements WorkflowType
     /**
      * {@inheritDoc}
      */
-    public function hasFixedSteps()
+    public function getProviderNames(): array
     {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getStepNames()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function hasFixedTransitions()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTransitionNames()
-    {
-        return [];
+        return $this->supportedProviders;
     }
 }

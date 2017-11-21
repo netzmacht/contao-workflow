@@ -39,5 +39,13 @@ class NetzmachtContaoWorkflowExtension extends Extension
         // Common config, services and listeners
         $loader->load('listeners.yml');
         $loader->load('services.yml');
+
+        $configuration = new Configuration();
+        $config        = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(
+            'netzmacht.contao_workflow.type.default.providers',
+            $config['default_type']['providers']
+        );
     }
 }

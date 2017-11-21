@@ -17,7 +17,6 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Backend\Event\GetProviderNamesEvent;
 use Netzmacht\Contao\Workflow\Model\Step\StepModel;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
@@ -108,10 +107,11 @@ class WorkflowCallbackListener
             return [];
         }
 
-        $event = new GetProviderNamesEvent($dataContainer->activeRecord->type);
-        $this->eventDispatcher->dispatch($event::NAME, $event);
+        if (!$this->typeProvider->hasType($dataContainer->activeRecord->type)) {
+            return [];
+        }
 
-        return array_merge($event->getProviderNames(), ['tl_test']);
+        return $this->typeProvider->getType($dataContainer->activeRecord->type)->getProviderNames();
     }
 
     /**

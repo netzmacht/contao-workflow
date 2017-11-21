@@ -28,30 +28,9 @@ interface WorkflowType
     public function getName();
 
     /**
-     * Get information if workflow type only supports a set of fixed steps.
-     *
-     * @return bool
-     */
-    public function hasFixedSteps();
-
-    /**
-     * Get the names of the fixed steps.
+     * Get a list of supported provider names.
      *
      * @return array
      */
-    public function getStepNames();
-
-    /**
-     * Get information if workflow type only supports a set of fixed transitions.
-     *
-     * @return bool
-     */
-    public function hasFixedTransitions();
-
-    /**
-     * Get the names of the fixed transitions.
-     *
-     * @return array
-     */
-    public function getTransitionNames();
+    public function getProviderNames(): array;
 }
