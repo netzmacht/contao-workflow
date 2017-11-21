@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition;
+namespace Netzmacht\Contao\Workflow\Definition\Loader;
 
 use Netzmacht\Workflow\Flow\Workflow;
 
@@ -27,9 +27,7 @@ interface WorkflowLoader
     /**
      * Load the workflows optional limited for a provider.
      *
-     * @param string|null $providerName Provider name.
-     *
      * @return Workflow[]|array
      */
-    public function load(?string $providerName = null): array;
+    public function load(): array;
 }

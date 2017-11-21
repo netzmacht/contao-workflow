@@ -23,7 +23,7 @@ services:
       - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.definition.workflow_loader:
-    class: Netzmacht\Contao\Workflow\Definition\DatabaseDrivenWorkflowLoader
+    class: Netzmacht\Contao\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@event_dispatcher'

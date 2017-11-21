@@ -13,9 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition;
+namespace Netzmacht\Contao\Workflow\Definition\Loader;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Workflow\Definition\Definition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository;
@@ -56,18 +57,12 @@ class DatabaseDrivenWorkflowLoader implements WorkflowLoader
     /**
      * {@inheritDoc}
      */
-    public function load(?string $providerName = null): array
+    public function load(): array
     {
         /** @var WorkflowRepository $workflowRepository */
         $workflowRepository = $this->repositoryManager->getRepository(WorkflowModel::class);
-
-        if ($providerName) {
-            $collection = $workflowRepository->findByProvider($providerName);
-        } else {
-            $collection = $workflowRepository->findAll();
-        }
-
-        $workflows = [];
+        $collection         = $workflowRepository->findAll();
+        $workflows          = [];
 
         if ($collection) {
             foreach ($collection as $model) {

@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Manager;
 
-use Netzmacht\Contao\Workflow\Definition\WorkflowLoader;
+use Netzmacht\Contao\Workflow\Definition\Loader\WorkflowLoader;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -70,7 +70,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function handle(Item $item, string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
     {
-        $this->loadWorkflowDefinitions($item->getEntityId()->getProviderName());
+        $this->loadWorkflowDefinitions();
 
         return $this->inner->handle($item, $transitionName, $changeWorkflow);
     }
@@ -90,7 +90,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function getWorkflow(EntityId $entityId, $entity): Workflow
     {
-        $this->loadWorkflowDefinitions($entityId->getProviderName());
+        $this->loadWorkflowDefinitions();
 
         return $this->inner->getWorkflow($entityId, $entity);
     }
@@ -110,7 +110,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function getWorkflowByItem(Item $item): Workflow
     {
-        $this->loadWorkflowDefinitions($item->getEntityId()->getProviderName());
+        $this->loadWorkflowDefinitions();
 
         return $this->inner->getWorkflowByItem($item);
     }
@@ -120,7 +120,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function hasWorkflow(EntityId $entityId, $entity): bool
     {
-        $this->loadWorkflowDefinitions($entityId->getProviderName());
+        $this->loadWorkflowDefinitions();
 
         return $this->inner->hasWorkflow($entityId, $entityId);
     }
@@ -146,28 +146,19 @@ class LazyLoadingWorkflowManager implements Manager
     /**
      * Load all workflow definitions.
      *
-     * @param null|string $providerName Provider name.
-     *
      * @return void
      */
-    private function loadWorkflowDefinitions(?string $providerName = null): void
+    private function loadWorkflowDefinitions(): void
     {
-        static $all    = false;
-        static $loaded = [];
+        static $loaded = false;
 
-        if ($providerName === null) {
-            if ($all) {
-                return;
-            }
-
-            $all = true;
-        } elseif (array_key_exists($providerName, $loaded)) {
+        if ($loaded) {
             return;
         }
 
-        foreach ($this->workflowLoader->load($providerName) as $workflow) {
-            $loaded[$workflow->getProviderName()][] = true;
+        $loaded = true;
 
+        foreach ($this->workflowLoader->load() as $workflow) {
             $this->addWorkflow($workflow);
         }
     }
