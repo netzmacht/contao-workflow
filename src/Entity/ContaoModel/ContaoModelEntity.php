@@ -13,9 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
 
 use Contao\Model;
+use Netzmacht\Contao\Workflow\Entity\Entity;
 
 /**
  * Class ContaoModelEntity

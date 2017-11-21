@@ -42,4 +42,25 @@ class UnsupportedEntity extends RuntimeException implements WorkflowException
             $previous
         );
     }
+
+    /**
+     * Create exception for an entity.
+     *
+     * @param string         $providerName The provider name.
+     * @param int            $code         The error code.
+     * @param Throwable|null $previous     Previous exception.
+     *
+     * @return UnsupportedEntity
+     */
+    public static function withProviderName(
+        string $providerName,
+        int $code = 0,
+        Throwable $previous = null
+    ): UnsupportedEntity {
+        return new static(
+            sprintf('Entity of type "%s" is not supported.', $providerName),
+            $code,
+            $previous
+        );
+    }
 }

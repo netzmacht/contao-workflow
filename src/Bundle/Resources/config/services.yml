@@ -39,15 +39,39 @@ services:
       - []
 
   netzmacht.contao_workflow.entity_factory.contao_model:
-    class: Netzmacht\Contao\Workflow\Entity\ContaoModelEntityFactory
+    class: Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity_factory' }
+
+  netzmacht.contao_workflow.entity_factory.data:
+    class: Netzmacht\Contao\Workflow\Entity\Database\DatabaseEntityFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.entity_factory' }
+
+  netzmacht.contao_workflow.entity_repository_factory:
+    class: Netzmacht\Contao\Workflow\Entity\DelegatingRepositoryFactory
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.entity_repository_factory.contao_model:
+    class: Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_toolkit.contao.model_adapter'
+    tags:
+      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: 250 }
+
+  netzmacht.contao_workflow.entity_repository_factory.data:
+    class: Netzmacht\Contao\Workflow\Entity\Database\DatabaseEntityRepositoryFactory
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -100 }
 
   netzmacht.contao_workflow.entity_manager:
     class: Netzmacht\Contao\Workflow\Entity\EntityManager
     arguments:
-      - '@netzmacht.contao_toolkit.repository_manager'
-      - '@netzmacht.contao_toolkit.contao.model_adapter'
+      - '@netzmacht.contao_workflow.entity_repository_factory'
 
   netzmacht.contao_workflow.transition_handler_factory:
     class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory

@@ -13,38 +13,30 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\Contao\Workflow\Entity\Database;
 
-use Contao\Model;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\Contao\Workflow\Entity\EntityFactory;
 use Netzmacht\Workflow\Data\EntityId;
 
 /**
- * Class ContaoModelEntityFactory
- *
- * @package Netzmacht\Contao\Workflow\Entity
+ * Class DataEntityFactory
  */
-class ContaoModelEntityFactory implements EntityFactory
+class DatabaseEntityFactory implements EntityFactory
 {
     /**
      * {@inheritDoc}
      */
     public function supports(EntityId $entityId, $data): bool
     {
-        return is_a($data, Model::class);
+        return is_array($data);
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @throws UnsupportedEntity When no entity could be created.
      */
     public function create(EntityId $entityId, $data): Entity
     {
-        if ($this->supports($entityId, $data)) {
-            return new ContaoModelEntity($data);
-        }
-
-        throw UnsupportedEntity::forEntity($entityId);
+        return new DatabaseEntity($entityId, $data);
     }
 }

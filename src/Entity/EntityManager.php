@@ -18,7 +18,8 @@ namespace Netzmacht\Contao\Workflow\Entity;
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\Model;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Entity\EntityRepository as ContaoEntityRepository;
+use Netzmacht\Contao\Toolkit\Exception\InvalidArgumentException;
+use Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityRepository as ContaoEntityRepository;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Transaction\TransactionHandler;
@@ -33,20 +34,6 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
 class EntityManager implements WorkflowEntityManager, TransactionHandler
 {
     /**
-     * Contao model repository manager.
-     *
-     * @var RepositoryManager
-     */
-    private $repositoryManager;
-
-    /**
-     * Contao model adapter.
-     *
-     * @var Adapter|Model
-     */
-    private $modelAdapter;
-
-    /**
      * Entity repositories.
      *
      * @var EntityRepository[]|array
@@ -54,15 +41,20 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
     private $repositories = [];
 
     /**
+     * Repository manager.
+     *
+     * @var RepositoryFactory
+     */
+    private $repositoryFactory;
+
+    /**
      * The database connection.
      *
-     * @param RepositoryManager $repositoryManager Repository manager.
-     * @param Adapter|Model     $modelAdapter      Model adapter.
+     * @param RepositoryFactory $repositoryFactory
      */
-    public function __construct(RepositoryManager $repositoryManager, $modelAdapter)
+    public function __construct(RepositoryFactory $repositoryFactory)
     {
-        $this->repositoryManager = $repositoryManager;
-        $this->modelAdapter      = $modelAdapter;
+        $this->repositoryFactory = $repositoryFactory;
     }
 
     /**
@@ -74,13 +66,9 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
             return $this->repositories[$providerName];
         }
 
-        $modelClass       = $this->modelAdapter->getClassFromTable($providerName);
-        $repository       = $this->repositoryManager->getRepository($modelClass);
-        $entityRepository = new ContaoEntityRepository($repository);
+        $this->repositories[$providerName] = $this->repositoryFactory->create($providerName);
 
-        $this->repositories[$providerName] = $entityRepository;
-
-        return $entityRepository;
+        return $this->repositories[$providerName];
     }
 
     /**

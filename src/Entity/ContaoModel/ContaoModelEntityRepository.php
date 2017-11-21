@@ -13,11 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
 
 use Assert\Assertion;
 use Netzmacht\Contao\Toolkit\Data\Model\Repository;
 use Netzmacht\Contao\Toolkit\Data\Model\Specification as ModelSpecification;
+use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
 
@@ -26,7 +27,7 @@ use Netzmacht\Workflow\Data\Specification;
  *
  * @package Netzmacht\Contao\Workflow\Entity
  */
-class EntityRepository implements WorkflowEntityRepository
+class ContaoModelEntityRepository implements WorkflowEntityRepository
 {
     /**
      * Contao model repository.

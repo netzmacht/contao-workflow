@@ -140,7 +140,7 @@ class LazyLoadingWorkflowManager implements Manager
      */
     public function createItem(EntityId $entityId, $entity): Item
     {
-        return $this->inner->createItem($entityId, $entityId);
+        return $this->inner->createItem($entityId, $entity);
     }
 
     /**
