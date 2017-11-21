@@ -13,8 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Backend;
+namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
+use Contao\StringUtil;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
 
@@ -23,8 +25,25 @@ use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
  *
  * @package Netzmacht\Contao\Workflow\Dca\Table
  */
-class Permission
+class PermissionCallbackListener
 {
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Permission constructor.
+     *
+     * @param RepositoryManager $repositoryManager Repository manager.
+     */
+    public function __construct(RepositoryManager $repositoryManager)
+    {
+        $this->repositoryManager = $repositoryManager;
+    }
+
     /**
      * Get all permissions.
      *
@@ -33,12 +52,12 @@ class Permission
     public function getAllPermissions()
     {
         $options    = array();
-        $collection = WorkflowModel::findAll();
-
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $collection = $repository->findAll();
 
         if ($collection) {
             foreach ($collection as $workflow) {
-                $permissions = deserialize($workflow->permissions, true);
+                $permissions = StringUtil::deserialize($workflow->permissions, true);
 
                 foreach ($permissions as $permission) {
                     $workflow = $workflow->label
@@ -67,16 +86,17 @@ class Permission
             return array();
         }
 
-        $workflow = WorkflowModel::findBy('id', $dataContainer->activeRecord->pid);
-        $options  = array();
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+        $options    = [];
 
         if ($workflow) {
-            $permissions = deserialize($workflow->permissions, true);
+            $permissions = StringUtil::deserialize($workflow->permissions, true);
 
             foreach ($permissions as $config) {
                 $permission = WorkflowPermission::forWorkflowName(
-                    $workflow->name,
-                    $config['name']
+                    (string) $workflow->name,
+                    (string) $config['name']
                 );
 
                 $options[(string) $permission] = $config['label'] ?: $config['name'];

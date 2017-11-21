@@ -20,7 +20,7 @@
 $GLOBALS['TL_DCA']['tl_user']['fields']['workflow'] = [
     'label'            => &$GLOBALS['TL_LANG']['tl_user']['workflow'],
     'inputType'        => 'checkbox',
-    'options_callback' => ['Netzmacht\Contao\Workflow\Backend\Permission', 'getAllPermissions'],
+    'options_callback' => ['netzmacht.contao_workflow.listeners.dca.permissions', 'getAllPermissions'],
     'save_callback'    => [
         ['netzmacht.contao_workflow.listeners.dca.save_permission_callback', 'onSaveCallback'],
     ],

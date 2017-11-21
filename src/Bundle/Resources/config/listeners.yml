@@ -46,6 +46,11 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.manager'
 
+  netzmacht.contao_workflow.listeners.dca.permissions:
+    class: Netzmacht\Contao\Workflow\Backend\Dca\PermissionCallbackListener
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+
   netzmacht.contao_workflow.listeners.workflow_actions:
     class: Netzmacht\Contao\Workflow\Backend\EventListener\WorkflowActionsListener
     tags:
