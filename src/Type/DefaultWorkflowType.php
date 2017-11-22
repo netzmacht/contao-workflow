@@ -13,7 +13,7 @@
 
 namespace Netzmacht\Contao\Workflow\Type;
 
-use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class DefaultWorkflowType.
@@ -42,9 +42,16 @@ class DefaultWorkflowType implements WorkflowType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'default';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function configure(Workflow $workflow): void
+    {
     }
 
     /**

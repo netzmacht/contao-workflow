@@ -11,7 +11,11 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\Contao\Workflow\Type;
+
+use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Interface WorkflowType.
@@ -25,7 +29,16 @@ interface WorkflowType
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
+
+    /**
+     * Configure the workflow after at build time.
+     *
+     * @param Workflow $workflow The workflow.
+     *
+     * @return void
+     */
+    public function configure(Workflow $workflow): void;
 
     /**
      * Get a list of supported provider names.

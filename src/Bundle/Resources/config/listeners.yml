@@ -13,21 +13,21 @@ services:
   netzmacht.contao_workflow.listeners.dca.workflow:
     class: Netzmacht\Contao\Workflow\Backend\Dca\WorkflowCallbackListener
     arguments:
-      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.step:
     class: Netzmacht\Contao\Workflow\Backend\Dca\StepCallbackListener
     arguments:
-      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_workflow.type_registry'
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.transition:
     class: Netzmacht\Contao\Workflow\Backend\Dca\TransitionCallbackListener
     arguments:
-      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_workflow.type_registry'
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
 

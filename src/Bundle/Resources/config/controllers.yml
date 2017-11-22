@@ -1,8 +1,8 @@
 services:
-  netzmacht.contao_workflow.backend.transit_controller:
-    class: Netzmacht\Contao\Workflow\Backend\Controller\TransitController
+  netzmacht.contao_workflow.backend.transition_controller:
+    class: Netzmacht\Contao\Workflow\Backend\Controller\TransitionController
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
-      - '@netzmacht.contao_workflow.type_provider'
+      - '@netzmacht.contao_workflow.type_registry'
       - '@templating'

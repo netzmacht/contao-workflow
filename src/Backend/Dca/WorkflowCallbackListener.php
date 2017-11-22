@@ -19,7 +19,7 @@ use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Model\Step\StepModel;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -30,11 +30,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class WorkflowCallbackListener
 {
     /**
-     * Workflow type provider.
+     * Workflow type registry.
      *
-     * @var WorkflowTypeProvider
+     * @var WorkflowTypeRegistry
      */
-    private $typeProvider;
+    private $typeRegistry;
 
     /**
      * Event dispatcher.
@@ -53,16 +53,16 @@ class WorkflowCallbackListener
     /**
      * Workflow constructor.
      *
-     * @param WorkflowTypeProvider     $typeProvider      Workflow type provider.
+     * @param WorkflowTypeRegistry     $typeRegistry      Workflow type registry.
      * @param EventDispatcherInterface $eventDispatcher   Event dispatcher.
      * @param RepositoryManager        $repositoryManager Repository manager.
      */
     public function __construct(
-        WorkflowTypeProvider $typeProvider,
+        WorkflowTypeRegistry $typeRegistry,
         EventDispatcherInterface $eventDispatcher,
         RepositoryManager $repositoryManager
     ) {
-        $this->typeProvider      = $typeProvider;
+        $this->typeRegistry      = $typeRegistry;
         $this->eventDispatcher   = $eventDispatcher;
         $this->repositoryManager = $repositoryManager;
     }
@@ -91,7 +91,7 @@ class WorkflowCallbackListener
      */
     public function getTypes(): array
     {
-        return $this->typeProvider->getTypeNames();
+        return $this->typeRegistry->getTypeNames();
     }
 
     /**
@@ -107,11 +107,11 @@ class WorkflowCallbackListener
             return [];
         }
 
-        if (!$this->typeProvider->hasType($dataContainer->activeRecord->type)) {
+        if (!$this->typeRegistry->hasType($dataContainer->activeRecord->type)) {
             return [];
         }
 
-        return $this->typeProvider->getType($dataContainer->activeRecord->type)->getProviderNames();
+        return $this->typeRegistry->getType($dataContainer->activeRecord->type)->getProviderNames();
     }
 
     /**

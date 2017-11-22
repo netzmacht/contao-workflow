@@ -29,11 +29,11 @@ class WorkflowTypePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('netzmacht.contao_workflow.type_provider')) {
+        if (!$container->hasDefinition('netzmacht.contao_workflow.type_registry')) {
             return;
         }
 
-        $definition = $container->getDefinition('netzmacht.contao_workflow.type_provider');
+        $definition = $container->getDefinition('netzmacht.contao_workflow.type_registry');
         $serviceIds = $container->findTaggedServiceIds('netzmacht.contao_workflow.type');
         $types      = (array) $definition->getArgument(0);
 

@@ -17,7 +17,7 @@ namespace Netzmacht\Contao\Workflow\Backend\Controller;
 
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Flow\Item;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @package Netzmacht\Contao\Workflow\Backend\Controller
  */
-class TransitController
+class TransitionController
 {
     /**
      * @var WorkflowManager
@@ -49,8 +49,9 @@ class TransitController
      * @var EntityManager
      */
     private $entityManager;
+
     /**
-     * @var WorkflowTypeProvider
+     * @var WorkflowTypeRegistry
      */
     private $typeProvider;
 
@@ -59,13 +60,13 @@ class TransitController
      *
      * @param WorkflowManager      $workflowManager
      * @param EntityManager        $entityManager
-     * @param WorkflowTypeProvider $typeProvider
+     * @param WorkflowTypeRegistry $typeProvider
      * @param TemplateEngine       $renderer
      */
     public function __construct(
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
-        WorkflowTypeProvider $typeProvider,
+        WorkflowTypeRegistry $typeProvider,
         TemplateEngine $renderer
     ) {
         $this->workflowManager = $workflowManager;

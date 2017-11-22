@@ -20,7 +20,7 @@ use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Workflow\Model\Step\StepModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
@@ -39,9 +39,9 @@ class TransitionCallbackListener extends AbstractListener
     /**
      * Type provider.
      *
-     * @var WorkflowTypeProvider
+     * @var WorkflowTypeRegistry
      */
-    private $typeProvider;
+    private $typeRegistry;
 
     /**
      * Repository manager.
@@ -53,18 +53,18 @@ class TransitionCallbackListener extends AbstractListener
     /**
      * Transition constructor.
      *
-     * @param WorkflowTypeProvider $typeProvider      Type provider.
+     * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
      * @param DcaManager           $dcaManager        Data container manager.
      * @param RepositoryManager    $repositoryManager Repository manager.
      */
     public function __construct(
-        WorkflowTypeProvider $typeProvider,
+        WorkflowTypeRegistry $typeRegistry,
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager
     ) {
         parent::__construct($dcaManager);
 
-        $this->typeProvider      = $typeProvider;
+        $this->typeRegistry      = $typeRegistry;
         $this->repositoryManager = $repositoryManager;
     }
 

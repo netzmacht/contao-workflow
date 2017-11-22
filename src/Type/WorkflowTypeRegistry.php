@@ -18,7 +18,7 @@ namespace Netzmacht\Contao\Workflow\Type;
  *
  * @package Netzmacht\Contao\Workflow\Type
  */
-class WorkflowTypeProvider
+class WorkflowTypeRegistry
 {
     /**
      * Workflow types.

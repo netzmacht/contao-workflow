@@ -5,8 +5,8 @@ services:
   netzmacht.contao_workflow.user:
     class: Netzmacht\Workflow\Security\User
 
-  netzmacht.contao_workflow.type_provider:
-    class: Netzmacht\Contao\Workflow\Type\WorkflowTypeProvider
+  netzmacht.contao_workflow.type_registry:
+    class: Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry
     arguments:
       - []
 
