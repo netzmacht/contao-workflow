@@ -109,13 +109,19 @@ class TransitionCallbackListener extends AbstractListener
 
             if ($workflow) {
                 $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
+                $fields        = array_keys($schemaManager->listTableColumns($workflow->providerName));
+                $options       = [];
+                $formatter     = $this->getFormatter((string) $workflow->providerName);
 
-                return array_map(
-                    function ($info) {
-                        return $info['name'];
-                    },
-                    array_keys($schemaManager->listTableColumns($workflow->providerName))
-                );
+                foreach ($fields as $field) {
+                    $options[$field] = sprintf(
+                        '%s [%s]',
+                        $formatter->formatFieldLabel($field),
+                        $field
+                    );
+                }
+
+                return $options;
             }
         }
 
