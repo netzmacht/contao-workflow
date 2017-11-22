@@ -28,6 +28,7 @@ use Netzmacht\Contao\Workflow\Model\Step\StepModel;
 use Netzmacht\Contao\Workflow\Model\Step\StepRepository;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionRepository;
+use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -103,11 +104,26 @@ class WorkflowBuilder
             return;
         }
 
+        $this->createProviderNameCondition($workflow);
         $this->createSteps($workflow, $eventDispatcher);
         $this->createTransitions($workflow, $eventDispatcher);
         $this->createProcess($workflow);
 
         $this->resetBuilder();
+    }
+
+    /**
+     * Create the provider name condition.
+     *
+     * @param Workflow $workflow Workflow.
+     *
+     * @return void
+     */
+    private function createProviderNameCondition(Workflow $workflow): void
+    {
+        $workflow->addCondition(
+            new ProviderNameCondition($workflow->getProviderName())
+        );
     }
 
     /**
