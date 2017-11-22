@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Manager;
 
+use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as BaseManager;
@@ -36,4 +38,14 @@ interface Manager extends BaseManager
      * @throws WorkflowNotFound When no workflow is registered with the given id.
      */
     public function getWorkflowById(int $workflowId): Workflow;
+
+    /**
+     * Create an entity.
+     *
+     * @param EntityId $entityId The entity id.
+     * @param mixed    $model    The data model.
+     *
+     * @return Entity
+     */
+    public function createEntity(EntityId $entityId, $model): Entity;
 }

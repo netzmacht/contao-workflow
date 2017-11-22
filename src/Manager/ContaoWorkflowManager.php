@@ -62,7 +62,7 @@ class ContaoWorkflowManager extends WorkflowManager implements Manager
     /**
      * Create the item.
      *
-     * It also converts the entity to a ModelInterface instance.
+     * It also converts the entity to a Entity instance.
      *
      * @param EntityId $entityId The entity id.
      * @param mixed    $model    The data model.
@@ -78,6 +78,23 @@ class ContaoWorkflowManager extends WorkflowManager implements Manager
         }
 
         return parent::createItem($entityId, $model);
+    }
+
+    /**
+     * Create an entity.
+     *
+     * @param EntityId $entityId The entity id.
+     * @param mixed    $model    The data model.
+     *
+     * @return Entity
+     */
+    public function createEntity(EntityId $entityId, $model): Entity
+    {
+        if ($model instanceof Entity) {
+            return $model;
+        }
+
+        return $this->entityFactory->create($entityId, $model);
     }
 
     /**
