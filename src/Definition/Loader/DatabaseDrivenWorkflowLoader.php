@@ -20,6 +20,7 @@ use Netzmacht\Contao\Workflow\Definition\Definition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
@@ -43,15 +44,27 @@ class DatabaseDrivenWorkflowLoader implements WorkflowLoader
     private $eventDispatcher;
 
     /**
+     * Workflow type registry.
+     *
+     * @var WorkflowTypeRegistry
+     */
+    private $typeRegistry;
+
+    /**
      * DatabaseDrivenWorkflowLoader constructor.
      *
-     * @param RepositoryManager        $repositoryManager Contao model repository manager.
-     * @param EventDispatcher $eventDispatcher   Event dispathe
+     * @param RepositoryManager $repositoryManager Contao model repository manager.
+     * @param WorkflowTypeRegistry $typeRegistry   Workflow type registry.
+     * @param EventDispatcher $eventDispatcher     Event dispatcher.
      */
-    public function __construct(RepositoryManager $repositoryManager, EventDispatcher $eventDispatcher)
-    {
+    public function __construct(
+        RepositoryManager $repositoryManager,
+        WorkflowTypeRegistry $typeRegistry,
+        EventDispatcher $eventDispatcher
+    ) {
         $this->repositoryManager = $repositoryManager;
         $this->eventDispatcher   = $eventDispatcher;
+        $this->typeRegistry      = $typeRegistry;
     }
 
     /**
@@ -75,6 +88,8 @@ class DatabaseDrivenWorkflowLoader implements WorkflowLoader
                         array(Definition::SOURCE => Definition::SOURCE_DATABASE)
                     )
                 );
+
+                $this->typeRegistry->getType($model->type)->configure($workflow);
 
                 $event = new CreateWorkflowEvent($workflow);
                 $this->eventDispatcher->dispatch($event::NAME, $event);
