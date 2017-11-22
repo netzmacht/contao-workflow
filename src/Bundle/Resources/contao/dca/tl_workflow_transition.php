@@ -204,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'tl_class'   => 'clr icon_selector',
                 'filesOnly'  => true,
                 'fieldType'  => 'radio',
-                'extensions' => 'jpg,gif,png',
+                'extensions' => 'jpg,gif,png,svg',
             ],
             'sql'       => 'binary(16) NULL',
         ],

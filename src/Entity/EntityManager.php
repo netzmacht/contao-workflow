@@ -17,6 +17,7 @@ namespace Netzmacht\Contao\Workflow\Entity;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\Model;
+use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Exception\InvalidArgumentException;
 use Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityRepository as ContaoEntityRepository;
@@ -46,15 +47,22 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
      * @var RepositoryFactory
      */
     private $repositoryFactory;
+    
+    /**
+     * @var Connection
+     */
+    private $connection;
 
     /**
      * The database connection.
      *
      * @param RepositoryFactory $repositoryFactory
+     * @param Connection        $connection
      */
-    public function __construct(RepositoryFactory $repositoryFactory)
+    public function __construct(RepositoryFactory $repositoryFactory, Connection $connection)
     {
         $this->repositoryFactory = $repositoryFactory;
+        $this->connection        = $connection;
     }
 
     /**
@@ -76,7 +84,7 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
      */
     public function begin(): void
     {
-        $this->repositoryManager->getConnection()->beginTransaction();
+        $this->connection->beginTransaction();
     }
 
     /**
@@ -84,7 +92,7 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
      */
     public function commit(): void
     {
-        $this->repositoryManager->getConnection()->commit();
+        $this->connection->commit();
     }
 
     /**
@@ -92,6 +100,6 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
      */
     public function rollback(): void
     {
-        $this->repositoryManager->getConnection()->rollBack();
+        $this->connection->rollBack();
     }
 }

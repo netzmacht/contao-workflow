@@ -1,4 +1,13 @@
-netzmacht.contao_workflow.backend_transition:
+netzmacht.contao_workflow.backend.step:
+  path: /contao/workflow/{entityId}
+  defaults:
+    _controller: netzmacht.contao_workflow.backend.step_controller:execute
+    _scope: "backend"
+    _token_check: true,
+    _custom_backend_view: true
+    _backend_module: workflow
+
+netzmacht.contao_workflow.backend.transition:
   path: /contao/workflow/{entityId}/{transition}
   defaults:
     transition: null
@@ -6,4 +15,4 @@ netzmacht.contao_workflow.backend_transition:
     _scope: "backend"
     _token_check: true,
     _custom_backend_view: true
-    _backend_module: workflow_transition
+    _backend_module: workflow

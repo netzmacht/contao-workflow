@@ -1,0 +1,63 @@
+{% extends "@ContaoCore/Backend/be_page.html.twig" %}
+
+{% block headline %}
+    {{ headline|raw }}
+{% endblock %}
+
+{% block error %}
+{% if errors %}
+    {% for error in errors %}
+        {{ error }}<br>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+<div id="tl_buttons">
+    <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
+</div>
+
+<div class="maintenance_inactive">
+    <h2 class="sub_headline">{{ subheadline }}</h2>
+
+    <div class="tl_listing_container">
+        <div class="tl_header hover-div">
+            <table class="tl_header_table">
+                <tbody>
+                <tr>
+                    <td><span class="tl_label">{{ 'workflow.workflowName'|trans }}</span></td>
+                    <td>{{ workflow.label }}</td>
+                </tr>
+                <tr>
+                    <td><span class="tl_label">{{ 'workflow.currentStep'|trans }}</span></td>
+                    <td>{{ currentStep != null ? currentStep.label : '-' }}</td>
+                </tr>
+                {% if item.latestState %}
+                <tr>
+                    <td><span class="tl_label">{{ 'workflow.reachedAt'|trans }}</span></td>
+                    <td>{{ item.latestState.reachedAt.format('d.m.Y H:i') }}</td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tl_submit_container">
+        {% for transition in transitions %}
+            <a href="{{ path('netzmacht.contao_workflow.backend.transition', {entityId: item.entityId, transition: transition.name}) }}" class="tl_submit">
+                {% if transition.configValue('addIcon') and transition.getConfigValue('icon') %}
+                    <img src="{{ transition.getConfigValue('icon') }}" width="14" height="14" alt="{{ transition.label }}">
+                {% endif %}
+                {{ transition.label }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="maintenance_inactive">
+        <h2 class="sub_headline">{{ 'workflow.dataRecord'|trans }}</h2>
+    {{ view|raw }}
+</div>
+
+{% endblock %}

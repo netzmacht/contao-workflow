@@ -1,4 +1,12 @@
 services:
+  netzmacht.contao_workflow.backend.step_controller:
+    class: Netzmacht\Contao\Workflow\Backend\Controller\StepController
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.type_registry'
+      - '@templating'
+
   netzmacht.contao_workflow.backend.transition_controller:
     class: Netzmacht\Contao\Workflow\Backend\Controller\TransitionController
     arguments:
@@ -6,3 +14,4 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.type_registry'
       - '@templating'
+      - '@router'

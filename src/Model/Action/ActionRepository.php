@@ -43,4 +43,17 @@ class ActionRepository extends ContaoRepository
     {
         return $this->findBy(['.pid=?'], [$transitionId], $options);
     }
+
+    /**
+     * Find active by transition.
+     *
+     * @param int   $transitionId The transition id.
+     * @param array $options      Query options.
+     *
+     * @return ActionModel[]|Collection|null
+     */
+    public function findActiveByTransition(int $transitionId, array $options = ['order' => '.sorting'])
+    {
+        return $this->findBy(['.active=1', '.pid=?'], [$transitionId], $options);
+    }
 }

@@ -25,6 +25,16 @@ use Netzmacht\Workflow\Flow\Item;
 interface Renderer
 {
     /**
+     * Render the label.
+     *
+     * @param Item  $item    The workflow item.
+     * @param array $context Optional context data.
+     *
+     * @return string
+     */
+    public function renderLabel(Item $item, array $context = []): string;
+
+    /**
      * Render the default view. Could be an alias for either teaser or detail view.
      *
      * @param Item  $item    The workflow item.

@@ -15,6 +15,14 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Controller;
 
+use Netzmacht\Contao\Workflow\Type\Renderer;
+use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Workflow;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Class StepController
  *
@@ -22,7 +30,83 @@ namespace Netzmacht\Contao\Workflow\Backend\Controller;
  *
  * @package Netzmacht\Contao\Workflow\Backend\Controller
  */
-class StepController
+class StepController extends AbstractController
 {
+    /**
+     * Execute the controller.
+     *
+     * @param EntityId $entityId The enetity id.
+     *
+     * @return Response
+     */
+    public function execute(EntityId $entityId): Response
+    {
+        $item        = $this->createItem($entityId);
+        $workflow    = $this->workflowManager->getWorkflowByItem($item);
+        $renderer    = $this->getWorkflowType($workflow)->getRenderer();
+        $currentStep = null;
 
+        if ($item->isWorkflowStarted()) {
+            $currentStep = $workflow->getStep($item->getCurrentStepName());
+        }
+
+        return $this->renderer->renderResponse(
+            '@NetzmachtContaoWorkflow/backend/step.html.twig',
+            [
+                'headline'    => $this->generateHeadline($workflow, $currentStep),
+                'subheadline' => $renderer->renderLabel($item),
+                'errors'      => [],
+                'item'        => $item,
+                'transitions' => $this->getAvailableTransitions($workflow, $item),
+                'workflow'    => $workflow,
+                'currentStep' => $currentStep,
+                'view'        => $renderer->renderDefaultView($item),
+            ]
+        );
+    }
+
+    /**
+     * Generate the headline.
+     *
+     * @param Workflow  $workflow    Workflow of the item.
+     * @param Item      $item        Current item.
+     * @param Step|null $currentStep Current step.
+     *
+     * @return string
+     */
+    private function generateHeadline(Workflow $workflow, ?Step $currentStep): string
+    {
+        $headline  = $workflow->getLabel();
+
+        if ($currentStep) {
+            $headline .= ' &raquo; ' . $currentStep->getLabel();
+        }
+
+        return $headline;
+    }
+
+    /**
+     * Get all available transitions.
+     *
+     * @param Workflow $workflow Workflow.
+     * @param Item     $item     The item.
+     *
+     * @return Transition[]|array
+     */
+    private function getAvailableTransitions(Workflow $workflow, Item $item): array
+    {
+        $transitions = array();
+
+        if (!$item->isWorkflowStarted()) {
+            $transitions[] = $workflow->getStartTransition();
+        } else {
+            $step = $workflow->getStep($item->getCurrentStepName());
+
+            foreach ($step->getAllowedTransitions() as $transitionName) {
+                $transitions[] = $workflow->getTransition($transitionName);
+            }
+        }
+
+        return $transitions;
+    }
 }

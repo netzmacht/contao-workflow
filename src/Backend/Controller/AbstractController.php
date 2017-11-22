@@ -15,43 +15,100 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Controller;
 
+use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\Contao\Workflow\Type\WorkflowType;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
-use Netzmacht\Workflow\Manager\WorkflowManager;
+use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Flow\Workflow;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class AbstractController
  *
  * @package Netzmacht\Contao\Workflow\Backend\Controller
  */
-class AbstractController
+abstract class AbstractController
 {
     /**
      * Workflow manager.
      *
      * @var WorkflowManager
      */
-    private $workflowManager;
+    protected $workflowManager;
 
     /**
      * Template engine.
      *
      * @var TemplateEngine
      */
-    private $renderer;
+    protected $renderer;
 
     /**
      * The entity manager.
      *
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
     /**
      * The workflow type registry.
      *
      * @var WorkflowTypeRegistry
      */
-    private $typeRegistry;
+    protected $typeRegistry;
+
+    /**
+     * AbstractController constructor.
+     *
+     * @param WorkflowManager $workflowManager
+     * @param TemplateEngine $renderer
+     * @param EntityManager $entityManager
+     * @param WorkflowTypeRegistry $typeRegistry
+     */
+    public function __construct(
+        WorkflowManager $workflowManager,
+        EntityManager $entityManager,
+        WorkflowTypeRegistry $typeRegistry,
+        TemplateEngine $renderer
+    ) {
+        $this->workflowManager = $workflowManager;
+        $this->entityManager   = $entityManager;
+        $this->typeRegistry    = $typeRegistry;
+        $this->renderer        = $renderer;
+    }
+
+    /**
+     * Find the entity.
+     *
+     * @param EntityId $entityId The entity id.
+     *
+     * @return Item
+     */
+    protected function createItem(EntityId $entityId): Item
+    {
+        try {
+            $repository = $this->entityManager->getRepository($entityId->getProviderName());
+            $entity     = $repository->find($entityId->getIdentifier());
+        } catch (UnsupportedEntity $e) {
+            throw new NotFoundHttpException('Entity not found.', $e);
+        }
+
+        return $this->workflowManager->createItem($entityId, $entity);
+    }
+
+    /**
+     * Get the workflow type.
+     *
+     * @param Workflow $workflow The workflow type.
+     *
+     * @return WorkflowType
+     */
+    protected function getWorkflowType(Workflow $workflow): WorkflowType
+    {
+        return $this->typeRegistry->getType($workflow->getConfigValue('type'));
+    }
 }

@@ -31,6 +31,7 @@ services:
     class: Netzmacht\Contao\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
 
   netzmacht.contao_workflow.entity_factory:
@@ -72,6 +73,7 @@ services:
     class: Netzmacht\Contao\Workflow\Entity\EntityManager
     arguments:
       - '@netzmacht.contao_workflow.entity_repository_factory'
+      - '@database_connection'
 
   netzmacht.contao_workflow.transition_handler_factory:
     class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory
@@ -152,3 +154,8 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.dca.manager'
+
+  netzmacht.contao_workflow.request.param_converter.entity_id:
+    class: Netzmacht\Contao\Workflow\Bundle\Request\EntityIdParamConverter
+    tags:
+      - { name: 'request.param_converter', converter: 'entity_id' }

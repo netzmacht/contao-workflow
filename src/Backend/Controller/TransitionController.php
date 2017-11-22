@@ -15,108 +15,69 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Controller;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
-use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
  * Class TransitController
  *
  * @package Netzmacht\Contao\Workflow\Backend\Controller
  */
-class TransitionController
+class TransitionController extends AbstractController
 {
     /**
-     * @var WorkflowManager
-     */
-    private $workflowManager;
-
-    /**
-     * @var TemplateEngine
-     */
-    private $renderer;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @var WorkflowTypeRegistry
-     */
-    private $typeProvider;
-
-    /**
-     * TransitController constructor.
+     * The router.
      *
-     * @param WorkflowManager      $workflowManager
-     * @param EntityManager        $entityManager
-     * @param WorkflowTypeRegistry $typeProvider
-     * @param TemplateEngine       $renderer
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param Router $router The router
      */
     public function __construct(
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
-        WorkflowTypeRegistry $typeProvider,
-        TemplateEngine $renderer
+        WorkflowTypeRegistry $typeRegistry,
+        TemplateEngine $renderer,
+        Router $router
     ) {
-        $this->workflowManager = $workflowManager;
-        $this->entityManager   = $entityManager;
-        $this->typeProvider    = $typeProvider;
-        $this->renderer        = $renderer;
+        parent::__construct($workflowManager, $entityManager, $typeRegistry, $renderer);
+
+        $this->router = $router;
     }
 
     /**
-     * @param string      $entityId
-     * @param null|string $transition
+     * Execute the transition.
+     *
+     * @param EntityId      $entityId
+     * @param string $transition
      *
      * @return Response
      */
-    public function execute(string $entityId, ?string $transition = null): Response
+    public function execute(EntityId $entityId, string $transition): Response
     {
-        $entityId = EntityId::fromString($entityId);
-        $item     = $this->createItem($entityId);
+        $item    = $this->createItem($entityId);
+        $handler = $this->workflowManager->handle($item, $transition);
 
-        $workflow     = $this->workflowManager->getWorkflowByName($item->getWorkflowName());
-        $workflowType = $this->typeProvider->getType($workflow->getConfigValue('type'));
+        if ($handler->validate()) {
+            $handler->transit();
 
-        return $this->renderer->renderResponse(
-            '@NetzmachtContaoWorkflow/backend/transit.html.twig',
-            [
-                'handler'       => $handler,
-                'headline'      => $this->generateHeadline($handler),
-                'item'          => $workflowType->getRenderer()->renderDefaultView($item),
-                'errors'        => null,
-            ]
-        );
-    }
-
-    /**
-     * Find the entity.
-     *
-     * @param EntityId $entityId The entity id.
-     *
-     * @return Item
-     */
-    private function createItem(EntityId $entityId): Item
-    {
-        try {
-            $repository = $this->entityManager->getRepository($entityId->getProviderName());
-            $entity     = $repository->find($entityId->getIdentifier());
-        } catch (UnsupportedEntity $e) {
-            throw new NotFoundHttpException('Entity not found.', $e);
+            return new RedirectResponse(
+                $this->router->generate('netzmacht.contao_workflow.backend.step', ['entityId' => (string) $entityId])
+            );
         }
 
-        return $this->workflowManager->createItem($entityId, $entity);
+        // TODO: Handle invalid transition with required form data.
     }
 
     /**

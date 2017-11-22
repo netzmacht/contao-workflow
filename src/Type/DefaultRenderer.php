@@ -27,15 +27,7 @@ class DefaultRenderer implements Renderer
     /**
      * {@inheritDoc}
      */
-    public function renderDefaultView(Item $item, array $context = []): string
-    {
-        return $this->renderTeaserView($item, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function renderTeaserView(Item $item, array $context = []): string
+    public function renderLabel(Item $item, array $context = []): string
     {
         return (string) $item->getEntityId();
     }
@@ -43,8 +35,24 @@ class DefaultRenderer implements Renderer
     /**
      * {@inheritDoc}
      */
+    public function renderDefaultView(Item $item, array $context = []): string
+    {
+        return $this->renderLabel($item, $context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function renderTeaserView(Item $item, array $context = []): string
+    {
+        return $this->renderLabel($item, $context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function renderDetailView(Item $item, array $context = []): string
     {
-        return $this->renderTeaserView($item, $context);
+        return $this->renderLabel($item, $context);
     }
 }

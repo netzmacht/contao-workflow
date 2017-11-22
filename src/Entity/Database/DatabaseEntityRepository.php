@@ -101,7 +101,11 @@ class DatabaseEntityRepository implements EntityRepository
             throw UnsupportedEntity::forEntity($entity);
         }
 
-        $this->connection->insert($this->providerName, $entity->toArray());
+        if ($entity->getId()) {
+            $this->connection->update($this->providerName, $entity->toArray(), ['id' => $entity->getId()]);
+        } else {
+            $this->connection->insert($this->providerName, $entity->toArray());
+        }
     }
 
     /**

@@ -53,7 +53,7 @@ class UserNavigationListener
         $request = $this->requestStack->getCurrentRequest();
         $module  = $request->query->get('module');
 
-        if ($request->attributes->get('_backend_module') === 'workflow_transition') {
+        if ($request->attributes->get('_backend_module') === 'workflow') {
             foreach ($modules as $group => $groupModules) {
                 if (isset($groupModules['modules'][$module])) {
                     $modules[$group]['modules'][$module]['isActive'] = true;

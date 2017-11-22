@@ -132,7 +132,7 @@ class StateRepository implements WorkflowStateRepository
     private function createState(StateModel $model)
     {
         $reachedAt = new \DateTime();
-        $reachedAt->setTimestamp($model->reachedAt);
+        $reachedAt->setTimestamp((int) $model->reachedAt);
         $reachedAt = \DateTimeImmutable::createFromMutable($reachedAt);
 
         $state = new State(
@@ -144,7 +144,7 @@ class StateRepository implements WorkflowStateRepository
             (array) json_decode($model->data, true),
             $reachedAt,
             (array) json_decode($model->errors, true),
-            $model->id
+            (int) $model->id
         );
 
         return $state;

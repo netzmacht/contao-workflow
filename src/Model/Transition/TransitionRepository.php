@@ -47,4 +47,21 @@ class TransitionRepository extends ContaoRepository
             $options
         );
     }
+
+    /**
+     * Find active by workflow id.
+     *
+     * @param int   $workflowId The workflow id.
+     * @param array $options    Query options.
+     *
+     * @return Collection|TransitionModel[]|null
+     */
+    public function findActiveByTransition(int $workflowId, array $options = ['order' => '.sorting'])
+    {
+        return $this->findBy(
+            ['.active=1', '.pid=?'],
+            [$workflowId],
+            $options
+        );
+    }
 }

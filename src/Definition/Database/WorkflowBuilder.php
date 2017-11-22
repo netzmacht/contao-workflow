@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Definition\Database;
 
+use Contao\FilesModel;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Workflow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Definition\Definition;
@@ -185,7 +186,7 @@ class WorkflowBuilder
     {
         /** @var TransitionRepository $repository */
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
-        $collection = $repository->findByWorkflow((int) $workflow->getConfigValue('id'));
+        $collection = $repository->findActiveByTransition((int) $workflow->getConfigValue('id'));
 
         if (!$collection) {
             return;
@@ -202,6 +203,13 @@ class WorkflowBuilder
                 );
             }
 
+            $data = $model->row();
+
+            if ($data['addIcon'] && $data['icon']) {
+                $file = $this->repositoryManager->getRepository(FilesModel::class)->findByUuid($data['icon']);
+                $data['icon'] = $file ? $file->path : null;
+            }
+
             /** @var TransitionModel $model */
             $transition = new Transition(
                 (string) $model->name,
@@ -209,7 +217,7 @@ class WorkflowBuilder
                 $this->steps[$model->stepTo],
                 (string) $model->label,
                 array_merge(
-                    $model->row(),
+                    $data,
                     [Definition::SOURCE => Definition::SOURCE_DATABASE]
                 )
             );
@@ -241,7 +249,7 @@ class WorkflowBuilder
     {
         /** @var ActionRepository $repository */
         $repository = $this->repositoryManager->getRepository(ActionModel::class);
-        $collection = $repository->findByTransition((int) $transition->getConfigValue('id'));
+        $collection = $repository->findActiveByTransition((int) $transition->getConfigValue('id'));
 
         if (!$collection) {
             return;

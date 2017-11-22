@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="src/Resources/translations/messages.en.xlf">
+        <body>
+            <trans-unit id="workflow.workflowName">
+                <source>workflow.workflowName</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="workflow.currentStep">
+                <source>workflow.currentStep</source>
+                <target>Current step</target>
+            </trans-unit>
+            <trans-unit id="workflow.reachedAt">
+                <source>workflow.reachedAt</source>
+                <target>Last change</target>
+            </trans-unit>
+            <trans-unit id="workflow.entity">
+                <source>workflow.dataRecord</source>
+                <target>Data record</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
