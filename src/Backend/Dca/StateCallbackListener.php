@@ -125,9 +125,6 @@ class StateCallbackListener
      */
     public function generateRow(array $row): string
     {
-        return $row['stepName'];
-
-        /* @codingStandardsIgnoreStart */
         try {
             $entityId = EntityId::fromString($row['entityId']);
             $entity   = $this->entityManager
@@ -152,6 +149,5 @@ class StateCallbackListener
         }
 
         return $this->templateEngine->render('toolkit:be:be_workflow_state_row.html5', $row);
-        /* @codingStandardsIgnoreEnd */
     }
 }
