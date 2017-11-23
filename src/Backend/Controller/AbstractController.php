@@ -25,6 +25,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
  * Class AbstractController
@@ -62,23 +63,33 @@ abstract class AbstractController
     protected $typeRegistry;
 
     /**
+     * The router.
+     *
+     * @var Router
+     */
+    protected $router;
+
+    /**
      * AbstractController constructor.
      *
-     * @param WorkflowManager $workflowManager
-     * @param TemplateEngine $renderer
-     * @param EntityManager $entityManager
+     * @param WorkflowManager      $workflowManager
+     * @param EntityManager        $entityManager
      * @param WorkflowTypeRegistry $typeRegistry
+     * @param TemplateEngine       $renderer
+     * @param Router               $router
      */
     public function __construct(
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
         WorkflowTypeRegistry $typeRegistry,
-        TemplateEngine $renderer
+        TemplateEngine $renderer,
+        Router $router
     ) {
         $this->workflowManager = $workflowManager;
         $this->entityManager   = $entityManager;
         $this->typeRegistry    = $typeRegistry;
         $this->renderer        = $renderer;
+        $this->router          = $router;
     }
 
     /**

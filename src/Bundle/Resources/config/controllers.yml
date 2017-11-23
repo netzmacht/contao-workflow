@@ -6,6 +6,7 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.type_registry'
       - '@templating'
+      - '@router'
 
   netzmacht.contao_workflow.backend.transition_controller:
     class: Netzmacht\Contao\Workflow\Backend\Controller\TransitionController

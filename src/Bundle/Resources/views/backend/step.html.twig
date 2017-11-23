@@ -45,7 +45,11 @@
 
     <div class="tl_submit_container">
         {% for transition in transitions %}
-            <a href="{{ path('netzmacht.contao_workflow.backend.transition', {entityId: item.entityId, transition: transition.name}) }}" class="tl_submit">
+            {% set params = {entityId: item.entityId, transition: transition.name } %}
+            {% if hasWorkflowChanged %}
+                {% set params = params|merge({'detach': true}) %}
+            {% endif %}
+            <a href="{{ path('netzmacht.contao_workflow.backend.transition', params) }}" class="tl_submit">
                 {% if transition.configValue('addIcon') and transition.getConfigValue('icon') %}
                     <img src="{{ transition.getConfigValue('icon') }}" width="14" height="14" alt="{{ transition.label }}">
                 {% endif %}

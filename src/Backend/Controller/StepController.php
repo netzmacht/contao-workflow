@@ -15,12 +15,12 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Backend\Controller;
 
-use Netzmacht\Contao\Workflow\Type\Renderer;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -45,22 +45,35 @@ class StepController extends AbstractController
         $workflow    = $this->workflowManager->getWorkflowByItem($item);
         $renderer    = $this->getWorkflowType($workflow)->getRenderer();
         $currentStep = null;
+        $errors      = [];
 
-        if ($item->isWorkflowStarted()) {
+        if ($workflow->getName() !== $item->getWorkflowName()) {
+            return new RedirectResponse(
+                $this->router->generate(
+                    'netzmacht.contao_workflow.backend.transition',
+                    [
+                        'entityId'   => (string) $entityId,
+                        'transition' => $workflow->getStartTransition()->getName(),
+                        'detach'     => true,
+                    ]
+                )
+            );
+        } elseif ($item->isWorkflowStarted()) {
             $currentStep = $workflow->getStep($item->getCurrentStepName());
         }
 
         return $this->renderer->renderResponse(
             '@NetzmachtContaoWorkflow/backend/step.html.twig',
             [
-                'headline'    => $this->generateHeadline($workflow, $currentStep),
-                'subheadline' => $renderer->renderLabel($item),
-                'errors'      => [],
-                'item'        => $item,
-                'transitions' => $this->getAvailableTransitions($workflow, $item),
-                'workflow'    => $workflow,
-                'currentStep' => $currentStep,
-                'view'        => $renderer->renderDefaultView($item),
+                'headline'           => $this->generateHeadline($workflow, $currentStep),
+                'subheadline'        => $renderer->renderLabel($item),
+                'errors'             => $errors,
+                'item'               => $item,
+                'transitions'        => $this->getAvailableTransitions($workflow, $item),
+                'hasWorkflowChanged' => $workflow->getName() !== $item->getWorkflowName(),
+                'workflow'           => $workflow,
+                'currentStep'        => $currentStep,
+                'view'               => $renderer->renderDefaultView($item),
             ]
         );
     }
@@ -69,7 +82,6 @@ class StepController extends AbstractController
      * Generate the headline.
      *
      * @param Workflow  $workflow    Workflow of the item.
-     * @param Item      $item        Current item.
      * @param Step|null $currentStep Current step.
      *
      * @return string
@@ -97,7 +109,7 @@ class StepController extends AbstractController
     {
         $transitions = array();
 
-        if (!$item->isWorkflowStarted()) {
+        if (!$item->isWorkflowStarted() || $workflow->getName() || $item->getWorkflowName()) {
             $transitions[] = $workflow->getStartTransition();
         } else {
             $step = $workflow->getStep($item->getCurrentStepName());
