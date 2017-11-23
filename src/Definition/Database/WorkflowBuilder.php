@@ -149,7 +149,7 @@ class WorkflowBuilder
             /** @var StepModel $model */
             $model = $collection->current();
             $step  = new Step(
-                $model->name,
+                'step_' . $model->id,
                 $model->label,
                 array_merge(
                     $collection->row(),
@@ -196,8 +196,8 @@ class WorkflowBuilder
             if (!isset($this->steps[$model->stepTo])) {
                 throw new DefinitionException(
                     sprintf(
-                        'Transition "%s" refers to step "%s" which does not exists.',
-                        $model->name,
+                        'Transition ID "%s" refers to step "%s" which does not exists.',
+                        $model->id,
                         $model->stepTo
                     )
                 );
@@ -212,7 +212,7 @@ class WorkflowBuilder
 
             /** @var TransitionModel $model */
             $transition = new Transition(
-                (string) $model->name,
+                'transition_' . $model->id,
                 $workflow,
                 $this->steps[$model->stepTo],
                 (string) $model->label,

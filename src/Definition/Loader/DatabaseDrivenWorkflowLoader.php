@@ -80,7 +80,7 @@ class DatabaseDrivenWorkflowLoader implements WorkflowLoader
         if ($collection) {
             foreach ($collection as $model) {
                 $workflow = new Workflow(
-                    (string) $model->name,
+                    (string) 'workflow_' . $model->id,
                     (string) $model->providerName,
                     (string) ($model->label ?: $model->name),
                     array_merge(

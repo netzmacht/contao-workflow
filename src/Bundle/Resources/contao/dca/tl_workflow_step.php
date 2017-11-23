@@ -28,8 +28,8 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
         'sorting' => [
             'mode'                  => 4,
             'flag'                  => 1,
-            'headerFields'          => ['label', 'name', 'type', 'description'],
-            'fields'                => ['name'],
+            'headerFields'          => ['label', 'type', 'description'],
+            'fields'                => ['label'],
             'disableGrouping'       => true,
             'child_record_callback' => [
                 'netzmacht.contao_workflow.listeners.dca.common',
@@ -37,8 +37,8 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
             ],
         ],
         'label'   => [
-            'fields' => ['label', 'name', 'description'],
-            'format' => '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
+            'fields' => ['label', 'description'],
+            'format' => '<strong>%s</strong><br>%s',
 
         ],
 
@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'       => ['label', 'name', 'description', 'final'],
+            'name'       => ['label', 'description', 'final'],
             'permission' => ['limitPermission'],
         ],
     ],
@@ -87,19 +87,6 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
         ],
         'tstamp'          => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'name'            => [
-            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_step']['name'],
-            'inputType'     => 'text',
-            'exclude'       => true,
-            'eval'          => [
-                'tl_class'  => 'w50',
-                'maxlength' => 64,
-            ],
-            'save_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.common', 'createName'],
-            ],
-            'sql'           => "varchar(64) NOT NULL default ''",
         ],
         'label'           => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['label'],

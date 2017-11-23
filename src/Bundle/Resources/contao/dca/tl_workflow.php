@@ -28,11 +28,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
     'list' => [
         'sorting' => [
             'mode'        => 1,
-            'fields'      => ['type', 'name'],
+            'fields'      => ['type'],
             'panelLayout' => 'sorting,filter,search',
         ],
         'label'   => [
-            'fields'         => ['name', 'type', 'description'],
+            'fields'         => ['type', 'description'],
             'label_callback' => ['netzmacht.contao_workflow.listeners.dca.common', 'generateRow'],
         ],
 
@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'name', 'type'],
+            'name'        => ['label', 'type'],
             'description' => [':hide', 'description'],
             'permissions' => ['permissions'],
             'process'     => ['process', 'logChanges'],
@@ -108,20 +108,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
         ],
         'tstamp'       => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'name'         => [
-            'label'         => &$GLOBALS['TL_LANG']['tl_workflow']['name'],
-            'inputType'     => 'text',
-            'search'        => true,
-            'exclude'       => true,
-            'save_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.common', 'createName'],
-            ],
-            'eval'          => [
-                'tl_class'  => 'w50',
-                'mandatory' => false,
-            ],
-            'sql'           => "varchar(64) NOT NULL default ''",
         ],
         'label'        => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['label'],
