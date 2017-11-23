@@ -17,10 +17,10 @@
     <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
 </div>
 
-<div class="maintenance_inactive">
+<div class="workflow-section">
     <h2 class="sub_headline">{{ subheadline }}</h2>
 
-    <div class="tl_listing_container">
+    <div class="workflow-content-box">
         <div class="tl_header hover-div">
             <table class="tl_header_table">
                 <tbody>
@@ -43,7 +43,8 @@
         </div>
     </div>
 
-    <div class="tl_submit_container">
+
+    <div class="workflow-submit-container">
         {% for transition in transitions %}
             {% set params = {entityId: item.entityId, transition: transition.name } %}
             {% if hasWorkflowChanged %}
@@ -60,8 +61,18 @@
 </div>
 
 <div class="maintenance_inactive">
-        <h2 class="sub_headline">{{ 'workflow.dataRecord'|trans }}</h2>
+    <h2 class="sub_headline">{{ 'workflow.dataRecord'|trans }}</h2>
     {{ view|raw }}
 </div>
+
+{% if history %}
+<div class="workflow-section">
+    <h2 class="sub_headline">{{ 'workflow.history'|trans }}</h2>
+    <div class="workflow-content-box">
+    {% include 'NetzmachtContaoWorkflowBundle:backend:state_history.html.twig' with { 'history': history } %}
+    </div>
+</div>
+
+{% endif %}
 
 {% endblock %}

@@ -45,7 +45,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.cotnao_workflow.listeners.hook.backend_user_navigation:
-    class: Netzmacht\Contao\Workflow\Backend\EventListener\UserNavigationListener
+    class: Netzmacht\Contao\Workflow\EventListener\Backend\UserNavigationListener
     arguments:
       - '@request_stack'
       - '@router'
@@ -59,6 +59,13 @@ services:
       - '@netzmacht.contao_workflow.action_factory'
     tags:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_workflow', method: 'createWorkflow' }
+
+  netzmacht.contao_workflow.listeners.builder.meta_data_action:
+    class: Netzmacht\Contao\Workflow\EventListener\Workflow\CreateMetaDataActionListener
+    arguments:
+      - '@netzmacht.contao_workflow.action.metadata_action'
+    tags:
+      - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
 
   netzmacht.contao_workflow.listeners.builder.transition_builder:
     class: Netzmacht\Contao\Workflow\Definition\Database\ConditionBuilder

@@ -159,3 +159,9 @@ services:
     class: Netzmacht\Contao\Workflow\Bundle\Request\EntityIdParamConverter
     tags:
       - { name: 'request.param_converter', converter: 'entity_id' }
+
+  netzmacht.contao_workflow.action.metadata_action:
+    class: Netzmacht\Contao\Workflow\Flow\Action\Metadata\MetadataAction
+    arguments:
+      - '@security.token_storage'
+      - '@request_stack'

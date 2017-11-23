@@ -1,0 +1,26 @@
+<table class="workflow-history">
+    <thead>
+        <tr>
+            <th>{{ 'workflow.history.workflow'|trans }}</th>
+            <th>{{ 'workflow.history.transition'|trans }}</th>
+            <th>{{ 'workflow.history.step'|trans }}</th>
+            <th>{{ 'workflow.history.successful'|trans }}</th>
+            <th>{{ 'workflow.history.user'|trans }}</th>
+            <th>{{ 'workflow.history.scope'|trans }}</th>
+            <th>{{ 'workflow.history.reachedAt'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for state in history %}
+    <tr class="workflow-history-state">
+        <td class="workflowName">{{ state.workflowName }}</td>
+        <td class="transitionName">{{ state.transitionName }}</td>
+        <td class="stepName">{{ state.stepName }}</td>
+        <td class="success">{{ state.successful ? 'workflow.successful.yes'|trans : 'workflow.successful.no'|trans}}</td>
+        <td class="user">{{ state.user|raw }}</td>
+        <td class="scope">{{ state.scope }}</td>
+        <td class="reachedAt">{{ state.reachedAt|date('d.m.Y H:i') }}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>

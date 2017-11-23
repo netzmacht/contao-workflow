@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Backend\EventListener;
+namespace Netzmacht\Contao\Workflow\EventListener\Backend;
 
 
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -59,6 +59,8 @@ class UserNavigationListener
                     $modules[$group]['modules'][$module]['isActive'] = true;
                 }
             }
+
+            $GLOBALS['TL_CSS'][] = 'bundles/netzmachtcontaoworkflow/css/backend.css';
         }
 
         return $modules;
