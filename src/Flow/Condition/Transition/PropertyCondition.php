@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Condition\Transition;
+namespace Netzmacht\Contao\Workflow\Flow\Condition\Transition;
 
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;

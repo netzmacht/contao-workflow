@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Action;
+namespace Netzmacht\Contao\Workflow\Flow\Action;
 
 use Netzmacht\Contao\Toolkit\Assertion\Assertion;
 use Netzmacht\Contao\Workflow\Exception\UnsupportedActionType;

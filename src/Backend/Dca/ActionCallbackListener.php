@@ -17,7 +17,7 @@ namespace Netzmacht\Contao\Workflow\Backend\Dca;
 
 use Contao\DataContainer;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Action\ActionFactory;
+use Netzmacht\Contao\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Manager\Manager;
 use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
 use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;

@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Action\Property;
+namespace Netzmacht\Contao\Workflow\Flow\Action\Property;
 
-use Netzmacht\Contao\Workflow\Action\AbstractAction;
+use Netzmacht\Contao\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;

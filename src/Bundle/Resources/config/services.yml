@@ -18,12 +18,12 @@ services:
       - { name: 'netzmacht.contao_workflow.type' }
 
   netzmacht.contao_workflow.action_factory:
-    class: Netzmacht\Contao\Workflow\Action\ActionFactory
+    class: Netzmacht\Contao\Workflow\Flow\Action\ActionFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.action_factory.property:
-    class: Netzmacht\Contao\Workflow\Action\Property\PropertyActionFactory
+    class: Netzmacht\Contao\Workflow\Flow\Action\Property\PropertyActionFactory
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 

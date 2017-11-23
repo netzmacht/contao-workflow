@@ -14,9 +14,9 @@
 namespace Netzmacht\Contao\Workflow\Definition\Database;
 
 use Contao\StringUtil;
-use Netzmacht\Contao\Workflow\Condition\Transition\ExpressionCondition;
-use Netzmacht\Contao\Workflow\Condition\Transition\PropertyCondition;
-use Netzmacht\Contao\Workflow\Condition\Transition\TransitionPermissionCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition\ExpressionCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition\PropertyCondition;
+use Netzmacht\Contao\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;

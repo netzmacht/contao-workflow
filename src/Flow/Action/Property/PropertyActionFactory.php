@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Action\Property;
+namespace Netzmacht\Contao\Workflow\Flow\Action\Property;
 
-use Netzmacht\Contao\Workflow\Action\ActionTypeFactory;
+use Netzmacht\Contao\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
