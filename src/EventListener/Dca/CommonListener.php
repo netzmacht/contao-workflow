@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Backend;
+namespace Netzmacht\Contao\Workflow\EventListener\Dca;
 
 use Contao\DataContainer;
 use Contao\StringUtil;
@@ -37,25 +37,8 @@ class CommonListener
         return sprintf(
             '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
             $row['label'],
-            $row['name'],
+            $row['id'],
             $row['description']
         );
-    }
-
-    /**
-     * Create the name.
-     *
-     * @param string        $value         Current name value.
-     * @param DataContainer $dataContainer The Dc_Table.
-     *
-     * @return string
-     */
-    public function createName($value, $dataContainer): string
-    {
-        if (!$value) {
-            $value = $dataContainer->activeRecord->label;
-        }
-
-        return StringUtil::standardize($value);
     }
 }

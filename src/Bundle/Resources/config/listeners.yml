@@ -8,7 +8,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.common:
-    class: Netzmacht\Contao\Workflow\Backend\CommonListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\CommonListener
 
   netzmacht.contao_workflow.listeners.dca.workflow:
     class: Netzmacht\Contao\Workflow\EventListener\Dca\WorkflowCallbackListener
