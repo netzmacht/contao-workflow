@@ -55,7 +55,7 @@ class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @throws \InvalidArgumentException If an invalid entity type is given.
      */
-    public function add($entity)
+    public function add($entity): void
     {
         Assertion::isInstanceOf(
             $entity,
@@ -94,9 +94,9 @@ class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @param Specification $specification The specification.
      *
-     * @return Entity[]
+     * @return Entity[]|iterable
      */
-    public function findBySpecification(Specification $specification)
+    public function findBySpecification(Specification $specification): iterable
     {
         if ($specification instanceof ModelSpecification) {
             $models   = $this->repository->findBySpecification($specification) ?: [];
@@ -131,7 +131,7 @@ class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @throws \InvalidArgumentException If an invalid entity type is given.
      */
-    public function remove($entity)
+    public function remove($entity): void
     {
         Assertion::isInstanceOf(
             $entity,

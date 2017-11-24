@@ -85,7 +85,7 @@ class DatabaseEntityRepository implements EntityRepository
      *
      * @throws \RuntimeException Not implemented yet.
      */
-    public function findBySpecification(Specification $specification)
+    public function findBySpecification(Specification $specification): iterable
     {
         throw new \RuntimeException('Not supported.');
     }
@@ -95,7 +95,7 @@ class DatabaseEntityRepository implements EntityRepository
      *
      * @throws UnsupportedEntity When an entity could not be found.
      */
-    public function add($entity)
+    public function add($entity): void
     {
         if (!$entity instanceof DatabaseEntity) {
             throw UnsupportedEntity::forEntity($entity);
@@ -113,7 +113,7 @@ class DatabaseEntityRepository implements EntityRepository
      *
      * @throws UnsupportedEntity When an entity could not be found.
      */
-    public function remove($entity)
+    public function remove($entity): void
     {
         if (!$entity instanceof DatabaseEntity) {
             throw UnsupportedEntity::forEntity($entity);
