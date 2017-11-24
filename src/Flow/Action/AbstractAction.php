@@ -17,15 +17,13 @@ namespace Netzmacht\Contao\Workflow\Flow\Action;
 
 use Assert\Assertion;
 use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Workflow\Base;
 use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\Workflow\Flow\Base;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 
 /**
  * Class AbstractAction which uses an form builder to create user input form data.
- *
- * @package Netzmacht\Contao\Workflow\Action
  */
 abstract class AbstractAction extends Base implements Action
 {
@@ -72,7 +70,7 @@ abstract class AbstractAction extends Base implements Action
     protected function logChanges($property, $value, Context $context)
     {
         if ($this->isLogChanges()) {
-            $context->getProperties()->set($property, $value, $this->getName());
+            $context->getProperties()->set($this->getName() . '_' . $property, $value);
         }
 
         return $this;
@@ -90,7 +88,7 @@ abstract class AbstractAction extends Base implements Action
     {
         if ($this->isLogChanges()) {
             foreach ($values as $name => $value) {
-                $context->getProperties()->set($name, $value, $this->getName());
+                $context->getProperties()->set($this->getName() . '_' . $name, $value);
             }
         }
 

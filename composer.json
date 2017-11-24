@@ -17,16 +17,16 @@
         "source":"https://github.com/netzmacht/contao-workflow"
     },
     "require":{
-        "php":">=7.1",
+        "php":"^7.1",
+        "beberlei/assert": "~2.0",
         "contao/core-bundle":"~4.4",
         "contao-community-alliance/meta-palettes": "~1.10",
-        "menatwork/contao-multicolumnwizard": "^3.3.14",
-        "beberlei/assert": "~2.0",
-        "netzmacht/workflow": "~2.0@dev",
-        "netzmacht/contao-toolkit": "dev-master",
-        "mathiasverraes/classfunctions": "~1.1",
-        "symfony/expression-language": "~3.3",
         "friends-of-contao/contao-associategroups": "~1.3@dev",
+        "mathiasverraes/classfunctions": "~1.1",
+        "menatwork/contao-multicolumnwizard": "^3.3.14",
+        "netzmacht/workflow": "~2.0@beta",
+        "netzmacht/contao-toolkit": "dev-master",
+        "symfony/expression-language": "~3.3",
         "symfony/form": "^3.3",
         "adamquaile/symfony-fieldset-bundle": "^1.1"
     },
