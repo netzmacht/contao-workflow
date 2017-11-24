@@ -19,6 +19,8 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
+use Contao\ManagerPlugin\Config\ContainerBuilder;
+use Contao\ManagerPlugin\Config\ExtensionPluginInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Netzmacht\Contao\Toolkit\Bundle\NetzmachtContaoToolkitBundle;
 use Netzmacht\Contao\Workflow\Bundle\NetzmachtContaoWorkflowBundle;
@@ -28,7 +30,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Class Plugin
  */
-class Plugin implements BundlePluginInterface, RoutingPluginInterface
+class Plugin implements BundlePluginInterface, RoutingPluginInterface, ExtensionPluginInterface
 {
     /**
      * {@inheritDoc}
@@ -50,5 +52,17 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
         return $resolver
             ->resolve(__DIR__ . '/../Resources/config/routing.yml')
             ->load(__DIR__ . '/../Resources/config/routing.yml');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExtensionConfig($extensionName, array $extensionConfigs, ContainerBuilder $container)
+    {
+        if ($extensionName === 'framework') {
+            $extensionConfigs[] = ['form' => true];
+        }
+
+        return $extensionConfigs;
     }
 }

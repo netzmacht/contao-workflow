@@ -17,13 +17,14 @@
     <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
 </div>
 
-<div class="workflow-overview">
-    {% if handler.currentStep != null %}
-        {{ handler.currentStep.label }}
-    {% endif %}
-    {{ handler.transition.label }}
+<div class="workflow-section">
+    <h2 class="sub_headline">{{ subheadline }}</h2>
+
+    <p>{{ transition.configValue('description') }}</p>
+
+    <div class="workflow-content-box">
+    {{ form(form) }}
+    </div>
 </div>
 
-{{ item|raw }}
-</div>
 {% endblock %}

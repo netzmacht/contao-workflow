@@ -131,20 +131,17 @@ class ActionFactory
     /**
      * Build the form for an action type.
      *
-     * @param FormBuilder $formBuilder The form builder.
-     * @param string      $type        The action type.
-     * @param array       $config      The action config.
+     * @param Action      $action      The action.
      * @param Transition  $transition  Workflow transition.
+     * @param FormBuilder $formBuilder The form builder.
      *
      * @return void
      */
-    public function buildForm(FormBuilder $formBuilder, string $type, array $config, Transition $transition): void
+    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         foreach ($this->factories as $factory) {
-            if ($factory->getName() === $type) {
-                $factory->buildForm($formBuilder, $config, $transition);
-
-                break;
+            if ($factory->match($action)) {
+                $factory->buildForm($action, $transition, $formBuilder);
             }
         }
     }

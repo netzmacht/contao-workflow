@@ -27,6 +27,11 @@ services:
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
+  netzmacht.contao_workflow.action_factory.note:
+      class: Netzmacht\Contao\Workflow\Flow\Action\Note\NoteActionFactory
+      tags:
+        - { name: 'netzmacht.contao_workflow.action' }
+
   netzmacht.contao_workflow.definition.workflow_loader:
     class: Netzmacht\Contao\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
@@ -165,3 +170,14 @@ services:
     arguments:
       - '@security.token_storage'
       - '@request_stack'
+
+  netzmacht.contao_workflow.form.factory:
+    alias: 'form.factory'
+
+  netzmacht.contao_workflow.form.transition_form:
+    class: Netzmacht\Contao\Workflow\Form\TransitionFormType
+    arguments:
+      - '@netzmacht.contao_workflow.action_factory'
+      - '@router'
+    tags:
+      - { name: 'form.type' }

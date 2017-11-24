@@ -3,7 +3,7 @@ netzmacht.contao_workflow.backend.step:
   defaults:
     _controller: netzmacht.contao_workflow.backend.step_controller:execute
     _scope: "backend"
-    _token_check: true,
+    _token_check: true
     _custom_backend_view: true
     _backend_module: workflow
 
@@ -12,6 +12,6 @@ netzmacht.contao_workflow.backend.transition:
   defaults:
     _controller: netzmacht.contao_workflow.backend.transition_controller:execute
     _scope: "backend"
-    _token_check: true,
+    _token_check: false
     _custom_backend_view: true
     _backend_module: workflow

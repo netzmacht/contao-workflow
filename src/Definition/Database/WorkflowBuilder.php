@@ -17,12 +17,12 @@ namespace Netzmacht\Contao\Workflow\Definition\Database;
 
 use Contao\FilesModel;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Definition\Definition;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateStepEvent;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\Contao\Workflow\Definition\Exception\DefinitionException;
+use Netzmacht\Contao\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Contao\Workflow\Model\Action\ActionModel;
 use Netzmacht\Contao\Workflow\Model\Action\ActionRepository;
 use Netzmacht\Contao\Workflow\Model\Step\StepModel;

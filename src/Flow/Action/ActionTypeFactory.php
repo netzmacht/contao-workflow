@@ -51,6 +51,15 @@ interface ActionTypeFactory
     public function supports(Workflow $workflow): bool;
 
     /**
+     * Check is action type factory matches the current action.
+     *
+     * @param Action $action The action.
+     *
+     * @return bool
+     */
+    public function match(Action $action): bool;
+
+    /**
      * Create an action.
      *
      * @param array      $config     Action config.
@@ -63,11 +72,11 @@ interface ActionTypeFactory
     /**
      * Build the form.
      *
-     * @param FormBuilder $formBuilder The form builder.
-     * @param array       $config      The action config.
+     * @param Action      $action      The action.
      * @param Transition  $transition  Transition to which the action belongs.
+     * @param FormBuilder $formBuilder The form builder.
      *
      * @return void
      */
-    public function buildForm(FormBuilder $formBuilder, array $config, Transition $transition): void;
+    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void;
 }

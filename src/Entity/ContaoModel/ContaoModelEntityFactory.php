@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
 
 use Contao\Model;
-use Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntity;
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Contao\Workflow\Entity\EntityFactory;
 use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;

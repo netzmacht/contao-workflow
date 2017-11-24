@@ -15,9 +15,6 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\EventListener\Dca;
 
-use Contao\DataContainer;
-use Contao\StringUtil;
-
 /**
  * Class Common provides common helper functionalities.
  *

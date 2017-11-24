@@ -15,19 +15,49 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Controller\Backend;
 
+use Netzmacht\Contao\Workflow\Form\TransitionFormType;
+use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Handler\TransitionHandler;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
  * Class TransitController
- *
- * @package Netzmacht\Contao\Workflow\Backend\Controller
  */
 class TransitionController extends AbstractController
 {
+    /**
+     * The form factory.
+     *
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param FormFactory $formFactory The form factory.
+     */
+    public function __construct(
+        WorkflowManager $workflowManager,
+        EntityManager $entityManager,
+        WorkflowTypeRegistry $typeRegistry,
+        TemplateEngine $renderer,
+        Router $router,
+        FormFactory $formFactory
+    ) {
+        parent::__construct($workflowManager, $entityManager, $typeRegistry, $renderer, $router);
+
+        $this->formFactory = $formFactory;
+    }
+
     /**
      * Execute the transition.
      *
@@ -39,7 +69,7 @@ class TransitionController extends AbstractController
      */
     public function execute(EntityId $entityId, string $transition, Request $request): Response
     {
-        $item    = $this->createItem($entityId);
+        $item     = $this->createItem($entityId);
         $workflow = $this->workflowManager->getWorkflowByItem($item);
 
         if ($item->getWorkflowName() !== $workflow->getName()) {
@@ -48,7 +78,26 @@ class TransitionController extends AbstractController
             $handler = $this->workflowManager->handle($item, $transition);
         }
 
-        if ($handler->validate()) {
+        $payload   = [];
+        $validForm = true;
+
+        if ($handler->getRequiredPayloadProperties()) {
+            $form = $this->formFactory->create(
+                TransitionFormType::class,
+                null,
+                ['transition' => $handler->getTransition()]
+            );
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $payload = $form->getData();
+            } else {
+                $validForm = false;
+            }
+        }
+
+        if ($validForm && $handler->validate($payload)) {
             $handler->transit();
 
             return new RedirectResponse(
@@ -56,7 +105,22 @@ class TransitionController extends AbstractController
             );
         }
 
-        // TODO: Handle invalid transition with required form data.
+        if (!isset($form)) {
+            throw new \RuntimeException();
+        }
+
+        $renderer = $this->typeRegistry->getType($workflow->getConfigValue('type'))->getRenderer();
+
+        return $this->renderer->renderResponse(
+            '@NetzmachtContaoWorkflow/backend/transition.html.twig',
+            [
+                'headline'    => $this->generateHeadline($handler),
+                'subheadline' => $renderer->renderLabel($item),
+                'errors'      => [],
+                'form'        => $form->createView(),
+                'transition'  => $handler->getTransition(),
+            ]
+        );
     }
 
     /**

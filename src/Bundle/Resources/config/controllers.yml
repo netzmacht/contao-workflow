@@ -16,3 +16,4 @@ services:
       - '@netzmacht.contao_workflow.type_registry'
       - '@templating'
       - '@router'
+      - '@netzmacht.contao_workflow.form.factory'

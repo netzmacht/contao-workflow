@@ -78,21 +78,31 @@ class PropertyActionFactory implements ActionTypeFactory
     }
 
     /**
+     * @inheritDoc
+     */
+    public function match(Action $action): bool
+    {
+        return $action instanceof PropertyAction;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $formBuilder, array $config, Transition $transition): void
+    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
-        if (!empty($config['value'])) {
+        if (!$this->match($action)) {
             return;
         }
 
+        /** @var PropertyAction $action */
         $formBuilder->add(
-            'action_' . $config['name'],
+            'action_' . $action->getConfigValue('id'),
             TextType::class,
             [
                 'required'  => true,
-                'label'     => $config['label'],
-                'help'      => $config['description']
+                'label'     => $action->getConfigValue('label'),
+                'help'      => $action->getConfigValue('description')
             ]
         );
     }

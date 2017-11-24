@@ -15,12 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\Contao\Workflow\Entity;
 
-use Contao\CoreBundle\Framework\Adapter;
-use Contao\Model;
 use Doctrine\DBAL\Connection;
-use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Toolkit\Exception\InvalidArgumentException;
-use Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityRepository as ContaoEntityRepository;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Transaction\TransactionHandler;
