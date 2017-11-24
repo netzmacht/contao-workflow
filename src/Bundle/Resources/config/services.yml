@@ -149,7 +149,7 @@ services:
     class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
 
   netzmacht.contao_workflow.dca.transition_operation_builder:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\TransitionOperationBuilder
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\TransitionOperationBuilder
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_toolkit.repository_manager'

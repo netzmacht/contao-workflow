@@ -3,7 +3,7 @@ services:
     public: true
 
   netzmacht.contao_workflow.listeners.dca.save_permission_callback:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\SavePermissionsCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\SavePermissionsCallbackListener
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
@@ -11,28 +11,28 @@ services:
     class: Netzmacht\Contao\Workflow\Backend\CommonListener
 
   netzmacht.contao_workflow.listeners.dca.workflow:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\WorkflowCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\WorkflowCallbackListener
     arguments:
       - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.transition:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\TransitionCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\TransitionCallbackListener
     arguments:
       - '@netzmacht.contao_workflow.type_registry'
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.action:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\ActionCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\ActionCallbackListener
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.action_factory'
 
   netzmacht.contao_workflow.listeners.dca.state:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\StateCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\StateCallbackListener
     arguments:
       - '@translator'
       - '@templating'
@@ -40,7 +40,7 @@ services:
       - '@netzmacht.contao_workflow.manager'
 
   netzmacht.contao_workflow.listeners.dca.permissions:
-    class: Netzmacht\Contao\Workflow\Backend\Dca\PermissionCallbackListener
+    class: Netzmacht\Contao\Workflow\EventListener\Dca\PermissionCallbackListener
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
