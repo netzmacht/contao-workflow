@@ -150,8 +150,8 @@ class StepController extends AbstractController
 
             $stateData = $state->getData();
 
-            if (isset($stateData['default']['metadata']['userId'])) {
-                $userId = EntityId::fromString($stateData['default']['metadata']['userId']);
+            if (isset($stateData['metadata']['userId'])) {
+                $userId = EntityId::fromString($stateData['metadata']['userId']);
                 $repository = $this->entityManager->getRepository($userId->getProviderName());
                 $user       = $repository->find($userId->getIdentifier());
 
@@ -169,8 +169,8 @@ class StepController extends AbstractController
                 }
             }
 
-            if (isset($stateData['default']['metadata']['scope'])) {
-                $data['scope'] = $stateData['default']['metadata']['scope'];
+            if (isset($stateData['metadata']['scope'])) {
+                $data['scope'] = $stateData['metadata']['scope'];
             }
 
             try {
