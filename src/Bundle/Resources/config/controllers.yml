@@ -1,6 +1,6 @@
 services:
   netzmacht.contao_workflow.backend.step_controller:
-    class: Netzmacht\Contao\Workflow\Backend\Controller\StepController
+    class: Netzmacht\Contao\Workflow\Controller\Backend\StepController
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
@@ -9,7 +9,7 @@ services:
       - '@router'
 
   netzmacht.contao_workflow.backend.transition_controller:
-    class: Netzmacht\Contao\Workflow\Backend\Controller\TransitionController
+    class: Netzmacht\Contao\Workflow\Controller\Backend\TransitionController
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'

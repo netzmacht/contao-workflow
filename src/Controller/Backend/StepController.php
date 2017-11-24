@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Backend\Controller;
+namespace Netzmacht\Contao\Workflow\Controller\Backend;
 
 use Netzmacht\Contao\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
