@@ -87,6 +87,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'config'      => [],
             'activation'  => ['active'],
         ],
+        'form extends default' => [
+            'config' => ['formId']
+        ]
     ],
 
     'fields' => [
@@ -95,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         ],
         'pid'         => [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
-            'foreignKey' => 'tl_workflow_transition.name',
+            'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
         'sorting'     => [
@@ -168,6 +171,16 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(8) NOT NULL default 'inherit'",
+        ],
+        'formId'  => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
+            'inputType' => 'select',
+            'exclude'   => true,
+            'eval'      => [
+                'tl_class' => 'w50',
+            ],
+            'foreignKey' => 'tl_form.title',
+            'sql'       => "int(10) unsigned NOT NULL default '0'",
         ],
         'active'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],

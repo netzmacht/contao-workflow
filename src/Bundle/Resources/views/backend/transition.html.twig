@@ -20,11 +20,12 @@
 <div class="workflow-section">
     <h2 class="sub_headline">{{ subheadline }}</h2>
 
-    <p>{{ transition.configValue('description') }}</p>
-
     <div class="workflow-content-box">
-    {{ form(form) }}
+        <p>{{ transition.configValue('description') }}</p>
     </div>
+
+    {% form_theme form '@NetzmachtContaoForm/form/contao_backend.html.twig' %}
+    {{ form(form) }}
 </div>
 
 {% endblock %}

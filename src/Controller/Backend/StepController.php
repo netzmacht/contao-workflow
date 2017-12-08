@@ -137,6 +137,8 @@ class StepController extends AbstractController
     {
         $history = [];
 
+        dump($item->getStateHistory());
+
         foreach ($item->getStateHistory() as $state) {
             $data = [
                 'workflowName'   => $state->getWorkflowName(),

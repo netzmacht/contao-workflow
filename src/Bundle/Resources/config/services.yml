@@ -32,6 +32,11 @@ services:
       tags:
         - { name: 'netzmacht.contao_workflow.action' }
 
+  netzmacht.contao_workflow.action_factory.form:
+      class: Netzmacht\Contao\Workflow\Flow\Action\Form\FormActionFactory
+      tags:
+        - { name: 'netzmacht.contao_workflow.action' }
+
   netzmacht.contao_workflow.definition.workflow_loader:
     class: Netzmacht\Contao\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
