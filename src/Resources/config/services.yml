@@ -166,7 +166,7 @@ services:
       - '@netzmacht.contao_toolkit.dca.manager'
 
   netzmacht.contao_workflow.request.param_converter.entity_id:
-    class: Netzmacht\Contao\Workflow\Bundle\Request\EntityIdParamConverter
+    class: Netzmacht\Contao\Workflow\Request\EntityIdParamConverter
     tags:
       - { name: 'request.param_converter', converter: 'entity_id' }
 

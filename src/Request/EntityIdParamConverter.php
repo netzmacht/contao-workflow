@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Bundle\Request;
+namespace Netzmacht\Contao\Workflow\Request;
 
 use Netzmacht\Workflow\Data\EntityId;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,8 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class EntityIdParamConverter
- *
- * @package Netzmacht\Contao\Workflow\Bundle\Request
  */
 class EntityIdParamConverter implements ParamConverterInterface
 {

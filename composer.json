@@ -39,7 +39,7 @@
         "psr-4": { "Netzmacht\\Contao\\Workflow\\": "src/" }
     },
     "extra":{
-        "contao-manager-plugin": "Netzmacht\\Contao\\Workflow\\Bundle\\ContaoManager\\Plugin",
+        "contao-manager-plugin": "Netzmacht\\Contao\\Workflow\\ContaoManager\\Plugin",
         "branch-alias": {
             "dev-master": "1.0.x-dev",
             "dev-develop": "2.0.x-dev"

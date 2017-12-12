@@ -103,6 +103,8 @@ abstract class AbstractAction extends Base implements Action
      * @return Entity
      *
      * @hrows AssertionException If entity is not an Instance of
+     *
+     * @throws \Assert\AssertionFailedException When the entity is not an instance of Entity.
      */
     protected function getEntity(Item $item)
     {

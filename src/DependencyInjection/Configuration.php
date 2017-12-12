@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection;
+namespace Netzmacht\Contao\Workflow\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

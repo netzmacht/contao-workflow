@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass;
+namespace Netzmacht\Contao\Workflow\DependencyInjection\Pass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
@@ -21,8 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Class EntityRepositoryFactoryPass
- *
- * @package Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass
  */
 class EntityRepositoryFactoryPass implements CompilerPassInterface
 {

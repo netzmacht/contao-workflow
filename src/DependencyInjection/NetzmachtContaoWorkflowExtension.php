@@ -12,7 +12,7 @@
  */
 
 
-namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection;
+namespace Netzmacht\Contao\Workflow\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,8 +21,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Class NetzmachtContaoWorkflowExtension
- *
- * @package Netzmacht\Contao\Workflow\Bundle\DependencyInjection
  */
 class NetzmachtContaoWorkflowExtension extends Extension
 {

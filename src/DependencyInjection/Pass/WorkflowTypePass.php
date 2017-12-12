@@ -13,34 +13,34 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Bundle\DependencyInjection\Pass;
+namespace Netzmacht\Contao\Workflow\DependencyInjection\Pass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class ActionFactoriesPass
+ * Class WorkflowTypePass
  */
-class ActionFactoriesPass implements CompilerPassInterface
+class WorkflowTypePass implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('netzmacht.contao_workflow.action_factory')) {
+        if (!$container->hasDefinition('netzmacht.contao_workflow.type_registry')) {
             return;
         }
 
-        $definition = $container->getDefinition('netzmacht.contao_workflow.action_factory');
-        $factories  = (array) $definition->getArgument(0);
-        $serviceIds = $container->findTaggedServiceIds('netzmacht.contao_workflow.action');
+        $definition = $container->getDefinition('netzmacht.contao_workflow.type_registry');
+        $serviceIds = $container->findTaggedServiceIds('netzmacht.contao_workflow.type');
+        $types      = (array) $definition->getArgument(0);
 
         foreach (array_keys($serviceIds) as $serviceId) {
-            $factories[] = new Reference($serviceId);
+            $types[] = new Reference($serviceId);
         }
 
-        $definition->setArgument(0, $factories);
+        $definition->setArgument(0, $types);
     }
 }
