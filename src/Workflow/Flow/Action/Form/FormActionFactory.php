@@ -15,12 +15,10 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form;
 
-use Netzmacht\ContaoFormBundle\Form\FormGeneratorType;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /**
  * Class FormActionFactory
@@ -56,35 +54,8 @@ class FormActionFactory implements ActionTypeFactory
     /**
      * @inheritDoc
      */
-    public function match(Action $action): bool
-    {
-        return $action instanceof FormAction;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function create(array $config, Transition $transition): Action
     {
         return new FormAction('action_' . $config['id'], $config['label'], $config);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
-    {
-        if (!$action instanceof FormAction) {
-            throw new \RuntimeException();
-        }
-
-        $formBuilder->add(
-            $action->getName(),
-            FormGeneratorType::class,
-            [
-                'formId' => $action->getConfigValue('formId'),
-                'ignore' => ['submit']
-            ]
-        );
     }
 }

@@ -19,8 +19,6 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /**
  * Class NoteActionFactory
@@ -54,36 +52,10 @@ class NoteActionFactory implements ActionTypeFactory
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function match(Action $action): bool
-    {
-        return $action instanceof NoteAction;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function create(array $config, Transition $transition): Action
     {
         return new NoteAction('action_' . $config['id'], $config['label'], $config);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
-    {
-        /** @var NoteAction $action */
-        $formBuilder->add(
-            'action_' . $action->getConfigValue('id') . '_note',
-            TextareaType::class,
-            [
-                'label' => $action->getConfigValue('label'),
-                'attr'  => [
-                    'help' => $action->getConfigValue('description'),
-                ],
-            ]
-        );
     }
 }

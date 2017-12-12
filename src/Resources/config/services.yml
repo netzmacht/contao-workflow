@@ -19,21 +19,6 @@ services:
     arguments:
       - []
 
-  netzmacht.contao_workflow.action_factory.property:
-    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Property\PropertyActionFactory
-    tags:
-      - { name: 'netzmacht.contao_workflow.action' }
-
-  netzmacht.contao_workflow.action_factory.note:
-      class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note\NoteActionFactory
-      tags:
-        - { name: 'netzmacht.contao_workflow.action' }
-
-  netzmacht.contao_workflow.action_factory.form:
-      class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFactory
-      tags:
-        - { name: 'netzmacht.contao_workflow.action' }
-
   netzmacht.contao_workflow.definition.workflow_loader:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
@@ -179,7 +164,14 @@ services:
   netzmacht.contao_workflow.form.transition_form:
     class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
     arguments:
-      - '@netzmacht.contao_workflow.action_factory'
       - '@router'
+      - []
     tags:
       - { name: 'form.type' }
+
+  netzmacht.contao_workflow.form.transition_actions_form_builder:
+    class: Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionActionsFormBuilder
+    arguments:
+      - []
+    tags:
+      - { name: 'netzmacht.contao.workflow.transition_form_builder' }

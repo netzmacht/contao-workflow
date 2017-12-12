@@ -15,11 +15,11 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
+use Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionFormBuilder;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 
@@ -29,13 +29,6 @@ use Symfony\Component\Routing\Router;
 class TransitionFormType extends AbstractType
 {
     /**
-     * The action factory.
-     *
-     * @var ActionFactory
-     */
-    private $actionFactory;
-
-    /**
      * The router.
      *
      * @var Router
@@ -43,15 +36,22 @@ class TransitionFormType extends AbstractType
     private $router;
 
     /**
+     * The transition form builders.
+     *
+     * @var iterable|TransitionFormBuilder[]
+     */
+    private $formBuilders;
+
+    /**
      * TransitionFormType constructor.
      *
-     * @param ActionFactory $actionFactory The action factory.
-     * @param Router        $router        The router.
+     * @param Router   $router       The router.
+     * @param iterable $formBuilders The transition form builders.
      */
-    public function __construct(ActionFactory $actionFactory, Router $router)
+    public function __construct(Router $router, iterable $formBuilders)
     {
-        $this->actionFactory = $actionFactory;
-        $this->router        = $router;
+        $this->router       = $router;
+        $this->formBuilders = $formBuilders;
     }
 
     /**
@@ -67,20 +67,18 @@ class TransitionFormType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilder $formBuilder, array $options)
     {
         /** @var Transition $transition */
         $transition = $options['transition'];
 
-        foreach ($transition->getActions() as $action) {
-            $this->actionFactory->buildForm($action, $transition, $builder);
+        foreach ($this->formBuilders as $builder) {
+            if ($builder->supports($transition)) {
+                $builder->buildForm($transition, $formBuilder);
+            }
         }
 
-        foreach ($transition->getPostActions() as $action) {
-            $this->actionFactory->buildForm($action, $transition, $builder);
-        }
-
-        $builder->add(
+        $formBuilder->add(
             'submit',
             SubmitType::class,
             [
