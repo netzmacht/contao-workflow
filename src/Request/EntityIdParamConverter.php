@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class EntityIdParamConverter
+ * Class EntityIdParamConverter converts given EntityId raw value to the EntityId class.
  */
 class EntityIdParamConverter implements ParamConverterInterface
 {

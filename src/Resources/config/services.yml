@@ -175,3 +175,15 @@ services:
       - []
     tags:
       - { name: 'netzmacht.contao.workflow.transition_form_builder' }
+
+  netzmacht.contao_workflow.view.history_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\History\DelegatingHistoryRenderer
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.view.factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@templating'
+      - '@netzmacht.contao_workflow.view.history_renderer'
