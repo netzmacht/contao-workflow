@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Event;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\EventDispatcher\Event;
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class CreateTransitionEvent is emitted when transition is created.
  *
- * @package Netzmacht\Contao\Workflow\Definition\Event
+ * @package Netzmacht\ContaoWorkflowBundle\Definition\Event
  */
 class CreateTransitionEvent extends Event
 {

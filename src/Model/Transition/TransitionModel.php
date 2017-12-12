@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Model\Transition;
+namespace Netzmacht\ContaoWorkflowBundle\Model\Transition;
 
 use Contao\Model;
 use Contao\Model\Collection;

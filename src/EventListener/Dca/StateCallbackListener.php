@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
@@ -24,7 +24,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class State provides helpers for tl_workflow_state.
  *
- * @package Netzmacht\Contao\Workflow\Backend\Dca
+ * @package Netzmacht\ContaoWorkflowBundle\Backend\Dca
  */
 class StateCallbackListener
 {

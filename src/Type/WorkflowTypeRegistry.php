@@ -11,12 +11,12 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Type;
+namespace Netzmacht\ContaoWorkflowBundle\Type;
 
 /**
  * Class WorkflowTypeProvider.
  *
- * @package Netzmacht\Contao\Workflow\Type
+ * @package Netzmacht\ContaoWorkflowBundle\Type
  */
 class WorkflowTypeRegistry
 {

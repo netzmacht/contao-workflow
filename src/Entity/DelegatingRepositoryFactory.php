@@ -13,15 +13,15 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\ContaoWorkflowBundle\Entity;
 
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
 
 /**
  * Class DelegatingRepositoryFactory
  *
- * @package Netzmacht\Contao\Workflow\Entity
+ * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 class DelegatingRepositoryFactory implements RepositoryFactory
 {

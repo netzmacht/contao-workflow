@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action;
 
 use Netzmacht\Contao\Toolkit\Assertion\Assertion;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedActionType;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedActionType;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;

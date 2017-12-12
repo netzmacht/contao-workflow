@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Note;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Note;
 
-use Netzmacht\Contao\Workflow\Flow\Action\ActionTypeFactory;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class NoteActionFactory
  *
- * @package Netzmacht\Contao\Workflow\Flow\Action\Note
+ * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Note
  */
 class NoteActionFactory implements ActionTypeFactory
 {

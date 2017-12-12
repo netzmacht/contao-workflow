@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Request;
+namespace Netzmacht\ContaoWorkflowBundle\Request;
 
 use Netzmacht\Workflow\Data\EntityId;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

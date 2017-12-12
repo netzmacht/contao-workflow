@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Model\Workflow;
+namespace Netzmacht\ContaoWorkflowBundle\Model\Workflow;
 
 use Contao\Model\Collection;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;

@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\FilesModel;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;

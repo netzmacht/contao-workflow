@@ -13,22 +13,22 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Database;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Database;
 
 use Contao\FilesModel;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Definition\Definition;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateStepEvent;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
-use Netzmacht\Contao\Workflow\Definition\Exception\DefinitionException;
-use Netzmacht\Contao\Workflow\Flow\Action\ActionFactory;
-use Netzmacht\Contao\Workflow\Model\Action\ActionModel;
-use Netzmacht\Contao\Workflow\Model\Action\ActionRepository;
-use Netzmacht\Contao\Workflow\Model\Step\StepModel;
-use Netzmacht\Contao\Workflow\Model\Step\StepRepository;
-use Netzmacht\Contao\Workflow\Model\Transition\TransitionModel;
-use Netzmacht\Contao\Workflow\Model\Transition\TransitionRepository;
+use Netzmacht\ContaoWorkflowBundle\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateStepEvent;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateTransitionEvent;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateWorkflowEvent;
+use Netzmacht\ContaoWorkflowBundle\Definition\Exception\DefinitionException;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionFactory;
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
+use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Step\StepRepository;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository;
 use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
@@ -39,7 +39,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
 /**
  * Class WorkflowBuilder builds an workflow.
  *
- * @package Netzmacht\Contao\Workflow\Definition\Builder
+ * @package Netzmacht\ContaoWorkflowBundle\Definition\Builder
  */
 class WorkflowBuilder
 {

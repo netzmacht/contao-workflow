@@ -13,11 +13,11 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Manager;
+namespace Netzmacht\ContaoWorkflowBundle\Manager;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\Entity\EntityFactory;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\EntityFactory;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
@@ -29,7 +29,7 @@ use Netzmacht\Workflow\Manager\WorkflowManager;
 /**
  * Class Manager adds entity handling to the manager.
  *
- * @package Netzmacht\Contao\Workflow
+ * @package Netzmacht\ContaoWorkflowBundle
  */
 class ContaoWorkflowManager extends WorkflowManager implements Manager
 {

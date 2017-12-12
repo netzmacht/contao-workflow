@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Condition\Transition;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Condition\Transition;
 
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
 /**
  * Class PermissionCondition
  *
- * @package Netzmacht\Contao\Workflow\Condition\Transition
+ * @package Netzmacht\ContaoWorkflowBundle\Condition\Transition
  */
 class StepPermissionCondition implements Condition
 {

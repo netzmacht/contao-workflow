@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Event;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Event;
 
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class CreateStepEvent is emitted when a workflow step is created.
  *
- * @package Netzmacht\Contao\Workflow\Definition\Event
+ * @package Netzmacht\ContaoWorkflowBundle\Definition\Event
  */
 class CreateStepEvent extends Event
 {

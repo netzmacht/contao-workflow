@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Form;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Form;
 
 use Netzmacht\ContaoFormBundle\Form\FormGeneratorType;
-use Netzmacht\Contao\Workflow\Flow\Action\ActionTypeFactory;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class FormActionFactory
  *
- * @package Netzmacht\Contao\Workflow\Flow\Action\Form
+ * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Form
  */
 class FormActionFactory implements ActionTypeFactory
 {

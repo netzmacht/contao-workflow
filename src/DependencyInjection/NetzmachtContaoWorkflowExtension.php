@@ -12,7 +12,7 @@
  */
 
 
-namespace Netzmacht\Contao\Workflow\DependencyInjection;
+namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

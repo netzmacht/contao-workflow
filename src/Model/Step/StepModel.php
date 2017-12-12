@@ -12,14 +12,14 @@
  */
 
 
-namespace Netzmacht\Contao\Workflow\Model\Step;
+namespace Netzmacht\ContaoWorkflowBundle\Model\Step;
 
 use Contao\Model;
 
 /**
  * StepModel using Contao models.
  *
- * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @package Netzmacht\ContaoWorkflowBundle\Contao\Model
  *
  * @property int    $id              The model id.
  * @property string $name            The step name.

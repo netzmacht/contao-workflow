@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Security;
+namespace Netzmacht\ContaoWorkflowBundle\Security;
 
 use Contao\BackendUser;
 use Contao\FrontendUser;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 /**
  * Class AbstractPermissionVoter
  *
- * @package Netzmacht\Contao\Workflow\Security
+ * @package Netzmacht\ContaoWorkflowBundle\Security
  */
 abstract class AbstractPermissionVoter extends Voter
 {

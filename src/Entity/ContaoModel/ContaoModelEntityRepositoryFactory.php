@@ -13,19 +13,19 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
+namespace Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel;
 
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\Model;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Entity\RepositoryFactory;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Entity\RepositoryFactory;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
 
 /**
  * Class ContaoModelEntityRepositoryFactory
  *
- * @package Netzmacht\Contao\Workflow\Entity\ContaoModel
+ * @package Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel
  */
 class ContaoModelEntityRepositoryFactory implements RepositoryFactory
 {

@@ -11,14 +11,14 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Type;
+namespace Netzmacht\ContaoWorkflowBundle\Type;
 
 use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class DefaultWorkflowType.
  *
- * @package Netzmacht\Contao\Workflow\Type
+ * @package Netzmacht\ContaoWorkflowBundle\Type
  */
 class DefaultWorkflowType implements WorkflowType
 {

@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition;
+namespace Netzmacht\ContaoWorkflowBundle\Definition;
 
 /**
  * Class Definition stores definition constants.

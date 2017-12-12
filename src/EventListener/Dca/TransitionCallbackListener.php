@@ -13,19 +13,19 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
-use Netzmacht\Contao\Workflow\Model\Step\StepModel;
-use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
  *
- * @package Netzmacht\Contao\Workflow\Contao\Dca
+ * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
 class TransitionCallbackListener extends AbstractListener
 {

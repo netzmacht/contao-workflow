@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Security;
+namespace Netzmacht\ContaoWorkflowBundle\Security;
 
 use Netzmacht\Workflow\Flow\Step;
 
 /**
  * Class WorkflowPermissionVoter
  *
- * @package Netzmacht\Contao\Workflow\Security
+ * @package Netzmacht\ContaoWorkflowBundle\Security
  */
 class StepPermissionVoter extends AbstractPermissionVoter
 {

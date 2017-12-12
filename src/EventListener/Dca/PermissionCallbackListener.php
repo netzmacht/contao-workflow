@@ -13,17 +13,17 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
 
 /**
  * Class Permission initialize permission fields for the workflows for frontend and backend users.
  *
- * @package Netzmacht\Contao\Workflow\Dca\Table
+ * @package Netzmacht\ContaoWorkflowBundle\Dca\Table
  */
 class PermissionCallbackListener
 {

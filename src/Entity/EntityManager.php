@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\ContaoWorkflowBundle\Entity;
 
 use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
  *
  * It creates the repositories and handles the transaction as well.
  *
- * @package Netzmacht\Contao\Workflow\Data
+ * @package Netzmacht\ContaoWorkflowBundle\Data
  */
 class EntityManager implements WorkflowEntityManager, TransactionHandler
 {

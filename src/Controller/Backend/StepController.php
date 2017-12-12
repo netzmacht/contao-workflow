@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Controller\Backend;
+namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * The step controller handles the view of a step.
  *
- * @package Netzmacht\Contao\Workflow\Backend\Controller
+ * @package Netzmacht\ContaoWorkflowBundle\Backend\Controller
  */
 class StepController extends AbstractController
 {
@@ -136,8 +136,6 @@ class StepController extends AbstractController
     private function generateStateHistory(Item $item): array
     {
         $history = [];
-
-        dump($item->getStateHistory());
 
         foreach ($item->getStateHistory() as $state) {
             $data = [

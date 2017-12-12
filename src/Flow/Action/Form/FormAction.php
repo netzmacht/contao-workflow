@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Form;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Form;
 
-use Netzmacht\Contao\Workflow\Flow\Action\AbstractAction;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
@@ -23,7 +23,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class FormAction
  *
- * @package Netzmacht\Contao\Workflow\Flow\Action\Form
+ * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Form
  */
 class FormAction extends AbstractAction
 {

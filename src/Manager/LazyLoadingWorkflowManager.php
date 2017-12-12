@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Manager;
+namespace Netzmacht\ContaoWorkflowBundle\Manager;
 
-use Netzmacht\Contao\Workflow\Definition\Loader\WorkflowLoader;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Definition\Loader\WorkflowLoader;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -26,7 +26,7 @@ use Netzmacht\Workflow\Manager\Manager as BaseManager;
 /**
  * Class LazyLoadingWorkflowManager.
  *
- * @package Netzmacht\Contao\Workflow\Manager
+ * @package Netzmacht\ContaoWorkflowBundle\Manager
  */
 class LazyLoadingWorkflowManager implements Manager
 {

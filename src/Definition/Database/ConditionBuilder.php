@@ -11,20 +11,20 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Definition\Database;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Database;
 
 use Contao\StringUtil;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition\ExpressionCondition;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition\PropertyCondition;
-use Netzmacht\Contao\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateTransitionEvent;
+use Netzmacht\ContaoWorkflowBundle\Flow\Condition\Transition\ExpressionCondition;
+use Netzmacht\ContaoWorkflowBundle\Flow\Condition\Transition\PropertyCondition;
+use Netzmacht\ContaoWorkflowBundle\Flow\Condition\Transition\TransitionPermissionCondition;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 
 /**
  * Class ConditionBuilder builds the workflow conditions.
  *
- * @package Netzmacht\Contao\Workflow\Definition\Database
+ * @package Netzmacht\ContaoWorkflowBundle\Definition\Database
  */
 class ConditionBuilder
 {

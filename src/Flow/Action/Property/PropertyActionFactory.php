@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Property;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Property;
 
-use Netzmacht\Contao\Workflow\Flow\Action\ActionTypeFactory;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class PropertyActionFactory
  *
- * @package Netzmacht\Contao\Workflow\Action\Property
+ * @package Netzmacht\ContaoWorkflowBundle\Action\Property
  */
 class PropertyActionFactory implements ActionTypeFactory
 {

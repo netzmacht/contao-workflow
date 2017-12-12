@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Metadata;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Metadata;
 
 use Contao\BackendUser;
 use Contao\FrontendUser;

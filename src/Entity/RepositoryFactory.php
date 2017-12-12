@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\ContaoWorkflowBundle\Entity;
 
 use Netzmacht\Workflow\Data\EntityRepository;
 
 /**
  * Interface RepositoryFactory
  *
- * @package Netzmacht\Contao\Workflow\Entity
+ * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 interface RepositoryFactory
 {

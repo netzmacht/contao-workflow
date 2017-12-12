@@ -13,12 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow;
+namespace Netzmacht\ContaoWorkflowBundle;
 
 use Netzmacht\Contao\Toolkit\Bundle\DependencyInjection\Compiler\AddTaggedServicesAsArgumentPass;
-use Netzmacht\Contao\Workflow\DependencyInjection\Pass\ActionFactoriesPass;
-use Netzmacht\Contao\Workflow\DependencyInjection\Pass\EntityRepositoryFactoryPass;
-use Netzmacht\Contao\Workflow\DependencyInjection\Pass\WorkflowTypePass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFactoriesPass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\EntityRepositoryFactoryPass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\WorkflowTypePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

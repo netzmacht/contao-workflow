@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity\Database;
+namespace Netzmacht\ContaoWorkflowBundle\Entity\Database;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\Entity\EntityFactory;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\EntityFactory;
 use Netzmacht\Workflow\Data\EntityId;
 
 /**

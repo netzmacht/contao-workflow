@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Backend;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Backend;
 
 
 use Symfony\Component\HttpFoundation\RequestStack;

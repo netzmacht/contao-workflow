@@ -6,66 +6,66 @@ services:
     class: Netzmacht\Workflow\Security\User
 
   netzmacht.contao_workflow.type_registry:
-    class: Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry
+    class: Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry
     arguments:
       - []
 
   netzmacht.contao_workflow.type.default:
-    class: Netzmacht\Contao\Workflow\Type\DefaultWorkflowType
+    class: Netzmacht\ContaoWorkflowBundle\Type\DefaultWorkflowType
     arguments:
       - '%netzmacht.contao_workflow.type.default.providers%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }
 
   netzmacht.contao_workflow.action_factory:
-    class: Netzmacht\Contao\Workflow\Flow\Action\ActionFactory
+    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.action_factory.property:
-    class: Netzmacht\Contao\Workflow\Flow\Action\Property\PropertyActionFactory
+    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Property\PropertyActionFactory
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.action_factory.note:
-      class: Netzmacht\Contao\Workflow\Flow\Action\Note\NoteActionFactory
+      class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Note\NoteActionFactory
       tags:
         - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.action_factory.form:
-      class: Netzmacht\Contao\Workflow\Flow\Action\Form\FormActionFactory
+      class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Form\FormActionFactory
       tags:
         - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.definition.workflow_loader:
-    class: Netzmacht\Contao\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
+    class: Netzmacht\ContaoWorkflowBundle\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
 
   netzmacht.contao_workflow.entity_factory:
-    class: Netzmacht\Contao\Workflow\Entity\DelegatingEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\DelegatingEntityFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.entity_factory.contao_model:
-    class: Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel\ContaoModelEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity_factory' }
 
   netzmacht.contao_workflow.entity_factory.data:
-    class: Netzmacht\Contao\Workflow\Entity\Database\DatabaseEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\Database\DatabaseEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity_factory' }
 
   netzmacht.contao_workflow.entity_repository_factory:
-    class: Netzmacht\Contao\Workflow\Entity\DelegatingRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\DelegatingRepositoryFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.entity_repository_factory.contao_model:
-    class: Netzmacht\Contao\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.contao.model_adapter'
@@ -73,14 +73,14 @@ services:
       - { name: netzmacht.contao_workflow.entity_repository_factory, priority: 250 }
 
   netzmacht.contao_workflow.entity_repository_factory.data:
-    class: Netzmacht\Contao\Workflow\Entity\Database\DatabaseEntityRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Entity\Database\DatabaseEntityRepositoryFactory
     arguments:
       - '@database_connection'
     tags:
       - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -100 }
 
   netzmacht.contao_workflow.entity_manager:
-    class: Netzmacht\Contao\Workflow\Entity\EntityManager
+    class: Netzmacht\ContaoWorkflowBundle\Entity\EntityManager
     arguments:
       - '@netzmacht.contao_workflow.entity_repository_factory'
       - '@database_connection'
@@ -92,12 +92,12 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
 
   netzmacht.contao_workflow.state_repository:
-    class: Netzmacht\Contao\Workflow\Model\State\StateRepository
+    class: Netzmacht\ContaoWorkflowBundle\Model\State\StateRepository
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.manager:
-    class: Netzmacht\Contao\Workflow\Manager\ContaoWorkflowManager
+    class: Netzmacht\ContaoWorkflowBundle\Manager\ContaoWorkflowManager
     arguments:
       - '@netzmacht.contao_workflow.transition_handler_factory'
       - '@netzmacht.contao_workflow.state_repository'
@@ -105,73 +105,73 @@ services:
       - []
 
   netzmacht.contao_workflow.manager.lazy:
-    class: Netzmacht\Contao\Workflow\Manager\LazyLoadingWorkflowManager
+    class: Netzmacht\ContaoWorkflowBundle\Manager\LazyLoadingWorkflowManager
     decorates: 'netzmacht.contao_workflow.manager'
     arguments:
       - '@netzmacht.contao_workflow.manager.lazy.inner'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
 
   netzmacht.contao_workflow.security.step_voter:
-    class: Netzmacht\Contao\Workflow\Security\StepPermissionVoter
+    class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
     tags:
       - { name: 'security.voter' }
 
   netzmacht.contao_workflow.security.transition_voter:
-    class: Netzmacht\Contao\Workflow\Security\TransitionPermissionVoter
+    class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
     tags:
       - { name: 'security.voter' }
 
   netzmacht.contao_workflow.model.workflow_repository:
-    class: Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository
+    class: Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository
     tags:
       - {
           name: 'netzmacht.contao_toolkit.repository',
-          model: 'Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel'
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel'
         }
 
   netzmacht.contao_workflow.model.action_repository:
-    class: Netzmacht\Contao\Workflow\Model\Action\ActionRepository
+    class: Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository
     tags:
       - {
           name: 'netzmacht.contao_toolkit.repository',
-          model: 'Netzmacht\Contao\Workflow\Model\Action\ActionModel'
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel'
         }
 
   netzmacht.contao_workflow.model.step_repository:
-    class: Netzmacht\Contao\Workflow\Model\Step\StepRepository
+    class: Netzmacht\ContaoWorkflowBundle\Model\Step\StepRepository
     tags:
       - {
           name: 'netzmacht.contao_toolkit.repository',
-          model: 'Netzmacht\Contao\Workflow\Model\Step\StepModel'
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel'
         }
     tags:
       - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_step' }
 
   netzmacht.contao_workflow.model.transition_repository:
-    class: Netzmacht\Contao\Workflow\Model\Transition\TransitionRepository
+    class: Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository
     tags:
       - {
           name: 'netzmacht.contao_toolkit.repository',
-          model: 'Netzmacht\Contao\Workflow\Model\Transition\TransitionModel'
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel'
         }
 
   netzmacht.contao_workflow.expression_language:
     class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
 
   netzmacht.contao_workflow.dca.transition_operation_builder:
-    class: Netzmacht\Contao\Workflow\EventListener\Dca\TransitionOperationBuilder
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\TransitionOperationBuilder
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.dca.manager'
 
   netzmacht.contao_workflow.request.param_converter.entity_id:
-    class: Netzmacht\Contao\Workflow\Request\EntityIdParamConverter
+    class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter
     tags:
       - { name: 'request.param_converter', converter: 'entity_id' }
 
   netzmacht.contao_workflow.action.metadata_action:
-    class: Netzmacht\Contao\Workflow\Flow\Action\Metadata\MetadataAction
+    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Metadata\MetadataAction
     arguments:
       - '@security.token_storage'
       - '@request_stack'
@@ -180,7 +180,7 @@ services:
     alias: 'form.factory'
 
   netzmacht.contao_workflow.form.transition_form:
-    class: Netzmacht\Contao\Workflow\Form\TransitionFormType
+    class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
     arguments:
       - '@netzmacht.contao_workflow.action_factory'
       - '@router'

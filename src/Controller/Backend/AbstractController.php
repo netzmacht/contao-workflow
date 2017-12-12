@@ -13,11 +13,11 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Controller\Backend;
+namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
-use Netzmacht\Contao\Workflow\Type\WorkflowType;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Type\WorkflowType;
+use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Flow\Item;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 /**
  * Class AbstractController
  *
- * @package Netzmacht\Contao\Workflow\Backend\Controller
+ * @package Netzmacht\ContaoWorkflowBundle\Backend\Controller
  */
 abstract class AbstractController
 {

@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action;
 
 use Assert\Assertion;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Base;
 use Netzmacht\Workflow\Flow\Context;

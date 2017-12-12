@@ -13,15 +13,15 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
+namespace Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel;
 
 use Contao\Model;
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
 
 /**
  * Class ContaoModelEntity
  *
- * @package Netzmacht\Contao\Workflow\Entity
+ * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 class ContaoModelEntity implements \IteratorAggregate, Entity
 {

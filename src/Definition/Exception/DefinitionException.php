@@ -13,12 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Exception;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Exception;
 
 /**
  * Class DefinitionException is thrown when an invalid workflow definition is detected.
  *
- * @package Netzmacht\Contao\Workflow\Definition\Exception
+ * @package Netzmacht\ContaoWorkflowBundle\Definition\Exception
  */
 class DefinitionException extends \Exception
 {

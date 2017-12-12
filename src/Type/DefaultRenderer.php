@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Type;
+namespace Netzmacht\ContaoWorkflowBundle\Type;
 
 use Netzmacht\Workflow\Flow\Item;
 
 /**
  * Class DefaultRenderer
  *
- * @package Netzmacht\Contao\Workflow\Type
+ * @package Netzmacht\ContaoWorkflowBundle\Type
  */
 class DefaultRenderer implements Renderer
 {

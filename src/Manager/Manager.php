@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Manager;
+namespace Netzmacht\ContaoWorkflowBundle\Manager;
 
-use Netzmacht\Contao\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -24,7 +24,7 @@ use Netzmacht\Workflow\Manager\Manager as BaseManager;
 /**
  * Interface Manager
  *
- * @package Netzmacht\Contao\Workflow\Manager
+ * @package Netzmacht\ContaoWorkflowBundle\Manager
  */
 interface Manager extends BaseManager
 {

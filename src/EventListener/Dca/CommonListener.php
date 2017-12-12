@@ -13,12 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 /**
  * Class Common provides common helper functionalities.
  *
- * @package Netzmacht\Contao\Workflow\Contao\Dca
+ * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
 class CommonListener
 {

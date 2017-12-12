@@ -13,9 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action;
 
 use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
@@ -23,7 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Interface ActionFactory
  *
- * @package Netzmacht\Contao\Workflow\Action
+ * @package Netzmacht\ContaoWorkflowBundle\Action
  */
 interface ActionTypeFactory
 {
@@ -79,4 +80,5 @@ interface ActionTypeFactory
      * @return void
      */
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void;
+    
 }

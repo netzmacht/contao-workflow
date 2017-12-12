@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Form;
+namespace Netzmacht\ContaoWorkflowBundle\Form;
 
-use Netzmacht\Contao\Workflow\Flow\Action\ActionFactory;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

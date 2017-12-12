@@ -11,14 +11,14 @@
  * @filesource
  */
 
-namespace Netzmacht\Contao\Workflow\Type;
+namespace Netzmacht\ContaoWorkflowBundle\Type;
 
 use Exception;
 
 /**
  * Class WorkflowTypeNotFound
  *
- * @package Netzmacht\Contao\Workflow\Type
+ * @package Netzmacht\ContaoWorkflowBundle\Type
  */
 class WorkflowTypeNotFound extends Exception
 {

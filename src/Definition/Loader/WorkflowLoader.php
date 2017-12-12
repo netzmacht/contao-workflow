@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Loader;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Loader;
 
 use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Interface WorkflowLoader
  *
- * @package Netzmacht\Contao\Workflow\Definition
+ * @package Netzmacht\ContaoWorkflowBundle\Definition
  */
 interface WorkflowLoader
 {

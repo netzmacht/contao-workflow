@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Definition\Loader;
+namespace Netzmacht\ContaoWorkflowBundle\Definition\Loader;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Definition\Definition;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateWorkflowEvent;
-use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowModel;
-use Netzmacht\Contao\Workflow\Model\Workflow\WorkflowRepository;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateWorkflowEvent;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository;
+use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 

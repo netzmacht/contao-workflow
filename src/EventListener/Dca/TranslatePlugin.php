@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class Base is a base dca helper class.
  *
- * @package Netzmacht\Contao\Workflow\Backend\Dca
+ * @package Netzmacht\ContaoWorkflowBundle\Backend\Dca
  */
 trait TranslatePlugin
 {

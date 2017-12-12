@@ -13,9 +13,9 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Flow\Action\Property;
+namespace Netzmacht\ContaoWorkflowBundle\Flow\Action\Property;
 
-use Netzmacht\Contao\Workflow\Flow\Action\AbstractAction;
+use Netzmacht\ContaoWorkflowBundle\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
@@ -23,7 +23,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class PropertyAction changes the value of an entity property.
  *
- * @package Netzmacht\Contao\Workflow\Action
+ * @package Netzmacht\ContaoWorkflowBundle\Action
  */
 class PropertyAction extends AbstractAction
 {

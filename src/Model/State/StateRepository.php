@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Model\State;
+namespace Netzmacht\ContaoWorkflowBundle\Model\State;
 
 use Contao\Model;
 use Contao\StringUtil;
@@ -26,7 +26,7 @@ use Netzmacht\Workflow\Flow\State;
 /**
  * Class StateRepository manages workflow states.
  *
- * @package Netzmacht\Contao\Workflow\Data
+ * @package Netzmacht\ContaoWorkflowBundle\Data
  */
 class StateRepository implements WorkflowStateRepository
 {

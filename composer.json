@@ -36,10 +36,10 @@
         "contao/manager-plugin": "^2.1"
     },
     "autoload": {
-        "psr-4": { "Netzmacht\\Contao\\Workflow\\": "src/" }
+        "psr-4": { "Netzmacht\\ContaoWorkflowBundle\\": "src/" }
     },
     "extra":{
-        "contao-manager-plugin": "Netzmacht\\Contao\\Workflow\\ContaoManager\\Plugin",
+        "contao-manager-plugin": "Netzmacht\\ContaoWorkflowBundle\\ContaoManager\\Plugin",
         "branch-alias": {
             "dev-master": "1.0.x-dev",
             "dev-develop": "2.0.x-dev"

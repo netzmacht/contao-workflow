@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Model\State;
+namespace Netzmacht\ContaoWorkflowBundle\Model\State;
 
 use Contao\Model;
 
 /**
  * Class StateModel.
  *
- * @package Netzmacht\Contao\Workflow\Model
+ * @package Netzmacht\ContaoWorkflowBundle\Model
  *
  * @property string       $workflowName   The name of the workflow.
  * @property string       $entityId       The entity id string representation.

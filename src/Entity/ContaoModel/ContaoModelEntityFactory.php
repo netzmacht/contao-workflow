@@ -13,18 +13,18 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity\ContaoModel;
+namespace Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel;
 
 use Contao\Model;
-use Netzmacht\Contao\Workflow\Entity\Entity;
-use Netzmacht\Contao\Workflow\Entity\EntityFactory;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Entity\EntityFactory;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
 
 /**
  * Class ContaoModelEntityFactory
  *
- * @package Netzmacht\Contao\Workflow\Entity
+ * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 class ContaoModelEntityFactory implements EntityFactory
 {

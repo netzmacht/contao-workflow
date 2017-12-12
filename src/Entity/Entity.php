@@ -13,12 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity;
+namespace Netzmacht\ContaoWorkflowBundle\Entity;
 
 /**
  * Entity is used as main data wrapper.
  *
- * @package Netzmacht\Contao\Workflow\Entity
+ * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 interface Entity extends \Traversable
 {

@@ -13,14 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Model\Workflow;
+namespace Netzmacht\ContaoWorkflowBundle\Model\Workflow;
 
 use Contao\Model;
 
 /**
  * WorkflowModel using Contao models.
  *
- * @package Netzmacht\Contao\Workflow\Contao\Model
+ * @package Netzmacht\ContaoWorkflowBundle\Contao\Model
  *
  * @property int   $id      The workflow id.
  * @property array $process The process definition.

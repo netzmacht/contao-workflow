@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Entity\Database;
+namespace Netzmacht\ContaoWorkflowBundle\Entity\Database;
 
 use Doctrine\DBAL\Connection;
-use Netzmacht\Contao\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Data\Specification;
@@ -24,7 +24,7 @@ use Netzmacht\Workflow\Data\Specification;
 /**
  * Class DataEntityRepository
  *
- * @package Netzmacht\Contao\Workflow\Entity\Data
+ * @package Netzmacht\ContaoWorkflowBundle\Entity\Data
  */
 class DatabaseEntityRepository implements EntityRepository
 {

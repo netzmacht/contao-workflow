@@ -13,16 +13,16 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Workflow;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Workflow;
 
-use Netzmacht\Contao\Workflow\Definition\Definition;
-use Netzmacht\Contao\Workflow\Definition\Event\CreateTransitionEvent;
+use Netzmacht\ContaoWorkflowBundle\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Workflow\Flow\Action;
 
 /**
  * Class CreateMetaDataActionListener adds the MetaDataAction to every database driven workflow transition.
  *
- * @package Netzmacht\Contao\Workflow\EventListener\Workflow
+ * @package Netzmacht\ContaoWorkflowBundle\EventListener\Workflow
  */
 class CreateMetaDataActionListener
 {

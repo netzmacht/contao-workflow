@@ -13,16 +13,16 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\EventListener\Dca;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Workflow\Model\Permission\PermissionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
 
 /**
  * Class SavePermissionsCallback stores the permission in the association group table.
  *
- * @package Netzmacht\Contao\Workflow\Backend\Dca
+ * @package Netzmacht\ContaoWorkflowBundle\Backend\Dca
  */
 class SavePermissionsCallbackListener
 {

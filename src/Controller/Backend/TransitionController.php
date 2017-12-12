@@ -13,10 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\Contao\Workflow\Controller\Backend;
+namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
-use Netzmacht\Contao\Workflow\Form\TransitionFormType;
-use Netzmacht\Contao\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType;
+use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Handler\TransitionHandler;
@@ -66,6 +66,9 @@ class TransitionController extends AbstractController
      * @param Request  $request
      *
      * @return Response
+     * @throws \Exception
+     * @throws \Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeNotFound
+     * @throws \Netzmacht\Workflow\Exception\WorkflowException
      */
     public function execute(EntityId $entityId, string $transition, Request $request): Response
     {
