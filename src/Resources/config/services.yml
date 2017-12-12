@@ -2,70 +2,67 @@ parameters:
   netzmacht.contao_workflow.type.default.providers: []
 
 services:
-  netzmacht.contao_workflow.user:
-    class: Netzmacht\Workflow\Security\User
-
   netzmacht.contao_workflow.type_registry:
-    class: Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry
     arguments:
       - []
 
   netzmacht.contao_workflow.type.default:
-    class: Netzmacht\ContaoWorkflowBundle\Type\DefaultWorkflowType
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
     arguments:
       - '%netzmacht.contao_workflow.type.default.providers%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }
 
   netzmacht.contao_workflow.action_factory:
-    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.action_factory.property:
-    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Property\PropertyActionFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Property\PropertyActionFactory
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.action_factory.note:
-      class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Note\NoteActionFactory
+      class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note\NoteActionFactory
       tags:
         - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.action_factory.form:
-      class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Form\FormActionFactory
+      class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFactory
       tags:
         - { name: 'netzmacht.contao_workflow.action' }
 
   netzmacht.contao_workflow.definition.workflow_loader:
-    class: Netzmacht\ContaoWorkflowBundle\Definition\Loader\DatabaseDrivenWorkflowLoader
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
 
   netzmacht.contao_workflow.entity_factory:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\DelegatingEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingEntityFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.entity_factory.contao_model:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel\ContaoModelEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity_factory' }
 
   netzmacht.contao_workflow.entity_factory.data:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\Database\DatabaseEntityFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database\DatabaseEntityFactory
     tags:
       - { name: 'netzmacht.contao_workflow.entity_factory' }
 
   netzmacht.contao_workflow.entity_repository_factory:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\DelegatingRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingRepositoryFactory
     arguments:
       - []
 
   netzmacht.contao_workflow.entity_repository_factory.contao_model:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.contao.model_adapter'
@@ -73,14 +70,14 @@ services:
       - { name: netzmacht.contao_workflow.entity_repository_factory, priority: 250 }
 
   netzmacht.contao_workflow.entity_repository_factory.data:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\Database\DatabaseEntityRepositoryFactory
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database\DatabaseEntityRepositoryFactory
     arguments:
       - '@database_connection'
     tags:
       - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -100 }
 
   netzmacht.contao_workflow.entity_manager:
-    class: Netzmacht\ContaoWorkflowBundle\Entity\EntityManager
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityManager
     arguments:
       - '@netzmacht.contao_workflow.entity_repository_factory'
       - '@database_connection'
@@ -97,7 +94,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.manager:
-    class: Netzmacht\ContaoWorkflowBundle\Manager\ContaoWorkflowManager
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Manager\ContaoWorkflowManager
     arguments:
       - '@netzmacht.contao_workflow.transition_handler_factory'
       - '@netzmacht.contao_workflow.state_repository'
@@ -105,7 +102,7 @@ services:
       - []
 
   netzmacht.contao_workflow.manager.lazy:
-    class: Netzmacht\ContaoWorkflowBundle\Manager\LazyLoadingWorkflowManager
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Manager\LazyLoadingWorkflowManager
     decorates: 'netzmacht.contao_workflow.manager'
     arguments:
       - '@netzmacht.contao_workflow.manager.lazy.inner'
@@ -171,7 +168,7 @@ services:
       - { name: 'request.param_converter', converter: 'entity_id' }
 
   netzmacht.contao_workflow.action.metadata_action:
-    class: Netzmacht\ContaoWorkflowBundle\Flow\Action\Metadata\MetadataAction
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata\MetadataAction
     arguments:
       - '@security.token_storage'
       - '@request_stack'

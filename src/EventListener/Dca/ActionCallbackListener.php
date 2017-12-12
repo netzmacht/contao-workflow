@@ -17,8 +17,8 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\ContaoWorkflowBundle\Flow\Action\ActionFactory;
-use Netzmacht\ContaoWorkflowBundle\Manager\Manager;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Manager\Manager;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 

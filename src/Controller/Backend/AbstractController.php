@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
-use Netzmacht\ContaoWorkflowBundle\Exception\UnsupportedEntity;
-use Netzmacht\ContaoWorkflowBundle\Type\WorkflowType;
-use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowType;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Flow\Item;

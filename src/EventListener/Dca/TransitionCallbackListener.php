@@ -20,7 +20,7 @@ use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
-use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.

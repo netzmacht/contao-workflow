@@ -53,7 +53,7 @@ services:
       - { name: 'contao.hook', hook: 'getUserNavigation' }
 
   netzmacht.contao_workflow.listeners.builder.workflow_builder:
-    class: Netzmacht\ContaoWorkflowBundle\Definition\Database\WorkflowBuilder
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database\WorkflowBuilder
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.action_factory'
@@ -68,7 +68,7 @@ services:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
 
   netzmacht.contao_workflow.listeners.builder.transition_builder:
-    class: Netzmacht\ContaoWorkflowBundle\Definition\Database\ConditionBuilder
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database\ConditionBuilder
     arguments:
       - '@netzmacht.contao_workflow.expression_language'
       - '@security.authorization_checker'

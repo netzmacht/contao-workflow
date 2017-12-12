@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Workflow;
 
-use Netzmacht\ContaoWorkflowBundle\Definition\Definition;
-use Netzmacht\ContaoWorkflowBundle\Definition\Event\CreateTransitionEvent;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEvent;
 use Netzmacht\Workflow\Flow\Action;
 
 /**

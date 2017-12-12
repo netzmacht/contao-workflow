@@ -19,7 +19,7 @@ use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
-use Netzmacht\ContaoWorkflowBundle\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

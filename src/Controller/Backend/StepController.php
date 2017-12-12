@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
-use Netzmacht\ContaoWorkflowBundle\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
