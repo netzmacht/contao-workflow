@@ -20,16 +20,14 @@
         "php":"^7.1",
         "beberlei/assert": "~2.0",
         "contao/core-bundle":"~4.4",
-        "contao-community-alliance/meta-palettes": "~1.10",
+        "contao-community-alliance/meta-palettes": "~1.11 || ~2.0",
         "friends-of-contao/contao-associategroups": "~1.3@dev",
         "mathiasverraes/classfunctions": "~1.1",
         "menatwork/contao-multicolumnwizard": "^3.3.14",
         "netzmacht/workflow": "~2.0@beta",
         "netzmacht/contao-toolkit": "dev-master",
         "netzmacht/contao-form-bundle": "~1.0@dev",
-        "symfony/expression-language": "~3.3",
-        "symfony/form": "^3.3",
-        "adamquaile/symfony-fieldset-bundle": "^1.1"
+        "symfony/expression-language": "~3.3"
     },
     "require-dev": {
         "phpcq/all-tasks": "^1.2",
