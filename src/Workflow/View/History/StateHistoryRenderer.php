@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\History;
 
+use Contao\Config;
+use Contao\CoreBundle\Framework\Adapter;
 use Contao\StringUtil;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
@@ -45,15 +47,24 @@ class StateHistoryRenderer implements HistoryRenderer
     private $translator;
 
     /**
+     * Contao config adapter.
+     *
+     * @var Adapter|Config
+     */
+    private $configAdapter;
+
+    /**
      * StateHistoryRenderer constructor.
      *
-     * @param Manager    $manager    Workflow manager.
-     * @param Translator $translator Translator.
+     * @param Manager        $manager       Workflow manager.
+     * @param Translator     $translator    Translator.
+     * @param Adapter|Config $configAdapter Contao config adapter.
      */
-    public function __construct(Manager $manager, Translator $translator)
+    public function __construct(Manager $manager, Translator $translator, $configAdapter)
     {
-        $this->manager    = $manager;
-        $this->translator = $translator;
+        $this->manager       = $manager;
+        $this->translator    = $translator;
+        $this->configAdapter = $configAdapter;
     }
 
     /**
@@ -72,8 +83,6 @@ class StateHistoryRenderer implements HistoryRenderer
         $stateColumns = StringUtil::deserialize($workflow->getConfigValue('stepHistoryColumns'), true);
 
         foreach ($item->getStateHistory() as $index => $state) {
-            $data[$index] = [];
-
             foreach ($stateColumns as $column) {
                 switch ($column) {
                     case 'workflow':
@@ -92,10 +101,13 @@ class StateHistoryRenderer implements HistoryRenderer
                         $yesNo = $state->isSuccessful() ? 'yes' : 'no';
                         $value = $this->translator->trans('MSC.' . $yesNo, [], 'contao_default');
                         break;
+
+                    case 'reachedAt':
+                        $value = $state->getReachedAt()->format($this->configAdapter->get('datimFormat'));
+                        break;
+
                     default:
                         continue;
-
-                    case 'user':
                 }
 
                 $data[$index][$column] = $value;
