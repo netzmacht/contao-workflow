@@ -15,22 +15,32 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
 
-use Netzmacht\Workflow\Flow\Item;
+use Netzmacht\Workflow\Flow\State;
+use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 
-interface StepRenderer
+/**
+ * Interface Renderer
+ */
+interface Renderer
 {
     /**
-     * @param Workflow $workflow
+     * Check if renderer supports current workflow in its context.
+     *
+     * @param Workflow              $workflow The workflow.
+     * @param Step|Transition|State $context  The current context.
      *
      * @return bool
      */
-    public function supports(Workflow $workflow): bool;
+    public function supports(Workflow $workflow, $context): bool;
 
     /**
-     * @param Item $item
+     * Render the view.
      *
-     * @return string
+     * @param View $view The workflow item view.
+     *
+     * @return void
      */
-    public function render(Item $item): string;
+    public function render(View $view): void;
 }

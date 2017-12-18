@@ -62,6 +62,7 @@ class StateHistoryRenderer implements HistoryRenderer
      */
     public function __construct(Manager $manager, Translator $translator, $configAdapter)
     {
+
         $this->manager       = $manager;
         $this->translator    = $translator;
         $this->configAdapter = $configAdapter;
@@ -117,61 +118,5 @@ class StateHistoryRenderer implements HistoryRenderer
         return $data;
     }
 
-    /**
-     * Render the workflow name.
-     *
-     * @param State $state Workflow item state.
-     *
-     * @return string
-     */
-    private function renderWorkflowName(State $state): string
-    {
-        try {
-            return $this->manager->getWorkflowByName($state->getWorkflowName())->getLabel();
-        } catch (WorkflowNotFound $e) {
-            return $state->getWorkflowName() ?: '';
-        }
-    }
 
-    /**
-     * Render the transition name.
-     *
-     * @param State $state Workflow item state.
-     *
-     * @return string
-     */
-    private function renderTransitionName(State $state): string
-    {
-        try {
-            return $this->manager
-                ->getWorkflowByName($state->getWorkflowName())
-                ->getTransition($state->getTransitionName())
-                ->getLabel();
-        } catch (WorkflowNotFound $e) {
-            return $state->getTransitionName() ?: '-';
-        } catch (TransitionNotFound $e) {
-            return $state->getTransitionName() ?: '-';
-        }
-    }
-
-    /**
-     * Render the step name.
-     *
-     * @param State $state Workflow item state.
-     *
-     * @return string
-     */
-    private function renderStepName(State $state): string
-    {
-        try {
-            return $this->manager
-                ->getWorkflowByName($state->getWorkflowName())
-                ->getStep($state->getStepName())
-                ->getLabel();
-        } catch (WorkflowNotFound $e) {
-            return '';
-        } catch (StepNotFoundException $e) {
-            return '';
-        }
-    }
 }
