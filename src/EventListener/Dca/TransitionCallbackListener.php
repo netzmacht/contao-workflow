@@ -79,7 +79,7 @@ class TransitionCallbackListener extends AbstractListener
     {
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => 'name']);
+        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
 
         if ($collection) {
             while ($collection->next()) {

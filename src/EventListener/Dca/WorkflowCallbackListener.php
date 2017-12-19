@@ -243,9 +243,9 @@ class WorkflowCallbackListener
         $repository = $this->repositoryManager->getRepository(StepModel::class);
 
         if ($filterFinal) {
-            $collection = $repository->findBy(['pid=?', 'final=?'], [$parentId, ''], ['order' => 'name']);
+            $collection = $repository->findBy(['.pid=?', '.final=?'], [$parentId, ''], ['order' => '.label']);
         } else {
-            $collection = $repository->findBy(['pid=?'], [$parentId], ['order' => 'name']);
+            $collection = $repository->findBy(['.pid=?'], [$parentId], ['order' => '.label']);
         }
 
         if ($collection) {
