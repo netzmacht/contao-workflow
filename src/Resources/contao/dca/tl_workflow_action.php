@@ -82,10 +82,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'type', 'postAction', 'logChanges', 'sorting'],
+            'name'        => ['label', 'type', 'sorting', 'active', 'postAction'],
             'description' => [':hide', 'description'],
             'config'      => [],
-            'activation'  => ['active'],
         ],
         'form extends default' => [
             'config' => ['formId']
@@ -161,17 +160,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
-        'logChanges'  => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'],
-            'inputType' => 'select',
-            'default'   => 'inherit',
-            'options'   => ['inherit', 'active', 'disable'],
-            'eval'      => [
-                'tl_class'       => 'w50',
-                'submitOnChange' => true,
-            ],
-            'sql'       => "char(8) NOT NULL default 'inherit'",
-        ],
         'formId'  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
             'inputType' => 'select',
@@ -186,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class'       => 'clr w50',
+                'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",

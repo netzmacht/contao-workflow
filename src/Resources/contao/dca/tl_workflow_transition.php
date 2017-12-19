@@ -83,12 +83,11 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'description', 'stepTo'],
+            'name'        => ['label', 'active', 'description', 'stepTo'],
             'config'      => [],
             'permissions' => ['limitPermission'],
             'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
             'backend'     => ['addIcon'],
-            'activation'  => ['active'],
         ],
     ],
 
@@ -199,7 +198,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['active'],
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class'       => 'clr w50',
+                'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",

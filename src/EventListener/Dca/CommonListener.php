@@ -32,9 +32,8 @@ class CommonListener
     public function generateRow(array $row): string
     {
         return sprintf(
-            '<strong>%s</strong> <span class="tl_gray">[%s]</span><br>%s',
+            '<strong>%s</strong><br>%s',
             $row['label'],
-            $row['id'],
             $row['description']
         );
     }

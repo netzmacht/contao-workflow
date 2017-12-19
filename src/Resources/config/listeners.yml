@@ -31,14 +31,6 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.action_factory'
 
-  netzmacht.contao_workflow.listeners.dca.state:
-    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\StateCallbackListener
-    arguments:
-      - '@translator'
-      - '@templating'
-      - '@netzmacht.contao_workflow.entity_manager'
-      - '@netzmacht.contao_workflow.manager'
-
   netzmacht.contao_workflow.listeners.dca.permissions:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\PermissionCallbackListener
     arguments:

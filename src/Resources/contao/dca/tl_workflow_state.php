@@ -15,12 +15,6 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
     'config' => [
         'dataContainer'   => 'Table',
         'closed'          => true,
-        'onload_callback' => [
-            [
-                'netzmacht.contao_workflow.listeners.dca.state',
-                'applyFilter',
-            ],
-        ],
         'sql'             => [
             'keys' => [
                 'id'       => 'primary',

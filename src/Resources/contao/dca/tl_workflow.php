@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
         'sorting' => [
             'mode'        => 1,
             'fields'      => ['type'],
-            'panelLayout' => 'sorting,filter,search',
+            'panelLayout' => 'sorting,filter;search',
         ],
         'label'   => [
             'fields'         => ['type', 'description'],
@@ -87,12 +87,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'type'],
+            'name'        => ['label', 'type', 'active'],
             'description' => [':hide', 'description'],
             'permissions' => ['permissions'],
-            'process'     => ['process', 'logChanges'],
+            'process'     => ['process'],
             'config'      => [],
-            'activation'  => ['active'],
         ],
     ],
 
@@ -238,20 +237,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             ],
             'sql'           => 'mediumblob NULL',
         ],
-        'logChanges'   => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['logChanges'],
-            'inputType' => 'checkbox',
-            'default'   => '1',
-            'eval'      => [
-                'tl_class' => 'w50',
-            ],
-            'sql'       => "char(8) NOT NULL default '1'",
-        ],
         'active'       => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['active'],
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class'       => 'clr w50',
+                'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",

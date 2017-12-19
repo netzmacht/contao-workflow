@@ -1,13 +1,24 @@
 <?php
 
+/**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
+ * @author     David Molineus <david.molineus@netzmacht.de>
+ * @copyright  2014-2017 netzmacht David Molineus
+ * @license    LGPL 3.0
+ * @filesource
+ */
+
 /*
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_workflow']['name_legend']        = 'Workflow';
 $GLOBALS['TL_LANG']['tl_workflow']['process_legend']     = 'Process definition';
 $GLOBALS['TL_LANG']['tl_workflow']['permissions_legend'] = 'Permissions';
-$GLOBALS['TL_LANG']['tl_workflow']['activation_legend']  = 'Activation';
 $GLOBALS['TL_LANG']['tl_workflow']['description_legend'] = 'Description';
+$GLOBALS['TL_LANG']['tl_workflow']['config_legend']      = 'Config';
 
 /*
  * Buttons
@@ -58,8 +69,6 @@ $GLOBALS['TL_LANG']['tl_workflow']['permission_name'][0]       = 'Name';
 $GLOBALS['TL_LANG']['tl_workflow']['permission_name'][1]       = 'Name of the permission has to be unique in the workflow. Changing a name will break the assignments!';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][0] = 'Ignore Contao admin permission';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][1] = 'By default the Contao admin has all permissions to every step. If you activate the checkbox the admin users are handled as normal users.';
-$GLOBALS['TL_LANG']['tl_workflow']['logChanges'][0]            = 'Log transition action changes';
-$GLOBALS['TL_LANG']['tl_workflow']['logChanges'][1]            = 'Changes of each transition action get logged. Can be overriden by each action.';
 
 /*
  * Values
