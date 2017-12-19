@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note;
 
+use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\ActionFormBuilder;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
@@ -47,13 +48,19 @@ class NoteActionFormBuilder implements ActionFormBuilder
 
         /** @var NoteAction $action */
         $formBuilder->add(
-            'action_' . $action->getConfigValue('id') . '_note',
-            TextareaType::class,
+            'action_' . $action->getConfigValue('id'),
+            FieldsetType::class,
             [
-                'label' => $action->getConfigValue('label'),
-                'attr'  => [
-                    'help' => $action->getConfigValue('description'),
-                ],
+                'legend' => $action->getLabel(),
+                'fields' => [
+                    [
+                        'name' => $action->getName() . '_note',
+                        'type' => TextareaType::class,
+                        'attr' => [
+                            'label' => $action->getConfigValue('description'),
+                        ]
+                    ]
+                ]
             ]
         );
     }
