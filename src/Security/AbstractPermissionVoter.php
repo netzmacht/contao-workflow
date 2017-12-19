@@ -17,7 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Security;
 
 use Contao\BackendUser;
 use Contao\FrontendUser;
-use Netzmacht\Workflow\Security\Permission;
+use Netzmacht\Workflow\Flow\Security\Permission;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface as Token;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -40,7 +40,7 @@ abstract class AbstractPermissionVoter extends Voter
         }
 
         try {
-            $permission = Permission::fromString((string) $subject);
+            $permission = Permission::fromString((string) $attribute);
         } catch (\Exception $e) {
             return false;
         }

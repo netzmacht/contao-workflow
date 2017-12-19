@@ -33,7 +33,7 @@ use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Workflow\Security\Permission;
+use Netzmacht\Workflow\Flow\Security\Permission;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
 /**

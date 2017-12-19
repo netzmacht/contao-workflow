@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
+use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Step;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
@@ -81,6 +82,7 @@ class ButtonRenderer extends AbstractRenderer
         $actions  = [];
         $params   = [];
         $request  = $this->requestStack->getCurrentRequest();
+        $context  = new Context();
 
         if ($this->scopeMatcher->isBackendRequest($request)) {
             if ($request->query->get('module')) {
@@ -97,7 +99,11 @@ class ButtonRenderer extends AbstractRenderer
                 continue;
             }
 
-            $actions[] = $this->buildAction($view, $transitionName, $params);
+            $transition = $workflow->getTransition($transitionName);
+
+            if ($transition->isAllowed($view->getItem(), $context)) {
+                $actions[] = $this->buildAction($view, $transitionName, $params);
+            }
         }
 
         return [

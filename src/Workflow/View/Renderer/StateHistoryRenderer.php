@@ -103,8 +103,10 @@ class StateHistoryRenderer extends AbstractStepRenderer
                 $row[$column] = $this->renderStateColumn($state, $column);
             }
 
-            $data[] = $row;
+            $data[$state->getStateId()] = $row;
         }
+
+        $data = array_reverse($data);
 
         return ['columns' => $stateColumns, 'history' => $data];
     }

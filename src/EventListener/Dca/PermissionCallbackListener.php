@@ -18,7 +18,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
-use Netzmacht\Workflow\Security\Permission as WorkflowPermission;
+use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 
 /**
  * Class Permission initialize permission fields for the workflows for frontend and backend users.
@@ -60,12 +60,12 @@ class PermissionCallbackListener
                 $permissions = StringUtil::deserialize($workflow->permissions, true);
 
                 foreach ($permissions as $permission) {
-                    $workflow = $workflow->label
-                        ? ($workflow->label . ' [' . $workflow->name . ']')
-                        : $workflow->name;
+                    $workflowName = $workflow->label
+                        ? ($workflow->label . ' [' . $workflow->id . ']')
+                        : $workflow->id;
 
-                    $name                      = $workflow->name . ':' . $permission['name'];
-                    $options[$workflow][$name] = $permission['label'] ?: $permission['name'];
+                    $name                          = 'workflow_' . $workflow->id . ':' . $permission['name'];
+                    $options[$workflowName][$name] = $permission['label'] ?: $permission['name'];
                 }
             }
         }
@@ -95,7 +95,7 @@ class PermissionCallbackListener
 
             foreach ($permissions as $config) {
                 $permission = WorkflowPermission::forWorkflowName(
-                    (string) $workflow->name,
+                    (string) 'workflow_' . $workflow->id,
                     (string) $config['name']
                 );
 
