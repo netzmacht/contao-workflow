@@ -161,11 +161,11 @@ class WorkflowCallbackListener
                     $stepTo = $collection->getRelated('stepTo');
 
                     $options[$collection->id] = sprintf(
-                        '%s [%s] --> %s [%s]',
+                        '%s [ID %s] --> %s [ID %s]',
                         $collection->label,
-                        $collection->name,
+                        $collection->id,
                         $stepTo->label,
-                        $stepTo->name
+                        $stepTo->id
                     );
                 }
             }
