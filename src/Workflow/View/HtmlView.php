@@ -54,7 +54,7 @@ final class HtmlView implements View
      *
      * @var string
      */
-    private $template = '@NetzmachtContaoWorkflow/backend/step.html.twig';
+    private $template = '@NetzmachtContaoWorkflow/default.html.twig';
 
     /**
      * Template sections.
@@ -78,25 +78,45 @@ final class HtmlView implements View
     private $context;
 
     /**
+     * Options.
+     *
+     * @var array
+     */
+    private $options;
+
+    /**
+     * View renderer.
+     *
+     * @var Renderer
+     */
+    private $renderer;
+
+    /**
      * HtmlStepView constructor.
      *
      * @param Item                  $item     The workflow item.
      * @param Workflow              $workflow The workflow definition.
      * @param Transition|Step|State $context  Current context.
+     * @param Renderer              $renderer View renderer.
      * @param TemplateEngine        $engine   The template engine.
-     * @param string|null           $template The view template.
+     * @param string                $template The view template.
+     * @param array                 $options  Options.
      */
     public function __construct(
         Item $item,
         Workflow $workflow,
         $context,
+        Renderer $renderer,
         TemplateEngine $engine,
-        string $template = null
+        ?string $template = null,
+        array $options = []
     ) {
         $this->item     = $item;
         $this->workflow = $workflow;
         $this->engine   = $engine;
         $this->context  = $context;
+        $this->options  = $options;
+        $this->renderer = $renderer;
 
         if ($template) {
             $this->template = $template;
@@ -138,6 +158,18 @@ final class HtmlView implements View
     /**
      * {@inheritdoc}
      */
+    public function getOption(string $name, $default = null)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+
+        return $default;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addSection(string $name, array $parameters, ?string $defaultTemplate = null): View
     {
         $this->sections[$name]         = $parameters;
@@ -159,6 +191,10 @@ final class HtmlView implements View
      */
     public function render(): Response
     {
+        if ($this->renderer->supports($this)) {
+            $this->renderer->render($this);
+        }
+
         $response = $this->engine->renderResponse(
             $this->template,
             [

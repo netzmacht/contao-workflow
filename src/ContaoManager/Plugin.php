@@ -55,7 +55,7 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface, Extension
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getExtensionConfig($extensionName, array $extensionConfigs, ContainerBuilder $container)
     {

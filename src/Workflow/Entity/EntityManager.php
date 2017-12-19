@@ -44,6 +44,8 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
     private $repositoryFactory;
     
     /**
+     * Database connection.
+     *
      * @var Connection
      */
     private $connection;
@@ -51,8 +53,8 @@ class EntityManager implements WorkflowEntityManager, TransactionHandler
     /**
      * The database connection.
      *
-     * @param RepositoryFactory $repositoryFactory
-     * @param Connection        $connection
+     * @param RepositoryFactory $repositoryFactory Repository factory.
+     * @param Connection        $connection        Database connection.
      */
     public function __construct(RepositoryFactory $repositoryFactory, Connection $connection)
     {

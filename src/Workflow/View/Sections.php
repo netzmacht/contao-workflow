@@ -18,7 +18,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
 /**
  * Class Sections
  */
-class Sections implements \IteratorAggregate, \ArrayAccess
+class Sections implements \IteratorAggregate
 {
     /**
      * The generated sections.
@@ -42,7 +42,7 @@ class Sections implements \IteratorAggregate, \ArrayAccess
      */
     public function __construct(array $sections, array $templates)
     {
-        $this->sections = $sections;
+        $this->sections  = $sections;
         $this->templates = $templates;
     }
 

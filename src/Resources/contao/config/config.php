@@ -11,6 +11,13 @@
  * @filesource
  */
 
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\State\StateModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+
 array_insert(
     $GLOBALS['BE_MOD'],
     1,
@@ -47,9 +54,9 @@ $GLOBALS['TL_PERMISSIONS'][] = 'workflow';
  * Models
  */
 
-$GLOBALS['TL_MODELS']['tl_workflow']            = \Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel::class;
-$GLOBALS['TL_MODELS']['tl_workflow_action']     = \Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel::class;
-$GLOBALS['TL_MODELS']['tl_workflow_step']       = \Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel::class;
-$GLOBALS['TL_MODELS']['tl_workflow_state']      = \Netzmacht\ContaoWorkflowBundle\Model\State\StateModel::class;
-$GLOBALS['TL_MODELS']['tl_workflow_transition'] = \Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel::class;
-$GLOBALS['TL_MODELS']['tl_workflow_permission'] = \Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow']            = WorkflowModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow_action']     = ActionModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow_step']       = StepModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow_state']      = StateModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow_transition'] = TransitionModel::class;
+$GLOBALS['TL_MODELS']['tl_workflow_permission'] = PermissionModel::class;

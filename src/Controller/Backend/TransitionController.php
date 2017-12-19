@@ -16,12 +16,10 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
 use Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
-use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,12 +46,11 @@ class TransitionController extends AbstractController
     public function __construct(
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
-        WorkflowTypeRegistry $typeRegistry,
-        TemplateEngine $renderer,
+        ViewFactory $viewFactory,
         Router $router,
         FormFactory $formFactory
     ) {
-        parent::__construct($workflowManager, $entityManager, $typeRegistry, $renderer, $router);
+        parent::__construct($workflowManager, $entityManager, $viewFactory, $router);
 
         $this->formFactory = $formFactory;
     }
@@ -61,14 +58,13 @@ class TransitionController extends AbstractController
     /**
      * Execute the transition.
      *
-     * @param EntityId $entityId
-     * @param string   $transition
-     * @param Request  $request
+     * @param EntityId $entityId   EntityId of current entity.
+     * @param string   $transition The transition name.
+     * @param Request  $request    The web request.
      *
      * @return Response
-     * @throws \Exception
-     * @throws \Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound
-     * @throws \Netzmacht\Workflow\Exception\WorkflowException
+     *
+     * @throws \RuntimeException For any runtime exception.
      */
     public function execute(EntityId $entityId, string $transition, Request $request): Response
     {
@@ -112,37 +108,9 @@ class TransitionController extends AbstractController
             throw new \RuntimeException();
         }
 
-        $renderer = $this->typeRegistry->getType($workflow->getConfigValue('type'))->getRenderer();
+        $transition = $workflow->getTransition($transition);
+        $view       = $this->viewFactory->create($item, $transition, ['form' => $form]);
 
-        return $this->renderer->renderResponse(
-            '@NetzmachtContaoWorkflow/backend/transition.html.twig',
-            [
-                'headline'    => $this->generateHeadline($handler),
-                'subheadline' => $renderer->renderLabel($item),
-                'errors'      => [],
-                'form'        => $form->createView(),
-                'transition'  => $handler->getTransition(),
-            ]
-        );
-    }
-
-    /**
-     * Generate the headline.
-     *
-     * @param TransitionHandler $handler The transition handler.
-     *
-     * @return string
-     */
-    private function generateHeadline(TransitionHandler $handler): string
-    {
-        $headline = $handler->getWorkflow()->getLabel();
-
-        if ($handler->getCurrentStep()) {
-            $headline .= ' &raquo; ' . $handler->getCurrentStep()->getLabel();
-        }
-
-        $headline .= ' &raquo; ' . $handler->getTransition()->getLabel();
-
-        return $headline;
+        return $view->render();
     }
 }

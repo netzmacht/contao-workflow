@@ -1,0 +1,22 @@
+parameters:
+  netzmacht.contao_workflow.templates.headline:
+    "text/html": '@@NetzmachtContaoWorkflow/sections/headline.html.twig'
+
+  netzmacht.contao_workflow.templates.history:
+    "text/html": '@@NetzmachtContaoWorkflow/sections/history.html.twig'
+
+  netzmacht.contao_workflow.templates.teaser:
+    "text/html": '@@NetzmachtContaoWorkflow/sections/teaser.html.twig'
+
+  netzmacht.contao_workflow.templates.step_teaser:
+      "text/html": '@@NetzmachtContaoWorkflow/sections/step_teaser.html.twig'
+
+  netzmacht.contao_workflow.templates.form:
+      "text/html": '@@NetzmachtContaoWorkflow/sections/form.html.twig'
+
+  netzmacht.contao_workflow.templates.button:
+    "text/html": '@@NetzmachtContaoWorkflow/sections/buttons.html.twig'
+
+  netzmacht.contao_workflow.templates.html_view:
+    step: '@@NetzmachtContaoWorkflow/backend/step.html.twig'
+    transition: '@@NetzmachtContaoWorkflow/backend/transition.html.twig'

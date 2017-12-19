@@ -21,8 +21,6 @@ use Netzmacht\Workflow\Flow\Action;
 
 /**
  * Class CreateMetaDataActionListener adds the MetaDataAction to every database driven workflow transition.
- *
- * @package Netzmacht\ContaoWorkflowBundle\EventListener\Workflow
  */
 class CreateMetaDataActionListener
 {
@@ -36,7 +34,7 @@ class CreateMetaDataActionListener
     /**
      * CreateMetaDataActionListener constructor.
      *
-     * @param Action $action
+     * @param Action $action The metadata action.
      */
     public function __construct(Action $action)
     {

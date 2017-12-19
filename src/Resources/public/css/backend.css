@@ -27,8 +27,11 @@
 }
 
 .workflow-section {
-    border-top: 1px solid #e6e6e8;
     margin-bottom: 2em;
+}
+
+.workflow-section + .workflow-section {
+    border-top: 1px solid #e6e6e8;
 }
 
 .workflow-content-box {

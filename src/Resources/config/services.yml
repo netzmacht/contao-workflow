@@ -174,16 +174,19 @@ services:
     arguments:
       - []
     tags:
-      - { name: 'netzmacht.contao.workflow.transition_form_builder' }
+      - { name: 'netzmacht.contao_workflow.transition_form_builder' }
 
-  netzmacht.contao_workflow.view.history_renderer:
-    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\History\DelegatingHistoryRenderer
+  netzmacht.contao_workflow.view.factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\DelegatingViewFactory
     arguments:
       - []
 
-  netzmacht.contao_workflow.view.factory:
-    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory
+  netzmacht.contao_workflow.view.factory.html:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\HtmlViewFactory
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@templating'
-      - '@netzmacht.contao_workflow.view.history_renderer'
+      - '@netzmacht.contao_workflow.view.renderer'
+      - '%netzmacht.contao_workflow.templates.html_view%'
+    tags:
+      - { name: 'netzmacht.contao_workflow.view_factory', content_type: 'text/html' }

@@ -13,28 +13,14 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
+namespace Netzmacht\ContaoWorkflowBundle\Workflow\Exception;
+
+use Netzmacht\Workflow\Exception\WorkflowException;
 
 /**
- * Interface Renderer
+ * Class UnsupportedViewContentType
  */
-interface Renderer
+class UnsupportedViewContentType extends \InvalidArgumentException implements WorkflowException
 {
-    /**
-     * Check if renderer supports the workflow item view.
-     *
-     * @param View $view The workflow item view.
-     *
-     * @return bool
-     */
-    public function supports(View $view): bool;
 
-    /**
-     * Render the view.
-     *
-     * @param View $view The workflow item view.
-     *
-     * @return void
-     */
-    public function render(View $view): void;
 }

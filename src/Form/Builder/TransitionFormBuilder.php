@@ -35,8 +35,10 @@ interface TransitionFormBuilder
     /**
      * Build the transition form.
      *
-     * @param Transition  $transition
-     * @param FormBuilder $formBuilder
+     * @param Transition  $transition  The workflow transition.
+     * @param FormBuilder $formBuilder The form builder.
+     *
+     * @return void
      */
     public function buildForm(Transition $transition, FormBuilder $formBuilder): void;
 }

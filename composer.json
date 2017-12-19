@@ -25,7 +25,7 @@
         "mathiasverraes/classfunctions": "~1.1",
         "menatwork/contao-multicolumnwizard": "^3.3.14",
         "netzmacht/workflow": "~2.0@beta",
-        "netzmacht/contao-toolkit": "dev-master",
+        "netzmacht/contao-toolkit": "~3.0",
         "netzmacht/contao-form-bundle": "~1.0@dev",
         "symfony/expression-language": "~3.3"
     },

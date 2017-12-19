@@ -51,6 +51,8 @@ abstract class AbstractRenderer implements Renderer
      *
      * @param Translator $translator Translator.
      * @param array      $templates  Mapping between the content type and the default template.
+     *
+     * @throws \Assert\AssertionFailedException If No section name is defined.
      */
     public function __construct(Translator $translator, array $templates = [])
     {
@@ -113,6 +115,8 @@ abstract class AbstractRenderer implements Renderer
      * @param View $view The workflow item view.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function getSectionName(View $view): string
     {

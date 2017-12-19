@@ -15,14 +15,16 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class HistoryRendererPass
+ * Class ViewFactoryPass
  */
-class HistoryRendererPass implements CompilerPassInterface
+class RendererPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
@@ -31,13 +33,13 @@ class HistoryRendererPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('netzmacht.contao_workflow.view.history_renderer')) {
+        if (!$container->hasDefinition('netzmacht.contao_workflow.view.renderer')) {
             return;
         }
 
-        $definition = $container->getDefinition('netzmacht.contao_workflow.view.history_renderer');
+        $definition = $container->getDefinition('netzmacht.contao_workflow.view.renderer');
         $references = $this->findAndSortTaggedServices(
-            'netzmacht.contao_workflow.history_renderer',
+            'netzmacht.contao_workflow.view.renderer',
             $container
         );
 

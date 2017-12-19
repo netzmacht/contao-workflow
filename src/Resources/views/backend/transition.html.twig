@@ -1,31 +1,22 @@
-{% extends "@ContaoCore/Backend/be_page.html.twig" %}
+{% extends "@NetzmachtContaoWorkflow/backend/backend.html.twig" %}
 
 {% block headline %}
-    {{ headline|raw }}
+    {% include sections.template('headline') with sections.get('headline') only %}
 {% endblock %}
 
-{% block error %}
-{% if errors %}
-    {% for error in errors %}
-        {{ error }}<br>
-    {% endfor %}
-{% endif %}
-{% endblock %}
+{%- block error -%}
+
+{%- endblock -%}
 
 {% block main %}
-<div id="tl_buttons">
-    <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
-</div>
-
-<div class="workflow-section">
-    <h2 class="sub_headline">{{ subheadline }}</h2>
-
-    <div class="workflow-content-box">
-        <p>{{ transition.configValue('description') }}</p>
+    <div id="tl_buttons">
+        <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
     </div>
 
-    {% form_theme form '@NetzmachtContaoForm/form/contao_backend.html.twig' %}
-    {{ form(form) }}
-</div>
+    {% for name, section in sections %}
+        <div class="workflow-section">
+            {% include sections.template(name) with section only %}
+        </div>
+    {% endfor %}
 
 {% endblock %}

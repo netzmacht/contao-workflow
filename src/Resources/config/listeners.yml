@@ -49,6 +49,7 @@ services:
     arguments:
       - '@request_stack'
       - '@router'
+      - '@netzmacht.contao_toolkit.assets_manager'
     tags:
       - { name: 'contao.hook', hook: 'getUserNavigation' }
 

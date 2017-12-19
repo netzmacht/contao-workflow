@@ -35,9 +35,11 @@ class NetzmachtContaoWorkflowExtension extends Extension
         );
 
         // Common config, services and listeners
+        $loader->load('templates.yml');
         $loader->load('actions.yml');
         $loader->load('controllers.yml');
         $loader->load('listeners.yml');
+        $loader->load('renderer.yml');
         $loader->load('services.yml');
 
         $configuration = new Configuration();

@@ -13,28 +13,21 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
+namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
+
+use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
+use Netzmacht\Workflow\Flow\Transition;
 
 /**
- * Interface Renderer
+ * Class AbstractStepRenderer
  */
-interface Renderer
+abstract class AbstractTransitionRenderer extends AbstractRenderer
 {
     /**
-     * Check if renderer supports the workflow item view.
-     *
-     * @param View $view The workflow item view.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function supports(View $view): bool;
-
-    /**
-     * Render the view.
-     *
-     * @param View $view The workflow item view.
-     *
-     * @return void
-     */
-    public function render(View $view): void;
+    public function supports(View $view): bool
+    {
+        return $view->getContext() instanceof Transition;
+    }
 }

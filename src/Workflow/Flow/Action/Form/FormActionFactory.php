@@ -28,7 +28,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 class FormActionFactory implements ActionTypeFactory
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getCategory(): string
     {
@@ -36,7 +36,7 @@ class FormActionFactory implements ActionTypeFactory
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -44,7 +44,7 @@ class FormActionFactory implements ActionTypeFactory
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(Workflow $workflow): bool
     {
@@ -52,7 +52,7 @@ class FormActionFactory implements ActionTypeFactory
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function create(array $config, Transition $transition): Action
     {

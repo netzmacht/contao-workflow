@@ -14,9 +14,9 @@
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
+use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
-use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class HeadlineRenderer
@@ -33,7 +33,7 @@ class HeadlineRenderer extends AbstractRenderer
     /**
      * {@inheritdoc}
      */
-    public function supports(Workflow $workflow, $context): bool
+    public function supports(View $view): bool
     {
         return true;
     }
@@ -54,7 +54,9 @@ class HeadlineRenderer extends AbstractRenderer
                 $headline = $this->renderTransitionHeadline($view, $context);
                 break;
 
-            // TODO: Implement state headline
+            case State::class:
+                // TODO: Implement state headline
+                // No break
 
             default:
                 return [];
@@ -88,9 +90,9 @@ class HeadlineRenderer extends AbstractRenderer
      */
     protected function renderTransitionHeadline(View $view, Transition $transition): array
     {
-        $workflow    = $view->getWorkflow();
-        $headline    = [$workflow->getLabel()];
-        $stepName    = $view->getItem()->getCurrentStepName();
+        $workflow = $view->getWorkflow();
+        $headline = [$workflow->getLabel()];
+        $stepName = $view->getItem()->getCurrentStepName();
 
         if ($workflow->hasStep($stepName)) {
             $currentStep = $workflow->getStep($stepName);

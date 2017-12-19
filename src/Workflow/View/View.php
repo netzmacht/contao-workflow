@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 interface View
 {
     const CONTENT_TYPE_HTML = 'text/html';
+    const CONTENT_TYPE_JSON = 'application/json';
 
     /**
      * Get workflow context.
@@ -56,6 +57,16 @@ interface View
      * @return string
      */
     public function getContentType(): string;
+
+    /**
+     * Get an option.
+     *
+     * @param string $name    The option name.
+     * @param null   $default Default option value.
+     *
+     * @return mixed
+     */
+    public function getOption(string $name, $default = null);
 
     /**
      * Add a section.

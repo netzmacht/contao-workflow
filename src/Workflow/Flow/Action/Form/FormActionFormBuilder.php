@@ -36,6 +36,8 @@ class FormActionFormBuilder implements ActionFormBuilder
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException When invalid action is passed.
      */
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {

@@ -4,8 +4,7 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
-      - '@netzmacht.contao_workflow.type_registry'
-      - '@templating'
+      - '@netzmacht.contao_workflow.view.factory'
       - '@router'
 
   netzmacht.contao_workflow.backend.transition_controller:
@@ -13,7 +12,6 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
-      - '@netzmacht.contao_workflow.type_registry'
-      - '@templating'
+      - '@netzmacht.contao_workflow.view.factory'
       - '@router'
       - '@netzmacht.contao_workflow.form.factory'

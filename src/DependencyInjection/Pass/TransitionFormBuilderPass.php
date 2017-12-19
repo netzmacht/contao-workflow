@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Class ActionFormBuilderPass
  */
-class TransitionActionFormBuilderPass implements CompilerPassInterface
+class TransitionFormBuilderPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
@@ -37,7 +37,7 @@ class TransitionActionFormBuilderPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('netzmacht.contao_workflow.form.transition_form');
         $references = $this->findAndSortTaggedServices(
-            'netzmacht.contao.workflow.transition_form_builder',
+            'netzmacht.contao_workflow.transition_form_builder',
             $container
         );
 

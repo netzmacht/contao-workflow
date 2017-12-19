@@ -20,7 +20,10 @@ use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFactoriesPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFormBuilderPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\EntityRepositoryFactoryPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\HistoryRendererPass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\RendererPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\TransitionActionFormBuilderPass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\TransitionFormBuilderPass;
+use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ViewFactoryPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\WorkflowTypePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -39,9 +42,10 @@ class NetzmachtContaoWorkflowBundle extends Bundle
             ->addCompilerPass(new WorkflowTypePass())
             ->addCompilerPass(new ActionFactoriesPass())
             ->addCompilerPass(new ActionFormBuilderPass())
-            ->addCompilerPass(new TransitionActionFormBuilderPass())
+            ->addCompilerPass(new TransitionFormBuilderPass())
             ->addCompilerPass(new EntityRepositoryFactoryPass())
-            ->addCompilerPass(new HistoryRendererPass())
+            ->addCompilerPass(new ViewFactoryPass())
+            ->addCompilerPass(new RendererPass())
             ->addCompilerPass(
                 new AddTaggedServicesAsArgumentPass(
                     'netzmacht.contao_workflow.entity_factory',

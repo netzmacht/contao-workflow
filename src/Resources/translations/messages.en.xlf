@@ -58,6 +58,14 @@
                 <source>workflow.history.scope</source>
                 <target>Scope</target>
             </trans-unit>
+            <trans-unit id="workflow.history.scope.backend">
+                <source>workflow.history.scope.backend</source>
+                <target>Backend</target>
+            </trans-unit>
+            <trans-unit id="workflow.history.scope.frontend">
+                <source>workflow.history.scope.frontend</source>
+                <target>Frontend</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

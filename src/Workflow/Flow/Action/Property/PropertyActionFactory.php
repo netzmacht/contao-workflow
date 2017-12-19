@@ -78,7 +78,7 @@ class PropertyActionFactory implements ActionTypeFactory
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function match(Action $action): bool
     {

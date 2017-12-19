@@ -15,36 +15,54 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Backend;
 
-
+use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface as Router;
 
+/**
+ * Class UserNavigationListener
+ */
 class UserNavigationListener
 {
     /**
+     * Request stack.
+     *
      * @var RequestStack
      */
     private $requestStack;
 
     /**
+     * Router.
+     *
      * @var Router
      */
     private $router;
 
     /**
+     * Assets manager.
+     *
+     * @var AssetsManager
+     */
+    private $assetsManager;
+
+    /**
      * UserNavigationListener constructor.
      *
-     * @param RequestStack    $requestStack
-     * @param Router $router
+     * @param RequestStack  $requestStack  Request stack.
+     * @param Router        $router        Router.
+     * @param AssetsManager $assetsManager Assets manager.
      */
-    public function __construct(RequestStack $requestStack, Router $router)
+    public function __construct(RequestStack $requestStack, Router $router, AssetsManager $assetsManager)
     {
-        $this->requestStack = $requestStack;
-        $this->router       = $router;
+        $this->requestStack  = $requestStack;
+        $this->router        = $router;
+        $this->assetsManager = $assetsManager;
     }
 
     /**
-     * @param array $modules
+     * Handle the getUserNavigation hook to determine if workflow module is used.
+     *
+     * @param array $modules User navigation modules.
      *
      * @return array
      */
@@ -60,7 +78,7 @@ class UserNavigationListener
                 }
             }
 
-            $GLOBALS['TL_CSS'][] = 'bundles/netzmachtcontaoworkflow/css/backend.css';
+            $this->assetsManager->addStylesheet('bundles/netzmachtcontaoworkflow/css/backend.css');
         }
 
         return $modules;

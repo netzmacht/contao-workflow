@@ -61,12 +61,4 @@ class DefaultWorkflowType implements WorkflowType
     {
         return $this->supportedProviders;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRenderer(): Renderer
-    {
-        return new DefaultRenderer();
-    }
 }

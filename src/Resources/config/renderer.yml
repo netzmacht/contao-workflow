@@ -1,0 +1,50 @@
+services:
+  netzmacht.contao_workflow.view.renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\DelegatingRenderer
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.view.headline_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\HeadlineRenderer
+    arguments:
+      - '@translator'
+      - '%netzmacht.contao_workflow.templates.headline%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer, priority: 10 }
+
+  netzmacht.contao_workflow.view.button_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\ButtonRenderer
+    arguments:
+      - '@translator'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+      - '@request_stack'
+      - '%netzmacht.contao_workflow.templates.button%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer, priority: -10 }
+
+  netzmacht.contao_workflow.view.history_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\StateHistoryRenderer
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@translator'
+      - '@netzmacht.contao_toolkit.contao.config_adapter'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '%netzmacht.contao_workflow.templates.history%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer, priority: -50 }
+
+  netzmacht.contao_workflow.view.teaser_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\TeaserRenderer
+    arguments:
+      - '@translator'
+      - '%netzmacht.contao_workflow.templates.teaser%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer, priority: 10 }
+
+  netzmacht.contao_workflow.view.form_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\FormRenderer
+    arguments:
+      - '@translator'
+      - '%netzmacht.contao_workflow.templates.form%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer }

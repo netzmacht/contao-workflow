@@ -78,9 +78,9 @@ class MetadataAction implements Action
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $token = $this->tokenStorage->getToken();
-        $metadata  = [
-            'scope' => null,
+        $token    = $this->tokenStorage->getToken();
+        $metadata = [
+            'scope'  => null,
             'userId' => null,
         ];
 

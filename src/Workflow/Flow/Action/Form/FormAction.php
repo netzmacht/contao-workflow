@@ -28,7 +28,7 @@ use Netzmacht\Workflow\Flow\Transition;
 class FormAction extends AbstractAction
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getRequiredPayloadProperties(Item $item): array
     {
@@ -36,7 +36,7 @@ class FormAction extends AbstractAction
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validate(Item $item, Context $context): bool
     {
@@ -44,7 +44,7 @@ class FormAction extends AbstractAction
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {

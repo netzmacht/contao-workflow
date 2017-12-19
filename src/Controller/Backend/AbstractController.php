@@ -16,14 +16,11 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowType;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Flow\Item;
-use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface as Router;
 
@@ -42,25 +39,11 @@ abstract class AbstractController
     protected $workflowManager;
 
     /**
-     * Template engine.
-     *
-     * @var TemplateEngine
-     */
-    protected $renderer;
-
-    /**
      * The entity manager.
      *
      * @var EntityManager
      */
     protected $entityManager;
-
-    /**
-     * The workflow type registry.
-     *
-     * @var WorkflowTypeRegistry
-     */
-    protected $typeRegistry;
 
     /**
      * The router.
@@ -70,25 +53,29 @@ abstract class AbstractController
     protected $router;
 
     /**
+     * View factory.
+     *
+     * @var ViewFactory
+     */
+    protected $viewFactory;
+
+    /**
      * AbstractController constructor.
      *
-     * @param WorkflowManager      $workflowManager
-     * @param EntityManager        $entityManager
-     * @param WorkflowTypeRegistry $typeRegistry
-     * @param TemplateEngine       $renderer
-     * @param Router               $router
+     * @param WorkflowManager $workflowManager Workflow manager.
+     * @param EntityManager   $entityManager   Entity manager.
+     * @param ViewFactory     $viewFactory     View factory.
+     * @param Router          $router          Router.
      */
     public function __construct(
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
-        WorkflowTypeRegistry $typeRegistry,
-        TemplateEngine $renderer,
+        ViewFactory $viewFactory,
         Router $router
     ) {
         $this->workflowManager = $workflowManager;
         $this->entityManager   = $entityManager;
-        $this->typeRegistry    = $typeRegistry;
-        $this->renderer        = $renderer;
+        $this->viewFactory     = $viewFactory;
         $this->router          = $router;
     }
 
@@ -98,6 +85,8 @@ abstract class AbstractController
      * @param EntityId $entityId The entity id.
      *
      * @return Item
+     *
+     * @throws NotFoundHttpException If entity is not found.
      */
     protected function createItem(EntityId $entityId): Item
     {
@@ -109,17 +98,5 @@ abstract class AbstractController
         }
 
         return $this->workflowManager->createItem($entityId, $entity);
-    }
-
-    /**
-     * Get the workflow type.
-     *
-     * @param Workflow $workflow The workflow type.
-     *
-     * @return WorkflowType
-     */
-    protected function getWorkflowType(Workflow $workflow): WorkflowType
-    {
-        return $this->typeRegistry->getType($workflow->getConfigValue('type'));
     }
 }

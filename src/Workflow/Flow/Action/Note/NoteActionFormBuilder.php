@@ -36,6 +36,8 @@ class NoteActionFormBuilder implements ActionFormBuilder
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException When invalid action is given.
      */
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
