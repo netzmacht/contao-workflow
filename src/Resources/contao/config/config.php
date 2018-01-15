@@ -18,23 +18,16 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 
-array_insert(
-    $GLOBALS['BE_MOD']['system'],
-    1,
-    [
-        'workflows'        => [
-            'icon'       => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
-            'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
-            'tables'     => [
-                'tl_workflow',
-                'tl_workflow_step',
-                'tl_workflow_transition',
-                'tl_workflow_action',
-            ],
-        ],
-    ]
-);
-
+$GLOBALS['BE_MOD']['content']['workflows'] = [
+    'icon'       => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
+    'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
+    'tables'     => [
+        'tl_workflow',
+        'tl_workflow_step',
+        'tl_workflow_transition',
+        'tl_workflow_action',
+    ],
+];
 
 /*
  * Permissions
