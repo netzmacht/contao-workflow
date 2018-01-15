@@ -19,6 +19,8 @@ use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -85,6 +87,31 @@ class WorkflowCallbackListener
     }
 
     /**
+     * Override the provider name if only one provider name is supported.
+     *
+     * @param \DataContainer $dataContainer Data container driver.
+     *
+     * @return void
+     */
+    public function saveProviderName($dataContainer): void
+    {
+        try {
+            $repository    = $this->repositoryManager->getRepository(WorkflowModel::class);
+            $workflowModel = $repository->find((int) $dataContainer->id);
+            $providerNames = $this->typeRegistry->getType($workflowModel->type)->getProviderNames();
+
+            if (count($providerNames) !== 1 || $workflowModel->providerName === $providerNames[0]) {
+                return;
+            }
+
+            $workflowModel->providerName = $providerNames[0];
+            $repository->save($workflowModel);
+        } catch (WorkflowTypeNotFound $e) {
+            // Do nothing
+        }
+    }
+
+    /**
      * Get names of workflow types.
      *
      * @return array
@@ -100,6 +127,8 @@ class WorkflowCallbackListener
      * @param \DataContainer $dataContainer Data container driver.
      *
      * @return array
+     *
+     * @throws WorkflowTypeNotFound If workflow type is not defined.
      */
     public function getProviderNames($dataContainer): array
     {
@@ -301,7 +330,7 @@ class WorkflowCallbackListener
      *
      * @return void
      */
-    protected function guardValidPermissionName(array $row, array $names): void
+    private function guardValidPermissionName(array $row, array $names): void
     {
         $reserved = ['contao-admin', 'contao-guest'];
 

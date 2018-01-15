@@ -23,6 +23,9 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'id' => 'primary',
             ],
         ],
+        'onsubmit_callback' => [
+            ['netzmacht.contao_workflow.listeners.dca.workflow', 'saveProviderName']
+        ],
     ],
 
     'list' => [
@@ -92,12 +95,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'permissions' => ['permissions'],
             'process'     => ['process'],
             'config'      => [],
-        ],
-    ],
-
-    'metasubselectpalettes' => [
-        'type' => [
-            '!' => ['providerName'],
         ],
     ],
 
