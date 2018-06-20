@@ -99,9 +99,13 @@ class TransitionController extends AbstractController
         if ($validForm && $handler->validate($payload)) {
             $handler->transit();
 
-            return new RedirectResponse(
-                $this->router->generate('netzmacht.contao_workflow.backend.step', ['entityId' => (string) $entityId])
-            );
+            if ($request->query->get('ref') === '1') {
+                $url = $request->getSession()->get('referer');
+            } else {
+                $url = $this->router->generate('netzmacht.contao_workflow.backend.step', ['entityId' => (string) $entityId]);
+            }
+
+            return new RedirectResponse($url);
         }
 
         if (!isset($form)) {
