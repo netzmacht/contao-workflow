@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2018 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -30,7 +30,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Class Plugin
  */
-class Plugin implements BundlePluginInterface, RoutingPluginInterface, ExtensionPluginInterface
+final class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
     /**
      * {@inheritDoc}
@@ -52,17 +52,5 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface, Extension
         return $resolver
             ->resolve(__DIR__ . '/../Resources/config/routing.yml')
             ->load(__DIR__ . '/../Resources/config/routing.yml');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtensionConfig($extensionName, array $extensionConfigs, ContainerBuilder $container)
-    {
-        if ($extensionName === 'framework') {
-            $extensionConfigs[] = ['form' => true];
-        }
-
-        return $extensionConfigs;
     }
 }

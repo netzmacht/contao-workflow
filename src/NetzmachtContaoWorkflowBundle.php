@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2018 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -19,9 +19,7 @@ use Netzmacht\Contao\Toolkit\Bundle\DependencyInjection\Compiler\AddTaggedServic
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFactoriesPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFormBuilderPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\EntityRepositoryFactoryPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\HistoryRendererPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\RendererPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\TransitionActionFormBuilderPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\TransitionFormBuilderPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ViewFactoryPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\WorkflowTypePass;
