@@ -18,7 +18,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 
-$GLOBALS['BE_MOD']['content']['workflows'] = [
+$GLOBALS['BE_MOD']['accounts']['workflows'] = [
     'icon'       => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
     'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
     'tables'     => [

@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2018 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -17,6 +17,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
         'ctable'        => [
             'tl_workflow_step',
             'tl_workflow_transition',
+            'tl_workflow_action'
         ],
         'sql'           => [
             'keys' => [
@@ -44,6 +45,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
+            ],
+            'actions' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['actions'],
+                'href'  => 'table=tl_workflow_action',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
             ],
             'steps'       => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['steps'],

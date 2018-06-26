@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2018 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -14,9 +14,9 @@
 
 $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
     'config' => [
-        'dataContainer'   => 'Table',
-        'ptable'          => 'tl_workflow',
-        'sql'             => [
+        'dataContainer' => 'Table',
+        'ptable'        => 'tl_workflow',
+        'sql'           => [
             'keys' => [
                 'id'  => 'primary',
                 'pid' => 'index',
@@ -42,24 +42,19 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
 
         'operations' => [
-            'edit'    => [
+            'edit'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ],
-            'actions' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
-                'href'  => 'table=tl_workflow_action',
-                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
-            ],
-            'delete'  => [
+            'delete' => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm']
                     . '\'))return false;Backend.getScrollOffset()"',
             ],
-            'toggle'  => [
+            'toggle' => [
                 'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
                 'icon'            => 'visible.gif',
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
@@ -73,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                     ],
                 ],
             ],
-            'show'    => [
+            'show'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
@@ -85,6 +80,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         'default' => [
             'name'        => ['label', 'active', 'description', 'stepTo'],
             'config'      => [],
+            'actions'     => ['actions'],
             'permissions' => ['limitPermission'],
             'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
             'backend'     => ['addIcon'],
@@ -202,6 +198,37 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'actions'                 => [
+            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
+            'inputType'     => 'multiColumnWizard',
+            'load_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'loadRelatedActions'],
+            ],
+            'save_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'saveRelatedActions'],
+            ],
+            'eval'          => [
+                'tl_class'       => 'clr',
+                'columnFields'   => [
+                    'property' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['entityProperty'],
+                        'inputType'        => 'select',
+                        'options_callback' => [
+                            'netzmacht.contao_workflow.listeners.dca.transition',
+                            'getActions',
+                        ],
+                        'eval'             => [
+                            'style'              => 'width: 100%',
+                            'chosen'             => true,
+                            'includeBlankOption' => true,
+                        ],
+                    ],
+                ],
+                'flatArray'      => true,
+                'doNotSaveEmpty' => true,
+                'nullIfEmpty'    => true,
+            ],
         ],
         'addPropertyConditions'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],

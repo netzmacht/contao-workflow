@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2018 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -15,9 +15,14 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\DataContainer;
+use Contao\StringUtil;
+use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
+use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
@@ -126,5 +131,122 @@ class TransitionCallbackListener extends AbstractListener
         }
 
         return [];
+    }
+
+    /**
+     * Get all actions.
+     *
+     * @param \DataContainer $dataContainer Data container driver.
+     *
+     * @return array
+     */
+    public function getActions($dataContainer)
+    {
+        if ($dataContainer->activeRecord) {
+            $repository = $this->repositoryManager->getRepository(ActionModel::class);
+            $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->pid]);
+
+            return OptionsBuilder::fromCollection($collection, 'label')
+                ->groupBy('postAction')
+                ->getOptions();
+        }
+
+        return [];
+    }
+
+    /**
+     * Load related actions.
+     *
+     * @param mixed          $value         The actual value.
+     * @param \DataContainer $dataContainer The data container driver.
+     *
+     * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @throws \Doctrine\DBAL\DBALException If any dbal error occurs.
+     */
+    public function loadRelatedActions($value, $dataContainer)
+    {
+        $statement = $this->repositoryManager->getConnection()
+            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
+
+        if ($statement->execute(['tid' => $dataContainer->id])) {
+            return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
+        }
+
+        return [];
+    }
+
+    /**
+     * Save all related actions.
+     *
+     * @param mixed         $value         The value.
+     * @param DataContainer $dataContainer The data container driver.
+     *
+     * @return null
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function saveRelatedActions($value, $dataContainer)
+    {
+        $connection = $this->repositoryManager->getConnection();
+        $new        = array_filter(StringUtil::deserialize($value, true));
+        $values     = [];
+        $statement  = $connection->prepare(
+            'SELECT * FROM tl_workflow_transition_action WHERE tid=:tid order BY sorting'
+        );
+
+        $statement->bindValue('tid', $dataContainer->id);
+        $statement->execute();
+
+        while ($row = $statement->fetch()) {
+            $values[$row['aid']] = $row;
+        }
+
+        $sorting = 0;
+
+        foreach ($new as $actionId) {
+            if (!isset($values[$actionId])) {
+                $data = [
+                    'tstamp'  => time(),
+                    'aid'     => $actionId,
+                    'tid'     => $dataContainer->id,
+                    'sorting' => $sorting,
+                ];
+
+                $connection->insert('tl_workflow_transition_action', $data);
+                $sorting += 128;
+            } else {
+                if ($values[$actionId]['sorting'] <= ($sorting - 128)
+                    || $values[$actionId]['sorting'] >= ($sorting + 128)
+                ) {
+                    $connection->update(
+                        'tl_workflow_transition_action',
+                        ['tstamp' => time(), 'sorting' => $sorting],
+                        ['id' => $values[$actionId]['id']]
+                    );
+                }
+
+                $sorting += 128;
+                unset($values[$actionId]);
+            }
+        }
+
+        $ids = array_map(
+            function ($item) {
+                return $item['id'];
+            },
+            $values
+        );
+
+        if ($ids) {
+            $connection->executeUpdate(
+                'DELETE FROM tl_workflow_transition_action WHERE id IN(?)',
+                [$ids],
+                [Connection::PARAM_INT_ARRAY]
+            );
+        }
+
+        return null;
     }
 }

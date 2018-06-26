@@ -113,6 +113,8 @@ services:
 
   netzmacht.contao_workflow.model.action_repository:
     class: Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository
+    arguments:
+      - '@database_connection'
     tags:
       - {
           name: 'netzmacht.contao_toolkit.repository',

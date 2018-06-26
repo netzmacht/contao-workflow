@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2018 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -29,14 +29,16 @@ $GLOBALS['TL_LANG']['tl_workflow']['edit'][0]        = 'Edit workflow configurat
 $GLOBALS['TL_LANG']['tl_workflow']['edit'][1]        = 'Edit workflow ID "%s" configurations';
 $GLOBALS['TL_LANG']['tl_workflow']['steps'][0]       = 'Manage workflow steps';
 $GLOBALS['TL_LANG']['tl_workflow']['steps'][1]       = 'Manage workflow ID "%s" steps';
-$GLOBALS['TL_LANG']['tl_workflow']['transitions'][0] = 'Mange workflow transitions';
-$GLOBALS['TL_LANG']['tl_workflow']['transitions'][1] = 'Mange workflow ID "%s"  transitions';
+$GLOBALS['TL_LANG']['tl_workflow']['transitions'][0] = 'Manage workflow transitions';
+$GLOBALS['TL_LANG']['tl_workflow']['transitions'][1] = 'Manage workflow ID "%s"  transitions';
 $GLOBALS['TL_LANG']['tl_workflow']['show'][0]        = 'Show workflow details';
 $GLOBALS['TL_LANG']['tl_workflow']['show'][1]        = 'Workflow details';
 $GLOBALS['TL_LANG']['tl_workflow']['delete'][0]      = 'Edit workflow configurations';
 $GLOBALS['TL_LANG']['tl_workflow']['delete'][1]      = 'Delete workflow ID "%s"';
 $GLOBALS['TL_LANG']['tl_workflow']['toggle'][0]      = 'Activate/deactive workflow';
 $GLOBALS['TL_LANG']['tl_workflow']['toggle'][1]      = 'Activate/deactive workflow ID "%s"';
+$GLOBALS['TL_LANG']['tl_workflow']['actions'][0]     = 'Actions';
+$GLOBALS['TL_LANG']['tl_workflow']['actions'][1]     = 'Manage workflow actions';
 
 /*
  * Fields

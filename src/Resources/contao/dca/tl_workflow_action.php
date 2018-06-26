@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2018 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'sorting' => [
             'mode'                  => 4,
             'flag'                  => 1,
-            'fields'                => ['postAction', 'sorting'],
+            'fields'                => ['type', 'label'],
             'headerFields'          => ['label', 'type', 'description'],
             'child_record_callback' => [
                 'netzmacht.contao_workflow.listeners.dca.common',
@@ -99,18 +99,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'sorting'     => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['sorting'],
-            'inputType' => 'text',
-            'exclude'   => true,
-            'eval'      => [
-                'tl_class'  => 'w50',
-                'rgxp'      => 'digit',
-                'maxlength' => 64,
-            ],
-
-            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'tstamp'      => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
