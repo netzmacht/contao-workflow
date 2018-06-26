@@ -99,8 +99,8 @@ class TransitionController extends AbstractController
         if ($validForm && $handler->validate($payload)) {
             $handler->transit();
 
-            if ($request->query->get('ref') === '1') {
-                $url = $request->getSession()->get('referer');
+            if ($request->query->get('ref')) {
+                $url = '/' . urldecode($request->query->get('ref'));
             } else {
                 $url = $this->router->generate('netzmacht.contao_workflow.backend.step', ['entityId' => (string) $entityId]);
             }
