@@ -113,4 +113,12 @@ class ContaoModelEntity implements \IteratorAggregate, Entity
     {
         return $this->model;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray(): array
+    {
+        return $this->model->row();
+    }
 }

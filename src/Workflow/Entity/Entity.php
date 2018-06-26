@@ -72,4 +72,11 @@ interface Entity extends \Traversable
      * @return $this
      */
     public function setProperties(array $properties): self;
+
+    /**
+     * Get properties as array.
+     *
+     * @return array
+     */
+    public function toArray(): array;
 }
