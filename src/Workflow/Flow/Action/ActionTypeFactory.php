@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2018 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -18,7 +18,6 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /**
  * Interface ActionFactory
@@ -40,6 +39,13 @@ interface ActionTypeFactory
      * @return string
      */
     public function getName(): string;
+
+    /**
+     * Returns true if action as to be registered as post action.
+     *
+     * @return bool
+     */
+    public function isPostAction(): bool;
 
     /**
      * Check if workflow is supported.

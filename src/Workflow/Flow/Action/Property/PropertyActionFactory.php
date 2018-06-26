@@ -48,6 +48,14 @@ class PropertyActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
+    public function isPostAction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function supports(Workflow $workflow): bool
     {
         return true;

@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'mode'                  => 4,
             'flag'                  => 1,
             'fields'                => ['type', 'label'],
-            'headerFields'          => ['label', 'type', 'description'],
+            'headerFields'          => ['label', 'description', 'stepTo'],
             'child_record_callback' => [
                 'netzmacht.contao_workflow.listeners.dca.common',
                 'generateRow',
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'type', 'sorting', 'active', 'postAction'],
+            'name'        => ['label', 'type', 'sorting', 'active'],
             'description' => [':hide', 'description'],
             'config'      => [],
         ],
@@ -137,16 +137,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'maxlength' => 255,
             ],
             'sql'       => "varchar(255) NOT NULL default ''",
-        ],
-        'postAction'  => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['postAction'],
-            'inputType' => 'checkbox',
-            'exclude'   => true,
-            'filter'    => true,
-            'eval'      => [
-                'tl_class' => 'w50 m12',
-            ],
-            'sql'       => "char(1) NOT NULL default ''",
         ],
         'formId'  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],

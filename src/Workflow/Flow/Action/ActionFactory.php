@@ -129,6 +129,26 @@ class ActionFactory
     }
 
     /**
+     * Check if an action type is a post action.
+     *
+     * Returns also false if action type is unknown.
+     *
+     * @param string $type The action type.
+     *
+     * @return bool
+     */
+    public function isPostAction(string $type): bool
+    {
+        foreach ($this->factories as $factory) {
+            if ($factory->getName() === $type) {
+                return $factory->isPostAction();
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Build the form for an action type.
      *
      * @param Action      $action      The action.

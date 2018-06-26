@@ -87,8 +87,10 @@ abstract class AbstractAction extends Base implements Action
     protected function logMultipleChanges(array $values, Context $context)
     {
         if ($this->isLogChanges()) {
+            $properties = $context->getProperties();
+
             foreach ($values as $name => $value) {
-                $context->getProperties()->set($this->getName() . '_' . $name, $value);
+                $properties->set($this->getName() . '_' . $name, $value);
             }
         }
 

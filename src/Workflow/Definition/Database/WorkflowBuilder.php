@@ -241,8 +241,6 @@ class WorkflowBuilder
      *
      * @param Transition $transition The workflow transition.
      *
-     * @throws DefinitionException If action could not be created for the action config.
-     *
      * @return void
      */
     private function createActions(Transition $transition): void
@@ -256,9 +254,10 @@ class WorkflowBuilder
         }
 
         foreach ($collection as $model) {
+            $type   = (string) $model->type;
             $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
 
-            if ($model->postAction) {
+            if ($this->actionFactory->isPostAction($type)) {
                 $transition->addPostAction($action);
             } else {
                 $transition->addAction($action);

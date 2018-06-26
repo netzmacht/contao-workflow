@@ -144,11 +144,9 @@ class TransitionCallbackListener extends AbstractListener
     {
         if ($dataContainer->activeRecord) {
             $repository = $this->repositoryManager->getRepository(ActionModel::class);
-            $collection = $repository->findBy(['pid=?'], [$dataContainer->activeRecord->pid]);
+            $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['.label']);
 
-            return OptionsBuilder::fromCollection($collection, 'label')
-                ->groupBy('postAction')
-                ->getOptions();
+            return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
         }
 
         return [];
