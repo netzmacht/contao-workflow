@@ -32,7 +32,7 @@ class TeaserRenderer extends AbstractRenderer
     protected static $section = 'teaser';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(View $view): bool
     {

@@ -102,7 +102,10 @@ class TransitionController extends AbstractController
             if ($request->query->get('ref')) {
                 $url = '/' . urldecode($request->query->get('ref'));
             } else {
-                $url = $this->router->generate('netzmacht.contao_workflow.backend.step', ['entityId' => (string) $entityId]);
+                $url = $this->router->generate(
+                    'netzmacht.contao_workflow.backend.step',
+                    ['entityId' => (string) $entityId]
+                );
             }
 
             return new RedirectResponse($url);

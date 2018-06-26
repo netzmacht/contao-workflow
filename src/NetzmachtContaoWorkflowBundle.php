@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Class NetzmachtContaoWorkflowBundle
  */
-class NetzmachtContaoWorkflowBundle extends Bundle
+final class NetzmachtContaoWorkflowBundle extends Bundle
 {
     /**
      * {@inheritDoc}

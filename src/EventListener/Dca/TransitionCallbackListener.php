@@ -183,7 +183,7 @@ class TransitionCallbackListener extends AbstractListener
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return null
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\DBALException When an database related error occurs.
      */
     public function saveRelatedActions($value, $dataContainer)
     {

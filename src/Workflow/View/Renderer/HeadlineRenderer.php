@@ -57,7 +57,6 @@ class HeadlineRenderer extends AbstractRenderer
             case State::class:
                 // TODO: Implement state headline
                 // No break
-
             default:
                 return [];
         }
