@@ -64,7 +64,7 @@ abstract class AbstractPermissionVoter extends Voter
             return false;
         }
 
-        if ($user->hasAccess($attribute, 'workflow')) {
+        if ($user->hasAccess((string) $attribute, 'workflow')) {
             return true;
         }
 
