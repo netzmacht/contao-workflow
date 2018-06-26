@@ -39,10 +39,14 @@ abstract class AbstractPermissionVoter extends Voter
             return false;
         }
 
-        try {
-            $permission = Permission::fromString((string) $attribute);
-        } catch (\Exception $e) {
-            return false;
+        if ($attribute instanceof Permission) {
+            $permission = $attribute;
+        } else {
+            try {
+                $permission = Permission::fromString((string) $attribute);
+            } catch (\Exception $e) {
+                return false;
+            }
         }
 
         return $subject->hasPermission($permission);
