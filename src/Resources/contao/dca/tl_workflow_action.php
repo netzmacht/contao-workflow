@@ -15,7 +15,7 @@
 $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
         'dataContainer' => 'Table',
-        'ptable'        => 'tl_workflow_transition',
+        'ptable'        => 'tl_workflow',
         'sql'           => [
             'keys' => [
                 'id'  => 'primary',
@@ -27,9 +27,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'list' => [
         'sorting' => [
             'mode'                  => 4,
-            'flag'                  => 1,
-            'fields'                => ['type', 'label'],
-            'headerFields'          => ['label', 'description', 'stepTo'],
+            'flag'                  => 11,
+            'fields'                => ['label'],
+            'headerFields'          => ['label', 'type', 'description'],
             'child_record_callback' => [
                 'netzmacht.contao_workflow.listeners.dca.common',
                 'generateRow',
@@ -38,7 +38,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         ],
         'label'   => [
             'fields' => ['label', 'type'],
-            'format' => '%s <span class="tl_gray">[%s]</span>',
         ],
 
         'operations' => [
@@ -81,14 +80,14 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 
     'metapalettes' => [
-        'default' => [
+        'default'              => [
             'name'        => ['label', 'type', 'sorting', 'active'],
             'description' => [':hide', 'description'],
             'config'      => [],
         ],
         'form extends default' => [
-            'config' => ['formId']
-        ]
+            'config' => ['formId'],
+        ],
     ],
 
     'fields' => [
@@ -107,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['label'],
             'inputType' => 'text',
             'exclude'   => true,
+            'flag'      => 1,
             'eval'      => [
                 'tl_class'  => 'w50',
                 'mandatory' => true,
@@ -138,15 +138,15 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'formId'  => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
-            'inputType' => 'select',
-            'exclude'   => true,
-            'eval'      => [
+        'formId'      => [
+            'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
+            'inputType'  => 'select',
+            'exclude'    => true,
+            'eval'       => [
                 'tl_class' => 'w50',
             ],
             'foreignKey' => 'tl_form.title',
-            'sql'       => "int(10) unsigned NOT NULL default '0'",
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
         'active'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
