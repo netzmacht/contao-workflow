@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
  *
  * @package Netzmacht\ContaoWorkflowBundle\Condition\Transition
  */
-class TransitionPermissionCondition implements Condition
+final class TransitionPermissionCondition implements Condition
 {
     /**
      * Authorization checker.

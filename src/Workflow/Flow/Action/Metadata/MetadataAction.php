@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class MetadataAction
  */
-class MetadataAction implements Action
+final class MetadataAction implements Action
 {
     /**
      * The token storage.

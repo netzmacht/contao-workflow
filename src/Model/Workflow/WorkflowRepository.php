@@ -21,7 +21,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 /**
  * Class WorkflowRepository
  */
-class WorkflowRepository extends ContaoRepository
+final class WorkflowRepository extends ContaoRepository
 {
     /**
      * {@inheritDoc}

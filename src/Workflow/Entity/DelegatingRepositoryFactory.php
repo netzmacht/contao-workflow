@@ -23,7 +23,7 @@ use Netzmacht\Workflow\Data\EntityRepository;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-class DelegatingRepositoryFactory implements RepositoryFactory
+final class DelegatingRepositoryFactory implements RepositoryFactory
 {
     /**
      * Entity repository factories.

@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Manager\Manager;
 /**
  * Class Operations helper
  */
-class TransitionOperationBuilder
+final class TransitionOperationBuilder
 {
     const GLOBAL_SCOPE = 'global_operations';
     const MODEL_SCOPE  = 'operations';

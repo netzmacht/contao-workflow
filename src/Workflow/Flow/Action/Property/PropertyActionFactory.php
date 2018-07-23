@@ -27,7 +27,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Action\Property
  */
-class PropertyActionFactory implements ActionTypeFactory
+final class PropertyActionFactory implements ActionTypeFactory
 {
     /**
      * {@inheritDoc}

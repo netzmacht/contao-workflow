@@ -31,7 +31,7 @@ use Netzmacht\Workflow\Manager\WorkflowManager;
  *
  * @package Netzmacht\ContaoWorkflowBundle
  */
-class ContaoWorkflowManager extends WorkflowManager implements Manager
+final class ContaoWorkflowManager extends WorkflowManager implements Manager
 {
     /**
      * The entity factory.

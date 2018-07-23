@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Definition\Event
  */
-class CreateStepEvent extends Event
+final class CreateStepEvent extends Event
 {
     const NAME = 'netzmacht.contao_workflow.create_step';
 

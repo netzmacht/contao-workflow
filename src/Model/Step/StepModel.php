@@ -28,7 +28,7 @@ use Contao\Model;
  * @property bool   $limitPermission Limit the permission.
  * @property string $permission      The permission id.
  */
-class StepModel extends Model
+final class StepModel extends Model
 {
     /**
      * Table name.

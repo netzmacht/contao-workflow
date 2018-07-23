@@ -27,7 +27,7 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Data
  */
-class EntityManager implements WorkflowEntityManager, TransactionHandler
+final class EntityManager implements WorkflowEntityManager, TransactionHandler
 {
     /**
      * Entity repositories.

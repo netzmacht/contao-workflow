@@ -22,7 +22,7 @@ use Throwable;
 /**
  * Class ActionNotFound
  */
-class UnsupportedActionType extends RuntimeException implements WorkflowException
+final class UnsupportedActionType extends RuntimeException implements WorkflowException
 {
     /**
      * Create exception for an action type.

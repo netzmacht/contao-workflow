@@ -32,7 +32,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
-class TransitionCallbackListener extends AbstractListener
+final class TransitionCallbackListener extends AbstractListener
 {
     /**
      * Table name.

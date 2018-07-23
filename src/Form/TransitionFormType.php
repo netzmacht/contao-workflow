@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Router;
 /**
  * Class TransitionFormType
  */
-class TransitionFormType extends AbstractType
+final class TransitionFormType extends AbstractType
 {
     /**
      * The router.

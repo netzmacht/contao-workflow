@@ -25,7 +25,7 @@ use Contao\Model;
  * @property int    source_id
  * @property string $permission
  */
-class PermissionModel extends Model
+final class PermissionModel extends Model
 {
     /**
      * The database table.

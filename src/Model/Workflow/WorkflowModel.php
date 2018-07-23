@@ -25,7 +25,7 @@ use Contao\Model;
  * @property int   $id      The workflow id.
  * @property array $process The process definition.
  */
-class WorkflowModel extends Model
+final class WorkflowModel extends Model
 {
     /**
      * Table name.

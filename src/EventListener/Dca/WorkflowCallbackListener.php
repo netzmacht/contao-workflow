@@ -29,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
-class WorkflowCallbackListener
+final class WorkflowCallbackListener
 {
     /**
      * Workflow type registry.

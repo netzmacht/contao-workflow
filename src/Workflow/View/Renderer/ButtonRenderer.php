@@ -25,7 +25,7 @@ use Symfony\Component\Translation\TranslatorInterface as Translator;
 /**
  * Class ButtonRenderer
  */
-class ButtonRenderer extends AbstractRenderer
+final class ButtonRenderer extends AbstractRenderer
 {
     /**
      * The section name.

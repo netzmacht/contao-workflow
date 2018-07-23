@@ -22,7 +22,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class TransitionTeaserRenderer
  */
-class TeaserRenderer extends AbstractRenderer
+final class TeaserRenderer extends AbstractRenderer
 {
     /**
      * Section name.

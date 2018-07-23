@@ -22,7 +22,7 @@ use Netzmacht\Workflow\Flow\Transition;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Security
  */
-class TransitionPermissionVoter extends AbstractPermissionVoter
+final class TransitionPermissionVoter extends AbstractPermissionVoter
 {
     /**
      * {@inheritDoc}

@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Flow\Transition;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Form
  */
-class FormAction extends AbstractAction
+final class FormAction extends AbstractAction
 {
     /**
      * {@inheritDoc}

@@ -26,7 +26,7 @@ use Netzmacht\Workflow\Data\EntityId;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-class ContaoModelEntityFactory implements EntityFactory
+final class ContaoModelEntityFactory implements EntityFactory
 {
     /**
      * {@inheritDoc}

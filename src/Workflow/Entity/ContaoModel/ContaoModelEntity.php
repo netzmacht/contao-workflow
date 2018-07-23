@@ -23,7 +23,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-class ContaoModelEntity implements \IteratorAggregate, Entity
+final class ContaoModelEntity implements \IteratorAggregate, Entity
 {
     /**
      * The decorated model.

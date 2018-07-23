@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Factory\Event
  */
-class CreateWorkflowEvent extends Event
+final class CreateWorkflowEvent extends Event
 {
     const NAME = 'netzmacht.contao_workflow.create_workflow';
 

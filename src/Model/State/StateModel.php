@@ -31,7 +31,7 @@ use Contao\Model;
  * @property string|array $data           Json encoded workflow data.
  * @property int          $reachedAt      Timestamp when step was reached.
  */
-class StateModel extends Model
+final class StateModel extends Model
 {
     /**
      * The workflow state table.

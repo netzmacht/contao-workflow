@@ -23,7 +23,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class NoteAction
  */
-class NoteAction extends AbstractAction
+final class NoteAction extends AbstractAction
 {
     /**
      * {@inheritDoc}

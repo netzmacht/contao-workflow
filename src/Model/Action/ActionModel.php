@@ -23,7 +23,7 @@ use Contao\Model;
  * @property int $id
  * @property int $pid
  */
-class ActionModel extends Model
+final class ActionModel extends Model
 {
     /**
      * Action model table name.

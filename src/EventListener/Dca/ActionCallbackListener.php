@@ -27,7 +27,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
-class ActionCallbackListener
+final class ActionCallbackListener
 {
     /**
      * Repository manager.

@@ -24,7 +24,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Backend\Dca
  */
-class SavePermissionsCallbackListener
+final class SavePermissionsCallbackListener
 {
     /**
      * The loaded permissions.

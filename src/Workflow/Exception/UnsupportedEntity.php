@@ -23,7 +23,7 @@ use Throwable;
 /**
  * Class ActionNotFound
  */
-class UnsupportedEntity extends RuntimeException implements WorkflowException
+final class UnsupportedEntity extends RuntimeException implements WorkflowException
 {
     /**
      * Create exception for an entity.

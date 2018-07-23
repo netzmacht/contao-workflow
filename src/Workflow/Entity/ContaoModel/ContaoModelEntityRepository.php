@@ -27,7 +27,7 @@ use Netzmacht\Workflow\Data\Specification;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-class ContaoModelEntityRepository implements WorkflowEntityRepository
+final class ContaoModelEntityRepository implements WorkflowEntityRepository
 {
     /**
      * Contao model repository.

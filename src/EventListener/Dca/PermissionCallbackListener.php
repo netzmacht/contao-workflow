@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Dca\Table
  */
-class PermissionCallbackListener
+final class PermissionCallbackListener
 {
     /**
      * Repository manager.

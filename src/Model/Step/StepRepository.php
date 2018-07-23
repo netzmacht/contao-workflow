@@ -21,7 +21,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 /**
  * Class StepRepository
  */
-class StepRepository extends ContaoRepository
+final class StepRepository extends ContaoRepository
 {
     /**
      * {@inheritDoc}

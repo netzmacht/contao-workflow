@@ -23,7 +23,7 @@ use Netzmacht\Workflow\Data\EntityId;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-class DelegatingEntityFactory implements EntityFactory
+final class DelegatingEntityFactory implements EntityFactory
 {
     /**
      * Entity factories.

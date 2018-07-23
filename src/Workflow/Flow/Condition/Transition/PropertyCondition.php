@@ -27,7 +27,7 @@ use Netzmacht\Workflow\Util\Comparison;
  *
  * @package Netzmacht\Workflow\Flow\Condition\Transition
  */
-class PropertyCondition implements Condition
+final class PropertyCondition implements Condition
 {
     /**
      * Name of the property.

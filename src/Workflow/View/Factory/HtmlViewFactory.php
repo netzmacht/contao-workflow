@@ -27,7 +27,7 @@ use Verraes\ClassFunctions\ClassFunctions;
 /**
  * Class HtmlViewFactory
  */
-class HtmlViewFactory implements ViewFactory
+final class HtmlViewFactory implements ViewFactory
 {
     /**
      * Workflow manager.

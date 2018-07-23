@@ -28,7 +28,7 @@ use Netzmacht\Workflow\Flow\State;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Data
  */
-class StateRepository implements WorkflowStateRepository
+final class StateRepository implements WorkflowStateRepository
 {
     /**
      * Contao model repository manager.

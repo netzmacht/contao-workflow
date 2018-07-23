@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Definition\Event
  */
-class CreateTransitionEvent extends Event
+final class CreateTransitionEvent extends Event
 {
     const NAME = 'netzmacht.contao_workflow.create_transition';
 

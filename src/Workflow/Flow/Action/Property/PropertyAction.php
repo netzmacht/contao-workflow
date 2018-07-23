@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Flow\Transition;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Action
  */
-class PropertyAction extends AbstractAction
+final class PropertyAction extends AbstractAction
 {
     /**
      * Name of the property.

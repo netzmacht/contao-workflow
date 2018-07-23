@@ -21,7 +21,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class HeadlineRenderer
  */
-class HeadlineRenderer extends AbstractRenderer
+final class HeadlineRenderer extends AbstractRenderer
 {
     /**
      * The section name.

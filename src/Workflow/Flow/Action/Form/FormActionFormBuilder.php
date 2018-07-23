@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class FormActionFormFactory
  */
-class FormActionFormBuilder implements ActionFormBuilder
+final class FormActionFormBuilder implements ActionFormBuilder
 {
     /**
      * {@inheritDoc}

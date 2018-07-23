@@ -28,7 +28,7 @@ use Netzmacht\Workflow\Manager\Manager as BaseManager;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Manager
  */
-class LazyLoadingWorkflowManager implements Manager
+final class LazyLoadingWorkflowManager implements Manager
 {
     /**
      * Workflow manager.

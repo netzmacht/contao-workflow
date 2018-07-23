@@ -19,6 +19,7 @@ use Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
+use Netzmacht\Workflow\Exception\WorkflowException;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,7 +30,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 /**
  * Class TransitController
  */
-class TransitionController extends AbstractController
+final class TransitionController extends AbstractController
 {
     /**
      * The form factory.
@@ -65,6 +66,7 @@ class TransitionController extends AbstractController
      * @return Response
      *
      * @throws \RuntimeException For any runtime exception.
+     * @throws WorkflowException When the workflow handling fails.
      */
     public function execute(EntityId $entityId, string $transition, Request $request): Response
     {

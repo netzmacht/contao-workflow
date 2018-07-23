@@ -22,7 +22,7 @@ use Netzmacht\Workflow\Flow\Action;
 /**
  * Class CreateMetaDataActionListener adds the MetaDataAction to every database driven workflow transition.
  */
-class CreateMetaDataActionListener
+final class CreateMetaDataActionListener
 {
     /**
      * The action.

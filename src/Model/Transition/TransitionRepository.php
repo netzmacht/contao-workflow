@@ -21,7 +21,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 /**
  * Class TransitionRepository
  */
-class TransitionRepository extends ContaoRepository
+final class TransitionRepository extends ContaoRepository
 {
     /**
      * {@inheritDoc}

@@ -22,7 +22,7 @@ use Netzmacht\Workflow\Flow\Step;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Security
  */
-class StepPermissionVoter extends AbstractPermissionVoter
+final class StepPermissionVoter extends AbstractPermissionVoter
 {
     /**
      * {@inheritDoc}

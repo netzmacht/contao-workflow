@@ -23,7 +23,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 /**
  * Class ActionRepository
  */
-class ActionRepository extends ContaoRepository
+final class ActionRepository extends ContaoRepository
 {
     /**
      * Database connection.

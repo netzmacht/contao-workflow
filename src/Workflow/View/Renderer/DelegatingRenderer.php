@@ -21,7 +21,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 /**
  * Class DelegatingRenderer
  */
-class DelegatingRenderer implements Renderer
+final class DelegatingRenderer implements Renderer
 {
     /**
      * View renderer.

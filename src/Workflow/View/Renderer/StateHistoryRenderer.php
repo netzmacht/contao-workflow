@@ -30,7 +30,7 @@ use Symfony\Component\Translation\TranslatorInterface as Translator;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer
  */
-class StateHistoryRenderer extends AbstractStepRenderer
+final class StateHistoryRenderer extends AbstractStepRenderer
 {
     /**
      * The section name.

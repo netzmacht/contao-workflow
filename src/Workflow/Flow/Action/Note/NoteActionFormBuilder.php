@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class NoteActionFormBuilder
  */
-class NoteActionFormBuilder implements ActionFormBuilder
+final class NoteActionFormBuilder implements ActionFormBuilder
 {
     /**
      * {@inheritDoc}

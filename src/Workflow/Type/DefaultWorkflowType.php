@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Flow\Workflow;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Type
  */
-class DefaultWorkflowType implements WorkflowType
+final class DefaultWorkflowType implements WorkflowType
 {
     /**
      * List of supported providers.

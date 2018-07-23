@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * Class ActionFactory.
  */
-class ActionFactory
+final class ActionFactory
 {
     /**
      * Action factories.

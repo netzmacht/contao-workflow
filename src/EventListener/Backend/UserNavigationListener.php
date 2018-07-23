@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 /**
  * Class UserNavigationListener
  */
-class UserNavigationListener
+final class UserNavigationListener
 {
     /**
      * Request stack.

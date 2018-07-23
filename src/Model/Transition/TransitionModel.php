@@ -29,7 +29,7 @@ use Contao\Model\Collection;
  * @property string $permission
  * @property int    $stepTo
  */
-class TransitionModel extends Model
+final class TransitionModel extends Model
 {
     /**
      * Table name.

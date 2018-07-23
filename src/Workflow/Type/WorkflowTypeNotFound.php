@@ -20,7 +20,7 @@ use Exception;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Type
  */
-class WorkflowTypeNotFound extends Exception
+final class WorkflowTypeNotFound extends Exception
 {
     /**
      * Create exception for a workflow type name.

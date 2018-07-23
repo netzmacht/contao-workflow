@@ -20,7 +20,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
-class CommonListener
+final class CommonListener
 {
     /**
      * Generate a row view.

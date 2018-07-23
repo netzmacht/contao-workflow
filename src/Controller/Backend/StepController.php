@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Backend\Controller
  */
-class StepController extends AbstractController
+final class StepController extends AbstractController
 {
     /**
      * Execute the controller.

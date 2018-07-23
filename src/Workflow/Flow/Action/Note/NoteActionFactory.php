@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Flow\Workflow;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Note
  */
-class NoteActionFactory implements ActionTypeFactory
+final class NoteActionFactory implements ActionTypeFactory
 {
     /**
      * {@inheritDoc}

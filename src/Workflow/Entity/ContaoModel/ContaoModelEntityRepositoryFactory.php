@@ -27,7 +27,7 @@ use Netzmacht\Workflow\Data\EntityRepository;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel
  */
-class ContaoModelEntityRepositoryFactory implements RepositoryFactory
+final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
 {
     /**
      * Contao model repository manager.

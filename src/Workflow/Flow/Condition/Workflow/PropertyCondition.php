@@ -24,7 +24,7 @@ use Netzmacht\Workflow\Util\Comparison;
 /**
  * Property condition compares an entity property with an expected value
  */
-class PropertyCondition implements Condition
+final class PropertyCondition implements Condition
 {
     /**
      * Name of the property.

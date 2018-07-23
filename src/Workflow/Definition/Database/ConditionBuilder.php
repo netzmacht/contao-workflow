@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
  *
  * @package Netzmacht\ContaoWorkflowBundle\Definition\Database
  */
-class ConditionBuilder
+final class ConditionBuilder
 {
     /**
      * Comparator operations.

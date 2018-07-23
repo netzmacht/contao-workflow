@@ -26,7 +26,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Condition\Transition
  */
-class ExpressionCondition implements Condition
+final class ExpressionCondition implements Condition
 {
     /**
      * The expression language. The language is injected by dependency so that features can be added.

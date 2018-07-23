@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
 /**
  * Class DatabaseDrivenWorkflowLoader
  */
-class DatabaseDrivenWorkflowLoader implements WorkflowLoader
+final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
 {
     /**
      * Contao model repository manager.

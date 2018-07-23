@@ -41,7 +41,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatche
  *
  * @package Netzmacht\ContaoWorkflowBundle\Definition\Builder
  */
-class WorkflowBuilder
+final class WorkflowBuilder
 {
     /**
      * Workflow steps.

@@ -18,7 +18,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
 /**
  * Class Sections
  */
-class Sections implements \IteratorAggregate
+final class Sections implements \IteratorAggregate
 {
     /**
      * The generated sections.

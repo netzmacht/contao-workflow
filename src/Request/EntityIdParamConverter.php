@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class EntityIdParamConverter converts given EntityId raw value to the EntityId class.
  */
-class EntityIdParamConverter implements ParamConverterInterface
+final class EntityIdParamConverter implements ParamConverterInterface
 {
     /**
      * {@inheritDoc}

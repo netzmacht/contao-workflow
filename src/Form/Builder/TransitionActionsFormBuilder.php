@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 /**
  * The transition action builder creates the forms for the actions which requires user data.
  */
-class TransitionActionsFormBuilder implements TransitionFormBuilder
+final class TransitionActionsFormBuilder implements TransitionFormBuilder
 {
     /**
      * The action form builders.

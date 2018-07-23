@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Exception\WorkflowException;
 /**
  * Class UnsupportedViewContentType
  */
-class UnsupportedViewContentType extends \InvalidArgumentException implements WorkflowException
+final class UnsupportedViewContentType extends \InvalidArgumentException implements WorkflowException
 {
 
 }

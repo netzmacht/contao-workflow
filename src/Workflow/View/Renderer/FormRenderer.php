@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormInterface as Form;
 /**
  * Class FormRenderer
  */
-class FormRenderer extends AbstractRenderer
+final class FormRenderer extends AbstractRenderer
 {
     /**
      * Section name.

@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Flow\Workflow;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Flow\Action\Form
  */
-class FormActionFactory implements ActionTypeFactory
+final class FormActionFactory implements ActionTypeFactory
 {
     /**
      * {@inheritDoc}
