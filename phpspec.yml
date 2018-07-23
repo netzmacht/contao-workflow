@@ -1,5 +1,2 @@
 formatter.name: pretty
-suites:
-  worfklow_suite:
-    namespace: Netzmacht\Contao\Workflow
-    psr4_prefix: Netzmacht\Contao\Workflow
+composer_suite_detection: true
