@@ -74,7 +74,7 @@ final class TransitionController extends AbstractController
         $workflow = $this->workflowManager->getWorkflowByItem($item);
 
         if ($item->getWorkflowName() !== $workflow->getName()) {
-            $handler = $this->workflowManager->handle($item, $transition, (bool) $request->query->get('detach'));
+            $handler = $this->workflowManager->handle($item, $transition, $request->query->getBoolean('detach'));
         } else {
             $handler = $this->workflowManager->handle($item, $transition);
         }
