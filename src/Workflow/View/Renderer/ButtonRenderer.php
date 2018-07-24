@@ -135,7 +135,7 @@ final class ButtonRenderer extends AbstractRenderer
                     'transition' => $transitionName
                 ]
             ),
-            'icon'   => $transition->getConfigValue('icon') ?: null,
+            'icon'   => $transition->getConfigValue('icon')
         ];
     }
 }

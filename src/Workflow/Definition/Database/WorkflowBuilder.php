@@ -205,7 +205,7 @@ final class WorkflowBuilder
 
             $data = $model->row();
 
-            if ($data['addIcon'] && $data['icon']) {
+            if ($data['icon']) {
                 $file         = $this->repositoryManager->getRepository(FilesModel::class)->findByUuid($data['icon']);
                 $data['icon'] = $file ? $file->path : null;
             }
