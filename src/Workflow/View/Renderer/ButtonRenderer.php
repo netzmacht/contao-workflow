@@ -101,7 +101,7 @@ final class ButtonRenderer extends AbstractRenderer
 
             $transition = $workflow->getTransition($transitionName);
 
-            if ($transition->isAllowed($view->getItem(), $context)) {
+            if ($transition->isAllowed($view->getItem(), $context) && !$transition->getConfigValue('hide')) {
                 $actions[] = $this->buildAction($view, $transitionName, $params);
             }
         }
@@ -123,11 +123,6 @@ final class ButtonRenderer extends AbstractRenderer
     protected function buildAction(View $view, string $transitionName, array $params): array
     {
         $transition = $view->getWorkflow()->getTransition($transitionName);
-        $icon       = null;
-
-        if ($transition->getConfigValue('addIcon')) {
-            $icon = $transition->getConfigValue('icon');
-        }
 
         return [
             'label'  => $transition->getLabel(),
@@ -140,7 +135,7 @@ final class ButtonRenderer extends AbstractRenderer
                     'transition' => $transitionName
                 ]
             ),
-            'icon'   => $icon
+            'icon'   => $transition->getConfigValue('icon') ?: null,
         ];
     }
 }

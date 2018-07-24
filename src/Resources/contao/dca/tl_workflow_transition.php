@@ -83,13 +83,12 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'actions'     => ['actions'],
             'permissions' => ['limitPermission'],
             'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
-            'backend'     => ['addIcon'],
+            'backend'     => ['icon', 'hide'],
         ],
     ],
 
     'metasubpalettes' => [
         'limitPermission'         => ['permission'],
-        'addIcon'                 => ['icon'],
         'addPropertyConditions'   => ['propertyConditions'],
         'addExpressionConditions' => ['expressionConditions'],
     ],
@@ -170,15 +169,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             ],
             'sql'              => "varchar(32) NOT NULL default ''",
         ],
-        'addIcon'                 => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addIcon'],
-            'inputType' => 'checkbox',
-            'eval'      => [
-                'tl_class'       => 'clr w50 m12',
-                'submitOnChange' => true,
-            ],
-            'sql'       => "char(1) NOT NULL default ''",
-        ],
         'icon'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['icon'],
             'inputType' => 'fileTree',
@@ -189,6 +179,15 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'extensions' => 'jpg,gif,png,svg',
             ],
             'sql'       => 'binary(16) NULL',
+        ],
+        'hide'                 => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['hide'],
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class'       => 'clr w50 m12',
+                'submitOnChange' => true,
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
         ],
         'active'                  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['active'],
