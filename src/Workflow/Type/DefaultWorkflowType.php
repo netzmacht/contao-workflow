@@ -50,6 +50,14 @@ final class DefaultWorkflowType implements WorkflowType
     /**
      * {@inheritDoc}
      */
+    public function match(string $typeName): bool
+    {
+        return $this->getName() === $typeName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function configure(Workflow $workflow): void
     {
     }

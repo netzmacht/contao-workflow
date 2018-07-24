@@ -32,6 +32,15 @@ interface WorkflowType
     public function getName(): string;
 
     /**
+     * Check if workflow type matches a type name.
+     *
+     * @param string $typeName The type name.
+     *
+     * @return bool
+     */
+    public function match(string $typeName): bool;
+
+    /**
      * Configure the workflow after at build time.
      *
      * @param Workflow $workflow The workflow.
