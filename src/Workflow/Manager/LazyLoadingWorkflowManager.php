@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Manager;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\WorkflowLoader;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -142,14 +141,6 @@ final class LazyLoadingWorkflowManager implements Manager
     public function createItem(EntityId $entityId, $entity): Item
     {
         return $this->inner->createItem($entityId, $entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function createEntity(EntityId $entityId, $model): Entity
-    {
-        return $this->inner->createEntity($entityId, $model);
     }
 
     /**

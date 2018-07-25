@@ -83,7 +83,6 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.transition_handler_factory'
       - '@netzmacht.contao_workflow.state_repository'
-      - '@netzmacht.contao_workflow.entity_factory'
       - []
 
   netzmacht.contao_workflow.manager.lazy:
