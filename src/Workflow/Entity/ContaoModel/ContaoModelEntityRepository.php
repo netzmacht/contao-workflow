@@ -53,7 +53,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @return void
      *
-     * @throws \InvalidArgumentException If an invalid entity type is given.
+     * @throws \Assert\AssertionFailedException If an invalid entity type is given.
      */
     public function add($entity): void
     {
@@ -129,7 +129,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException If an invalid entity type is given.
+     * @throws \Assert\AssertionFailedException If an invalid entity type is given.
      */
     public function remove($entity): void
     {

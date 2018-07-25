@@ -16,14 +16,14 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
 
 use Contao\Model;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 
 /**
  * Class ContaoModelEntity
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-final class ContaoModelEntity implements \IteratorAggregate, Entity
+final class ContaoModelEntity implements \IteratorAggregate, EntityWithPropertyAccess
 {
     /**
      * The decorated model.
@@ -69,7 +69,7 @@ final class ContaoModelEntity implements \IteratorAggregate, Entity
     /**
      * {@inheritDoc}
      */
-    public function setProperty(string $propertyName, $value): Entity
+    public function setProperty(string $propertyName, $value): EntityWithPropertyAccess
     {
         $this->model->$propertyName = $value;
 
@@ -87,7 +87,7 @@ final class ContaoModelEntity implements \IteratorAggregate, Entity
     /**
      * {@inheritDoc}
      */
-    public function setProperties(array $properties): Entity
+    public function setProperties(array $properties): EntityWithPropertyAccess
     {
         foreach ($properties as $name => $value) {
             $this->setProperty($name, $value);

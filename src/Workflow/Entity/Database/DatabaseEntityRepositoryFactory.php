@@ -25,7 +25,7 @@ use Netzmacht\Workflow\Data\EntityRepository;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity\Data
  */
-class DatabaseEntityRepositoryFactory implements RepositoryFactory
+final class DatabaseEntityRepositoryFactory implements RepositoryFactory
 {
     /**
      * Database connection.

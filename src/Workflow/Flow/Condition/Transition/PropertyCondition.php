@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -149,11 +149,11 @@ final class PropertyCondition implements Condition
     /**
      * Get value from the entity.
      *
-     * @param Entity $entity The entity.
+     * @param EntityWithPropertyAccess $entity The entity.
      *
      * @return mixed
      */
-    protected function getEntityValue(Entity $entity)
+    protected function getEntityValue(EntityWithPropertyAccess $entity)
     {
         return $entity->getProperty($this->property);
     }

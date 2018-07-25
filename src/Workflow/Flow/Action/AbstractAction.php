@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
 
 use Assert\Assertion;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Base;
 use Netzmacht\Workflow\Flow\Context;
@@ -102,17 +102,17 @@ abstract class AbstractAction extends Base implements Action
      *
      * @param Item $item Workflow item.
      *
-     * @return Entity
+     * @return EntityWithPropertyAccess
      *
      * @hrows AssertionException If entity is not an Instance of
      *
-     * @throws \Assert\AssertionFailedException When the entity is not an instance of Entity.
+     * @throws \Assert\AssertionFailedException When the entity is not an instance of EntityWithPropertyAccess.
      */
-    protected function getEntity(Item $item)
+    protected function getEntityWithPropertyAccess(Item $item): EntityWithPropertyAccess
     {
         $entity = $item->getEntity();
 
-        Assertion::isInstanceOf($entity, Entity::class, 'Invalid entity given');
+        Assertion::isInstanceOf($entity, EntityWithPropertyAccess::class, 'Invalid entity given');
 
         return $entity;
     }

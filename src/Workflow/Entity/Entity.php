@@ -20,7 +20,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
-interface Entity extends \Traversable
+interface Entity
 {
     /**
      * Get the provider name.
@@ -28,55 +28,4 @@ interface Entity extends \Traversable
      * @return string
      */
     public function getProviderName(): string;
-
-    /**
-     * Get the id.
-     *
-     * @return mixed
-     */
-    public function getId();
-
-    /**
-     * Get the property value.
-     *
-     * @param string $propertyName Property name.
-     *
-     * @return mixed
-     */
-    public function getProperty(string $propertyName);
-
-    /**
-     * Set a property.
-     *
-     * @param string $propertyName The property name.
-     * @param mixed  $value        The property value.
-     *
-     * @return $this
-     */
-    public function setProperty(string $propertyName, $value): self;
-
-    /**
-     * Check if a property name exist.
-     *
-     * @param string $propertyName Property name.
-     *
-     * @return bool
-     */
-    public function hasProperty(string $propertyName): bool;
-
-    /**
-     * Set the properties from an array map.
-     *
-     * @param array $properties Properties.
-     *
-     * @return $this
-     */
-    public function setProperties(array $properties): self;
-
-    /**
-     * Get properties as array.
-     *
-     * @return array
-     */
-    public function toArray(): array;
 }

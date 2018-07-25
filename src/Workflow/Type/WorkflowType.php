@@ -55,4 +55,11 @@ interface WorkflowType
      * @return array
      */
     public function getProviderNames(): array;
+
+    /**
+     * Check if property access is supported.
+     *
+     * @return bool
+     */
+    public function providesPropertyAccess(): bool;
 }

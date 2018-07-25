@@ -15,13 +15,13 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\Workflow\Data\EntityId;
 
 /**
  * Class DataEntity provides an entity implementation for simple array data
  */
-class DatabaseEntity implements \IteratorAggregate, Entity
+final class DatabaseEntity implements \IteratorAggregate, EntityWithPropertyAccess
 {
     /**
      * The entity id.
@@ -80,7 +80,7 @@ class DatabaseEntity implements \IteratorAggregate, Entity
     /**
      * {@inheritDoc}
      */
-    public function setProperty(string $propertyName, $value): Entity
+    public function setProperty(string $propertyName, $value): EntityWithPropertyAccess
     {
         $this->data[$propertyName] = $value;
 
@@ -98,7 +98,7 @@ class DatabaseEntity implements \IteratorAggregate, Entity
     /**
      * {@inheritDoc}
      */
-    public function setProperties(array $properties): Entity
+    public function setProperties(array $properties): EntityWithPropertyAccess
     {
         $this->data = $properties;
 

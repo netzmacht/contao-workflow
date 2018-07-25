@@ -18,6 +18,8 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEve
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\ExpressionCondition;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\PropertyCondition;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\TransitionPermissionCondition;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 
@@ -33,14 +35,14 @@ final class ConditionBuilder
      *
      * @var array
      */
-    protected static $operators = array(
+    private static $operators = [
         'eq'  => '==',
         'neq' => '!=',
         'lt'  => '<',
         'lte' => '<=',
         'gt'  => '>',
-        'gte' => '>='
-    );
+        'gte' => '>=',
+    ];
 
     /**
      * The expression language.
@@ -57,15 +59,27 @@ final class ConditionBuilder
     private $authorizationChecker;
 
     /**
+     * Workflow type registry.
+     *
+     * @var WorkflowTypeRegistry
+     */
+    private $typeRegistry;
+
+    /**
      * ConditionBuilder constructor.
      *
      * @param ExpressionLanguage   $expressionLanguage   The expression language.
      * @param AuthorizationChecker $authorizationChecker Authorization checker.
+     * @param WorkflowTypeRegistry $typeRegistry         Workflow type registry.
      */
-    public function __construct(ExpressionLanguage $expressionLanguage, AuthorizationChecker $authorizationChecker)
-    {
+    public function __construct(
+        ExpressionLanguage $expressionLanguage,
+        AuthorizationChecker $authorizationChecker,
+        WorkflowTypeRegistry $typeRegistry
+    ) {
         $this->expressionLanguage   = $expressionLanguage;
         $this->authorizationChecker = $authorizationChecker;
+        $this->typeRegistry         = $typeRegistry;
     }
 
     /**
@@ -74,12 +88,15 @@ final class ConditionBuilder
      * @param CreateTransitionEvent $event The subscribed event.
      *
      * @return void
+     * @throws WorkflowTypeNotFound If Workflow type is not supported.
      */
-    public function createPropertyConditions(CreateTransitionEvent $event)
+    public function createPropertyConditions(CreateTransitionEvent $event): void
     {
         $transition = $event->getTransition();
+        $workflow   = $transition->getWorkflow();
+        $type       = $this->typeRegistry->getType($workflow->getConfigValue('type'));
 
-        if ($transition->getConfigValue('addPropertyConditions')) {
+        if ($type->providesPropertyAccess() && $transition->getConfigValue('addPropertyConditions')) {
             $config = StringUtil::deserialize($transition->getConfigValue('propertyConditions'), true);
 
             foreach ($config as $row) {
@@ -104,7 +121,7 @@ final class ConditionBuilder
      *
      * @return void
      */
-    public function createExpressionConditions(CreateTransitionEvent $event)
+    public function createExpressionConditions(CreateTransitionEvent $event): void
     {
         $transition = $event->getTransition();
 
@@ -130,7 +147,7 @@ final class ConditionBuilder
      *
      * @return void
      */
-    public function createTransitionPermissionCondition(CreateTransitionEvent $event)
+    public function createTransitionPermissionCondition(CreateTransitionEvent $event): void
     {
         $transition = $event->getTransition();
         $transition->addPreCondition(
@@ -145,7 +162,7 @@ final class ConditionBuilder
      *
      * @return string|null
      */
-    private function parseOperator($operator)
+    private function parseOperator($operator): ?string
     {
         if (isset(static::$operators[$operator])) {
             return static::$operators[$operator];

@@ -22,7 +22,7 @@ use Netzmacht\Workflow\Data\EntityId;
 /**
  * Class DataEntityFactory
  */
-class DatabaseEntityFactory implements EntityFactory
+final class DatabaseEntityFactory implements EntityFactory
 {
     /**
      * {@inheritDoc}

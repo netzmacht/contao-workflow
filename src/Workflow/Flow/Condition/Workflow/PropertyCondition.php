@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Condition\Workflow\Condition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -66,7 +66,7 @@ final class PropertyCondition implements Condition
      */
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {
-        if (!$entity instanceof Entity) {
+        if (!$entity instanceof EntityWithPropertyAccess) {
             return false;
         }
 

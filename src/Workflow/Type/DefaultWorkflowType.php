@@ -69,4 +69,12 @@ final class DefaultWorkflowType implements WorkflowType
     {
         return $this->supportedProviders;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function providesPropertyAccess(): bool
+    {
+        return true;
+    }
 }
