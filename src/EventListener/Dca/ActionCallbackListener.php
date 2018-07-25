@@ -86,7 +86,7 @@ final class ActionCallbackListener
 
         $workflow = $this->manager->getWorkflowById((int) $transition->pid);
 
-        return $this->actionFactory->getSupportedTypeNames($workflow, true);
+        return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
     }
 
     /**

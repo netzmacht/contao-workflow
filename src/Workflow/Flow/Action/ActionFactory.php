@@ -64,22 +64,29 @@ final class ActionFactory
     /**
      * Get the supported type names.
      *
-     * @param Workflow $workflow    The workflow.
-     * @param bool     $categorized If true the type names are grouped by category.
+     * @param Workflow $workflow The workflow.
      *
-     * @return array|ActionTypeFactory[]|ActionTypeFactory[][]
+     * @return array|ActionTypeFactory[]
      */
-    public function getSupportedTypeNames(Workflow $workflow, bool $categorized = false): array
+    public function getSupportedTypeNames(Workflow $workflow): array
     {
-        if (!$categorized) {
-            return array_map(
-                function (ActionTypeFactory $factory) {
-                    return $factory->getName();
-                },
-                $this->getSupportedTypes($workflow)
-            );
-        }
+        return array_map(
+            function (ActionTypeFactory $factory) {
+                return $factory->getName();
+            },
+            $this->getSupportedTypes($workflow)
+        );
+    }
 
+    /**
+     * Get the supported type names categorized.
+     *
+     * @param Workflow $workflow The workflow.
+     *
+     * @return array|ActionTypeFactory[][]
+     */
+    public function getSupportedTypeNamesCategorized(Workflow $workflow): array
+    {
         $names = [];
 
         foreach ($this->getSupportedTypes($workflow) as $factory) {
