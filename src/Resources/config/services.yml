@@ -52,7 +52,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.contao.model_adapter'
     tags:
-      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: 250 }
+      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -50 }
 
   netzmacht.contao_workflow.entity_repository_factory.data:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database\DatabaseEntityRepositoryFactory
