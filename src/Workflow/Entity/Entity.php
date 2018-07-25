@@ -28,4 +28,11 @@ interface Entity
      * @return string
      */
     public function getProviderName(): string;
+
+    /**
+     * Get the id.
+     *
+     * @return mixed
+     */
+    public function getId();
 }

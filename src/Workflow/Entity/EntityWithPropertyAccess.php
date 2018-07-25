@@ -21,13 +21,6 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity;
 interface EntityWithPropertyAccess extends Entity, \Traversable
 {
     /**
-     * Get the id.
-     *
-     * @return mixed
-     */
-    public function getId();
-
-    /**
      * Get the property value.
      *
      * @param string $propertyName Property name.
