@@ -94,7 +94,7 @@ abstract class AbstractController
             $repository = $this->entityManager->getRepository($entityId->getProviderName());
             $entity     = $repository->find($entityId->getIdentifier());
         } catch (UnsupportedEntity $e) {
-            throw new NotFoundHttpException('Entity not found.', $e);
+            throw new NotFoundHttpException(sprintf('Entity "%s" not found.', (string) $entityId), $e);
         }
 
         return $this->workflowManager->createItem($entityId, $entity);
