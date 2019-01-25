@@ -11,12 +11,14 @@
  * @filesource
  */
 
+use ContaoCommunityAlliance\MetaPalettes\MetaPalettes;
+
 foreach (array_keys($GLOBALS['TL_DCA']['tl_member_group']['palettes']) as $palette) {
     if ($palette === '__selector__') {
         continue;
     }
 
-    \MetaPalettes::appendBefore(
+    MetaPalettes::appendBefore(
         'tl_member_group',
         $palette,
         'account',

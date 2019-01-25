@@ -11,10 +11,11 @@
  * @filesource
  */
 
+use ContaoCommunityAlliance\MetaPalettes\MetaPalettes;
 
-\MetaPalettes::appendBefore('tl_user', 'custom', 'account', ['workflow' => ['workflow']]);
-\MetaPalettes::appendBefore('tl_user', 'extend', 'account', ['workflow' => ['workflow']]);
-\MetaPalettes::appendBefore('tl_user', 'admin', 'account', ['workflow' => ['workflow']]);
+MetaPalettes::appendBefore('tl_user', 'custom', 'account', ['workflow' => ['workflow']]);
+MetaPalettes::appendBefore('tl_user', 'extend', 'account', ['workflow' => ['workflow']]);
+MetaPalettes::appendBefore('tl_user', 'admin', 'account', ['workflow' => ['workflow']]);
 
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['workflow'] = [

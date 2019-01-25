@@ -11,13 +11,14 @@
  * @filesource
  */
 
+use ContaoCommunityAlliance\MetaPalettes\MetaPalettes;
 
 foreach (array_keys($GLOBALS['TL_DCA']['tl_user_group']['palettes']) as $palette) {
     if ($palette === '__selector__') {
         continue;
     }
 
-    \MetaPalettes::appendBefore('tl_user_group', $palette, 'account', ['workflow' => ['workflow']]);
+    MetaPalettes::appendBefore('tl_user_group', $palette, 'account', ['workflow' => ['workflow']]);
 }
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['workflow'] = [
