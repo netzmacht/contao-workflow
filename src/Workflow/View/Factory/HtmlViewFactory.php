@@ -21,7 +21,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
+use Symfony\Component\Templating\EngineInterface as TemplateEngine;
 use Verraes\ClassFunctions\ClassFunctions;
 
 /**

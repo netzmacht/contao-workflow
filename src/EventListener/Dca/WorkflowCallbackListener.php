@@ -214,7 +214,7 @@ final class WorkflowCallbackListener
      */
     public function validateProcess($value)
     {
-        $value = deserialize($value, true);
+        $value = StringUtil::deserialize($value, true);
         $value = array_filter(
             $value,
             function ($item) {
@@ -236,7 +236,7 @@ final class WorkflowCallbackListener
      */
     public function validatePermissions($value): array
     {
-        $value     = deserialize($value, true);
+        $value     = StringUtil::deserialize($value, true);
         $names     = [];
         $validated = [];
 

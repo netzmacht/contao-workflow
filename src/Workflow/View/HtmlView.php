@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface as TemplateEngine;
+use Symfony\Component\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -195,7 +195,7 @@ final class HtmlView implements View
             $this->renderer->render($this);
         }
 
-        $response = $this->engine->renderResponse(
+        $buffer = $this->engine->render(
             $this->template,
             [
                 'item'      => $this->item,
@@ -204,6 +204,7 @@ final class HtmlView implements View
             ]
         );
 
+        $response = new Response($buffer);
         $response->headers->set('Content-Type', $this->getContentType());
 
         return $response;

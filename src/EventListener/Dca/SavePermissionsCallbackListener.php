@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
@@ -118,7 +119,7 @@ final class SavePermissionsCallbackListener
      */
     private function createNewPermissions($value, $dataContainer): void
     {
-        foreach (deserialize($value, true) as $permission) {
+        foreach (StringUtil::deserialize($value, true) as $permission) {
             if (isset($this->permissions[$permission])) {
                 unset($this->permissions[$permission]);
             } else {

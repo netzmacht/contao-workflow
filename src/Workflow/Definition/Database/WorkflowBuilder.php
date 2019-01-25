@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
 
 use Contao\FilesModel;
+use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateStepEvent;
@@ -274,7 +275,7 @@ final class WorkflowBuilder
      */
     private function createProcess(Workflow $workflow)
     {
-        $process = deserialize($workflow->getConfigValue('process'), true);
+        $process = StringUtil::deserialize($workflow->getConfigValue('process'), true);
 
         foreach ($process as $definition) {
             // pass not created transitions. useful to avoid errors when a transition got disabled
