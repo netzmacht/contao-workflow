@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -68,7 +68,7 @@ final class TransitionController extends AbstractController
      * @throws \RuntimeException For any runtime exception.
      * @throws WorkflowException When the workflow handling fails.
      */
-    public function execute(EntityId $entityId, string $transition, Request $request): Response
+    public function __invoke(EntityId $entityId, string $transition, Request $request): Response
     {
         $item     = $this->createItem($entityId);
         $workflow = $this->workflowManager->getWorkflowByItem($item);
@@ -114,6 +114,7 @@ final class TransitionController extends AbstractController
         }
 
         if (!isset($form)) {
+            // TODO: Use proper exception.
             throw new \RuntimeException();
         }
 

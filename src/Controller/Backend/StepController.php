@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -35,7 +35,7 @@ final class StepController extends AbstractController
      *
      * @return Response
      */
-    public function execute(EntityId $entityId): Response
+    public function __invoke(EntityId $entityId): Response
     {
         $item        = $this->createItem($entityId);
         $workflow    = $this->workflowManager->getWorkflowByItem($item);
@@ -51,7 +51,9 @@ final class StepController extends AbstractController
                     ]
                 )
             );
-        } elseif ($workflow->getName() !== $item->getWorkflowName()) {
+        }
+
+        if ($workflow->getName() !== $item->getWorkflowName()) {
             return new RedirectResponse(
                 $this->router->generate(
                     'netzmacht.contao_workflow.backend.transition',
