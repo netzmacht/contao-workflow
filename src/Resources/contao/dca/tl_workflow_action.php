@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'config'      => [],
         ],
         'form extends default' => [
-            'config' => ['formId'],
+            'config' => ['form_formId', 'form_fieldset'],
         ],
         'note extends default' => [
             'config' => ['note_required'],
@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 
     'metasubpalettes' => [
-        'note_required' => ['note_minlength']
+        'note_required' => ['note_minlength'],
     ],
 
     'fields' => [
@@ -144,8 +144,18 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'formId'         => [
-            'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
+        'active'         => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'eval'      => [
+                'tl_class'       => 'm12 w50',
+                'submitOnChange' => true,
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'form_formId'    => [
+            'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_formId'],
             'inputType'  => 'select',
             'exclude'    => true,
             'eval'       => [
@@ -154,20 +164,23 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'foreignKey' => 'tl_form.title',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'active'         => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
+        'form_fieldset'  => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_fieldset'],
             'inputType' => 'checkbox',
+            'exclude'   => true,
+            'default'   => '1',
             'eval'      => [
                 'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
             ],
-            'sql'       => "char(1) NOT NULL default ''",
+            'sql'       => "char(1) NOT NULL default '1'",
         ],
         'note_required'  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_required'],
             'inputType' => 'checkbox',
+            'exclude'   => true,
             'eval'      => [
-                'tl_class' => 'clr w50',
+                'tl_class'       => 'clr w50',
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
@@ -175,6 +188,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'note_minlength' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_minlength'],
             'inputType' => 'text',
+            'exclude'   => true,
             'eval'      => [
                 'tl_class'  => 'w50',
                 'maxlength' => '3',

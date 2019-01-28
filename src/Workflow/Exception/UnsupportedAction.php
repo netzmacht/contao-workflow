@@ -54,7 +54,7 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
      *
      * @return UnsupportedAction
      */
-    public static function ofUnexpectedClass(
+    public static function withUnexpcetedClass(
         Action $action,
         string $expectedClass,
         int $code = 0,
