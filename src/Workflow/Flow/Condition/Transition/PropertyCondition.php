@@ -127,6 +127,16 @@ final class PropertyCondition implements Condition
      */
     public function match(Transition $transition, Item $item, Context $context): bool
     {
+        $entity = $item->getEntity();
+
+        if (!$entity instanceof EntityWithPropertyAccess) {
+            $context->addError(
+                'transition.condition.property.invalid_entity',
+            );
+
+            return false;
+        }
+
         $value = $this->getEntityValue($item->getEntity());
 
         if (Comparison::compare($value, $this->value, $this->operator)) {

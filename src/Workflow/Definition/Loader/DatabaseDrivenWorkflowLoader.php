@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -80,7 +80,7 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
         if ($collection) {
             foreach ($collection as $model) {
                 $workflow = new Workflow(
-                    (string) 'workflow_' . $model->id,
+                    'workflow_' . $model->id,
                     (string) $model->providerName,
                     (string) ($model->label ?: $model->name),
                     array_merge(
@@ -89,10 +89,12 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
                     )
                 );
 
-                $this->typeRegistry->getType($model->type)->configure($workflow);
+                $next = function () use ($workflow) {
+                    $event = new CreateWorkflowEvent($workflow);
+                    $this->eventDispatcher->dispatch($event::NAME, $event);
+                };
 
-                $event = new CreateWorkflowEvent($workflow);
-                $this->eventDispatcher->dispatch($event::NAME, $event);
+                $this->typeRegistry->getType($model->type)->configure($workflow, $next);
 
                 $workflows[] = $workflow;
             }

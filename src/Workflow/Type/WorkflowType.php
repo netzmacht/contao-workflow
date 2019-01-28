@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2016 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -44,10 +44,12 @@ interface WorkflowType
      * Configure the workflow after at build time.
      *
      * @param Workflow $workflow The workflow.
+     * @param callable $next     Callable which triggers the next workflow configuration handler. Should be called by
+     *                           bye implementation to make sure what the default behaviour is applied.
      *
      * @return void
      */
-    public function configure(Workflow $workflow): void;
+    public function configure(Workflow $workflow, callable $next): void;
 
     /**
      * Get a list of supported provider names.
@@ -55,11 +57,4 @@ interface WorkflowType
      * @return array
      */
     public function getProviderNames(): array;
-
-    /**
-     * Check if property access is supported.
-     *
-     * @return bool
-     */
-    public function providesPropertyAccess(): bool;
 }

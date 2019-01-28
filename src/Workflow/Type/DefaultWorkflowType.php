@@ -6,75 +6,27 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2016 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
-
-use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class DefaultWorkflowType.
  *
  * @package Netzmacht\ContaoWorkflowBundle\Type
  */
-final class DefaultWorkflowType implements WorkflowType
+final class DefaultWorkflowType extends AbstractWorkflowType
 {
-    /**
-     * List of supported providers.
-     *
-     * @var string[]|array
-     */
-    private $supportedProviders;
-
     /**
      * DefaultWorkflowType constructor.
      *
-     * @param array|string[] $supportedProviders
+     * @param array|string[] $supportedProviders Supported providers.
      */
     public function __construct(array $supportedProviders = [])
     {
-        $this->supportedProviders = $supportedProviders;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): string
-    {
-        return 'default';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function match(string $typeName): bool
-    {
-        return $this->getName() === $typeName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function configure(Workflow $workflow): void
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getProviderNames(): array
-    {
-        return $this->supportedProviders;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function providesPropertyAccess(): bool
-    {
-        return true;
+        parent::__construct('default', $supportedProviders);
     }
 }

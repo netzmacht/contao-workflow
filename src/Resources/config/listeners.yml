@@ -74,7 +74,6 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.expression_language'
       - '@security.authorization_checker'
-      - '@netzmacht.contao_workflow.type_registry'
     tags:
       - {
           name: 'kernel.event_listener',
