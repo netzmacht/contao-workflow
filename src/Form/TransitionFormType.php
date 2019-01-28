@@ -21,20 +21,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Router;
 
 /**
  * Class TransitionFormType
  */
 final class TransitionFormType extends AbstractType
 {
-    /**
-     * The router.
-     *
-     * @var Router
-     */
-    private $router;
-
     /**
      * The transition form builders.
      *
@@ -45,19 +37,17 @@ final class TransitionFormType extends AbstractType
     /**
      * TransitionFormType constructor.
      *
-     * @param Router   $router       The router.
      * @param iterable $formBuilders The transition form builders.
      */
-    public function __construct(Router $router, iterable $formBuilders)
+    public function __construct(iterable $formBuilders)
     {
-        $this->router       = $router;
         $this->formBuilders = $formBuilders;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired(['transition'])
@@ -67,7 +57,7 @@ final class TransitionFormType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $formBuilder, array $options)
+    public function buildForm(FormBuilder $formBuilder, array $options): void
     {
         /** @var Transition $transition */
         $transition = $options['transition'];

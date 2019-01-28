@@ -170,7 +170,6 @@ services:
   netzmacht.contao_workflow.form.transition_form:
     class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
     arguments:
-      - '@router'
       - []
     tags:
       - { name: 'form.type' }

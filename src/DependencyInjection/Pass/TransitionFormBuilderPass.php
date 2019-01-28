@@ -29,7 +29,7 @@ final class TransitionFormBuilderPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('netzmacht.contao_workflow.form.transition_form')) {
             return;
@@ -41,6 +41,6 @@ final class TransitionFormBuilderPass implements CompilerPassInterface
             $container
         );
 
-        $definition->setArgument(1, $references);
+        $definition->setArgument(0, $references);
     }
 }
