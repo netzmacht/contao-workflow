@@ -6,11 +6,10 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
-
 
 $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
@@ -88,21 +87,28 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'form extends default' => [
             'config' => ['formId'],
         ],
+        'note extends default' => [
+            'config' => ['note_required'],
+        ],
+    ],
+
+    'metasubpalettes' => [
+        'note_required' => ['note_minlength']
     ],
 
     'fields' => [
-        'id'          => [
+        'id'             => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
-        'pid'         => [
+        'pid'            => [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'tstamp'      => [
+        'tstamp'         => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'label'       => [
+        'label'          => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['label'],
             'inputType' => 'text',
             'exclude'   => true,
@@ -114,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(64) NOT NULL default ''",
         ],
-        'type'        => [
+        'type'           => [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
             'inputType'        => 'select',
             'exclude'          => true,
@@ -128,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'              => "varchar(32) NOT NULL default ''",
         ],
-        'description' => [
+        'description'    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['description'],
             'inputType' => 'text',
             'exclude'   => true,
@@ -138,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'formId'      => [
+        'formId'         => [
             'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['formId'],
             'inputType'  => 'select',
             'exclude'    => true,
@@ -148,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'foreignKey' => 'tl_form.title',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'active'      => [
+        'active'         => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
             'inputType' => 'checkbox',
             'eval'      => [
@@ -156,6 +162,25 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'note_required'  => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_required'],
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class' => 'clr w50',
+                'submitOnChange' => true,
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'note_minlength' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_minlength'],
+            'inputType' => 'text',
+            'eval'      => [
+                'tl_class'  => 'w50',
+                'maxlength' => '3',
+                'rgxp'      => 'natural',
+            ],
+            'sql'       => "int(3) NOT NULL default '0'",
         ],
     ],
 ];

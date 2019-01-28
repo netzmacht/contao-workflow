@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -35,17 +35,21 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['toggle'][1] = 'Activate/deactive acti
 /*
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_workflow_action']['label'][0]       = 'Label';
-$GLOBALS['TL_LANG']['tl_workflow_action']['label'][1]       = 'Label of the action.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['name'][0]        = 'Name';
-$GLOBALS['TL_LANG']['tl_workflow_action']['name'][1]        = 'Name of workflow action.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['description'][0] = 'Description';
-$GLOBALS['TL_LANG']['tl_workflow_action']['description'][1] = 'Description of the action.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['type'][0]        = 'Type';
-$GLOBALS['TL_LANG']['tl_workflow_action']['type'][1]        = 'Type of the action.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['final'][0]       = 'Final step';
-$GLOBALS['TL_LANG']['tl_workflow_action']['final'][1]       = 'Mark step as final. No more transitions will be allowed.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'][0]  = 'Log changes';
-$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'][1]  = 'Changes of the action get logged.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['active'][0]      = 'Activate action';
-$GLOBALS['TL_LANG']['tl_workflow_action']['active'][1]      = 'Activated action will be executed during transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['label'][0]          = 'Label';
+$GLOBALS['TL_LANG']['tl_workflow_action']['label'][1]          = 'Label of the action.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['name'][0]           = 'Name';
+$GLOBALS['TL_LANG']['tl_workflow_action']['name'][1]           = 'Name of workflow action.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['description'][0]    = 'Description';
+$GLOBALS['TL_LANG']['tl_workflow_action']['description'][1]    = 'Description of the action.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['type'][0]           = 'Type';
+$GLOBALS['TL_LANG']['tl_workflow_action']['type'][1]           = 'Type of the action.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['final'][0]          = 'Final step';
+$GLOBALS['TL_LANG']['tl_workflow_action']['final'][1]          = 'Mark step as final. No more transitions will be allowed.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'][0]     = 'Log changes';
+$GLOBALS['TL_LANG']['tl_workflow_action']['logChanges'][1]     = 'Changes of the action get logged.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['active'][0]         = 'Activate action';
+$GLOBALS['TL_LANG']['tl_workflow_action']['active'][1]         = 'Activated action will be executed during transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['note_required'][0]  = 'Required';
+$GLOBALS['TL_LANG']['tl_workflow_action']['note_required'][1]  = 'Please define if not has to be filled.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['note_minlength'][0] = 'Min length';
+$GLOBALS['TL_LANG']['tl_workflow_action']['note_minlength'][1] = 'If defined minimum number of characters are required.';

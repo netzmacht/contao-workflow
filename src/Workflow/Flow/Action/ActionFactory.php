@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
 
 use Netzmacht\Contao\Toolkit\Assertion\Assertion;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedActionType;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -122,7 +122,7 @@ final class ActionFactory
      *
      * @return Action
      *
-     * @throws UnsupportedActionType When no action could be created.
+     * @throws UnsupportedAction When no action could be created.
      */
     public function create(string $type, array $config, Transition $transition): Action
     {
@@ -132,7 +132,7 @@ final class ActionFactory
             }
         }
 
-        throw UnsupportedActionType::withType($type);
+        throw UnsupportedAction::withType($type);
     }
 
     /**

@@ -6,8 +6,8 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
@@ -19,12 +19,45 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Patchwork\Utf8;
+use function strlen;
 
 /**
  * Class NoteAction
  */
 final class NoteAction extends AbstractAction
 {
+    /**
+     * Flag to determine if note is required.
+     *
+     * @var bool
+     */
+    private $required;
+
+    /**
+     * Min number of characters which are required if note is given.
+     *
+     * @var int
+     */
+    private $minLength;
+
+    /**
+     * Construct.
+     *
+     * @param string $name      Name of the element.
+     * @param string $label     Label of the element.
+     * @param bool   $required  Flag to determine if note is required.
+     * @param int    $minLength Min number of characters which are required if note is given.
+     * @param array  $config    Configuration values.
+     */
+    public function __construct(string $name, string $label, bool $required, int $minLength, array $config = [])
+    {
+        parent::__construct($name, $label, $config);
+
+        $this->required  = $required;
+        $this->minLength = $minLength;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -34,17 +67,58 @@ final class NoteAction extends AbstractAction
     }
 
     /**
+     * Check if note is required.
+     *
+     * @return bool
+     */
+    public function required(): bool
+    {
+        return $this->required;
+    }
+
+    /**
+     * Min number of characters which are required if note is given.
+     *
+     * @return int
+     */
+    public function minLength(): int
+    {
+        if ($this->required) {
+            return $this->minLength;
+        }
+
+        return 0;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function validate(Item $item, Context $context): bool
     {
         $name = $this->getName() . '_note';
 
-        if ($this->getConfigValue('mandatory') && $context->getPayload()->has($name)) {
+        if (!$this->required) {
+            return true;
+        }
+
+        $payload = $context->getPayload();
+        if (!$payload->has($name)) {
+            $context->addError('action.note.validate.required', [$this->getLabel()]);
+
             return false;
         }
 
-        return true;
+        $length = Utf8::strlen($payload->get($name));
+        if ($length >= $this->minLength) {
+            return true;
+        }
+
+        $context->addError(
+            'action.note.validate.minlength',
+            [$this->getLabel(), $this->minLength, $length]
+        );
+
+        return false;
     }
 
     /**

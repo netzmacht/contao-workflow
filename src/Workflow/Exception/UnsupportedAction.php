@@ -15,14 +15,16 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Exception;
 
+use function get_class;
 use Netzmacht\Workflow\Exception\WorkflowException;
+use Netzmacht\Workflow\Flow\Action;
 use RuntimeException;
 use Throwable;
 
 /**
  * Class ActionNotFound
  */
-final class UnsupportedActionType extends RuntimeException implements WorkflowException
+final class UnsupportedAction extends RuntimeException implements WorkflowException
 {
     /**
      * Create exception for an action type.
@@ -31,12 +33,35 @@ final class UnsupportedActionType extends RuntimeException implements WorkflowEx
      * @param int            $code     The error code.
      * @param Throwable|null $previous A previous exception.
      *
-     * @return UnsupportedActionType
+     * @return UnsupportedAction
      */
-    public static function withType(string $type, int $code = 0, Throwable $previous = null): UnsupportedActionType
+    public static function withType(string $type, int $code = 0, Throwable $previous = null): UnsupportedAction
     {
         return new static(
             sprintf('Action "%s" not found.', $type),
+            $code,
+            $previous
+        );
+    }
+
+    /**
+     * Create exception for an action type.
+     *
+     * @param Action         $action The given action.
+     * @param string         $expectedClass The expected action.
+     * @param int            $code The error code.
+     * @param Throwable|null $previous A previous exception.
+     *
+     * @return UnsupportedAction
+     */
+    public static function ofUnexpectedClass(
+        Action $action,
+        string $expectedClass,
+        int $code = 0,
+        Throwable $previous = null
+    ): UnsupportedAction {
+        return new static(
+            sprintf('Unexpected action "%s". "%s" expected', get_class($action), $expectedClass),
             $code,
             $previous
         );

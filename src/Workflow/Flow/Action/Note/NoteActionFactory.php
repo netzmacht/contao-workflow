@@ -64,6 +64,12 @@ final class NoteActionFactory implements ActionTypeFactory
      */
     public function create(array $config, Transition $transition): Action
     {
-        return new NoteAction('action_' . $config['id'], $config['label'], $config);
+        return new NoteAction(
+            'action_' . $config['id'],
+            $config['label'],
+            (bool) $config['note_required'],
+            (int) $config['note_minlength'],
+            $config
+        );
     }
 }

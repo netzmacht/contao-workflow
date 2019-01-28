@@ -30,6 +30,7 @@
         "netzmacht/contao-form-bundle": "~1.0@dev",
         "netzmacht/contao-toolkit": "~3.0",
         "netzmacht/workflow": "~2.0",
+        "patchwork/utf8": "^1.2",
         "sensio/framework-extra-bundle": "~5.0",
         "symfony/config": "^3.4 || ^4.0",
         "symfony/dependency-injection": "^3.4 || ^4.0",
@@ -42,7 +43,8 @@
         "symfony/routing": "^3.4 || ^4.0",
         "symfony/security": "^3.4 || ^4.0",
         "symfony/templating": "^3.4 || ^4.0",
-        "symfony/translation": "^3.4 || ^4.0"
+        "symfony/translation": "^3.4 || ^4.0",
+        "symfony/validator": "^3.4 || ^4.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.1",
