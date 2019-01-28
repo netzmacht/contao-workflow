@@ -1,17 +1,22 @@
 services:
   _defaults:
-    public: true
+    public: false
+    autowire: false
+    autoconfigure: false
 
   netzmacht.contao_workflow.listeners.dca.save_permission_callback:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\SavePermissionsCallbackListener
+    public: true
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.listeners.dca.common:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\CommonListener
+    public: true
 
   netzmacht.contao_workflow.listeners.dca.workflow:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\WorkflowCallbackListener
+    public: true
     arguments:
       - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
@@ -19,6 +24,7 @@ services:
 
   netzmacht.contao_workflow.listeners.dca.transition:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\TransitionCallbackListener
+    public: true
     arguments:
       - '@netzmacht.contao_workflow.type_registry'
       - '@netzmacht.contao_toolkit.dca.manager'
@@ -26,6 +32,7 @@ services:
 
   netzmacht.contao_workflow.listeners.dca.action:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\ActionCallbackListener
+    public: true
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.manager'
@@ -33,11 +40,13 @@ services:
 
   netzmacht.contao_workflow.listeners.dca.permissions:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\PermissionCallbackListener
+    public: true
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.cotnao_workflow.listeners.hook.backend_user_navigation:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Backend\UserNavigationListener
+    public: true
     arguments:
       - '@request_stack'
       - '@router'

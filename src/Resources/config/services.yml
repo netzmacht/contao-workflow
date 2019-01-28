@@ -2,6 +2,11 @@ parameters:
   netzmacht.contao_workflow.type.default.providers: []
 
 services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
   netzmacht.contao_workflow.type_registry:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry
     arguments:

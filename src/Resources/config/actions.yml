@@ -1,4 +1,9 @@
 services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
   netzmacht.contao_workflow.action_factory.property:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Property\PropertyActionFactory
     tags:
