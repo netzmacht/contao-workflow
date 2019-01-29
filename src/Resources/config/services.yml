@@ -1,5 +1,6 @@
 parameters:
   netzmacht.contao_workflow.type.default.providers: []
+  netzmacht.contao_workflow.type.default.provider_names: []
 
 services:
   _defaults:
@@ -15,7 +16,7 @@ services:
   netzmacht.contao_workflow.type.default:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
     arguments:
-      - '%netzmacht.contao_workflow.type.default.providers%'
+      - '%netzmacht.contao_workflow.type.default.provider_names%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }
 
