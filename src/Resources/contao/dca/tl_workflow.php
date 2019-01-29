@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'type', 'active'],
+            'name'        => ['label', 'type', 'providerName', 'active'],
             'description' => [':hide', 'description'],
             'permissions' => ['permissions'],
             'process'     => ['process'],
