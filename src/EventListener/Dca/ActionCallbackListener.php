@@ -20,7 +20,6 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Manager\Manager;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
-use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 
 /**
  * Class Action is used for tl_workflow_action callbacks.
@@ -87,23 +86,5 @@ final class ActionCallbackListener
         $workflow = $this->manager->getWorkflowById((int) $transition->pid);
 
         return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
-    }
-
-    /**
-     * Get the workflow model.
-     *
-     * @param \DataContainer $dataContainer The data container driver.
-     *
-     * @return WorkflowModel|null
-     *
-     * @throws \Exception If relation could not be resolved.
-     */
-    protected function getWorkflowModel($dataContainer):? WorkflowModel
-    {
-        $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
-        $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
-        $workflowModel   = $transitionModel->getRelated('pid');
-
-        return $workflowModel;
     }
 }

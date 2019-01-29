@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\DataContainer;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
@@ -22,7 +23,6 @@ use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -39,13 +39,6 @@ final class WorkflowCallbackListener
     private $typeRegistry;
 
     /**
-     * Event dispatcher.
-     *
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * Repository manager.
      *
      * @var RepositoryManager
@@ -55,41 +48,21 @@ final class WorkflowCallbackListener
     /**
      * Workflow constructor.
      *
-     * @param WorkflowTypeRegistry     $typeRegistry      Workflow type registry.
-     * @param EventDispatcherInterface $eventDispatcher   Event dispatcher.
-     * @param RepositoryManager        $repositoryManager Repository manager.
+     * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
+     * @param RepositoryManager    $repositoryManager Repository manager.
      */
     public function __construct(
         WorkflowTypeRegistry $typeRegistry,
-        EventDispatcherInterface $eventDispatcher,
         RepositoryManager $repositoryManager
     ) {
         $this->typeRegistry      = $typeRegistry;
-        $this->eventDispatcher   = $eventDispatcher;
         $this->repositoryManager = $repositoryManager;
-    }
-
-    /**
-     * Generate a row view.
-     *
-     * @param array $row Current data row.
-     *
-     * @return string
-     */
-    public function generateRow(array $row): string
-    {
-        return sprintf(
-            '<strong>%s</strong> <span class="tl_gray">[%s: %s]</span><br>%s',
-            $row['label'],
-            $row['name'],
-            $row['description']
-        );
     }
 
     /**
      * Override the provider name if only one provider name is supported.
      *
-     * @param \DataContainer $dataContainer Data container driver.
+     * @param DataContainer $dataContainer Data container driver.
      *
      * @return void
      */
@@ -98,6 +71,10 @@ final class WorkflowCallbackListener
         try {
             $repository    = $this->repositoryManager->getRepository(WorkflowModel::class);
             $workflowModel = $repository->find((int) $dataContainer->id);
+            if (!$workflowModel) {
+                return;
+            }
+
             $providerNames = $this->typeRegistry->getType($workflowModel->type)->getProviderNames();
 
             if (count($providerNames) !== 1 || $workflowModel->providerName === $providerNames[0]) {
@@ -124,7 +101,7 @@ final class WorkflowCallbackListener
     /**
      * Get all provider names.
      *
-     * @param \DataContainer $dataContainer Data container driver.
+     * @param DataContainer $dataContainer Data container driver.
      *
      * @return array
      *
@@ -146,7 +123,7 @@ final class WorkflowCallbackListener
     /**
      * Get all start steps.
      *
-     * @param \DataContainer $dataContainer The data container driver.
+     * @param DataContainer $dataContainer The data container driver.
      *
      * @return array
      */
@@ -161,7 +138,7 @@ final class WorkflowCallbackListener
     /**
      * Get all end steps.
      *
-     * @param \DataContainer $dataContainer The data container driver.
+     * @param DataContainer $dataContainer The data container driver.
      *
      * @return array
      */
@@ -173,7 +150,7 @@ final class WorkflowCallbackListener
     /**
      * Get all transitions.
      *
-     * @param \DataContainer $dataContainer The data container.
+     * @param DataContainer $dataContainer The data container.
      *
      * @return array
      */
@@ -308,14 +285,16 @@ final class WorkflowCallbackListener
         $count = 0;
 
         foreach ($process as $definition) {
-            if ($definition['step'] == 'start') {
+            if ($definition['step'] === 'start') {
                 $count++;
             }
         }
 
         if (!$count) {
             throw new \Exception('Start transition is required.');
-        } elseif ($count > 1) {
+        }
+
+        if ($count > 1) {
             throw new \Exception('There must be exactly one start transition.');
         }
     }
@@ -334,9 +313,11 @@ final class WorkflowCallbackListener
     {
         $reserved = ['contao-admin', 'contao-guest'];
 
-        if (in_array($row['name'], $names)) {
+        if (in_array($row['name'], $names, true)) {
             throw new \InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));
-        } elseif (in_array($row['name'], $reserved)) {
+        }
+
+        if (in_array($row['name'], $reserved, true)) {
             throw new \InvalidArgumentException(sprintf('Permission name "%s" is reserved.', $row['name']));
         }
     }

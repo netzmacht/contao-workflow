@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
@@ -55,7 +56,7 @@ final class SavePermissionsCallbackListener
      * Invoke the callback.
      *
      * @param mixed          $value         The value.
-     * @param \DataContainer $dataContainer The data container driver.
+     * @param DataContainer $dataContainer The data container driver.
      *
      * @return mixed
      */
@@ -113,7 +114,7 @@ final class SavePermissionsCallbackListener
      * Create new permissions.
      *
      * @param mixed          $value         The serialized permissions.
-     * @param \DataContainer $dataContainer The data container.
+     * @param DataContainer $dataContainer The data container.
      *
      * @return void
      */

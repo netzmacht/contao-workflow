@@ -28,7 +28,7 @@ final class EntityIdParamConverter implements ParamConverterInterface
     /**
      * {@inheritDoc}
      */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration): bool
     {
         $attribute = $configuration->getName();
 
@@ -45,7 +45,7 @@ final class EntityIdParamConverter implements ParamConverterInterface
     /**
      * {@inheritDoc}
      */
-    public function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration): bool
     {
         return $configuration->getClass() === EntityId::class;
     }

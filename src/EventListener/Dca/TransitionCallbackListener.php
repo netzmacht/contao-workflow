@@ -18,6 +18,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
@@ -42,13 +43,6 @@ final class TransitionCallbackListener extends AbstractListener
     protected static $name = 'tl_workflow_transition';
 
     /**
-     * Type provider.
-     *
-     * @var WorkflowTypeRegistry
-     */
-    private $typeRegistry;
-
-    /**
      * Repository manager.
      *
      * @var RepositoryManager
@@ -58,18 +52,15 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Transition constructor.
      *
-     * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
-     * @param DcaManager           $dcaManager        Data container manager.
-     * @param RepositoryManager    $repositoryManager Repository manager.
+     * @param DcaManager        $dcaManager        Data container manager.
+     * @param RepositoryManager $repositoryManager Repository manager.
      */
     public function __construct(
-        WorkflowTypeRegistry $typeRegistry,
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager
     ) {
         parent::__construct($dcaManager);
 
-        $this->typeRegistry      = $typeRegistry;
         $this->repositoryManager = $repositoryManager;
     }
 
@@ -102,7 +93,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @param \DataContainer $dataContainer Data container driver.
+     * @param DataContainer $dataContainer Data container driver.
      *
      * @return array
      */
@@ -136,11 +127,11 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all actions.
      *
-     * @param \DataContainer $dataContainer Data container driver.
+     * @param DataContainer $dataContainer Data container driver.
      *
      * @return array
      */
-    public function getActions($dataContainer)
+    public function getActions($dataContainer): array
     {
         if ($dataContainer->activeRecord) {
             $repository = $this->repositoryManager->getRepository(ActionModel::class);
@@ -162,7 +153,7 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @throws \Doctrine\DBAL\DBALException If any dbal error occurs.
+     * @throws DBALException If any dbal error occurs.
      */
     public function loadRelatedActions($value, $dataContainer)
     {
@@ -183,7 +174,7 @@ final class TransitionCallbackListener extends AbstractListener
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return null
-     * @throws \Doctrine\DBAL\DBALException When an database related error occurs.
+     * @throws DBALException When an database related error occurs.
      */
     public function saveRelatedActions($value, $dataContainer)
     {

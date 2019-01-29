@@ -17,7 +17,6 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Backend;
 
 use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
  * Class UserNavigationListener
@@ -32,13 +31,6 @@ final class UserNavigationListener
     private $requestStack;
 
     /**
-     * Router.
-     *
-     * @var Router
-     */
-    private $router;
-
-    /**
      * Assets manager.
      *
      * @var AssetsManager
@@ -49,13 +41,11 @@ final class UserNavigationListener
      * UserNavigationListener constructor.
      *
      * @param RequestStack  $requestStack  Request stack.
-     * @param Router        $router        Router.
      * @param AssetsManager $assetsManager Assets manager.
      */
-    public function __construct(RequestStack $requestStack, Router $router, AssetsManager $assetsManager)
+    public function __construct(RequestStack $requestStack, AssetsManager $assetsManager)
     {
         $this->requestStack  = $requestStack;
-        $this->router        = $router;
         $this->assetsManager = $assetsManager;
     }
 
@@ -69,7 +59,11 @@ final class UserNavigationListener
     public function onGetUserNavigation(array $modules)
     {
         $request = $this->requestStack->getCurrentRequest();
-        $module  = $request->query->get('module');
+        if (!$request) {
+            return $modules;
+        }
+
+        $module = $request->query->get('module');
 
         if ($request->attributes->get('_backend_module') === 'workflow') {
             foreach ($modules as $group => $groupModules) {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\DataContainer;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
@@ -49,9 +50,9 @@ final class PermissionCallbackListener
      *
      * @return array
      */
-    public function getAllPermissions()
+    public function getAllPermissions(): array
     {
-        $options    = array();
+        $options    = [];
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
         $collection = $repository->findAll();
 
@@ -76,7 +77,7 @@ final class PermissionCallbackListener
     /**
      * Get all permissions of a specific workflow.
      *
-     * @param \DataContainer $dataContainer The data container driver.
+     * @param DataContainer $dataContainer The data container driver.
      *
      * @return array
      */
@@ -95,7 +96,7 @@ final class PermissionCallbackListener
 
             foreach ($permissions as $config) {
                 $permission = WorkflowPermission::forWorkflowName(
-                    (string) 'workflow_' . $workflow->id,
+                    'workflow_' . $workflow->id,
                     (string) $config['name']
                 );
 
