@@ -41,19 +41,16 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('listeners.yml');
         $loader->load('renderer.yml');
+        $loader->load('integration.yml');
         $loader->load('services.yml');
 
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter(
-            'netzmacht.contao_workflow.type.default.providers',
-            $config['default_type']['providers']
-        );
-
+        $container->setParameter('netzmacht.contao_workflow.type.default.providers', $config['default_type']);
         $container->setParameter(
             'netzmacht.contao_workflow.type.default.provider_names',
-            array_keys($config['default_type']['providers'])
+            array_keys($config['default_type'])
         );
     }
 }

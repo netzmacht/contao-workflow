@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\DataContainerListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '%netzmacht.contao_workflow.type.default.providers%'
+    tags:
+      - { name: 'contao.hook', hook: 'loadDataContainer' }
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\OptionsListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'

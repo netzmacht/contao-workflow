@@ -26,7 +26,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('netzmacht_contao_workflow');
@@ -34,13 +34,25 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('default_type')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('providers')
-                            ->defaultValue([])
-                            ->arrayPrototype()
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('default_workflow')
+                                ->info('Define the default workflow name.')
+                            ->end()
+                            ->arrayNode('palettes')
+                                ->info('Define the dca palettes where the workflow fields should be added.')
+                                ->defaultValue([])
+                                ->scalarPrototype()->end()
+                            ->end()
+                            ->arrayNode('integrations')
                                 ->children()
-                                    ->integerNode('default_workflow')
+                                    ->booleanNode('submit_buttons')
+                                        ->info('Show transitions as submit buttons in the edit mask')
+                                    ->end()
+                                    ->booleanNode('operation')
+                                        ->defaultValue(true)
+                                        ->info('Show transitions as submit buttons in the edit mask')
                                     ->end()
                                 ->end()
                             ->end()
