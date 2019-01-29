@@ -44,7 +44,7 @@ final class FormActionFormBuilder implements ActionFormBuilder
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         if (!$action instanceof FormAction) {
-            throw UnsupportedAction::withUnexpcetedClass($action, FormAction::class);
+            throw UnsupportedAction::withUnexpectedClass($action, FormAction::class);
         }
 
         if (!$action->getConfigValue('form_fieldset')) {

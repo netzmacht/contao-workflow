@@ -46,7 +46,7 @@ final class NoteActionFormBuilder implements ActionFormBuilder
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         if (!$action instanceof NoteAction) {
-            throw UnsupportedAction::withUnexpcetedClass($action, NoteAction::class);
+            throw UnsupportedAction::withUnexpectedClass($action, NoteAction::class);
         }
 
         $constraints = [];

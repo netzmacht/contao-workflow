@@ -151,6 +151,6 @@ final class ConditionBuilder
      */
     private function parseOperator($operator): ?string
     {
-        return static::$operators[$operator] ?? null;
+        return (static::$operators[$operator] ?? null);
     }
 }

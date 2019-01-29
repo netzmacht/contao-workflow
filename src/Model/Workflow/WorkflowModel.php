@@ -22,8 +22,9 @@ use Contao\Model;
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Model
  *
- * @property int   $id      The workflow id.
- * @property array $process The process definition.
+ * @property int    $id      The workflow id.
+ * @property array  $process The process definition.
+ * @property string $type    The workflow type.
  */
 final class WorkflowModel extends Model
 {

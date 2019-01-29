@@ -71,7 +71,7 @@ final class WorkflowCallbackListener
         try {
             $repository    = $this->repositoryManager->getRepository(WorkflowModel::class);
             $workflowModel = $repository->find((int) $dataContainer->id);
-            if (!$workflowModel) {
+            if (!$workflowModel instanceof WorkflowModel) {
                 return;
             }
 
@@ -83,9 +83,12 @@ final class WorkflowCallbackListener
 
             $workflowModel->providerName = $providerNames[0];
             $repository->save($workflowModel);
+
+            // @codingStandardsIgnoreStart
         } catch (WorkflowTypeNotFound $e) {
             // Do nothing
         }
+        // @codingStandardsIgnoreEnd
     }
 
     /**

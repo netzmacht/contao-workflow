@@ -49,7 +49,7 @@ abstract class AbstractWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -57,7 +57,7 @@ abstract class AbstractWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function match(string $typeName): bool
     {
@@ -65,7 +65,7 @@ abstract class AbstractWorkflowType implements WorkflowType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function configure(Workflow $workflow, callable $next): void
     {

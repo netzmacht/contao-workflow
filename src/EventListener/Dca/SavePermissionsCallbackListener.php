@@ -55,7 +55,7 @@ final class SavePermissionsCallbackListener
     /**
      * Invoke the callback.
      *
-     * @param mixed          $value         The value.
+     * @param mixed         $value         The value.
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return mixed
@@ -113,7 +113,7 @@ final class SavePermissionsCallbackListener
     /**
      * Create new permissions.
      *
-     * @param mixed          $value         The serialized permissions.
+     * @param mixed         $value         The serialized permissions.
      * @param DataContainer $dataContainer The data container.
      *
      * @return void

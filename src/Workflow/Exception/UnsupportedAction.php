@@ -47,14 +47,14 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
     /**
      * Create exception for an action type.
      *
-     * @param Action         $action The given action.
+     * @param Action         $action        The given action.
      * @param string         $expectedClass The expected action.
-     * @param int            $code The error code.
-     * @param Throwable|null $previous A previous exception.
+     * @param int            $code          The error code.
+     * @param Throwable|null $previous      A previous exception.
      *
      * @return UnsupportedAction
      */
-    public static function withUnexpcetedClass(
+    public static function withUnexpectedClass(
         Action $action,
         string $expectedClass,
         int $code = 0,
