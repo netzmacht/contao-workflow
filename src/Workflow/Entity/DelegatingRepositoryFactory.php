@@ -37,7 +37,7 @@ final class DelegatingRepositoryFactory implements RepositoryFactory
      *
      * @param RepositoryFactory[] $factories Entity repository factories.
      */
-    public function __construct(array $factories)
+    public function __construct(iterable $factories)
     {
         $this->factories = $factories;
     }

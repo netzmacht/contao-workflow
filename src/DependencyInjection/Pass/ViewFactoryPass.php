@@ -30,7 +30,7 @@ final class ViewFactoryPass implements CompilerPassInterface
      *
      * @throws InvalidConfigurationException If content_type attribute is missing.
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('netzmacht.contao_workflow.view.factory')) {
             return;

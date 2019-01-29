@@ -27,10 +27,10 @@ final class WorkflowTypeNotFound extends Exception
      *
      * @param string $name Workflow type name.
      *
-     * @return static
+     * @return WorkflowTypeNotFound
      */
-    public static function withName($name)
+    public static function withName($name): self
     {
-        return new static(sprintf('Workflow type "%s" not found', $name));
+        return new self(sprintf('Workflow type "%s" not found', $name));
     }
 }

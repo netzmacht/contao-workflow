@@ -10,7 +10,7 @@ services:
   netzmacht.contao_workflow.type_registry:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.type
 
   netzmacht.contao_workflow.type.default:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
@@ -22,7 +22,7 @@ services:
   netzmacht.contao_workflow.action_factory:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.action
 
   netzmacht.contao_workflow.definition.workflow_loader:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
@@ -34,7 +34,7 @@ services:
   netzmacht.contao_workflow.entity_factory:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingEntityFactory
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.entity_factory
 
   netzmacht.contao_workflow.entity_factory.contao_model:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityFactory
@@ -49,7 +49,7 @@ services:
   netzmacht.contao_workflow.entity_repository_factory:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingRepositoryFactory
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.entity_repository_factory
 
   netzmacht.contao_workflow.entity_repository_factory.contao_model:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
@@ -170,14 +170,14 @@ services:
   netzmacht.contao_workflow.form.transition_form:
     class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.transition_form_builder
     tags:
       - { name: 'form.type' }
 
   netzmacht.contao_workflow.form.transition_actions_form_builder:
     class: Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionActionsFormBuilder
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.action_form_builder
     tags:
       - { name: 'netzmacht.contao_workflow.transition_form_builder' }
 

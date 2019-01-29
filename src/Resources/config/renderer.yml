@@ -7,7 +7,7 @@ services:
   netzmacht.contao_workflow.view.renderer:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\DelegatingRenderer
     arguments:
-      - []
+      - !tagged netzmacht.contao_workflow.view.renderer
 
   netzmacht.contao_workflow.view.headline_renderer:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\HeadlineRenderer

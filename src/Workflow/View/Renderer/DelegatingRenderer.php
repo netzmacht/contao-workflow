@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
+use function count;
 
 /**
  * Class DelegatingRenderer
@@ -35,7 +36,7 @@ final class DelegatingRenderer implements Renderer
      *
      * @param iterable|Renderer[] $renderer View renderer.
      */
-    public function __construct($renderer)
+    public function __construct(iterable$renderer)
     {
         $this->renderer = $renderer;
     }
@@ -45,7 +46,7 @@ final class DelegatingRenderer implements Renderer
      */
     public function supports(View $view): bool
     {
-        return !empty($this->renderer);
+        return count($this->renderer) > 0;
     }
 
     /**

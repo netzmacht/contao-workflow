@@ -11,6 +11,8 @@
  * @filesource
  */
 
+declare(strict_types=1);
+
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 
 /**
@@ -32,7 +34,7 @@ final class WorkflowTypeRegistry
      *
      * @param array|WorkflowType[] $types Workflow types.
      */
-    public function __construct(array $types)
+    public function __construct(iterable $types)
     {
         $this->types = $types;
     }
@@ -40,16 +42,13 @@ final class WorkflowTypeRegistry
     /**
      * Get all workflow type names.
      *
-     * @return array
+     * @return string[]
      */
-    public function getTypeNames()
+    public function getTypeNames(): iterable
     {
-        return array_map(
-            function (WorkflowType $workflowType) {
-                return $workflowType->getName();
-            },
-            $this->types
-        );
+        foreach ($this->types as $workflowType) {
+            yield $workflowType->getName();
+        }
     }
 
     /**
@@ -61,7 +60,7 @@ final class WorkflowTypeRegistry
      *
      * @throws WorkflowTypeNotFound When workflow type is not registered.
      */
-    public function getType($typeName)
+    public function getType(string $typeName): WorkflowType
     {
         foreach ($this->types as $workflowType) {
             if ($workflowType->getName() === $typeName) {
@@ -79,7 +78,7 @@ final class WorkflowTypeRegistry
      *
      * @return bool
      */
-    public function hasType($typeName)
+    public function hasType(string $typeName): bool
     {
         foreach ($this->types as $workflowType) {
             if ($workflowType->getName() === $typeName) {

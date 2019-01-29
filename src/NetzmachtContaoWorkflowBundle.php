@@ -15,14 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle;
 
-use Netzmacht\Contao\Toolkit\Bundle\DependencyInjection\Compiler\AddTaggedServicesAsArgumentPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFactoriesPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ActionFormBuilderPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\EntityRepositoryFactoryPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\RendererPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\TransitionFormBuilderPass;
 use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\ViewFactoryPass;
-use Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass\WorkflowTypePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -34,21 +27,8 @@ final class NetzmachtContaoWorkflowBundle extends Bundle
     /**
      * {@inheritDoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new WorkflowTypePass())
-            ->addCompilerPass(new ActionFactoriesPass())
-            ->addCompilerPass(new ActionFormBuilderPass())
-            ->addCompilerPass(new TransitionFormBuilderPass())
-            ->addCompilerPass(new EntityRepositoryFactoryPass())
-            ->addCompilerPass(new ViewFactoryPass())
-            ->addCompilerPass(new RendererPass())
-            ->addCompilerPass(
-                new AddTaggedServicesAsArgumentPass(
-                    'netzmacht.contao_workflow.entity_factory',
-                    'netzmacht.contao_workflow.entity_factory'
-                )
-            );
+        $container->addCompilerPass(new ViewFactoryPass());
     }
 }

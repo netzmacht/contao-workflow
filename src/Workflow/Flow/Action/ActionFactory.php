@@ -20,7 +20,6 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /**
  * Class ActionFactory.
@@ -30,16 +29,16 @@ final class ActionFactory
     /**
      * Action factories.
      *
-     * @var array|ActionTypeFactory[]
+     * @var iterable|ActionTypeFactory[]
      */
     private $factories;
 
     /**
      * ActionFactory constructor.
      *
-     * @param array|ActionTypeFactory[] $factories Action factories.
+     * @param iterable|ActionTypeFactory[] $factories Action factories.
      */
-    public function __construct(array $factories)
+    public function __construct(iterable $factories)
     {
         Assertion::allImplementsInterface($factories, ActionTypeFactory::class);
 
@@ -53,12 +52,13 @@ final class ActionFactory
      */
     public function getTypeNames(): array
     {
-        return array_map(
-            function (ActionTypeFactory $factory) {
-                return $factory->getName();
-            },
-            $this->factories
-        );
+        $names = [];
+
+        foreach ($this->factories as $factory) {
+            $names[] = $factory->getName();
+        }
+
+        return $names;
     }
 
     /**
@@ -66,7 +66,7 @@ final class ActionFactory
      *
      * @param Workflow $workflow The workflow.
      *
-     * @return array|ActionTypeFactory[]
+     * @return array
      */
     public function getSupportedTypeNames(Workflow $workflow): array
     {
@@ -83,7 +83,7 @@ final class ActionFactory
      *
      * @param Workflow $workflow The workflow.
      *
-     * @return array|ActionTypeFactory[][]
+     * @return array
      */
     public function getSupportedTypeNamesCategorized(Workflow $workflow): array
     {
@@ -105,12 +105,15 @@ final class ActionFactory
      */
     public function getSupportedTypes(Workflow $workflow): array
     {
-        return array_filter(
-            $this->factories,
-            function (ActionTypeFactory $factory) use ($workflow) {
-                return $factory->supports($workflow);
+        $supported = [];
+
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($workflow)) {
+                $supported[] = $factory;
             }
-        );
+        }
+
+        return $supported;
     }
 
     /**
@@ -153,23 +156,5 @@ final class ActionFactory
         }
 
         return false;
-    }
-
-    /**
-     * Build the form for an action type.
-     *
-     * @param Action      $action      The action.
-     * @param Transition  $transition  Workflow transition.
-     * @param FormBuilder $formBuilder The form builder.
-     *
-     * @return void
-     */
-    public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
-    {
-        foreach ($this->factories as $factory) {
-            if ($factory->match($action)) {
-                $factory->buildForm($action, $transition, $formBuilder);
-            }
-        }
     }
 }
