@@ -44,11 +44,15 @@ final class WorkflowTypeRegistry
      *
      * @return string[]
      */
-    public function getTypeNames(): iterable
+    public function getTypeNames(): array
     {
+        $names = [];
+
         foreach ($this->types as $workflowType) {
-            yield $workflowType->getName();
+            $names[] = $workflowType->getName();
         }
+
+        return $names;
     }
 
     /**
