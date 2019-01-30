@@ -16,9 +16,15 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
-use RuntimeException;
+use Netzmacht\ContaoWorkflowBundle\Exception\DataContainer\FieldAlreadyExists;
+use Symfony\Component\Translation\TranslatorInterface as Translator;
+use function array_unshift;
 
+/**
+ * Data container listener handles the integration in the configured data containers for the default workflow type
+ */
 final class DataContainerListener
 {
     /**
@@ -27,6 +33,13 @@ final class DataContainerListener
      * @var DcaManager
      */
     private $dcaManager;
+
+    /**
+     * Translator.
+     *
+     * @var Translator
+     */
+    private $translator;
 
     /**
      * Configuration of the default workflow types.
@@ -38,17 +51,27 @@ final class DataContainerListener
     /**
      * DefaultWorkflowTypeIntegrationListener constructor.
      *
-     * @param DcaManager               $dcaManager
-     * @param array                    $defaultConfiguration
+     * @param DcaManager $dcaManager           Data container manager.
+     * @param Translator $translator           Translator.
+     * @param array      $defaultConfiguration Configuration of the default workflow types.
      */
     public function __construct(
         DcaManager $dcaManager,
+        Translator $translator,
         array $defaultConfiguration
     ) {
-        $this->dcaManager               = $dcaManager;
-        $this->defaultConfiguration     = $defaultConfiguration;
+        $this->dcaManager           = $dcaManager;
+        $this->defaultConfiguration = $defaultConfiguration;
+        $this->translator           = $translator;
     }
 
+    /**
+     * Data container integration is triggered by the onLoadDataContainer hook.
+     *
+     * @param string $dataContainerName The data container name.
+     *
+     * @return void
+     */
     public function onLoadDataContainer(string $dataContainerName): void
     {
         if (!isset($this->defaultConfiguration[$dataContainerName])) {
@@ -57,28 +80,44 @@ final class DataContainerListener
 
         $definition = $this->dcaManager->getDefinition($dataContainerName);
 
+        $this->addTranslations($definition->getName());
         $this->addWorkflowFieldToDefinition($definition);
-        $this->addWorkflowStateFieldToDefinition($definition);
-        $this->addWorkflowFieldToPalettes($definition);
+        $this->addWorkflowStepFieldToDefinition($definition);
+        $this->adjustPalettes($definition);
+        $this->addWorkflowOperation($definition);
+        $this->addButtonsCallback($definition);
     }
 
-    private function addWorkflowFieldToDefinition(\Netzmacht\Contao\Toolkit\Dca\Definition $definition): void
+    /**
+     * Add the workflow field to the data container definition.
+     *
+     * @param Definition $definition The data container definition.
+     *
+     * @return void
+     *
+     * @throws FieldAlreadyExists When workflowDefaultCurrentStep is already configured in data container.
+     */
+    private function addWorkflowFieldToDefinition(Definition $definition): void
     {
-        if ($definition->has(['fields', 'workflow'])) {
-            throw new RuntimeException();
+        if ($definition->has(['fields', 'workflowDefault'])) {
+            throw FieldAlreadyExists::namedInDataContainer('workflowDefault', $definition->getName());
         }
 
         $definition->set(
-            ['fields', 'workflow'],
+            ['fields', 'workflowDefault'],
             [
-                'label'            => ['Workflow'],
+                'label'            => [
+                    $this->translator->trans('workflow.integration.workflow.0'),
+                    $this->translator->trans('workflow.integration.workflow.1'),
+                ],
                 'inputType'        => 'select',
                 'exclude'          => true,
                 'filter'           => true,
-                'default'          => $this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? 0,
+                'default'          => ($this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? 0),
                 'eval'             => [
                     'includeBlankOption' => true,
                     'chosen'             => true,
+                    'submitOnChange'     => true,
                     'tl_class'           => 'w50',
                 ],
                 'options_callback' => [OptionsListener::class, 'workflowOptions'],
@@ -87,24 +126,36 @@ final class DataContainerListener
         );
     }
 
-    private function addWorkflowStateFieldToDefinition(\Netzmacht\Contao\Toolkit\Dca\Definition $definition): void
+    /**
+     * Add the workflow step field to the data container definition.
+     *
+     * @param Definition $definition The data container definition.
+     *
+     * @return void
+     *
+     * @throws FieldAlreadyExists When workflowDefaultCurrentStep is already configured in data container.
+     */
+    private function addWorkflowStepFieldToDefinition(Definition $definition): void
     {
-        if ($definition->has(['fields', 'workflowCurrentStep'])) {
-            throw new RuntimeException();
+        if ($definition->has(['fields', 'workflowDefaultCurrentStep'])) {
+            throw FieldAlreadyExists::namedInDataContainer('workflowDefaultCurrentStep', $definition->getName());
         }
 
         $definition->set(
-            ['fields', 'workflowCurrentStep'],
+            ['fields', 'workflowDefaultCurrentStep'],
             [
-                'label'            => ['Current Step'],
+                'label'            => [
+                    $this->translator->trans('workflow.integration.current_step.0'),
+                    $this->translator->trans('workflow.integration.current_step.1'),
+                ],
                 'inputType'        => 'select',
                 'exclude'          => true,
                 'filter'           => true,
                 'default'          => '',
                 'eval'             => [
                     'includeBlankOption' => true,
-                    'chosen'             => true,
-                    'tl_class'           => 'w50'
+                    'tl_class'           => 'w50',
+                    'disabled'           => true,
                 ],
                 'options_callback' => [OptionsListener::class, 'stepOptions'],
                 'sql'              => 'varchar(64) NOT NULL default \'\'',
@@ -112,15 +163,102 @@ final class DataContainerListener
         );
     }
 
-    private function addWorkflowFieldToPalettes(\Netzmacht\Contao\Toolkit\Dca\Definition $definition): void
+    /**
+     * Adjust the palettes.
+     *
+     * @param Definition $definition The data container definition.
+     *
+     * @return void
+     */
+    private function adjustPalettes(Definition $definition): void
     {
         $palettes = ($this->defaultConfiguration[$definition->getName()]['palettes'] ?? []);
 
         foreach ($palettes as $palette) {
             PaletteManipulator::create()
-                ->addLegend('workflow_legend', '')
-                ->addField(['workflow', 'workflowCurrentStep'], 'workflow_legend', PaletteManipulator::POSITION_APPEND)
+                ->addLegend('workflow_legend', '', PaletteManipulator::POSITION_AFTER, true)
+                ->addField(
+                    ['workflowDefault'],
+                    'workflow_legend',
+                    PaletteManipulator::POSITION_APPEND
+                )
                 ->applyToPalette($palette, $definition->getName());
         }
+
+        $definition->set(['metasubselectpalettes', 'workflowDefault'], ['!' => ['workflowDefaultCurrentStep']]);
+    }
+
+    /**
+     * Add the workflow operation button.
+     *
+     * @param Definition $definition The data container definition.
+     *
+     * @return void
+     */
+    private function addWorkflowOperation(Definition $definition): void
+    {
+        $position = ($this->defaultConfiguration[$definition->getName()]['operation'] ?? false);
+        if ($position === false) {
+            return;
+        }
+
+        $configuration = [
+            'label'           => [
+                $this->translator->trans('workflow.integration.operation.0'),
+                $this->translator->trans('workflow.integration.operation.1'),
+            ],
+            'href'            => 'key=workflow',
+            'icon'            => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
+            'button_callback' => [
+                OperationListener::class,
+                'workflowOperationButton',
+            ],
+        ];
+
+        if ($position === 'first') {
+            $operations = $definition->get(['list', 'operations'], []);
+            array_unshift($operations, $configuration);
+            $definition->set(['list', 'operations'], $operations);
+
+            return;
+        }
+
+        $definition->set(['list', 'operations', 'workflow'], $configuration);
+    }
+
+    /**
+     * Add translations which could not be added to the element directly.
+     *
+     * @param string $providerName The provider name.
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function addTranslations(string $providerName): void
+    {
+        $GLOBALS['TL_LANG'][$providerName]['workflow_legend'] = $this->translator->trans('workflow.integration.legend');
+    }
+
+    /**
+     * Add the buttons callback to add the transitions to the edit buttons.
+     *
+     * @param Definition $definition Data container definition.
+     *
+     * @return void
+     */
+    private function addButtonsCallback(Definition $definition): void
+    {
+        if (($this->defaultConfiguration[$definition->getName()]['submit_buttons'] ?? false) === false) {
+            return;
+        }
+
+        $buttonCallbacks   = $definition->get(['edit', 'buttons_callback'], []);
+        $buttonCallbacks[] = [SubmitButtonsListener::class, 'addTransitionButtons'];
+        $definition->set(['edit', 'buttons_callback'], $buttonCallbacks);
+
+        $submitCallbacks   = $definition->get(['config', 'onsubmit_callback'], []);
+        $submitCallbacks[] = [SubmitButtonsListener::class, 'redirectToTransition'];
+        $definition->set(['config', 'onsubmit_callback'], $submitCallbacks);
     }
 }

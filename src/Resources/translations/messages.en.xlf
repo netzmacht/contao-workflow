@@ -66,6 +66,34 @@
                 <source>workflow.history.scope.frontend</source>
                 <target>Frontend</target>
             </trans-unit>
+            <trans-unit id="workflow.integration.legend">
+                <source>workflow.integration.legend</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.operation.0">
+                <source>workflow.integration.operation.0</source>
+                <target>Workflow overview</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.operation.1">
+                <source>workflow.integration.operation.1</source>
+                <target>Show workflow overview for ID "%s"</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.workflow.0">
+                <source>workflow.integration.workflow.0</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.workflow.1">
+                <source>workflow.integration.workflow.1</source>
+                <target>Please select a workflow.</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.current_step.0">
+                <source>workflow.integration.current_step.0</source>
+                <target>Current step</target>
+            </trans-unit>
+            <trans-unit id="workflow.integration.current_step.1">
+                <source>workflow.integration.current_step.1</source>
+                <target>Current step of the workflow.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

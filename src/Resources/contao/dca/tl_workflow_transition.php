@@ -210,8 +210,8 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'eval'          => [
                 'tl_class'       => 'clr',
                 'columnFields'   => [
-                    'property' => [
-                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['entityProperty'],
+                    'action' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['action'],
                         'inputType'        => 'select',
                         'options_callback' => [
                             'netzmacht.contao_workflow.listeners.dca.transition',

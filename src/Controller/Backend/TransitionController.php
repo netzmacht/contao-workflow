@@ -106,7 +106,7 @@ final class TransitionController extends AbstractController
             } else {
                 $url = $this->router->generate(
                     'netzmacht.contao_workflow.backend.step',
-                    ['entityId' => (string) $entityId]
+                    ['entityId' => (string) $entityId, 'module' => $request->get('module')]
                 );
             }
 
