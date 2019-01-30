@@ -19,13 +19,12 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use Contao\ManagerPlugin\Config\ContainerBuilder;
-use Contao\ManagerPlugin\Config\ExtensionPluginInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Netzmacht\Contao\Toolkit\Bundle\NetzmachtContaoToolkitBundle;
 use Netzmacht\ContaoWorkflowBundle\NetzmachtContaoWorkflowBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Class Plugin
@@ -35,7 +34,7 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
     /**
      * {@inheritDoc}
      */
-    public function getBundles(ParserInterface $parser)
+    public function getBundles(ParserInterface $parser): array
     {
         return [
             BundleConfig::create(NetzmachtContaoWorkflowBundle::class)
@@ -47,10 +46,13 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
     {
-        return $resolver
-            ->resolve(__DIR__ . '/../Resources/config/routing.yml')
-            ->load(__DIR__ . '/../Resources/config/routing.yml');
+        $loader = $resolver->resolve(__DIR__ . '/../Resources/config/routing.yml');
+        if ($loader === false) {
+            return null;
+        }
+
+        return $loader->load(__DIR__ . '/../Resources/config/routing.yml');
     }
 }

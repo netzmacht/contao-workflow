@@ -113,8 +113,8 @@ final class TransitionController extends AbstractController
             return new RedirectResponse($url);
         }
 
+        // TODO: Add error collection to the view.
         if (!isset($form)) {
-            // TODO: Use proper exception.
             throw new \RuntimeException();
         }
 
