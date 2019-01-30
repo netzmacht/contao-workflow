@@ -26,7 +26,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 /**
  * Class OperationListener handles the workflow operation button
  */
-class OperationListener
+final class OperationListener
 {
     /**
      * The workflow manager.

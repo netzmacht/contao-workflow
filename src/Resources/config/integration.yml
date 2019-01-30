@@ -9,7 +9,7 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@translator'
-      - '%netzmacht.contao_workflow.type.default.providers%'
+      - '%netzmacht.contao_workflow.type.default%'
     tags:
       - { name: 'contao.hook', hook: 'loadDataContainer', priority: 100 }
 

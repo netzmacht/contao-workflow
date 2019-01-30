@@ -15,105 +15,13 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
 
-use Assert\Assertion;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Base;
-use Netzmacht\Workflow\Flow\Context;
-use Netzmacht\Workflow\Flow\Item;
 
 /**
  * Class AbstractAction which uses an form builder to create user input form data.
  */
 abstract class AbstractAction extends Base implements Action
 {
-    /**
-     * Log changed values as workflow data.
-     *
-     * @var bool
-     */
-    private $logChanges = true;
-
-    /**
-     * Consider if changes are logged.
-     *
-     * @return boolean
-     */
-    public function isLogChanges()
-    {
-        return $this->logChanges;
-    }
-
-    /**
-     * Set log changes.
-     *
-     * @param boolean $logChanges Log changes.
-     *
-     * @return $this
-     */
-    public function setLogChanges($logChanges)
-    {
-        $this->logChanges = (bool) $logChanges;
-
-        return $this;
-    }
-
-    /**
-     * Log changes if enabled.
-     *
-     * @param string  $property Property name.
-     * @param mixed   $value    Property value.
-     * @param Context $context  Transition context.
-     *
-     * @return $this
-     */
-    protected function logChanges($property, $value, Context $context)
-    {
-        if ($this->isLogChanges()) {
-            $context->getProperties()->set($this->getName() . '_' . $property, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Log multiple changes.
-     *
-     * @param array   $values  Changes propertys as associated array['name' => 'val'].
-     * @param Context $context Transition context.
-     *
-     * @return $this
-     */
-    protected function logMultipleChanges(array $values, Context $context)
-    {
-        if ($this->isLogChanges()) {
-            $properties = $context->getProperties();
-
-            foreach ($values as $name => $value) {
-                $properties->set($this->getName() . '_' . $name, $value);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get the entity of the item and protect entity type.
-     *
-     * @param Item $item Workflow item.
-     *
-     * @return EntityWithPropertyAccess
-     *
-     * @hrows AssertionException If entity is not an Instance of
-     *
-     * @throws \Assert\AssertionFailedException When the entity is not an instance of EntityWithPropertyAccess.
-     */
-    protected function getEntityWithPropertyAccess(Item $item): EntityWithPropertyAccess
-    {
-        $entity = $item->getEntity();
-
-        Assertion::isInstanceOf($entity, EntityWithPropertyAccess::class, 'Invalid entity given');
-
-        return $entity;
-    }
+    use GetEntity;
 }

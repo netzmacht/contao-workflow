@@ -47,10 +47,6 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('netzmacht.contao_workflow.type.default.providers', $config['default_type']);
-        $container->setParameter(
-            'netzmacht.contao_workflow.type.default.provider_names',
-            array_keys($config['default_type'])
-        );
+        $container->setParameter('netzmacht.contao_workflow.type.default', $config['default_type']);
     }
 }

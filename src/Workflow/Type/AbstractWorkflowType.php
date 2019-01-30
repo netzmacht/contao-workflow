@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\TypeCondition;
 use Netzmacht\Workflow\Flow\Workflow;
 
 /**
@@ -69,6 +70,7 @@ abstract class AbstractWorkflowType implements WorkflowType
      */
     public function configure(Workflow $workflow, callable $next): void
     {
+        $workflow->addCondition(new TypeCondition($this));
         $next();
     }
 

@@ -4,13 +4,6 @@ services:
     autowire: false
     autoconfigure: false
 
-# Disabled for 2.0.0 release - Implementation has to be completed
-#
-#  netzmacht.contao_workflow.action_factory.property:
-#    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Property\PropertyActionFactory
-#    tags:
-#      - { name: 'netzmacht.contao_workflow.action' }
-
   netzmacht.contao_workflow.action_factory.note:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note\NoteActionFactory
     tags:

@@ -72,18 +72,10 @@ final class OptionsListener
      */
     public function workflowOptions(DataContainer $dataContainer = null): array
     {
-        $names    = [];
-        $entityId = null;
-        $entity   = null;
-
-        if ($dataContainer && $dataContainer->id) {
-            $repository = $this->entityManager->getRepository($dataContainer->table);
-            $entityId   = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
-            $entity     = $repository->find($entityId->getIdentifier());
-        }
+        $names = [];
 
         foreach ($this->workflowManager->getWorkflows() as $workflow) {
-            if ($entityId && !$workflow->supports($entityId, $entity)) {
+            if ($dataContainer && $dataContainer->id && $workflow->getProviderName() !== $dataContainer->table) {
                 continue;
             }
 

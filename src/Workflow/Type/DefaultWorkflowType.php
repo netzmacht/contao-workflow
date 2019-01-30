@@ -13,6 +13,11 @@
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\DefaultType\UpdateEntityAction;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\PropertyCondition;
+use Netzmacht\Workflow\Flow\Workflow;
+use function array_keys;
+
 /**
  * Class DefaultWorkflowType.
  *
@@ -23,10 +28,25 @@ final class DefaultWorkflowType extends AbstractWorkflowType
     /**
      * DefaultWorkflowType constructor.
      *
-     * @param array|string[] $supportedProviders Supported providers.
+     * @param array $configuration Default workflow type configuration.
      */
-    public function __construct(array $supportedProviders = [])
+    public function __construct(array $configuration = [])
     {
-        parent::__construct('default_type', $supportedProviders);
+        parent::__construct('default_type', array_keys($configuration));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function configure(Workflow $workflow, callable $next): void
+    {
+        parent::configure($workflow, $next);
+
+        $workflow->addCondition(new PropertyCondition('workflowDefault', $workflow->getName()));
+        $action = new UpdateEntityAction();
+
+        foreach ($workflow->getTransitions() as $transition) {
+            $transition->addPostAction($action);
+        }
     }
 }
