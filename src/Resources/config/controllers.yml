@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
+  netzmacht.contao_workflow.backend.step_controller:
+    class: Netzmacht\ContaoWorkflowBundle\Controller\Backend\StepController
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.view.factory'
+      - '@router'
+
+  netzmacht.contao_workflow.backend.transition_controller:
+    class: Netzmacht\ContaoWorkflowBundle\Controller\Backend\TransitionController
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.view.factory'
+      - '@router'
+      - '@netzmacht.contao_workflow.form.factory'

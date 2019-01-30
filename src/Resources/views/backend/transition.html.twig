@@ -1,0 +1,22 @@
+{% extends "@NetzmachtContaoWorkflow/backend/backend.html.twig" %}
+
+{% block headline %}
+    {% include sections.template('headline') with sections.get('headline') only %}
+{% endblock %}
+
+{%- block error -%}
+
+{%- endblock -%}
+
+{% block main %}
+    <div id="tl_buttons">
+        <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
+    </div>
+
+    {% for name, section in sections %}
+        <div class="workflow-section">
+            {% include sections.template(name) with section only %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

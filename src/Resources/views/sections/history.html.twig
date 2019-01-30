@@ -1,0 +1,36 @@
+<h2 class="sub_headline">{{ "workflow.history"|trans }}</h2>
+
+<div class="workflow-content-box">
+<table class="workflow-history">
+    <thead>
+        <tr>
+        {% for column in columns %}
+            <th>{{ ('workflow.history.' ~ column)|trans }}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+    {% for state in history %}
+        <tr class="workflow-history-state">
+            {% for name, value in state %}
+                <td class="workflow-history-{{ name }}">
+                    {% if block(name) is defined %}
+                        {{ block(name) }}
+                    {% else %}
+                    {{ value }}
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+</div>
+
+{% block user %}
+    {% if value is defined %}
+        {% if value is iterable %}
+            {{ value.name }} <span class="tl_gray">[{{ value.username }}]</span>
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

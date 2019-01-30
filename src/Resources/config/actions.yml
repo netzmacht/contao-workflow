@@ -1,0 +1,25 @@
+services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
+  netzmacht.contao_workflow.action_factory.note:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note\NoteActionFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_form_builder.note:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFormBuilder
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }
+
+  netzmacht.contao_workflow.action_factory.form:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_form_builder.form:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Note\NoteActionFormBuilder
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }

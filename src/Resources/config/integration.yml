@@ -1,0 +1,35 @@
+services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\DataContainerListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@translator'
+      - '%netzmacht.contao_workflow.type.default%'
+    tags:
+      - { name: 'contao.hook', hook: 'loadDataContainer', priority: 100 }
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\OptionsListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@database_connection'
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\OperationListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_factory'
+      - '@router'
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\SubmitButtonsListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_factory'
+      - '@router'

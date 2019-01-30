@@ -1,0 +1,197 @@
+parameters:
+  netzmacht.contao_workflow.type.default: []
+
+services:
+  _defaults:
+    public: false
+    autowire: false
+    autoconfigure: false
+
+  netzmacht.contao_workflow.type_registry:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry
+    arguments:
+      - !tagged netzmacht.contao_workflow.type
+
+  netzmacht.contao_workflow.type.default:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
+    arguments:
+      - '%netzmacht.contao_workflow.type.default%'
+    tags:
+      - { name: 'netzmacht.contao_workflow.type' }
+
+  netzmacht.contao_workflow.action_factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory
+    arguments:
+      - !tagged netzmacht.contao_workflow.action
+
+  netzmacht.contao_workflow.definition.workflow_loader:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.type_registry'
+      - '@event_dispatcher'
+
+  netzmacht.contao_workflow.entity_factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingEntityFactory
+    arguments:
+      - !tagged netzmacht.contao_workflow.entity_factory
+
+  netzmacht.contao_workflow.entity_factory.contao_model:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.entity_factory' }
+
+  netzmacht.contao_workflow.entity_factory.data:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database\DatabaseEntityFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.entity_factory' }
+
+  netzmacht.contao_workflow.entity_repository_factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingRepositoryFactory
+    arguments:
+      - !tagged netzmacht.contao_workflow.entity_repository_factory
+
+  netzmacht.contao_workflow.entity_repository_factory.contao_model:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_toolkit.contao.model_adapter'
+    tags:
+      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -50 }
+
+  netzmacht.contao_workflow.entity_repository_factory.data:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database\DatabaseEntityRepositoryFactory
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -100 }
+
+  netzmacht.contao_workflow.entity_manager:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityManager
+    arguments:
+      - '@netzmacht.contao_workflow.entity_repository_factory'
+      - '@database_connection'
+
+  netzmacht.contao_workflow.transition_handler_factory:
+    class: Netzmacht\Workflow\Handler\RepositoryBasedTransitionHandlerFactory
+    arguments:
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+
+  netzmacht.contao_workflow.state_repository:
+    class: Netzmacht\ContaoWorkflowBundle\Model\State\StateRepository
+    arguments:
+      - '@netzmacht.contao_toolkit.repository_manager'
+
+  netzmacht.contao_workflow.manager:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Manager\ContaoWorkflowManager
+    arguments:
+      - '@netzmacht.contao_workflow.transition_handler_factory'
+      - '@netzmacht.contao_workflow.state_repository'
+      - []
+
+  netzmacht.contao_workflow.manager.lazy:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Manager\LazyLoadingWorkflowManager
+    decorates: 'netzmacht.contao_workflow.manager'
+    arguments:
+      - '@netzmacht.contao_workflow.manager.lazy.inner'
+      - '@netzmacht.contao_workflow.definition.workflow_loader'
+
+  netzmacht.contao_workflow.security.step_voter:
+    class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
+    tags:
+      - { name: 'security.voter' }
+
+  netzmacht.contao_workflow.security.transition_voter:
+    class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
+    tags:
+      - { name: 'security.voter' }
+
+  netzmacht.contao_workflow.model.workflow_repository:
+    class: Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository
+    tags:
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel'
+        }
+
+  netzmacht.contao_workflow.model.action_repository:
+    class: Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository
+    arguments:
+      - '@database_connection'
+    tags:
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel'
+        }
+
+  netzmacht.contao_workflow.model.step_repository:
+    class: Netzmacht\ContaoWorkflowBundle\Model\Step\StepRepository
+    tags:
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel'
+        }
+    tags:
+      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_step' }
+
+  netzmacht.contao_workflow.model.transition_repository:
+    class: Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository
+    tags:
+      - {
+          name: 'netzmacht.contao_toolkit.repository',
+          model: 'Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel'
+        }
+
+  netzmacht.contao_workflow.expression_language:
+    class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+
+  netzmacht.contao_workflow.dca.transition_operation_builder:
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\TransitionOperationBuilder
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_toolkit.dca.manager'
+
+  netzmacht.contao_workflow.request.param_converter.entity_id:
+    class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter
+    tags:
+      - { name: 'request.param_converter', converter: 'entity_id' }
+
+  netzmacht.contao_workflow.action.metadata_action:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata\MetadataAction
+    arguments:
+      - '@security.token_storage'
+      - '@request_stack'
+
+  netzmacht.contao_workflow.form.factory:
+    alias: 'form.factory'
+
+  netzmacht.contao_workflow.form.transition_form:
+    class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
+    arguments:
+      - !tagged netzmacht.contao_workflow.transition_form_builder
+    tags:
+      - { name: 'form.type' }
+
+  netzmacht.contao_workflow.form.transition_actions_form_builder:
+    class: Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionActionsFormBuilder
+    arguments:
+      - !tagged netzmacht.contao_workflow.action_form_builder
+    tags:
+      - { name: 'netzmacht.contao_workflow.transition_form_builder' }
+
+  netzmacht.contao_workflow.view.factory:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\DelegatingViewFactory
+    arguments:
+      - []
+
+  netzmacht.contao_workflow.view.factory.html:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\HtmlViewFactory
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+      - '@templating'
+      - '@netzmacht.contao_workflow.view.renderer'
+      - '%netzmacht.contao_workflow.templates.html_view%'
+    tags:
+      - { name: 'netzmacht.contao_workflow.view_factory', content_type: 'text/html' }
