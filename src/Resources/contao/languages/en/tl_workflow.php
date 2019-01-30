@@ -84,5 +84,5 @@ $GLOBALS['TL_LANG']['tl_workflow']['process']['start']   = 'Start point';
 /*
  * Workflow types
  */
-$GLOBALS['TL_LANG']['workflow_type']['default'][0] = 'Default';
-$GLOBALS['TL_LANG']['workflow_type']['default'][1] = 'Default workflow type';
+$GLOBALS['TL_LANG']['workflow_type']['default_type'][0] = 'Default';
+$GLOBALS['TL_LANG']['workflow_type']['default_type'][1] = 'Default workflow type';

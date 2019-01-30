@@ -27,6 +27,6 @@ final class DefaultWorkflowType extends AbstractWorkflowType
      */
     public function __construct(array $supportedProviders = [])
     {
-        parent::__construct('default', $supportedProviders);
+        parent::__construct('default_type', $supportedProviders);
     }
 }
