@@ -74,6 +74,10 @@ final class SubmitButtonsListener
      */
     public function addTransitionButtons(array $buttons, DataContainer $dataContainer): array
     {
+        if (!$dataContainer->activeRecord) {
+            return $buttons;
+        }
+
         $entityId = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
         $entity   = $this->entityFactory->create($entityId, $dataContainer->activeRecord->row());
 
