@@ -17,11 +17,11 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use Netzmacht\Workflow\Data\EntityId;
-use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use function array_merge;
+use function asort;
 
 /**
  * Class OptionsListener handles the options callback for the default workflow integration.
@@ -36,13 +36,6 @@ final class OptionsListener
     private $workflowManager;
 
     /**
-     * Entity manager.
-     *
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
      * Database connection.
      *
      * @var Connection
@@ -53,13 +46,11 @@ final class OptionsListener
      * OptionsListener constructor.
      *
      * @param WorkflowManager $workflowManager Workflow manager.
-     * @param EntityManager   $entityManager   Entity manager.
      * @param Connection      $connection      Database connection.
      */
-    public function __construct(WorkflowManager $workflowManager, EntityManager $entityManager, Connection $connection)
+    public function __construct(WorkflowManager $workflowManager, Connection $connection)
     {
         $this->workflowManager = $workflowManager;
-        $this->entityManager   = $entityManager;
         $this->connection      = $connection;
     }
 
@@ -113,13 +104,25 @@ final class OptionsListener
         }
 
         foreach ($this->workflowManager->getWorkflows() as $workflow) {
-            $workflowName = sprintf(
-                '%s [%s]',
-                $workflow->getLabel(),
-                $workflow->getName()
-            );
+            // We are in the list view and options are used as filter. Nested options are not supported
+            if ($dataContainer) {
+                $options[] = $this->buildWorkflowStepOptions($workflow, $workflow->getLabel() . ' | ');
+            } else {
+                $workflowName = sprintf(
+                    '%s [%s]',
+                    $workflow->getLabel(),
+                    $workflow->getName()
+                );
 
-            $options[$workflowName] = $this->buildWorkflowStepOptions($workflow);
+                $options[$workflowName] = $this->buildWorkflowStepOptions($workflow);
+            }
+        }
+
+        if ($dataContainer) {
+            $options = array_merge(... $options);
+            asort($options);
+
+            return $options;
         }
 
         return $options;
@@ -149,10 +152,11 @@ final class OptionsListener
      * Build workflow step options from a workflow.
      *
      * @param Workflow $workflow Workflow.
+     * @param string   $prefix   Add a prefix before the step options.
      *
      * @return array
      */
-    private function buildWorkflowStepOptions(Workflow $workflow): array
+    private function buildWorkflowStepOptions(Workflow $workflow, string $prefix = ''): array
     {
         $options = [];
 
@@ -162,7 +166,7 @@ final class OptionsListener
                 continue;
             }
 
-            $options[$stepTo->getName()] = $stepTo->getLabel();
+            $options[$stepTo->getName()] = $prefix . $stepTo->getLabel();
         }
 
         return $options;

@@ -17,7 +17,6 @@ services:
     public: true
     arguments:
       - '@netzmacht.contao_workflow.manager'
-      - '@netzmacht.contao_workflow.entity_manager'
       - '@database_connection'
 
   Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\OperationListener:
