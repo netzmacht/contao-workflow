@@ -99,13 +99,14 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
         'default' => [
             'name'        => ['label', 'type'],
         ],
-        'default_type' => [
+        '__base__' => [
             'name'        => ['label', 'type', 'providerName', 'active'],
             'description' => [':hide', 'description'],
             'permissions' => ['permissions'],
             'process'     => ['process'],
             'config'      => [],
         ],
+        'default_type extends __base__' => []
     ],
 
     'fields' => [
