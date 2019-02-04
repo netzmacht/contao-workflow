@@ -16,7 +16,9 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
 use ArrayAccess;
+use ArrayIterator;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
+use Traversable;
 use function array_key_exists;
 use function is_array;
 
@@ -88,5 +90,13 @@ final class ArrayPropertyAccessor implements PropertyAccessor
         }
 
         return array_key_exists($name, $this->array);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->array);
     }
 }

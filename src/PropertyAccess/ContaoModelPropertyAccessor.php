@@ -15,8 +15,10 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
+use ArrayIterator;
 use Contao\Model;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
+use Traversable;
 
 /**
  * Class ContaoModelPropertyAccessor
@@ -82,5 +84,13 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     public function has(string $name): bool
     {
         return isset($this->model->$name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->model->row());
     }
 }

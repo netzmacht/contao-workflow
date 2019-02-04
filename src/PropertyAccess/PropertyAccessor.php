@@ -15,10 +15,12 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
+use IteratorAggregate;
+
 /**
  * Interface PropertyAccessor
  */
-interface PropertyAccessor
+interface PropertyAccessor extends IteratorAggregate
 {
     /**
      * Check if entity supports property access.
