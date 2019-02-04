@@ -127,7 +127,7 @@ final class SubmitButtonsListener
             [
                 'entityId'   => $entityId,
                 'transition' => $transition,
-                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflowDefault,
+                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflow,
             ]
         );
 

@@ -64,6 +64,6 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
         }
 
         $accessor = $this->propertyAccessManager->provideAccess($entity);
-        $accessor->set('workflowDefaultCurrentStep', $item->getCurrentStepName());
+        $accessor->set('workflowStep', $item->getCurrentStepName());
     }
 }

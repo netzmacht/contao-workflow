@@ -139,7 +139,7 @@ final class OptionsListener
     {
         return $this->connection
             ->createQueryBuilder()
-            ->select('workflowDefault')
+            ->select('workflow')
             ->from($dataContainer->table)
             ->where('id=:id')
             ->setParameter('id', $dataContainer->id)

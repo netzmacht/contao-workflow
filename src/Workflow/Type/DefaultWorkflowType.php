@@ -54,7 +54,7 @@ final class DefaultWorkflowType extends AbstractWorkflowType
         parent::configure($workflow, $next);
 
         $workflow->addCondition(
-            new PropertyCondition($this->propertyAccessManager, 'workflowDefault', $workflow->getName())
+            new PropertyCondition($this->propertyAccessManager, 'workflow', $workflow->getName())
         );
 
         $action = new UpdateEntityAction($this->propertyAccessManager);

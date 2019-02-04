@@ -15,6 +15,8 @@
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection;
 
 use function array_keys;
+use function array_map;
+use function array_unique;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -44,9 +46,16 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         $loader->load('integration.yml');
         $loader->load('services.yml');
 
-        $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
+        $configuration       = new Configuration();
+        $config              = $this->processConfiguration($configuration, $configs);
 
+        $providers = $config['providers'];
+
+        foreach (array_keys($config['default_type']) as $provider) {
+            $providers[$provider] = ['workflow' => true, 'step' => true];
+        }
+
+        $container->setParameter('netzmacht.contao_workflow.dca_providers', $providers);
         $container->setParameter('netzmacht.contao_workflow.type.default', $config['default_type']);
     }
 }
