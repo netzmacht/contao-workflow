@@ -15,8 +15,8 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Contao\Config;
 use Contao\CoreBundle\Framework\Adapter;
+use Contao\Model;
 use Contao\StringUtil;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
@@ -247,18 +247,18 @@ final class StateHistoryRenderer extends AbstractStepRenderer
         $repository = $this->entityManager->getRepository($userId->getProviderName());
         $user       = $repository->find($userId->getIdentifier());
 
-        if ($user instanceof EntityWithPropertyAccess) {
+        if ($user instanceof Model) {
             $userName = '';
 
-            if ($user->getProviderName() === 'tl_user') {
-                $userName = $user->getProperty('name');
-            } elseif ($user->getProviderName() === 'tl_member') {
-                $userName = $user->getProperty('firstname') . ' ' . $user->getProperty('lastname');
+            if ($user::getTable() === 'tl_user') {
+                $userName = $user->name;
+            } elseif ($user::getTable() === 'tl_member') {
+                $userName = $user->firstname . ' ' . $user->lastname;
             }
 
             $userName = [
                 'name'    => $userName,
-                'username' => $user->getProperty('username') ?: $user->getId()
+                'username' => $user->username ?: $user->id
             ];
 
             return $userName;

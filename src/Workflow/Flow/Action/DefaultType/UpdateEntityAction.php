@@ -15,18 +15,27 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\DefaultType;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\GetEntity;
-use Netzmacht\Workflow\Flow\Action;
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAction;
 use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 
 /**
  * Class UpdateEntityAction updates the entity of a default workflow item
  */
-final class UpdateEntityAction implements Action
+final class UpdateEntityAction extends AbstractPropertyAccessAction
 {
-    use GetEntity;
+    /**
+     * Construct.
+     *
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     */
+    public function __construct(PropertyAccessManager $propertyAccessManager)
+    {
+        parent::__construct($propertyAccessManager, 'Update entity action');
+    }
 
     /**
      * {@inheritDoc}
@@ -49,7 +58,12 @@ final class UpdateEntityAction implements Action
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $entity = $this->getEntity($item);
-        $entity->setProperty('workflowDefaultCurrentStep', $item->getCurrentStepName());
+        $entity = $item->getEntity();
+        if (!$this->propertyAccessManager->supports($entity)) {
+            throw new ActionFailedException('No property access to entity');
+        }
+
+        $accessor = $this->propertyAccessManager->provideAccess($entity);
+        $accessor->set('workflowDefaultCurrentStep', $item->getCurrentStepName());
     }
 }

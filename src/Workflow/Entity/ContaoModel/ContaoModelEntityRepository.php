@@ -16,9 +16,9 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
 
 use Assert\Assertion;
+use Contao\Model;
 use Netzmacht\Contao\Toolkit\Data\Model\Repository;
 use Netzmacht\Contao\Toolkit\Data\Model\Specification as ModelSpecification;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Entity;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
 
@@ -49,7 +49,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     /**
      * Add an entity to the repository.
      *
-     * @param Entity $entity The new entity.
+     * @param Model $entity The new entity.
      *
      * @return void
      *
@@ -59,12 +59,12 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     {
         Assertion::isInstanceOf(
             $entity,
-            ContaoModelEntity::class,
+            Model::class,
             'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        /** @var ContaoModelEntity $entity */
-        $this->repository->save($entity->getModel());
+        /** @var Model $entity */
+        $this->repository->save($entity);
     }
 
     /**
@@ -72,11 +72,11 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @param int $entityId The Entity id.
      *
-     * @return Entity
+     * @return Model
      *
      * @throws \InvalidArgumentException If no entity were found.
      */
-    public function find($entityId)
+    public function find($entityId): Model
     {
         $model = $this->repository->find((int) $entityId);
 
@@ -84,7 +84,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
             throw new \InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
         }
 
-        return new ContaoModelEntity($model);
+        return $model;
     }
 
     /**
@@ -94,7 +94,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @param Specification $specification The specification.
      *
-     * @return Entity[]|iterable
+     * @return Model[]|iterable
      */
     public function findBySpecification(Specification $specification): iterable
     {
@@ -103,7 +103,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
             $entities = [];
 
             foreach ($models as $model) {
-                $entities[] = new ContaoModelEntity($model);
+                $entities[] = $model;
             }
 
             return $entities;
@@ -113,12 +113,12 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
         $entities = [];
 
         foreach ($models as $model) {
-            $entities[] = new ContaoModelEntity($model);
+            $entities[] = $model;
         }
 
         return array_filter(
             $entities,
-            function (Entity $entity) use ($specification) {
+            function (Model $entity) use ($specification) {
                 return $specification->isSatisfiedBy($entity);
             }
         );
@@ -135,11 +135,11 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     {
         Assertion::isInstanceOf(
             $entity,
-            ContaoModelEntity::class,
+            Model::class,
             'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        /** @var ContaoModelEntity $entity */
-        $this->repository->delete($entity->getModel());
+        /** @var Model $entity */
+        $this->repository->delete($entity);
     }
 }

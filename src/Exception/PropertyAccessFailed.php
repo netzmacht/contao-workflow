@@ -6,21 +6,20 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
+ * @copyright  2014-2019 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
  * @filesource
  */
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
-
-use Netzmacht\Workflow\Flow\Action;
-use Netzmacht\Workflow\Flow\Base;
+namespace Netzmacht\ContaoWorkflowBundle\Exception;
 
 /**
- * Class AbstractAction which uses an form builder to create user input form data.
+ * Class PropertyAccessFailed
+ *
+ * @package Netzmacht\ContaoWorkflowBundle\Exception
  */
-abstract class AbstractAction extends Base implements Action
+final class PropertyAccessFailed extends RuntimeException
 {
 }

@@ -13,6 +13,7 @@
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\DefaultType\UpdateEntityAction;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\PropertyCondition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -26,13 +27,23 @@ use function array_keys;
 final class DefaultWorkflowType extends AbstractWorkflowType
 {
     /**
+     * Property access manager.
+     *
+     * @var PropertyAccessManager
+     */
+    private $propertyAccessManager;
+
+    /**
      * DefaultWorkflowType constructor.
      *
-     * @param array $configuration Default workflow type configuration.
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     * @param array                 $configuration         Default workflow type configuration.
      */
-    public function __construct(array $configuration = [])
+    public function __construct(PropertyAccessManager $propertyAccessManager, array $configuration = [])
     {
         parent::__construct('default_type', array_keys($configuration));
+
+        $this->propertyAccessManager = $propertyAccessManager;
     }
 
     /**
@@ -42,9 +53,11 @@ final class DefaultWorkflowType extends AbstractWorkflowType
     {
         parent::configure($workflow, $next);
 
-        $workflow->addCondition(new PropertyCondition('workflowDefault', $workflow->getName()));
-        $action = new UpdateEntityAction();
+        $workflow->addCondition(
+            new PropertyCondition($this->propertyAccessManager, 'workflowDefault', $workflow->getName())
+        );
 
+        $action = new UpdateEntityAction($this->propertyAccessManager);
         foreach ($workflow->getTransitions() as $transition) {
             $transition->addPostAction($action);
         }

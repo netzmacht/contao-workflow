@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -29,6 +29,13 @@ use Netzmacht\Workflow\Util\Comparison;
  */
 final class PropertyCondition implements Condition
 {
+    /**
+     * Property access manager.
+     *
+     * @var PropertyAccessManager
+     */
+    private $propertyAccessManager;
+
     /**
      * Name of the property.
      *
@@ -49,6 +56,16 @@ final class PropertyCondition implements Condition
      * @var mixed
      */
     private $value;
+
+    /**
+     * PropertyCondition constructor.
+     *
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     */
+    public function __construct(PropertyAccessManager $propertyAccessManager)
+    {
+        $this->propertyAccessManager = $propertyAccessManager;
+    }
 
     /**
      * Get comparison operator.
@@ -129,15 +146,13 @@ final class PropertyCondition implements Condition
     {
         $entity = $item->getEntity();
 
-        if (!$entity instanceof EntityWithPropertyAccess) {
-            $context->addError(
-                'transition.condition.property.invalid_entity',
-            );
+        if (!$this->propertyAccessManager->supports($entity)) {
+            $context->addError('transition.condition.property.invalid_entity');
 
             return false;
         }
 
-        $value = $this->getEntityValue($item->getEntity());
+        $value = $this->propertyAccessManager->provideAccess($entity)->get($this->property);
 
         if (Comparison::compare($value, $this->value, $this->operator)) {
             return true;
@@ -154,17 +169,5 @@ final class PropertyCondition implements Condition
         );
 
         return false;
-    }
-
-    /**
-     * Get value from the entity.
-     *
-     * @param EntityWithPropertyAccess $entity The entity.
-     *
-     * @return mixed
-     */
-    protected function getEntityValue(EntityWithPropertyAccess $entity)
-    {
-        return $entity->getProperty($this->property);
     }
 }

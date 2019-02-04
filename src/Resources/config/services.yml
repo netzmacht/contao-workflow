@@ -1,5 +1,8 @@
 parameters:
   netzmacht.contao_workflow.type.default: []
+  netzmacht.contao_workflow.property_accessors:
+    - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ArrayPropertyAccessor
+    - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessor
 
 services:
   _defaults:
@@ -15,6 +18,7 @@ services:
   netzmacht.contao_workflow.type.default:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
     arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
       - '%netzmacht.contao_workflow.type.default%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }
@@ -117,8 +121,6 @@ services:
           name: 'netzmacht.contao_toolkit.repository',
           model: 'Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel'
         }
-    tags:
-      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_step' }
 
   netzmacht.contao_workflow.model.transition_repository:
     class: Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository
@@ -130,13 +132,6 @@ services:
 
   netzmacht.contao_workflow.expression_language:
     class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
-
-  netzmacht.contao_workflow.dca.transition_operation_builder:
-    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\TransitionOperationBuilder
-    arguments:
-      - '@netzmacht.contao_workflow.manager'
-      - '@netzmacht.contao_toolkit.repository_manager'
-      - '@netzmacht.contao_toolkit.dca.manager'
 
   netzmacht.contao_workflow.request.param_converter.entity_id:
     class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter
@@ -180,3 +175,8 @@ services:
       - '%netzmacht.contao_workflow.templates.html_view%'
     tags:
       - { name: 'netzmacht.contao_workflow.view_factory', content_type: 'text/html' }
+
+  netzmacht.contao_workflow.property_access_manager:
+    class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager
+    arguments:
+      - '%netzmacht.contao_workflow.property_accessors%'

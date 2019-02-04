@@ -20,7 +20,6 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Patchwork\Utf8;
-use function strlen;
 
 /**
  * Class NoteAction
