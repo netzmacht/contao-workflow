@@ -1,4 +1,5 @@
 .check-author.yml export-ignore
+.composer-require-checker.json export-ignore
 .gitattributes export-ignore
 .github export-ignore
 .gitignore export-ignore
@@ -7,5 +8,6 @@ build.default.properties export-ignore
 build.xml export-ignore
 phpunit.xml.dist export-ignore
 /tests export-ignore
-/specs export-ignore
+/spec export-ignore
 /js export-ignore
+/docs export-ignore

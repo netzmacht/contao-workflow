@@ -1,0 +1,18 @@
+services:
+  Netzmacht\ContaoWorkflowExampleBundle\Workflow\Type\ExampleType:
+    tags:
+      - { name: 'netzmacht.contao_workflow.type' }
+
+  Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action\PublishActionFactory:
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action\SendEmailNotificationFactory:
+    arguments:
+      - '@mailer'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  Netzmacht\ContaoWorkflowExampleBundle\Workflow\Form\SendEmailNotificationFormBuilder:
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder'}
