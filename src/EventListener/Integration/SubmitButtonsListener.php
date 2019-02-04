@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\DataContainer;
