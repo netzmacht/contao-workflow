@@ -17,9 +17,11 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Manager\Manager;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use NotificationCenter\Model\Notification;
 
 /**
  * Class Action is used for tl_workflow_action callbacks.
@@ -80,11 +82,30 @@ final class ActionCallbackListener
             ->find((int) $dataContainer->activeRecord->pid);
 
         if (!$transition) {
-            return [];
+            return $this->actionFactory->getTypeNames();
         }
 
         $workflow = $this->manager->getWorkflowById((int) $transition->pid);
 
         return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
+    }
+
+    /**
+     * Get all notifications as options.
+     *
+     * @return array
+     */
+    public function notificationOptions(): array
+    {
+        $notifications = $this->repositoryManager
+            ->getRepository(Notification::class)
+            ->findBy(['.type=?'], ['workflow_transition'], ['order' => '.title']);
+
+        return OptionsBuilder::fromCollection(
+            $notifications,
+            function (array $row) {
+                return sprintf('%s [ID %s]', $row['title'], $row['id']);
+            })
+            ->getOptions();
     }
 }

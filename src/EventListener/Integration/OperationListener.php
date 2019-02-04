@@ -13,13 +13,13 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityFactory;
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Routing\RouterInterface as Router;
 
@@ -36,11 +36,11 @@ final class OperationListener
     private $workflowManager;
 
     /**
-     * Entity factory.
+     * Entity manager.
      *
-     * @var EntityFactory
+     * @var EntityManager
      */
-    private $entityFactory;
+    private $entityManager;
 
     /**
      * The router.
@@ -53,14 +53,14 @@ final class OperationListener
      * OperationListener constructor.
      *
      * @param WorkflowManager $workflowManager The workflow manager.
-     * @param EntityFactory   $entityFactory   Entity factory.
+     * @param EntityManager   $entityManager   Entity manager.
      * @param Router          $router          The router.
      */
-    public function __construct(WorkflowManager $workflowManager, EntityFactory $entityFactory, Router $router)
+    public function __construct(WorkflowManager $workflowManager, EntityManager $entityManager, Router $router)
     {
-        $this->entityFactory   = $entityFactory;
-        $this->router          = $router;
         $this->workflowManager = $workflowManager;
+        $this->entityManager   = $entityManager;
+        $this->router          = $router;
     }
 
     /**
@@ -85,8 +85,9 @@ final class OperationListener
         ?string $attributes,
         string $table
     ): string {
-        $entityId = EntityId::fromProviderNameAndId($table, $row['id']);
-        $entity   = $this->entityFactory->create($entityId, $row);
+        $entityId   = EntityId::fromProviderNameAndId($table, $row['id']);
+        $repository = $this->entityManager->getRepository($table);
+        $entity     = $repository->find($entityId->getIdentifier());
 
         if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
             return '';

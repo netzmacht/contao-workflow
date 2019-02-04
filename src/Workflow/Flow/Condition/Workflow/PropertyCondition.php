@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityWithPropertyAccess;
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Condition\Workflow\Condition;
 use Netzmacht\Workflow\Flow\Workflow;
@@ -48,17 +48,30 @@ final class PropertyCondition implements Condition
     private $operator;
 
     /**
+     * Property access manager.
+     *
+     * @var PropertyAccessManager
+     */
+    private $propertyAccessManager;
+
+    /**
      * PropertyCondition constructor.
      *
-     * @param string $property Name of the property.
-     * @param mixed  $value    Value to compare with.
-     * @param string $operator Comparison operator.
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     * @param string                $property              Name of the property.
+     * @param mixed                 $value                 Value to compare with.
+     * @param string                $operator              Comparison operator.
      */
-    public function __construct(string $property, $value, $operator = Comparison::EQUALS)
-    {
-        $this->property = $property;
-        $this->value    = $value;
-        $this->operator = $operator;
+    public function __construct(
+        PropertyAccessManager $propertyAccessManager,
+        string $property,
+        $value,
+        $operator = Comparison::EQUALS
+    ) {
+        $this->property              = $property;
+        $this->value                 = $value;
+        $this->operator              = $operator;
+        $this->propertyAccessManager = $propertyAccessManager;
     }
 
     /**
@@ -66,11 +79,11 @@ final class PropertyCondition implements Condition
      */
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {
-        if (!$entity instanceof EntityWithPropertyAccess) {
+        if (!$this->propertyAccessManager->supports($entity)) {
             return false;
         }
 
-        $value = $entity->getProperty($this->property);
+        $value = $this->propertyAccessManager->provideAccess($entity)->get($this->property);
 
         return Comparison::compare($value, $this->value, $this->operator);
     }

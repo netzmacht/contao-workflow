@@ -13,9 +13,10 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use function in_array;
 use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Exception\DataContainer\FieldAlreadyExists;
@@ -49,20 +50,30 @@ final class DataContainerListener
     private $defaultConfiguration;
 
     /**
+     * Data container provider names.
+     *
+     * @var array
+     */
+    private $dcaProviders;
+
+    /**
      * DefaultWorkflowTypeIntegrationListener constructor.
      *
      * @param DcaManager $dcaManager           Data container manager.
      * @param Translator $translator           Translator.
+     * @param array      $dcaProviders         Data container provider names.
      * @param array      $defaultConfiguration Configuration of the default workflow types.
      */
     public function __construct(
         DcaManager $dcaManager,
         Translator $translator,
+        array $dcaProviders,
         array $defaultConfiguration
     ) {
         $this->dcaManager           = $dcaManager;
         $this->defaultConfiguration = $defaultConfiguration;
         $this->translator           = $translator;
+        $this->dcaProviders         = $dcaProviders;
     }
 
     /**
@@ -74,15 +85,26 @@ final class DataContainerListener
      */
     public function onLoadDataContainer(string $dataContainerName): void
     {
-        if (!isset($this->defaultConfiguration[$dataContainerName])) {
+        if (!isset($this->dcaProviders[$dataContainerName])) {
             return;
         }
 
         $definition = $this->dcaManager->getDefinition($dataContainerName);
 
         $this->addTranslations($definition->getName());
-        $this->addWorkflowFieldToDefinition($definition);
-        $this->addWorkflowStepFieldToDefinition($definition);
+
+        if ($this->dcaProviders[$dataContainerName]['workflow']) {
+            $this->addWorkflowFieldToDefinition($definition);
+        }
+
+        if ($this->dcaProviders[$dataContainerName]['step']) {
+            $this->addWorkflowStepFieldToDefinition($definition);
+        }
+
+        if (!isset($this->defaultConfiguration[$dataContainerName])) {
+            return;
+        }
+
         $this->adjustPalettes($definition);
         $this->addWorkflowOperation($definition);
         $this->addButtonsCallback($definition);
@@ -95,16 +117,16 @@ final class DataContainerListener
      *
      * @return void
      *
-     * @throws FieldAlreadyExists When workflowDefaultCurrentStep is already configured in data container.
+     * @throws FieldAlreadyExists When workflowStep is already configured in data container.
      */
     private function addWorkflowFieldToDefinition(Definition $definition): void
     {
-        if ($definition->has(['fields', 'workflowDefault'])) {
-            throw FieldAlreadyExists::namedInDataContainer('workflowDefault', $definition->getName());
+        if ($definition->has(['fields', 'workflow'])) {
+            throw FieldAlreadyExists::namedInDataContainer('workflow', $definition->getName());
         }
 
         $definition->set(
-            ['fields', 'workflowDefault'],
+            ['fields', 'workflow'],
             [
                 'label'            => [
                     $this->translator->trans('workflow.integration.workflow.0'),
@@ -137,12 +159,12 @@ final class DataContainerListener
      */
     private function addWorkflowStepFieldToDefinition(Definition $definition): void
     {
-        if ($definition->has(['fields', 'workflowDefaultCurrentStep'])) {
-            throw FieldAlreadyExists::namedInDataContainer('workflowDefaultCurrentStep', $definition->getName());
+        if ($definition->has(['fields', 'workflowStep'])) {
+            throw FieldAlreadyExists::namedInDataContainer('workflowStep', $definition->getName());
         }
 
         $definition->set(
-            ['fields', 'workflowDefaultCurrentStep'],
+            ['fields', 'workflowStep'],
             [
                 'label'            => [
                     $this->translator->trans('workflow.integration.current_step.0'),
@@ -178,14 +200,14 @@ final class DataContainerListener
             PaletteManipulator::create()
                 ->addLegend('workflow_legend', '', PaletteManipulator::POSITION_AFTER, true)
                 ->addField(
-                    ['workflowDefault'],
+                    ['workflow'],
                     'workflow_legend',
                     PaletteManipulator::POSITION_APPEND
                 )
                 ->applyToPalette($palette, $definition->getName());
         }
 
-        $definition->set(['metasubselectpalettes', 'workflowDefault'], ['!' => ['workflowDefaultCurrentStep']]);
+        $definition->set(['metasubselectpalettes', 'workflow'], ['!' => ['workflowStep']]);
     }
 
     /**

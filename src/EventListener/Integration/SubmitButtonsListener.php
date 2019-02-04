@@ -13,12 +13,12 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\DataContainer;
 use Contao\Input;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityFactory;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityManager;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
@@ -37,11 +37,11 @@ final class SubmitButtonsListener
     private $workflowManager;
 
     /**
-     * Entity factory.
+     * Entity manager.
      *
-     * @var EntityFactory
+     * @var EntityManager
      */
-    private $entityFactory;
+    private $entityManager;
 
     /**
      * Router.
@@ -54,13 +54,13 @@ final class SubmitButtonsListener
      * SubmitButtonsListener constructor.
      *
      * @param WorkflowManager $workflowManager Workflow manager.
-     * @param EntityFactory   $entityFactory   Entity factory.
+     * @param EntityManager   $entityManager   Entity manager.
      * @param Router          $router          Router.
      */
-    public function __construct(WorkflowManager $workflowManager, EntityFactory $entityFactory, Router $router)
+    public function __construct(WorkflowManager $workflowManager, EntityManager $entityManager, Router $router)
     {
         $this->workflowManager = $workflowManager;
-        $this->entityFactory   = $entityFactory;
+        $this->entityManager   = $entityManager;
         $this->router          = $router;
     }
 
@@ -78,8 +78,9 @@ final class SubmitButtonsListener
             return $buttons;
         }
 
-        $entityId = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
-        $entity   = $this->entityFactory->create($entityId, $dataContainer->activeRecord->row());
+        $entityId   = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
+        $repository = $this->entityManager->getRepository($dataContainer->table);
+        $entity     = $repository->find($entityId->getIdentifier());
 
         if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
             return $buttons;
@@ -112,8 +113,9 @@ final class SubmitButtonsListener
             return;
         }
 
-        $entityId = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
-        $entity   = $this->entityFactory->create($entityId, $dataContainer->activeRecord->row());
+        $entityId   = EntityId::fromProviderNameAndId($dataContainer->table, (int) $dataContainer->id);
+        $repository = $this->entityManager->getRepository($dataContainer->table);
+        $entity     = $repository->find($entityId->getIdentifier());
 
         if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
             return;
@@ -125,7 +127,7 @@ final class SubmitButtonsListener
             [
                 'entityId'   => $entityId,
                 'transition' => $transition,
-                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflowDefault,
+                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflow,
             ]
         );
 

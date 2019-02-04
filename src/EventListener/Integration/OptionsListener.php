@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
@@ -139,7 +139,7 @@ final class OptionsListener
     {
         return $this->connection
             ->createQueryBuilder()
-            ->select('workflowDefault')
+            ->select('workflow')
             ->from($dataContainer->table)
             ->where('id=:id')
             ->setParameter('id', $dataContainer->id)
