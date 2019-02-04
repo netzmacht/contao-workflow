@@ -23,12 +23,12 @@ services:
     public: true
     arguments:
       - '@netzmacht.contao_workflow.manager'
-      - '@netzmacht.contao_workflow.entity_factory'
+      - '@netzmacht.contao_workflow.entity_manager'
       - '@router'
 
   Netzmacht\ContaoWorkflowBundle\EventListener\DefaultType\SubmitButtonsListener:
     public: true
     arguments:
       - '@netzmacht.contao_workflow.manager'
-      - '@netzmacht.contao_workflow.entity_factory'
+      - '@netzmacht.contao_workflow.entity_manager'
       - '@router'
