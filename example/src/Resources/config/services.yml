@@ -4,6 +4,8 @@ services:
       - { name: 'netzmacht.contao_workflow.type' }
 
   Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action\PublishActionFactory:
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
@@ -16,3 +18,9 @@ services:
   Netzmacht\ContaoWorkflowExampleBundle\Workflow\Form\SendEmailNotificationFormBuilder:
     tags:
       - { name: 'netzmacht.contao_workflow.action_form_builder'}
+
+  Netzmacht\ContaoWorkflowExampleBundle\EventListener\ExampleDcaListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@translator'

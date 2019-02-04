@@ -11,5 +11,4 @@
 
 * [Workflow-Typen](entwicklung/workflow-type.md)
 * [Aktionen](entwicklung/actions.md)
-* [Integration](entwicklung/integration.md)
 * [Weiteres](entwicklung/weiteres.md)

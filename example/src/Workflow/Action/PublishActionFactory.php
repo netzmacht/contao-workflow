@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
@@ -22,6 +23,23 @@ use Netzmacht\Workflow\Flow\Workflow;
 
 final class PublishActionFactory implements ActionTypeFactory
 {
+    /**
+     * Property access manager.
+     *
+     * @var PropertyAccessManager
+     */
+    private $propertyAccessManager;
+
+    /**
+     * PublishActionFactory constructor.
+     *
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     */
+    public function __construct(PropertyAccessManager $propertyAccessManager)
+    {
+        $this->propertyAccessManager = $propertyAccessManager;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -60,6 +78,7 @@ final class PublishActionFactory implements ActionTypeFactory
     public function create(array $config, Transition $transition): Action
     {
         return new PublishAction(
+            $this->propertyAccessManager,
             'action_' . $config['id'],
             $config['label'],
             $config['publish_state'],

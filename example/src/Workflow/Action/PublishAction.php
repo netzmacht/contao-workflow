@@ -15,16 +15,15 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\GetEntity;
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 
-final class PublishAction extends AbstractAction
+final class PublishAction extends AbstractPropertyAccessAction
 {
-    use GetEntity;
-
     /**
      * Published state.
      *
@@ -35,9 +34,14 @@ final class PublishAction extends AbstractAction
     /**
      * @inheritDoc
      */
-    public function __construct(string $name, string $label, string $state, array $config = [])
-    {
-        parent::__construct($name, $label, $config);
+    public function __construct(
+        PropertyAccessManager $propertyAccessManager,
+        string $name,
+        string $label,
+        string $state,
+        array $config = []
+    ) {
+        parent::__construct($propertyAccessManager, $name, $label, $config);
 
         $this->state = $state;
     }
@@ -63,6 +67,16 @@ final class PublishAction extends AbstractAction
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $this->getEntity($item)->setProperty('published', $this->state);
+        $entity = $item->getEntity();
+
+        // The property access manager is a generic solution to support different entity types.
+        // If you have an contao model set up for the provider name, your entity should be the model
+        // You can directly access the model, if your action is limited to the specific entity type
+        if (!$this->propertyAccessManager->supports($entity)) {
+            throw new UnsupportedEntity('Entity not supported');
+        }
+
+        $accessor = $this->propertyAccessManager->provideAccess($entity);
+        $accessor->set('published', $this->state);
     }
 }

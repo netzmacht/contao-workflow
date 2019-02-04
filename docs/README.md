@@ -25,9 +25,10 @@ Standalone-Lösung für PHP-Projekte, die nicht auf Contao fußen, genutzt werde
  * Automatische Backend-Integration des Default Workflowtyps
  * Versand von Benachrichtungen über das [Notification Center](https://github.com/terminal42/contao-notification_center)
  * Erfassung beliebiger Formulareingaben
+ * Beliebige Berechtigungen je Workflow
 
 ## Geplante Features
 
- * Frontend-Integration
  * Formulare anhand Teile der DCA-Konfiguration erstellen 
-
+ * Zugriffsbeschränkung je Workflow-Schritt
+ * Frontend-Integration

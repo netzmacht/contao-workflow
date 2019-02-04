@@ -97,6 +97,8 @@ final class SendEmailNotificationAction extends AbstractAction
             ->setTo($this->recipient)
             ->setBody($body, 'text/html');
 
+        // The send email notification is triggered as post action. It means that the transition is already done,
+        // you create an failed transition anymore. So instead, we log the failed recipients.
         $this->mailer->send($message, $failedRecipients);
         $this->logSuccess($context->getProperties(), $failedRecipients);
     }
