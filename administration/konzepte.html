@@ -1,0 +1,385 @@
+
+<!DOCTYPE HTML>
+<html lang="de" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Konzepte · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="quick-start.html" />
+    
+    
+    <link rel="prev" href="../" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Suchbegriff eingeben" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Administration</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Überblick
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="konzepte.html">
+            
+                <a href="konzepte.html">
+            
+                    
+                    Konzepte
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="quick-start.html">
+            
+                <a href="quick-start.html">
+            
+                    
+                    Quick Start
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="support.html">
+            
+                <a href="support.html">
+            
+                    
+                    Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Entwicklung</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../entwicklung/workflow-type.html">
+            
+                <a href="../entwicklung/workflow-type.html">
+            
+                    
+                    Workflow-Typen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../entwicklung/actions.html">
+            
+                <a href="../entwicklung/actions.html">
+            
+                    
+                    Aktionen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../entwicklung/weiteres.html">
+            
+                <a href="../entwicklung/weiteres.html">
+            
+                    
+                    Weiteres
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Veröffentlicht mit GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Konzepte</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="konzepte">Konzepte</h1>
+<h2 id="workflow">Workflow</h2>
+<ul>
+<li>umfasst verschiedene Zust&#xE4;nde, in denen sich eine Entit&#xE4;t w&#xE4;hrend seiner Existenz befinden kann</li>
+<li>Workflows werden f&#xFC;r einen bespzifschen Typ einer Entit&#xE4;t definiert</li>
+<li>Pro Entit&#xE4;t k&#xF6;nnen mehrere Workflows definiert werden</li>
+<li>Workflows besitzen einen Typ, der beeinflusst </li>
+<li>&#xDC;ber Bedingungen wird geregelt, welcher Workflow f&#xFC;r eine Entit&#xE4;t zust&#xE4;ndig ist</li>
+</ul>
+<h2 id="workflowtyp">Workflowtyp</h2>
+<ul>
+<li>Erm&#xF6;glicht die Erweiterbarkeit der Workflow-Erweiterung an spezifische Anforderungen</li>
+</ul>
+<h2 id="schritt">Schritt</h2>
+<ul>
+<li>Ein Workflow hat eine beliebige Anzahl von Schritten, die eine Entit&#xE4;t w&#xE4;hrend ihrer Existenz erreichen kann</li>
+<li>Ein Schritt hat verschiedene Transitions, die zu einem neuen Schritt f&#xFC;hren</li>
+<li>Ein Schritt kann final sein, sodass keine weitere Transition m&#xF6;glich ist</li>
+</ul>
+<h2 id="transition">Transition</h2>
+<ul>
+<li>Der &#xDC;bergang von Schritt <em>A</em> zu Schritt <em>B</em> wird als Transition bezeichnet</li>
+<li>Ein Workflow hat exakt eine Anfangstransition</li>
+<li>Eine Transition hat einen Zielschritt</li>
+<li>Eine Transition f&#xFC;hrt eine beliebige Anzahl von Aktionen aus, die zu einem neuen Schritt f&#xFC;hren</li>
+<li>Eine Transition h&#xE4;ngt von <em>Pre Conditions</em> und <em>Conditions</em> ab, die erf&#xFC;llt sein m&#xFC;ssen</li>
+<li>Eine Transition kann verf&#xFC;gbar sein <em>(potentiell ausf&#xFC;hrbar)</em> oder erlaubt <em>(ausf&#xFC;hrbar)</em>.</li>
+</ul>
+<h2 id="action">Action</h2>
+<ul>
+<li>Eine Action wird w&#xE4;hrend einer Transition ausgef&#xFC;hrt</li>
+<li>Eine Action beinhaltet jegliche Logik, die zu einer Status&#xE4;nderung f&#xFC;hren</li>
+<li>Es wird zwischen Actions und Post Actions unterschieden</li>
+<li>Post Actions werden nach der Transformation zu einem neuen Status ausgef&#xFC;hrt</li>
+<li>Actions k&#xF6;nnen einen Payload erfordern (Benutzereingabe)</li>
+</ul>
+<h2 id="payload">Payload</h2>
+<ul>
+<li>Der Payload f&#xFC;hrt Actions aus, der aus verschiedenen Quellen kommen kann</li>
+<li>In der Benutzeroberfl&#xE4;che erfolgt die Eingabe in der Regel &#xFC;ber Formulare</li>
+</ul>
+<h2 id="transition-conditions">Transition Conditions</h2>
+<ul>
+<li>Es existieren zwei Arten von Bedingungen: Pre conditions uns conditions</li>
+<li>Pre conditions m&#xFC;ssen erf&#xFC;llt sein, sodass diese f&#xFC;hr einen Nutzer zug&#xE4;nglich sind</li>
+<li>Conditions &#xFC;berpr&#xFC;fen auch den Payload und validieren somit den Payload</li>
+</ul>
+<h2 id="entit&#xE4;t">Entit&#xE4;t</h2>
+<ul>
+<li>Datens&#xE4;tze werden als Entit&#xE4;t bezeichnet</li>
+<li>Entit&#xE4;ten k&#xF6;nnen beliebig implementiert sein</li>
+<li>Standardm&#xE4;&#xDF;ig werden die Models von Contao als auch Datenbank-Results unterst&#xFC;tzt</li>
+</ul>
+<h2 id="status">Status</h2>
+<ul>
+<li>Jeder Vesuch einer Transition wird als Status gespeichert</li>
+<li>Es existieren somit erfolgreiche und fehlgeschlagene Transitions</li>
+<li>Jeder Status kann zudem spezifische Daten speichern</li>
+</ul>
+<h2 id="history">History</h2>
+<ul>
+<li>Der Log aller Status&#xE4;nderungen wird als History beschrieben</li>
+</ul>
+<h2 id="item">Item</h2>
+<ul>
+<li>Ein Item ist ein Wrapper f&#xFC;r eine Entit&#xE4;t und behinhaltet workflowspezifische Informationen</li>
+<li>Es verf&#xFC;gt &#xFC;ber die State-History</li>
+<li>Es Verf&#xFC;gt &#xFC;ber den Namen des aktuellen Workflows</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../" class="navigation navigation-prev " aria-label="Previous page: Überblick">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="quick-start.html" class="navigation navigation-next " aria-label="Next page: Quick Start">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Konzepte","level":"1.2","depth":1,"next":{"title":"Quick Start","level":"1.3","depth":1,"path":"administration/quick-start.md","ref":"administration/quick-start.md","articles":[]},"previous":{"title":"Überblick","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/konzepte.md","mtime":"2019-02-05T10:12:29.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-05T10:12:56.062Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

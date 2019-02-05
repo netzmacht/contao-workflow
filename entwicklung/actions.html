@@ -1,0 +1,373 @@
+
+<!DOCTYPE HTML>
+<html lang="de" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Aktionen · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="weiteres.html" />
+    
+    
+    <link rel="prev" href="workflow-type.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Suchbegriff eingeben" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Administration</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Überblick
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../administration/konzepte.html">
+            
+                <a href="../administration/konzepte.html">
+            
+                    
+                    Konzepte
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../administration/quick-start.html">
+            
+                <a href="../administration/quick-start.html">
+            
+                    
+                    Quick Start
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../administration/support.html">
+            
+                <a href="../administration/support.html">
+            
+                    
+                    Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Entwicklung</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="workflow-type.html">
+            
+                <a href="workflow-type.html">
+            
+                    
+                    Workflow-Typen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.2" data-path="actions.html">
+            
+                <a href="actions.html">
+            
+                    
+                    Aktionen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="weiteres.html">
+            
+                <a href="weiteres.html">
+            
+                    
+                    Weiteres
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Veröffentlicht mit GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Aktionen</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="aktionen">Aktionen</h1>
+<p>Aktionen werden w&#xE4;hrend der Transition von einem Workflow-Schritt zum n&#xE4;chsten ausgef&#xFC;hrt. Aktionen sind dazu gedacht die Gesch&#xE4;ftslogik des Prozesses auszul&#xF6;sen, oder je nach Datenmodel zu implementieren.</p>
+<h2 id="interface-action">Interface Action</h2>
+<p>Actions werden &#xFC;ber das Interface <code>\Netzmacht\Workflow\Flow\Action</code> beschrieben:</p>
+<pre><code class="lang-php"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Action</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRequiredPayloadProperties</span><span class="hljs-params">(Item $item)</span>: <span class="hljs-title">array</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">validate</span><span class="hljs-params">(Item $item, Context $context)</span>: <span class="hljs-title">bool</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transit</span><span class="hljs-params">(Transition $transition, Item $item, Context $context)</span>: <span class="hljs-title">void</span></span>;
+}
+</code></pre>
+<p>Eine Action besitzt die M&#xF6;glichkeit einen bestimmten Payload, sprich von Benutzer zur Verf&#xFC;gung gestellte Daten, vorauszusetzen. Dazu dient die Method <code>getRequiredPayloadProperties</code>, die die erforderlichen Attribute als Liste zur&#xFC;ckgibt. Bevor eine Transition ausgef&#xFC;hrt wird, erfolgt die Validierung der bereitgestellten User-Inputs. Dazu implementiert eine Action die Methode <code>validate</code>. Der Payload steht als <code>Context#getPayload</code> zur Verf&#xFC;gung.</p>
+<p>Mit eigentliche Action wird in der Methode <code>transit</code> ausgef&#xFC;hrt.</p>
+<h2 id="action-registrieren">Action registrieren</h2>
+<h3 id="manuell-registrieren">Manuell registrieren</h3>
+<p>Actions lassen sich manuell zu einer Transition hinzuf&#xFC;gen. Dies kann in der <code>configure</code> Methode des implementierten Workflow-Typs erfolgen. Sinnvoll ist dieses Vorgehen f&#xFC;r Aktionen, die in der Transition des Workflows erfolgen soll.</p>
+<pre><code class="lang-php">    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configure</span><span class="hljs-params">(Workflow $workflow, callable $next)</span>: <span class="hljs-title">void</span>
+    </span>{
+        <span class="hljs-keyword">parent</span>::configure($workflow, $next);
+
+        $action = <span class="hljs-keyword">new</span> MyAction();
+        $postAction = <span class="hljs-keyword">new</span> MyPostAction();
+        <span class="hljs-keyword">foreach</span> ($workflow-&gt;getTransitions() <span class="hljs-keyword">as</span> $transition) {
+            $transition-&gt;addAction($action);
+            $transition-&gt;addPostAction($postAction));
+        }
+    }
+</code></pre>
+<h3 id="automatisch-&#xFC;ber-backend-konfiguration">Automatisch &#xFC;ber Backend-Konfiguration</h3>
+<p>Dar&#xFC;ber hinaus lassen sich Actions im Backend der Workflow-Konfiguration konfigurieren.</p>
+<h4 id="interface-actiontypefactory">Interface ActionTypeFactory</h4>
+<p>Damit die nahtlose Integration in die Workflow-Erweiterung funktioniert, muss zusatzlich eine eine <em>Factory</em>-Klasse vom Typ <code>Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory</code> implementiert werden:</p>
+<pre><code class="lang-php"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ActionTypeFactory</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCategory</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getName</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isPostAction</span><span class="hljs-params">()</span>: <span class="hljs-title">bool</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">supports</span><span class="hljs-params">(Workflow $workflow)</span>: <span class="hljs-title">bool</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span><span class="hljs-params">(array $config, Transition $transition)</span>: <span class="hljs-title">Action</span></span>;
+}
+</code></pre>
+<p>Die ActionTypeFactory wird nun im Symfony-Container registriert:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">services:</span>
+    Custom\Workflow\Action\CustomActionFactory:
+<span class="hljs-attr">      tags:</span>
+<span class="hljs-bullet">        -</span> { name: <span class="hljs-string">&apos;netzmacht.contao_workflow.action&apos;</span> }
+</code></pre>
+<blockquote>
+<p><strong>Hinweis</strong>
+Ben&#xF6;tigt die Action zus&#xE4;tzliche Konfiguration, ist kann eine DCA-Palette mit dem Namen der Action angelegt werden.</p>
+</blockquote>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="workflow-type.html" class="navigation navigation-prev " aria-label="Previous page: Workflow-Typen">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="weiteres.html" class="navigation navigation-next " aria-label="Next page: Weiteres">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Aktionen","level":"2.2","depth":1,"next":{"title":"Weiteres","level":"2.3","depth":1,"path":"entwicklung/weiteres.md","ref":"entwicklung/weiteres.md","articles":[]},"previous":{"title":"Workflow-Typen","level":"2.1","depth":1,"path":"entwicklung/workflow-type.md","ref":"entwicklung/workflow-type.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"entwicklung/actions.md","mtime":"2019-02-05T10:12:29.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-05T10:12:56.062Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

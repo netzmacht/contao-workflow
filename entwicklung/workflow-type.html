@@ -1,0 +1,377 @@
+
+<!DOCTYPE HTML>
+<html lang="de" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Workflow-Typen · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="actions.html" />
+    
+    
+    <link rel="prev" href="../administration/support.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Suchbegriff eingeben" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Administration</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Überblick
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../administration/konzepte.html">
+            
+                <a href="../administration/konzepte.html">
+            
+                    
+                    Konzepte
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../administration/quick-start.html">
+            
+                <a href="../administration/quick-start.html">
+            
+                    
+                    Quick Start
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../administration/support.html">
+            
+                <a href="../administration/support.html">
+            
+                    
+                    Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Entwicklung</li>
+        
+        
+    
+        <li class="chapter active" data-level="2.1" data-path="workflow-type.html">
+            
+                <a href="workflow-type.html">
+            
+                    
+                    Workflow-Typen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="actions.html">
+            
+                <a href="actions.html">
+            
+                    
+                    Aktionen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="weiteres.html">
+            
+                <a href="weiteres.html">
+            
+                    
+                    Weiteres
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Veröffentlicht mit GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Workflow-Typen</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="workflow-typ">Workflow-Typ</h1>
+<p>Ein Workflow-Typ dient in erster Linie dem Workflow-System als Unterscheidungsmerkmal, welche Aktionen zur Verf&#xFC;gung gestellt werden und welche Datenquellen unterst&#xFC;tzt werden.</p>
+<h2 id="interface-workflowtype">Interface WorkflowType</h2>
+<p>Workflow-Typen werden &#xFC;ber das Interface <a href="https://github.com/netzmacht/contao-workflow/blob/develop/src/Workflow/Type/WorkflowType.php" target="_blank"><code>Netzmacht\Workflow\Flow\Workflow\Type\WorkflowType</code></a> beschrieben:</p>
+<pre><code class="lang-php"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">WorkflowType</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getName</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">match</span><span class="hljs-params">(string $typeName)</span>: <span class="hljs-title">bool</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configure</span><span class="hljs-params">(Workflow $workflow, callable $next)</span>: <span class="hljs-title">void</span></span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getProviderNames</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span></span>;
+}
+</code></pre>
+<h2 id="workflow-typ-registrieren">Workflow-Typ registrieren</h2>
+<p>Der eigene Workflow-Typ wird &#xFC;ber den Symfony-Container definiert, indem dieser mit dem Tag <code>netzmacht.contao_workflow.type</code> getagged wird:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">services:</span>
+    Custom\Workflow\CustomType:
+<span class="hljs-attr">      tags:</span>
+<span class="hljs-bullet">        -</span> { name: <span class="hljs-string">&apos;netzmacht.contao_workflow.type&apos;</span> }
+</code></pre>
+<h2 id="backendkonfiguration">Backendkonfiguration</h2>
+<p>Der Workflowtyp triggerd die Palettenauswahl im Backend. Damit im eigenen Workflow-Typ die Standardkonfigurationen m&#xF6;glich bleiben, muss hier das DCA erweitert werden. Dank MetaPalettes erfolgt dies durch folgende Zeile:</p>
+<pre><code class="lang-php">$GLOBALS[<span class="hljs-string">&apos;TL_DCA&apos;</span>][<span class="hljs-string">&apos;tl_workflow&apos;</span>][<span class="hljs-string">&apos;metapalettes&apos;</span>][<span class="hljs-string">&apos;custom extends __base__&apos;</span>] = [];
+</code></pre>
+<h2 id="abstractworkflowtype">AbstractWorkflowType</h2>
+<p>F&#xFC;r g&#xE4;ngige Implementation wird eine abstrakte Basisklasse zur Verf&#xFC;gung gestellt, die verwendet werden kann:</p>
+<pre><code class="lang-php"><span class="hljs-keyword">namespace</span> <span class="hljs-title">Custom</span>\<span class="hljs-title">Workflow</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Netzmacht</span>\<span class="hljs-title">ContaoWorkflowBundle</span>\<span class="hljs-title">Workflow</span>\<span class="hljs-title">Type</span>\<span class="hljs-title">AbstractWorkflowType</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomType</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractWorkflowType</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-string">&apos;custom&apos;</span>, [<span class="hljs-string">&apos;tl_custom&apos;</span>]);
+    }
+}
+</code></pre>
+<h2 id="workflow-vorkonfigurieren">Workflow vorkonfigurieren</h2>
+<p>Ein Workflow-Typ kann au&#xDF;erdem dazu genutzt werden diesen vorzukonfigurieren. </p>
+<pre><code class="lang-php"><span class="hljs-keyword">namespace</span> <span class="hljs-title">Custom</span>\<span class="hljs-title">Workflow</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Netzmacht</span>\<span class="hljs-title">ContaoWorkflowBundle</span>\<span class="hljs-title">Workflow</span>\<span class="hljs-title">Type</span>\<span class="hljs-title">AbstractWorkflowType</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Netzmacht</span>\<span class="hljs-title">Workflow</span>\<span class="hljs-title">Flow</span>\<span class="hljs-title">Workflow</span>;
+
+<span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomType</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractWorkflowType</span>
+</span>{
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">configure</span><span class="hljs-params">(Workflow $workflow, callable $next)</span>: <span class="hljs-title">void</span>
+    </span>{
+        <span class="hljs-comment">// Vor der DB gest&#xFC;tzten Konfiguration</span>
+
+        <span class="hljs-keyword">parent</span>::configure($workflow, $next);
+
+        <span class="hljs-comment">// Nach der DB gest&#xFC;tzten Konfiguration</span>
+    }
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../administration/support.html" class="navigation navigation-prev " aria-label="Previous page: Support">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="actions.html" class="navigation navigation-next " aria-label="Next page: Aktionen">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Workflow-Typen","level":"2.1","depth":1,"next":{"title":"Aktionen","level":"2.2","depth":1,"path":"entwicklung/actions.md","ref":"entwicklung/actions.md","articles":[]},"previous":{"title":"Support","level":"1.4","depth":1,"path":"administration/support.md","ref":"administration/support.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"entwicklung/workflow-type.md","mtime":"2019-02-05T10:12:29.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-05T10:12:56.062Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

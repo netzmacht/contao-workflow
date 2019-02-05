@@ -1,0 +1,387 @@
+
+<!DOCTYPE HTML>
+<html lang="de" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Quick Start · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="support.html" />
+    
+    
+    <link rel="prev" href="konzepte.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Suchbegriff eingeben" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Administration</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Überblick
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="konzepte.html">
+            
+                <a href="konzepte.html">
+            
+                    
+                    Konzepte
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="quick-start.html">
+            
+                <a href="quick-start.html">
+            
+                    
+                    Quick Start
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="support.html">
+            
+                <a href="support.html">
+            
+                    
+                    Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Entwicklung</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../entwicklung/workflow-type.html">
+            
+                <a href="../entwicklung/workflow-type.html">
+            
+                    
+                    Workflow-Typen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../entwicklung/actions.html">
+            
+                <a href="../entwicklung/actions.html">
+            
+                    
+                    Aktionen
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../entwicklung/weiteres.html">
+            
+                <a href="../entwicklung/weiteres.html">
+            
+                    
+                    Weiteres
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Veröffentlicht mit GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Quick Start</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="quick-start">Quick Start</h1>
+<p>Die Quick Start Anleitung zeigt exemplarisch anhand F&#xFC;r News (<code>tl_news</code>) wie man f&#xFC;r eine beliebige DCA-basierte Tabelle den Standard-Workflow aktivieren kann.</p>
+<h2 id="installation">Installation</h2>
+<p><strong>netzmacht/contao-workflow</strong> steht als Contao-Bundle zur Verf&#xFC;gung. Die Installation erfolgt &#xFC;ber Composer/Contao 
+Manager.</p>
+<pre><code class="lang-bash">$ php composer.phar install netzmacht/contao-workflow:^2.0
+</code></pre>
+<h2 id="konfiguration">Konfiguration</h2>
+<p><strong>netzmacht/contao-workflow</strong> erlaubt es beliebige <em>Workflowtypen</em> zu definieren und liefert einen generischen Workflowtyp <em>Default</em> mit.</p>
+<p>M&#xF6;chte man diesen f&#xFC;r eine DCA-basierte Tabelle Tabelle aktivieren, ist eine Konfiguration in der <code>app/config/config.yml</code> notwendig. Mittels folgenden Konsolenbefehl erh&#xE4;lt man eine &#xDC;bersicht aller der m&#xF6;glichen Konfigurationsoptionen:</p>
+<pre><code class="lang-bash">$ vendor/bin/contao-console config:dump-reference netzmacht_contao_workflow
+</code></pre>
+<p>F&#xFC;r <code>tl_news</code> sieht der Beitrag wie folgt aus:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">netzmacht_contao_workflow:</span>
+<span class="hljs-attr">    default_type:</span>
+<span class="hljs-attr">      tl_news:</span>
+<span class="hljs-attr">        palettes:</span> [<span class="hljs-string">&apos;default&apos;</span>]
+<span class="hljs-attr">        operation:</span> first 
+<span class="hljs-attr">        submit_buttons:</span> <span class="hljs-literal">true</span>
+</code></pre>
+<p>Damit die Konfiguration angewandt wird, muss der Cache neu aufgebaut werden:</p>
+<pre><code class="lang-bash">$ vendor/bin/contao-console cache:warmup
+</code></pre>
+<h2 id="install-tool-aufrufen">Install-Tool aufrufen</h2>
+<p>Nun l&#xE4;sst sich das Install-Tool aufrufen. Es m&#xFC;ssen zwei neue Datenbankfelder angelegt werden:</p>
+<p><img src="../img/quickstart/install-tool.png" alt="Install Tool"></p>
+<h2 id="workflow-anlegen">Workflow anlegen</h2>
+<p>Nun ist alles vorbereitet, sodass ein Workflow angelegt werden kann. Dazu sind folgende Schritte zu beachten:</p>
+<ol>
+<li>Workflow anlegen<ul>
+<li>Typ <em>Default</em> ausw&#xE4;hlen </li>
+<li>Provider name <em>tl_news</em> ausw&#xE4;hlen</li>
+<li>Der Prozess wird erst im Nachgang definiert</li>
+</ul>
+</li>
+<li>Actions definieren<ul>
+<li>Neue Action <em>Note</em> anlegen</li>
+</ul>
+</li>
+<li>Schritte definieren<ul>
+<li>Schritt Erstellt anlegen</li>
+<li>Schritt Bearbeitet anlegen</li>
+</ul>
+</li>
+<li>Transitions definieren<ul>
+<li>Transition Erstellen anlegen <ul>
+<li>Als Ziel den Schritt <em>Erstellt</em> ausw&#xE4;hlen</li>
+<li>Transition aktivieren</li>
+</ul>
+</li>
+<li>Transition Bearbeiten anlegen<ul>
+<li>Als Ziel den Schritt <em>Bearbeitet</em> ausw&#xE4;hlen</li>
+<li>Action <em>Notiz</em> ausw&#xE4;hlen</li>
+<li>Transition aktivieren</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Prozess definieren<ul>
+<li>Auf Workflow bearbeiten gehen</li>
+<li>Prozess <em>Start point</em> =&gt;  <em>Erstellen</em> anlegen</li>
+<li>Prozess <em>Erstellt</em>  =&gt;  <em>Bearbeiten</em> anlegen</li>
+<li>Prozess <em>Bearbeitet</em>  =&gt;  <em>Bearbeiten</em> anlegen</li>
+</ul>
+</li>
+</ol>
+<p>Der Prozess ist nun angelegt und sollte wie folgt aussehen:</p>
+<p><img src="../img/quickstart/process.png" alt="Workflowprozess"></p>
+<h2 id="workflow-zuweisen">Workflow zuweisen</h2>
+<p>Nun kann der Workflow beim Bearbeiten einer News ausgew&#xE4;hlt werden. Dann der Konfiguration <code>submit_buttons: true</code> stehen
+nun die Transitions als zus&#xE4;tzliche Submitbuttons zur Verf&#xFC;gung.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="konzepte.html" class="navigation navigation-prev " aria-label="Previous page: Konzepte">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="support.html" class="navigation navigation-next " aria-label="Next page: Support">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Quick Start","level":"1.3","depth":1,"next":{"title":"Support","level":"1.4","depth":1,"path":"administration/support.md","ref":"administration/support.md","articles":[]},"previous":{"title":"Konzepte","level":"1.2","depth":1,"path":"administration/konzepte.md","ref":"administration/konzepte.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/quick-start.md","mtime":"2019-02-05T10:12:29.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-05T10:12:56.062Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
