@@ -65,6 +65,7 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][1] = 'Only send
 /*
  * Values
  */
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['default']         = 'Default';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][0]         = 'Note';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][1]         = 'Add a note during transition.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]         = 'Form';

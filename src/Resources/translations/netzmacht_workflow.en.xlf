@@ -94,6 +94,10 @@
                 <source>integration.current_step.1</source>
                 <target>Current step of the workflow.</target>
             </trans-unit>
+            <trans-unit id="">
+                <source>transition.action.failed</source>
+                <target>Transition action failed: exception</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
