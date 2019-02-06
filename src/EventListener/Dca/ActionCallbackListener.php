@@ -20,7 +20,6 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Manager\Manager;
-use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use NotificationCenter\Model\Notification;
 
 /**
@@ -75,17 +74,13 @@ final class ActionCallbackListener
      *
      * @return array
      */
-    public function getTypes($dataContainer): array
+    public function getTypes($dataContainer = null): array
     {
-        $transition = $this->repositoryManager
-            ->getRepository(TransitionModel::class)
-            ->find((int) $dataContainer->activeRecord->pid);
-
-        if (!$transition) {
+        if ($dataContainer === null || $dataContainer->activeRecord === null) {
             return $this->actionFactory->getTypeNames();
         }
 
-        $workflow = $this->manager->getWorkflowById((int) $transition->pid);
+        $workflow = $this->manager->getWorkflowById((int) $dataContainer->activeRecord->pid);
 
         return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
     }

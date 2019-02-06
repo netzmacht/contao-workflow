@@ -11,4 +11,8 @@
  
 ### Changed
 
- - Rework property access by dropping `Entity` interfaces and introduce an `PropertyAccessManager` 
+ - Rework property access by dropping `Entity` interfaces and introduce an `PropertyAccessManager`
+ 
+### Fixed
+
+ - Fix loading of available actions for a workflow in the backend 
