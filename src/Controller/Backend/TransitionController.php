@@ -98,9 +98,11 @@ final class TransitionController extends AbstractController
         }
 
         if ($validForm && $handler->validate($payload)) {
-            $handler->transit();
+            $state = $handler->transit();
 
-            return new RedirectResponse($this->getRedirectUrl($entityId, $request));
+            if ($state->isSuccessful()) {
+                return new RedirectResponse($this->getRedirectUrl($entityId, $request));
+            }
         }
 
         $transition = $workflow->getTransition($transition);

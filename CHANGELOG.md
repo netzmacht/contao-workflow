@@ -14,6 +14,7 @@
 
  - Rework property access by dropping `Entity` interfaces and introduce an `PropertyAccessManager`
  - Change namespace of the `UpdateEntityAction`
+ - Only redirect from transition controller if new state is successful
  
 ### Fixed
 
