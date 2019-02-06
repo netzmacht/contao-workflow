@@ -30,11 +30,8 @@
     box-sizing: border-box;
 }
 
-.workflow-section {
-    margin-bottom: 2em;
-}
-
 .workflow-section + .workflow-section {
+    margin-top: 2em;
     border-top: 1px solid #e6e6e8;
 }
 
@@ -61,4 +58,20 @@
 
 .workflow-submit-container {
     padding: 8px 15px;
+}
+
+.workflow-error-list {
+    margin: 0 0 1px;
+    padding: 12px 18px 6px 24px;
+    line-height: 1.2;
+    color: #c33;
+    background: #faebeb;
+}
+
+.workflow-error-list .workflow-error-list {
+    padding-top: 0px;
+}
+
+.workflow-error-list li {
+    list-style-type: square;
 }

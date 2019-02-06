@@ -280,6 +280,6 @@ final class StateHistoryRenderer extends AbstractStepRenderer
             return '-';
         }
 
-        return $this->trans('workflow.history.scope.' . $metadata['scope']);
+        return $this->trans('history.scope.' . $metadata['scope'], [], 'netzmacht_workflow');
     }
 }

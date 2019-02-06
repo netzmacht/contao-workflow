@@ -1,0 +1,17 @@
+{% trans_default_domain 'netzmacht_workflow' %}
+{% import _self as macros %}
+<div class="workflow-content-box">
+    {{ macros.errorList(errors, macros) }}
+</div>
+
+{% macro errorList(errors, macros) %}
+{% if errors is not null %}
+<ul class="workflow-error-list">
+    {% for error in errors %}
+        <li>{{ error.0|trans(error.1) }}
+            {{ macros.errorList(error.2, macros) }}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}

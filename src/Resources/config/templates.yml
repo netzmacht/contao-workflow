@@ -17,6 +17,9 @@ parameters:
   netzmacht.contao_workflow.templates.button:
     "text/html": '@@NetzmachtContaoWorkflow/sections/buttons.html.twig'
 
+  netzmacht.contao_workflow.templates.errors:
+    "text/html": '@@NetzmachtContaoWorkflow/sections/errors.html.twig'
+
   netzmacht.contao_workflow.templates.html_view:
     step: '@@NetzmachtContaoWorkflow/backend/step.html.twig'
     transition: '@@NetzmachtContaoWorkflow/backend/transition.html.twig'

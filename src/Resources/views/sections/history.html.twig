@@ -1,11 +1,13 @@
-<h2 class="sub_headline">{{ "workflow.history"|trans }}</h2>
+{% trans_default_domain 'netzmacht_workflow' %}
+
+<h2 class="sub_headline">{{ "history"|trans }}</h2>
 
 <div class="workflow-content-box">
 <table class="workflow-history">
     <thead>
         <tr>
         {% for column in columns %}
-            <th>{{ ('workflow.history.' ~ column)|trans }}</th>
+            <th>{{ ('history.' ~ column)|trans }}</th>
         {% endfor %}
         </tr>
     </thead>

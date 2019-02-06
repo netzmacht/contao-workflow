@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use function in_array;
 use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Exception\DataContainer\FieldAlreadyExists;
@@ -129,8 +128,8 @@ final class DataContainerListener
             ['fields', 'workflow'],
             [
                 'label'            => [
-                    $this->translator->trans('workflow.integration.workflow.0'),
-                    $this->translator->trans('workflow.integration.workflow.1'),
+                    $this->translator->trans('integration.workflow.0', [], 'netzmacht_workflow'),
+                    $this->translator->trans('integration.workflow.1', [], 'netzmacht_workflow'),
                 ],
                 'inputType'        => 'select',
                 'exclude'          => true,
@@ -167,8 +166,8 @@ final class DataContainerListener
             ['fields', 'workflowStep'],
             [
                 'label'            => [
-                    $this->translator->trans('workflow.integration.current_step.0'),
-                    $this->translator->trans('workflow.integration.current_step.1'),
+                    $this->translator->trans('integration.current_step.0', [], 'netzmacht_workflow'),
+                    $this->translator->trans('integration.current_step.1', [], 'netzmacht_workflow'),
                 ],
                 'inputType'        => 'select',
                 'exclude'          => true,
@@ -226,8 +225,8 @@ final class DataContainerListener
 
         $configuration = [
             'label'           => [
-                $this->translator->trans('workflow.integration.operation.0'),
-                $this->translator->trans('workflow.integration.operation.1'),
+                $this->translator->trans('integration.operation.0', [], 'netzmacht_workflow'),
+                $this->translator->trans('integration.operation.1', [], 'netzmacht_workflow'),
             ],
             'href'            => 'key=workflow',
             'icon'            => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
@@ -259,7 +258,11 @@ final class DataContainerListener
      */
     private function addTranslations(string $providerName): void
     {
-        $GLOBALS['TL_LANG'][$providerName]['workflow_legend'] = $this->translator->trans('workflow.integration.legend');
+        $GLOBALS['TL_LANG'][$providerName]['workflow_legend'] = $this->translator->trans(
+            'integration.legend',
+            [],
+            'netzmacht_workflow'
+        );
     }
 
     /**

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="src/Resources/translations/netzmacht_workflow.en.xlf">
+        <body>
+            <trans-unit id="workflowName">
+                <source>workflowName</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="currentStep">
+                <source>currentStep</source>
+                <target>Current step</target>
+            </trans-unit>
+            <trans-unit id="reachedAt">
+                <source>reachedAt</source>
+                <target>Last change</target>
+            </trans-unit>
+            <trans-unit id="entity">
+                <source>dataRecord</source>
+                <target>Data record</target>
+            </trans-unit>
+            <trans-unit id="history">
+                <source>history</source>
+                <target>History</target>
+            </trans-unit>
+            <trans-unit id="history.workflow">
+                <source>history.workflow</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="history.transition">
+                <source>history.transition</source>
+                <target>Transition</target>
+            </trans-unit>
+            <trans-unit id="history.step">
+                <source>history.step</source>
+                <target>Transition</target>
+            </trans-unit>
+            <trans-unit id="history.successful">
+                <source>history.successful</source>
+                <target>Successful</target>
+            </trans-unit>
+            <trans-unit id="history.reachedAt">
+                <source>history.reachedAt</source>
+                <target>Last change</target>
+            </trans-unit>
+            <trans-unit id="successful.yes">
+                <source>successful.yes</source>
+                <target>yes</target>
+            </trans-unit>
+            <trans-unit id="successful.no">
+                <source>successful.no</source>
+                <target>no</target>
+            </trans-unit>
+            <trans-unit id="history.user">
+                <source>history.user</source>
+                <target>User</target>
+            </trans-unit>
+            <trans-unit id="history.scope">
+                <source>history.scope</source>
+                <target>Scope</target>
+            </trans-unit>
+            <trans-unit id="history.scope.backend">
+                <source>history.scope.backend</source>
+                <target>Backend</target>
+            </trans-unit>
+            <trans-unit id="history.scope.frontend">
+                <source>history.scope.frontend</source>
+                <target>Frontend</target>
+            </trans-unit>
+            <trans-unit id="integration.legend">
+                <source>integration.legend</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="integration.operation.0">
+                <source>integration.operation.0</source>
+                <target>Workflow overview</target>
+            </trans-unit>
+            <trans-unit id="integration.operation.1">
+                <source>integration.operation.1</source>
+                <target>Show workflow overview for ID "%s"</target>
+            </trans-unit>
+            <trans-unit id="integration.workflow.0">
+                <source>integration.workflow.0</source>
+                <target>Workflow</target>
+            </trans-unit>
+            <trans-unit id="integration.workflow.1">
+                <source>integration.workflow.1</source>
+                <target>Please select a workflow.</target>
+            </trans-unit>
+            <trans-unit id="integration.current_step.0">
+                <source>integration.current_step.0</source>
+                <target>Current step</target>
+            </trans-unit>
+            <trans-unit id="integration.current_step.1">
+                <source>integration.current_step.1</source>
+                <target>Current step of the workflow.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
