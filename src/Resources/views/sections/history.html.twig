@@ -12,7 +12,7 @@
         </tr>
     </thead>
     {% for state in history %}
-        <tr class="workflow-history-state">
+        <tr class="workflow-history-state{% if state.successful is defined and not state.successful.value %} transition-failed{% endif %}">
             {% for name, value in state %}
                 <td class="workflow-history-{{ name }}">
                     {% if block(name) is defined %}
@@ -35,4 +35,8 @@
             {{ value }}
         {% endif %}
     {% endif %}
+{% endblock %}
+
+{% block successful %}
+    {% if value is defined %}{{ value.label }}{% endif %}
 {% endblock %}

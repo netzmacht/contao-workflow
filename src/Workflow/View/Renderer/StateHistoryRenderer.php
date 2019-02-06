@@ -94,7 +94,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
         $history      = $view->getItem()->getStateHistory();
         $data         = [];
         $stateColumns = StringUtil::deserialize($workflow->getConfigValue('stepHistoryColumns'), true)
-            ?: ['workflow', 'transition', 'step', 'reachedAt', 'user', 'scope'];
+            ?: ['workflow', 'transition', 'step', 'reachedAt', 'user', 'scope', 'successful'];
 
         foreach ($history as $state) {
             $row = [];
@@ -134,7 +134,10 @@ final class StateHistoryRenderer extends AbstractStepRenderer
             case 'successful':
                 $yesNo = $state->isSuccessful() ? 'yes' : 'no';
 
-                return $this->trans('MSC.' . $yesNo, [], 'contao_default');
+                return [
+                    'label' => $this->trans('MSC.' . $yesNo, [], 'contao_default'),
+                    'value' => $state->isSuccessful()
+                ];
 
             case 'reachedAt':
                 return $state->getReachedAt()->format($this->configAdapter->get('datimFormat'));
