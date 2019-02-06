@@ -14,7 +14,7 @@
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\DefaultType\UpdateEntityAction;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Integration\UpdateEntityAction;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\PropertyCondition;
 use Netzmacht\Workflow\Flow\Workflow;
 use function array_keys;

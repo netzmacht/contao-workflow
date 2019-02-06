@@ -12,6 +12,7 @@
 ### Changed
 
  - Rework property access by dropping `Entity` interfaces and introduce an `PropertyAccessManager`
+ - Change namespace of the `UpdateEntityAction`
  
 ### Fixed
 

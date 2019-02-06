@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\DefaultType;
+namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Integration;
 
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAction;
