@@ -18,3 +18,4 @@
 
  - Fix loading of available actions for a workflow in the backend
  - Fix getting id of database entities 
+ - Use ArrayObject instead of array for database entities
