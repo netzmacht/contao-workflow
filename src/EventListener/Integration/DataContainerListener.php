@@ -228,7 +228,7 @@ final class DataContainerListener
                 $this->translator->trans('integration.operation.0', [], 'netzmacht_workflow'),
                 $this->translator->trans('integration.operation.1', [], 'netzmacht_workflow'),
             ],
-            'href'            => 'key=workflow',
+            'href'            => '',
             'icon'            => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
             'button_callback' => [
                 OperationListener::class,
