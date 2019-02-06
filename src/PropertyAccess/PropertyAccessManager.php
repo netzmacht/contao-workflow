@@ -22,16 +22,21 @@ use function call_user_func;
 use function is_object;
 use function spl_object_hash;
 
+/**
+ * Class PropertyAccessManager
+ */
 final class PropertyAccessManager
 {
     /**
-     * Property access classes
+     * Property access classes.
      *
      * @var string[]
      */
     private $accessors;
 
     /**
+     * Cache of mapped property accessors.
+     *
      * @var PropertyAccessor[]
      */
     private $mapping = [];
@@ -39,7 +44,7 @@ final class PropertyAccessManager
     /**
      * PropertyAccessManager constructor.
      *
-     * @param string[] $accessors
+     * @param string[] $accessors Property access class names.
      */
     public function __construct(array $accessors)
     {
@@ -69,7 +74,7 @@ final class PropertyAccessManager
     /**
      * Provide access to a given data structure.
      *
-     * @param mixed $data Data structure
+     * @param mixed $data Data structure.
      *
      * @return PropertyAccessor
      *

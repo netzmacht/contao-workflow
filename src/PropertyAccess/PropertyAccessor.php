@@ -45,6 +45,8 @@ interface PropertyAccessor extends IteratorAggregate
      *
      * @param string $name  Name of the property.
      * @param mixed  $value New value of the property.
+     *
+     * @return void
      */
     public function set(string $name, $value): void;
 

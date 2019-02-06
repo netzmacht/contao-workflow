@@ -31,9 +31,9 @@ use Symfony\Component\Translation\TranslatorInterface as Translator;
  */
 final class NotificationAction extends AbstractAction
 {
-    public const STATE_ALL = 3;
+    public const STATE_ALL     = 3;
     public const STATE_SUCCESS = 1;
-    public const STATE_FAILED = 2;
+    public const STATE_FAILED  = 2;
 
     /**
      * Property access manager.
@@ -102,7 +102,7 @@ final class NotificationAction extends AbstractAction
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getRequiredPayloadProperties(Item $item): array
     {
@@ -110,7 +110,7 @@ final class NotificationAction extends AbstractAction
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validate(Item $item, Context $context): bool
     {
@@ -118,7 +118,7 @@ final class NotificationAction extends AbstractAction
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
@@ -132,9 +132,16 @@ final class NotificationAction extends AbstractAction
             return;
         }
 
-        $notification->send($this->buildTokens($transition, $item, $context));
+        $notification->send($this->buildNotificationTokens($transition, $item, $context));
     }
 
+    /**
+     * Check if success state is matched.
+     *
+     * @param State $latestState Given success state.
+     *
+     * @return bool
+     */
     private function matchSuccessState(State $latestState): bool
     {
         if ($latestState->isSuccessful()) {
@@ -144,7 +151,16 @@ final class NotificationAction extends AbstractAction
         return ($this->successStates & self::STATE_FAILED) === self::STATE_FAILED;
     }
 
-    private function buildTokens(Transition $transition, Item $item, Context $context): array
+    /**
+     * Build notification tokens.
+     *
+     * @param Transition $transition Active transition.
+     * @param Item       $item       Workflow item.
+     * @param Context    $context    Transition context.
+     *
+     * @return array
+     */
+    private function buildNotificationTokens(Transition $transition, Item $item, Context $context): array
     {
         $workflow        = $transition->getWorkflow();
         $currentStepName = $item->getCurrentStepName();

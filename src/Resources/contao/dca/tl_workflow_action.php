@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'tl_class' => 'clr',
                 'multiple' => true,
             ],
-            'sql'       => "tinyblob NULL",
+            'sql'       => 'tinyblob NULL',
         ],
     ],
 ];

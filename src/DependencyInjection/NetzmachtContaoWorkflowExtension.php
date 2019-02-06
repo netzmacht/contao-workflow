@@ -46,10 +46,9 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         $loader->load('integration.yml');
         $loader->load('services.yml');
 
-        $configuration       = new Configuration();
-        $config              = $this->processConfiguration($configuration, $configs);
-
-        $providers = $config['providers'];
+        $configuration = new Configuration();
+        $config        = $this->processConfiguration($configuration, $configs);
+        $providers     = $config['providers'];
 
         foreach (array_keys($config['default_type']) as $provider) {
             $providers[$provider] = ['workflow' => true, 'step' => true];

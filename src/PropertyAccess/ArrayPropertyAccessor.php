@@ -54,6 +54,8 @@ final class ArrayPropertyAccessor implements PropertyAccessor
 
     /**
      * {@inheritDoc}
+     *
+     * @throws PropertyAccessFailed When data structure is not supported.
      */
     public static function create($object): PropertyAccessor
     {

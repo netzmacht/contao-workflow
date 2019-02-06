@@ -55,6 +55,8 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
 
     /**
      * {@inheritDoc}
+     *
+     * @throws ActionFailedException When no property access is given.
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {

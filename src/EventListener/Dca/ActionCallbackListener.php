@@ -105,7 +105,7 @@ final class ActionCallbackListener
             $notifications,
             function (array $row) {
                 return sprintf('%s [ID %s]', $row['title'], $row['id']);
-            })
-            ->getOptions();
+            }
+        )->getOptions();
     }
 }
