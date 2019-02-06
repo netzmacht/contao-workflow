@@ -26,3 +26,6 @@ build.properties
 # NPM
 node_modules
 package-lock.json
+
+# docs
+_book/
