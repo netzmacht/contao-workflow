@@ -34,6 +34,7 @@
  * Es wird zwischen Actions und Post Actions unterschieden
  * Post Actions werden nach der Transformation zu einem neuen Status ausgeführt
  * Actions können einen Payload erfordern (Benutzereingabe)
+ * Scheitert eine Action, wird ein neuer Status (nicht erfolgreich) generiert
  
 ## Payload
 

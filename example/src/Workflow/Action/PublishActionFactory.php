@@ -16,12 +16,13 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
-use Netzmacht\Workflow\Flow\Workflow;
 
-final class PublishActionFactory implements ActionTypeFactory
+/**
+ * Class PublishActionFactory
+ */
+final class PublishActionFactory extends AbstractExampleActionFactory
 {
     /**
      * Property access manager.
@@ -43,14 +44,6 @@ final class PublishActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
-    public function getCategory(): string
-    {
-        return 'example';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'example_publish';
@@ -62,14 +55,6 @@ final class PublishActionFactory implements ActionTypeFactory
     public function isPostAction(): bool
     {
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function supports(Workflow $workflow): bool
-    {
-        return $workflow->getProviderName() === 'tl_example';
     }
 
     /**

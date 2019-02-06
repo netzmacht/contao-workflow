@@ -13,13 +13,5 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowExampleBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-/**
- * Class NetzmachtContaoWorkflowExampleBundle
- */
-final class NetzmachtContaoWorkflowExampleBundle extends Bundle
-{
-}
+$GLOBALS['TL_LANG']['MOD']['example'][0] = 'Examples';
+$GLOBALS['TL_LANG']['MOD']['example'][1] = 'Manage examples';

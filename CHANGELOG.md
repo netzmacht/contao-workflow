@@ -9,6 +9,7 @@
 
  - Add provider configuration for non default workflow types
  - Show success column in state history overview
+ - Add example for a custom implementation
  
 ### Changed
 

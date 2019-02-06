@@ -13,20 +13,29 @@
 
 declare(strict_types=1);
 
-namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Type;
+namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\AbstractWorkflowType;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
+use Netzmacht\Workflow\Flow\Workflow;
 
 /**
- * Class ExampleType
+ * Class AbstractExampleActionFactory
  */
-final class ExampleType extends AbstractWorkflowType
+abstract class AbstractExampleActionFactory implements ActionTypeFactory
 {
     /**
      * {@inheritDoc}
      */
-    public function __construct()
+    public function getCategory(): string
     {
-        parent::__construct('example', ['tl_example']);
+        return 'example';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supports(Workflow $workflow): bool
+    {
+        return $workflow->getProviderName() === 'tl_example';
     }
 }

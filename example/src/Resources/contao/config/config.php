@@ -13,4 +13,4 @@
 
 declare(strict_types=1);
 
-$GLOBALS['BE_MOD']['content']['workflow']['example']['tables'] = ['tl_example'];
+$GLOBALS['BE_MOD']['workflow']['example']['tables'] = ['tl_example'];

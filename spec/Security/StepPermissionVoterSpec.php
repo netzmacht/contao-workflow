@@ -21,21 +21,24 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class StepPermissionVoterSpec extends ObjectBehavior
+/**
+ * Class StepPermissionVoterSpec
+ */
+final class StepPermissionVoterSpec extends ObjectBehavior
 {
-    function let(TokenInterface $token, BackendUser $user)
+    public function let(TokenInterface $token, BackendUser $user): void
     {
         $token
             ->getUser()
             ->willReturn($user);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(StepPermissionVoter::class);
     }
 
-    function it_grants_access_for_granted_step_permission(Step $step, TokenInterface $token, BackendUser $user)
+    public function it_grants_access_for_granted_step_permission(Step $step, TokenInterface $token, BackendUser $user): void
     {
         $permission = Permission::forWorkflowName('test', 'permission');
 
@@ -52,7 +55,7 @@ class StepPermissionVoterSpec extends ObjectBehavior
             ->shouldReturn(Voter::ACCESS_GRANTED);
     }
 
-    function it_abstains_access_for_granted_non_step_permission(Step $step, TokenInterface $token, BackendUser $user)
+    public function it_abstains_access_for_granted_non_step_permission(Step $step, TokenInterface $token, BackendUser $user): void
     {
         $permission = Permission::forWorkflowName('test', 'permission');
 
@@ -69,7 +72,7 @@ class StepPermissionVoterSpec extends ObjectBehavior
             ->shouldReturn(Voter::ACCESS_ABSTAIN);
     }
 
-    function it_denies_access_for_non_granted_step_permission(Step $step, TokenInterface $token, BackendUser $user)
+    public function it_denies_access_for_non_granted_step_permission(Step $step, TokenInterface $token, BackendUser $user): void
     {
         $permission = Permission::forWorkflowName('test', 'permission');
 

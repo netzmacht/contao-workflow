@@ -11,9 +11,10 @@
  * @filesource
  */
 
-use Netzmacht\ContaoWorkflowExampleBundle\EventListener\ExampleDcaListener;
-
 declare(strict_types=1);
+
+use Netzmacht\ContaoWorkflowBundle\EventListener\Integration\OperationListener;
+use Netzmacht\ContaoWorkflowBundle\EventListener\Integration\SubmitButtonsListener;
 
 $GLOBALS['TL_DCA']['tl_example'] = [
     // Config
@@ -25,12 +26,19 @@ $GLOBALS['TL_DCA']['tl_example'] = [
                 'id' => 'primary',
             ],
         ],
-        'onload_callback' => [
-            ExampleDcaListener::class, 'onLoad'
+        'onsubmit_callback' => [
+            [SubmitButtonsListener::class, 'redirectToTransition']
         ]
     ],
 
-    // List
+    // Edit
+    'edit' => [
+        'buttons_callback' => [
+            [SubmitButtonsListener::class, 'addTransitionButtons']
+        ]
+    ],
+
+    // List configuration
     'list'     => [
         'sorting'           => [
             'mode'        => 1,
@@ -50,26 +58,31 @@ $GLOBALS['TL_DCA']['tl_example'] = [
             ],
         ],
         'operations'        => [
+            'workflow' => [
+                'label'           => &$GLOBALS['TL_LANG']['tl_example']['workflowBT'],
+                'href'            => '',
+                'icon'            => 'bundles/netzmachtcontaoworkflow/img/workflow.png',
+                'button_callback' => [OperationListener::class, 'workflowOperationButton'],
+            ],
             'edit'   => [
-                'label' => &$GLOBALS['TL_LANG']['tl_form']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_example']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.svg',
             ],
             'copy'   => [
-                'label'           => &$GLOBALS['TL_LANG']['tl_form']['copy'],
+                'label'           => &$GLOBALS['TL_LANG']['tl_example']['copy'],
                 'href'            => 'act=copy',
                 'icon'            => 'copy.svg',
-                'button_callback' => ['tl_form', 'copyForm'],
             ],
             'delete' => [
-                'label'           => &$GLOBALS['TL_LANG']['tl_form']['delete'],
+                'label'           => &$GLOBALS['TL_LANG']['tl_example']['delete'],
                 'href'            => 'act=delete',
                 'icon'            => 'delete.svg',
-                'attributes'      => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
-                'button_callback' => ['tl_form', 'deleteForm'],
+                'attributes'      => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm']
+                    . '\'))return false;Backend.getScrollOffset()"',
             ],
             'show'   => [
-                'label' => &$GLOBALS['TL_LANG']['tl_form']['show'],
+                'label' => &$GLOBALS['TL_LANG']['tl_example']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.svg',
             ],
@@ -78,13 +91,13 @@ $GLOBALS['TL_DCA']['tl_example'] = [
 
     // Palettes
     'palettes' => [
-        'default' => '{title_legend},title,published',
+        'default' => '{title_legend},title,workflow,published',
     ],
 
     // Fields
     'fields'   => [
         'id'        => [
-            'sql' => "int(10) unsigned NOT NULL auto_increment",
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'tstamp'    => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -102,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_example'] = [
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'checkbox',
-            'eval'      => ['submitOnChange' => true],
+            'eval'      => ['submitOnChange' => false, 'tl_class' => 'm12 w50'],
             'sql'       => "char(1) NOT NULL default ''",
         ],
     ]

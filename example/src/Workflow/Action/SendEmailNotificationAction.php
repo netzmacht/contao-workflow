@@ -19,11 +19,16 @@ use Contao\Config;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Context\Properties;
+use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Patchwork\Utf8;
 use Swift_Mailer;
+use function implode;
 
+/**
+ * Class SendEmailNotificationAction
+ */
 final class SendEmailNotificationAction extends AbstractAction
 {
     /**
@@ -88,6 +93,8 @@ final class SendEmailNotificationAction extends AbstractAction
 
     /**
      * {@inheritDoc}
+     *
+     * @throws ActionFailedException When notification could not be sent.
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
@@ -97,10 +104,24 @@ final class SendEmailNotificationAction extends AbstractAction
             ->setTo($this->recipient)
             ->setBody($body, 'text/html');
 
+        // Usually notifications should be send as post actions. It means that the transition is already done and the
+        // new state is added to the state history.
+        // Be aware that a post action can't let a transition fail. If your business requirements requires it, you
+        // should create not a post action but a regular action. An action can throw an ActionFailedException to
+        // indicate that it doesn't succeed.
+        $this->mailer->send($message, $failedRecipients);
+
         // The send email notification is triggered as post action. It means that the transition is already done,
         // you create an failed transition anymore. So instead, we log the failed recipients.
-        $this->mailer->send($message, $failedRecipients);
-        $this->logSuccess($context->getProperties(), $failedRecipients);
+        // @codingStandardsIgnoreStart
+        // $this->logSuccess($context->getProperties(), $failedRecipients);
+        // @codingStandardsIgnoreEnd
+
+        if ($failedRecipients) {
+            throw new ActionFailedException(
+                'Mails could not be sent to recipients: ' . implode(',', $failedRecipients)
+            );
+        }
     }
 
     /**
@@ -116,8 +137,8 @@ final class SendEmailNotificationAction extends AbstractAction
     /**
      * Create the subject message.
      *
-     * @param Transition $transition
-     * @param Item       $item
+     * @param Transition $transition Workflow transition.
+     * @param Item       $item       Workflow item.
      *
      * @return string
      */
@@ -140,6 +161,8 @@ final class SendEmailNotificationAction extends AbstractAction
      * @param array      $failedRecipients Failed recipients.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function logSuccess(Properties $properties, array $failedRecipients): void
     {

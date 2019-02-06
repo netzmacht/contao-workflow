@@ -22,6 +22,9 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 
+/**
+ * Class PublishAction
+ */
 final class PublishAction extends AbstractPropertyAccessAction
 {
     /**
@@ -32,7 +35,7 @@ final class PublishAction extends AbstractPropertyAccessAction
     private $state;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(
         PropertyAccessManager $propertyAccessManager,
@@ -64,6 +67,8 @@ final class PublishAction extends AbstractPropertyAccessAction
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnsupportedEntity When given entity is not accessible.
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {

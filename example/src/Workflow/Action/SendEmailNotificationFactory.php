@@ -15,13 +15,14 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
-use Netzmacht\Workflow\Flow\Workflow;
 use Swift_Mailer;
 
-final class SendEmailNotificationFactory implements ActionTypeFactory
+/**
+ * Class SendEmailNotificationFactory
+ */
+final class SendEmailNotificationFactory extends AbstractExampleActionFactory
 {
     /**
      * Mailer service.
@@ -43,14 +44,6 @@ final class SendEmailNotificationFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
-    public function getCategory(): string
-    {
-        return 'example';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'example_notification';
@@ -62,14 +55,6 @@ final class SendEmailNotificationFactory implements ActionTypeFactory
     public function isPostAction(): bool
     {
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function supports(Workflow $workflow): bool
-    {
-        return $workflow->getProviderName() === 'tl_example';
     }
 
     /**
