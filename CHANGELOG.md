@@ -15,4 +15,5 @@
  
 ### Fixed
 
- - Fix loading of available actions for a workflow in the backend 
+ - Fix loading of available actions for a workflow in the backend
+ - Fix getting id of database entities 

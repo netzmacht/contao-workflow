@@ -96,8 +96,8 @@ final class DatabaseEntityRepository implements EntityRepository
             throw UnsupportedEntity::forEntity($entity);
         }
 
-        if ($entity->getId()) {
-            $this->connection->update($this->providerName, $entity, ['id' => $entity->getId()]);
+        if (isset($entity['id'])) {
+            $this->connection->update($this->providerName, $entity, ['id' => $entity['id']]);
         } else {
             $this->connection->insert($this->providerName, $entity);
         }
