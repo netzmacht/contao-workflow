@@ -116,7 +116,7 @@ final class PropertyCondition implements Condition
     }
 
     /**
-     * Get value to compare agianst.
+     * Get value to compare against.
      *
      * @return mixed
      */
@@ -161,10 +161,10 @@ final class PropertyCondition implements Condition
         $context->addError(
             'transition.condition.property.failed',
             array(
-                $this->property,
-                $value,
-                $this->operator,
-                $this->value,
+                '%property%'       => $this->property,
+                '%value%'          => $value,
+                '%operator%'       => $this->operator,
+                '%expected_value%' => $this->value,
             )
         );
 

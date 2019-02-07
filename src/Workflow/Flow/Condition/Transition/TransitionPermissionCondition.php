@@ -71,7 +71,13 @@ final class TransitionPermissionCondition implements Condition
             return true;
         }
 
-        $context->addError('transition.condition.transition_permission_failed', array((string) $permission));
+        $context->addError(
+            'transition.condition.transition_permission.failed',
+            [
+                'transition' => $transition->getLabel(),
+                'permission' => (string) $permission
+            ]
+        );
 
         return false;
     }

@@ -94,9 +94,25 @@
                 <source>integration.current_step.1</source>
                 <target>Current step of the workflow.</target>
             </trans-unit>
-            <trans-unit id="">
+            <trans-unit id="transition.condition.expression.failed">
                 <source>transition.action.failed</source>
                 <target>Transition action failed: exception</target>
+            </trans-unit>
+            <trans-unit id="transition.condition.property.failed">
+                <source>transition.condition.property.failed</source>
+                <target>Property condition for property "%property%" failed. Expected value "%expected_value%", but "%value%" given with operator "%operator%".</target>
+            </trans-unit>
+            <trans-unit id="transition.condition.step_permission.not_started">
+                <source>transition.condition.step_permission.not_started</source>
+                <target>Workflow is not started. Permission could not be evaluated.</target>
+            </trans-unit>
+            <trans-unit id="transition.condition.step_permission.failed">
+                <source>transition.condition.step_permission.failed</source>
+                <target>Step "%step%" doesn't have required permission "%s".</target>
+            </trans-unit>
+            <trans-unit id="transition.condition.transition_permission.failed">
+                <source>transition.condition.transition_permission.failed</source>
+                <target>Permission "%permission%" required for transition "%transition%".</target>
             </trans-unit>
         </body>
     </file>

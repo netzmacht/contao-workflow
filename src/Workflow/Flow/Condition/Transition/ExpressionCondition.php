@@ -84,7 +84,7 @@ final class ExpressionCondition implements Condition
             return true;
         }
 
-        $context->addError('transition.condition.expression.failed', [$this->expression]);
+        $context->addError('transition.condition.expression.failed', ['%expression%' => $this->expression]);
 
         return false;
     }

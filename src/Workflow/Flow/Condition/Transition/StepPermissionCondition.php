@@ -79,9 +79,7 @@ final class StepPermissionCondition implements Condition
                 return true;
             }
 
-            $context->addError(
-                'transition.condition.step_permission_failed.not_started'
-            );
+            $context->addError('transition.condition.step_permission_failed.not_started');
 
             return false;
         }
@@ -99,11 +97,11 @@ final class StepPermissionCondition implements Condition
         }
 
         $context->addError(
-            'transition.condition.step_permission_failed',
-            array(
-                $item->getCurrentStepName(),
-                $permission ? ((string) $permission) : '-'
-            )
+            'transition.condition.step_permission.failed',
+            [
+                '%step%'       => $item->getCurrentStepName(),
+                '%permission%' => $permission ? ((string) $permission) : '-',
+            ]
         );
 
         return false;
