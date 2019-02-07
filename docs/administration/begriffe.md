@@ -1,4 +1,4 @@
-# Konzepte
+# Begriffe
 
 ## Workflow
 

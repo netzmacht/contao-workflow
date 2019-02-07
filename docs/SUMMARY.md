@@ -3,7 +3,8 @@
 ## Administration
 
 * [Überblick](README.md)
-* [Konzepte](administration/konzepte.md)
+* [Begriffe](administration/begriffe.md)
+* [Features](administration/features.md)
 * [Quick Start](administration/quick-start.md)
 * [Support](administration/support.md)
 
