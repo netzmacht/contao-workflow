@@ -14,6 +14,7 @@
 declare(strict_types=1);
 
 use Netzmacht\ContaoWorkflowBundle\EventListener\Integration\OperationListener;
+use Netzmacht\ContaoWorkflowBundle\EventListener\Integration\OptionsListener;
 use Netzmacht\ContaoWorkflowBundle\EventListener\Integration\SubmitButtonsListener;
 
 $GLOBALS['TL_DCA']['tl_example'] = [
@@ -118,5 +119,34 @@ $GLOBALS['TL_DCA']['tl_example'] = [
             'eval'      => ['submitOnChange' => false, 'tl_class' => 'm12 w50'],
             'sql'       => "char(1) NOT NULL default ''",
         ],
+        'workflow' => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_example']['workflow'],
+            'inputType'        => 'select',
+            'exclude'          => true,
+            'filter'           => true,
+            'default'          => '',
+            'eval'             => [
+                'includeBlankOption' => true,
+                'chosen'             => true,
+                'submitOnChange'     => true,
+                'tl_class'           => 'w50',
+            ],
+            'options_callback' => [OptionsListener::class, 'workflowOptions'],
+            'sql'              => 'varchar(64) NOT NULL default \'\'',
+        ],
+        'workflowStep' => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_example']['workflowStep'],
+            'inputType'        => 'select',
+            'exclude'          => true,
+            'filter'           => true,
+            'default'          => '',
+            'eval'             => [
+                'includeBlankOption' => true,
+                'tl_class'           => 'w50',
+                'disabled'           => true,
+            ],
+            'options_callback' => [OptionsListener::class, 'stepOptions'],
+            'sql'              => 'varchar(64) NOT NULL default \'\'',
+        ]
     ]
 ];
