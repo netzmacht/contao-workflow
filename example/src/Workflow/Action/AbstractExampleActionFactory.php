@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowExampleBundle\Workflow\Action;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowType;
+use Netzmacht\ContaoWorkflowExampleBundle\Workflow\Type\ExampleType;
 use Netzmacht\Workflow\Flow\Workflow;
 
 /**
@@ -36,6 +38,6 @@ abstract class AbstractExampleActionFactory implements ActionTypeFactory
      */
     public function supports(Workflow $workflow): bool
     {
-        return $workflow->getProviderName() === 'tl_example';
+        return $workflow->getConfigValue(WorkflowType::class) instanceof ExampleType;
     }
 }
