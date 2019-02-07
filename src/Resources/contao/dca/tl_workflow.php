@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
         ],
         'label'   => [
             'fields'         => ['type', 'description'],
-            'label_callback' => ['netzmacht.contao_workflow.listeners.dca.common', 'generateRow'],
+            'label_callback' => ['netzmacht.contao_workflow.listeners.dca.workflow', 'generateRow'],
         ],
 
         'operations' => [

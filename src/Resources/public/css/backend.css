@@ -79,3 +79,10 @@
 .workflow-error-list li {
     list-style-type: square;
 }
+
+.workflow-definition-error {
+    color: #c33;
+    background: url(../../../system/themes/flexible/icons/error.svg) no-repeat 5px 4px #faebeb;
+    padding: 5px 5px 5px 25px;
+    margin: 0;
+}

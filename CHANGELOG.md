@@ -14,11 +14,19 @@
  - Rework property access by dropping `Entity` interfaces and introduce an `PropertyAccessManager`
  - Change namespace of the `UpdateEntityAction`
  - Only redirect from transition controller if new state is successful
+ - Improve backend not failing when invalid workflow definition is given
+ - Only build active workflows for the workflow manager
+ - Show error note if workflow couldn't be created in the workflow overview
  
 ### Fixed
 
  - Fix loading of available actions for a workflow in the backend
  - Fix getting id of database entities 
  - Use ArrayObject instead of array for database entities
+ 
+### Removed
+
+ - Remove interface `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\Manager`
+ - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased](https://github.com/netzmacht/contao-worklfow/compare/2.0.0-beta1...master)

@@ -61,4 +61,16 @@ final class WorkflowRepository extends ContaoRepository
     {
         return $this->findBy(['.providerName=?'], [$providerName], $options);
     }
+
+    /**
+     * Find active workflow definitions.
+     *
+     * @param array $options Query options.
+     *
+     * @return Collection|WorkflowModel[]|null
+     */
+    public function findActive(array $options = [])
+    {
+        return $this->findBy(['.active=?'], ['1'], $options);
+    }
 }

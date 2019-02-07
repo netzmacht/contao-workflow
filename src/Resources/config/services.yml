@@ -35,6 +35,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.type_registry'
       - '@event_dispatcher'
+      - '@monolog.logger'
 
   netzmacht.contao_workflow.entity_repository_factory:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\DelegatingRepositoryFactory
@@ -74,7 +75,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
 
   netzmacht.contao_workflow.manager:
-    class: Netzmacht\ContaoWorkflowBundle\Workflow\Manager\ContaoWorkflowManager
+    class: Netzmacht\Workflow\Manager\WorkflowManager
     arguments:
       - '@netzmacht.contao_workflow.transition_handler_factory'
       - '@netzmacht.contao_workflow.state_repository'

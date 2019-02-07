@@ -18,8 +18,8 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\DataContainer;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Manager\Manager;
 use NotificationCenter\Model\Notification;
 
 /**
@@ -37,11 +37,11 @@ final class ActionCallbackListener
     private $repositoryManager;
 
     /**
-     * Workflow manager.
+     * Workflow definition loader.
      *
-     * @var Manager
+     * @var DatabaseDrivenWorkflowLoader
      */
-    private $manager;
+    private $workflowLoader;
 
     /**
      * The action factory.
@@ -53,17 +53,17 @@ final class ActionCallbackListener
     /**
      * Action constructor.
      *
-     * @param RepositoryManager $repositoryManager Repository manager.
-     * @param Manager           $manager           Workflow manager.
-     * @param ActionFactory     $actionFactory     The action factory.
+     * @param RepositoryManager            $repositoryManager Repository manager.
+     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
+     * @param ActionFactory                $actionFactory     The action factory.
      */
     public function __construct(
         RepositoryManager $repositoryManager,
-        Manager $manager,
+        DatabaseDrivenWorkflowLoader $workflowLoader,
         ActionFactory $actionFactory
     ) {
         $this->repositoryManager = $repositoryManager;
-        $this->manager           = $manager;
+        $this->workflowLoader    = $workflowLoader;
         $this->actionFactory     = $actionFactory;
     }
 
@@ -80,7 +80,7 @@ final class ActionCallbackListener
             return $this->actionFactory->getTypeNames();
         }
 
-        $workflow = $this->manager->getWorkflowById((int) $dataContainer->activeRecord->pid);
+        $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
 
         return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
     }
