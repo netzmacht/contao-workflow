@@ -1,5 +1,5 @@
 netzmacht.contao_workflow.backend.step:
-  path: /contao/workflow/{entityId}
+  path: /contao/workflow/{module}/{entityId}
   defaults:
     _controller: netzmacht.contao_workflow.backend.step_controller
     _scope: "backend"
@@ -8,7 +8,7 @@ netzmacht.contao_workflow.backend.step:
     _backend_module: workflow
 
 netzmacht.contao_workflow.backend.transition:
-  path: /contao/workflow/{entityId}/{transition}
+  path: /contao/workflow/{module}/{entityId}/{transition}
   defaults:
     _controller: netzmacht.contao_workflow.backend.transition_controller
     _scope: "backend"

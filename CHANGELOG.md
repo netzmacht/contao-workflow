@@ -17,6 +17,7 @@
  - Improve backend not failing when invalid workflow definition is given
  - Only build active workflows for the workflow manager
  - Show error note if workflow couldn't be created in the workflow overview
+ - Add module to route. Module is available as request attribute and not as query attribute now.
  
 ### Fixed
 
