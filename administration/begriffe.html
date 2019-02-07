@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Support · GitBook</title>
+        <title>Begriffe · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../entwicklung/workflow-type.html" />
+    <link rel="next" href="features.html" />
     
     
-    <link rel="prev" href="quick-start.html" />
+    <link rel="prev" href="../" />
     
 
     </head>
@@ -104,7 +104,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="begriffe.html">
+        <li class="chapter active" data-level="1.2" data-path="begriffe.html">
             
                 <a href="begriffe.html">
             
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="support.html">
+        <li class="chapter " data-level="1.5" data-path="support.html">
             
                 <a href="support.html">
             
@@ -232,7 +232,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Support</a>
+        <a href=".." >Begriffe</a>
     </h1>
 </div>
 
@@ -247,13 +247,76 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="support--individualentwicklung">Support &amp; Individualentwicklung</h1>
-<h2 id="kostenloser-support">Kostenloser Support</h2>
-<p>F&#xFC;r kostenlosen Support kann eine Anfrage in der <a href="https://community.contao.org" target="_blank">Contao Community</a> gestellt werden. &#xDC;ber weitere Kan&#xE4;le erfolgt kein kostenloser Support.</p>
-<h2 id="kostenpflichtiger-support">Kostenpflichtiger Support</h2>
-<p>Bei Bedarf stehe ich f&#xFC;r kostenpflichtige Anfragen zur Verf&#xFC;gung. <a href="https://netzmacht.de" target="_blank">Kontaktdaten</a> stehen auf meiner Website.</p>
-<h2 id="indidivualentwicklung">Indidivualentwicklung</h2>
-<p>Bei Bedarf stehe ich f&#xFC;r zus&#xE4;tzliche Individualentwicklungen auf Basis von <strong>netzmacht/contao-workflow</strong> zur Verf&#xFC;gung. <a href="https://netzmacht.de" target="_blank">Kontaktdaten</a> stehen auf meiner Website.</p>
+                                <h1 id="begriffe">Begriffe</h1>
+<h2 id="workflow">Workflow</h2>
+<ul>
+<li>umfasst verschiedene Zust&#xE4;nde, in denen sich eine Entit&#xE4;t w&#xE4;hrend seiner Existenz befinden kann</li>
+<li>Workflows werden f&#xFC;r einen bespzifschen Typ einer Entit&#xE4;t definiert</li>
+<li>Pro Entit&#xE4;t k&#xF6;nnen mehrere Workflows definiert werden</li>
+<li>Workflows besitzen einen Typ, der beeinflusst </li>
+<li>&#xDC;ber Bedingungen wird geregelt, welcher Workflow f&#xFC;r eine Entit&#xE4;t zust&#xE4;ndig ist</li>
+</ul>
+<h2 id="workflowtyp">Workflowtyp</h2>
+<ul>
+<li>Erm&#xF6;glicht die Erweiterbarkeit der Workflow-Erweiterung an spezifische Anforderungen</li>
+</ul>
+<h2 id="schritt">Schritt</h2>
+<ul>
+<li>Ein Workflow hat eine beliebige Anzahl von Schritten, die eine Entit&#xE4;t w&#xE4;hrend ihrer Existenz erreichen kann</li>
+<li>Ein Schritt hat verschiedene Transitions, die zu einem neuen Schritt f&#xFC;hren</li>
+<li>Ein Schritt kann final sein, sodass keine weitere Transition m&#xF6;glich ist</li>
+</ul>
+<h2 id="transition">Transition</h2>
+<ul>
+<li>Der &#xDC;bergang von Schritt <em>A</em> zu Schritt <em>B</em> wird als Transition bezeichnet</li>
+<li>Ein Workflow hat exakt eine Anfangstransition</li>
+<li>Eine Transition hat einen Zielschritt</li>
+<li>Eine Transition f&#xFC;hrt eine beliebige Anzahl von Aktionen aus, die zu einem neuen Schritt f&#xFC;hren</li>
+<li>Eine Transition h&#xE4;ngt von <em>Pre Conditions</em> und <em>Conditions</em> ab, die erf&#xFC;llt sein m&#xFC;ssen</li>
+<li>Eine Transition kann verf&#xFC;gbar sein <em>(potentiell ausf&#xFC;hrbar)</em> oder erlaubt <em>(ausf&#xFC;hrbar)</em>.</li>
+</ul>
+<h2 id="action">Action</h2>
+<ul>
+<li>Eine Action wird w&#xE4;hrend einer Transition ausgef&#xFC;hrt</li>
+<li>Eine Action beinhaltet jegliche Logik, die zu einer Status&#xE4;nderung f&#xFC;hren</li>
+<li>Es wird zwischen Actions und Post Actions unterschieden</li>
+<li>Post Actions werden nach der Transformation zu einem neuen Status ausgef&#xFC;hrt</li>
+<li>Actions k&#xF6;nnen einen Payload erfordern (Benutzereingabe)</li>
+<li>Scheitert eine Action, wird ein neuer Status (nicht erfolgreich) generiert</li>
+</ul>
+<h2 id="payload">Payload</h2>
+<ul>
+<li>Der Payload f&#xFC;hrt Actions aus, der aus verschiedenen Quellen kommen kann</li>
+<li>In der Benutzeroberfl&#xE4;che erfolgt die Eingabe in der Regel &#xFC;ber Formulare</li>
+</ul>
+<h2 id="transition-conditions">Transition Conditions</h2>
+<ul>
+<li>Es existieren zwei Arten von Bedingungen: Pre conditions uns conditions</li>
+<li>Pre conditions m&#xFC;ssen erf&#xFC;llt sein, sodass diese f&#xFC;hr einen Nutzer zug&#xE4;nglich sind</li>
+<li>Conditions &#xFC;berpr&#xFC;fen auch den Payload und validieren somit den Payload</li>
+</ul>
+<h2 id="entit&#xE4;t">Entit&#xE4;t</h2>
+<ul>
+<li>Datens&#xE4;tze werden als Entit&#xE4;t bezeichnet</li>
+<li>Entit&#xE4;ten k&#xF6;nnen beliebig implementiert sein</li>
+<li>Standardm&#xE4;&#xDF;ig werden die Models von Contao als auch Datenbank-Results unterst&#xFC;tzt</li>
+</ul>
+<h2 id="status">Status</h2>
+<ul>
+<li>Jeder Vesuch einer Transition wird als Status gespeichert</li>
+<li>Es existieren somit erfolgreiche und fehlgeschlagene Transitions</li>
+<li>Jeder Status kann zudem spezifische Daten speichern</li>
+</ul>
+<h2 id="history">History</h2>
+<ul>
+<li>Der Log aller Status&#xE4;nderungen wird als History beschrieben</li>
+</ul>
+<h2 id="item">Item</h2>
+<ul>
+<li>Ein Item ist ein Wrapper f&#xFC;r eine Entit&#xE4;t und behinhaltet workflowspezifische Informationen</li>
+<li>Es verf&#xFC;gt &#xFC;ber die State-History</li>
+<li>Es Verf&#xFC;gt &#xFC;ber den Namen des aktuellen Workflows</li>
+</ul>
 
                                 
                                 </section>
@@ -281,12 +344,12 @@
 
             
                 
-                <a href="quick-start.html" class="navigation navigation-prev " aria-label="Previous page: Quick Start">
+                <a href="../" class="navigation navigation-prev " aria-label="Previous page: Überblick">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../entwicklung/workflow-type.html" class="navigation navigation-next " aria-label="Next page: Workflow-Typen">
+                <a href="features.html" class="navigation navigation-next " aria-label="Next page: Features">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -297,7 +360,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Support","level":"1.5","depth":1,"next":{"title":"Workflow-Typen","level":"2.1","depth":1,"path":"entwicklung/workflow-type.md","ref":"entwicklung/workflow-type.md","articles":[]},"previous":{"title":"Quick Start","level":"1.4","depth":1,"path":"administration/quick-start.md","ref":"administration/quick-start.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/support.md","mtime":"2019-02-06T15:38:56.313Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-07T15:23:52.099Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Begriffe","level":"1.2","depth":1,"next":{"title":"Features","level":"1.3","depth":1,"path":"administration/features.md","ref":"administration/features.md","articles":[]},"previous":{"title":"Überblick","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/begriffe.md","mtime":"2019-02-07T14:42:28.809Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-07T15:23:52.099Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

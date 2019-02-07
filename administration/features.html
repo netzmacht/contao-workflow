@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Weiteres · GitBook</title>
+        <title>Features · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="quick-start.html" />
     
-    <link rel="prev" href="actions.html" />
+    
+    <link rel="prev" href="begriffe.html" />
     
 
     </head>
@@ -102,9 +104,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../administration/begriffe.html">
+        <li class="chapter " data-level="1.2" data-path="begriffe.html">
             
-                <a href="../administration/begriffe.html">
+                <a href="begriffe.html">
             
                     
                     Begriffe
@@ -115,9 +117,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="../administration/features.html">
+        <li class="chapter active" data-level="1.3" data-path="features.html">
             
-                <a href="../administration/features.html">
+                <a href="features.html">
             
                     
                     Features
@@ -128,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="../administration/quick-start.html">
+        <li class="chapter " data-level="1.4" data-path="quick-start.html">
             
-                <a href="../administration/quick-start.html">
+                <a href="quick-start.html">
             
                     
                     Quick Start
@@ -141,9 +143,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="../administration/support.html">
+        <li class="chapter " data-level="1.5" data-path="support.html">
             
-                <a href="../administration/support.html">
+                <a href="support.html">
             
                     
                     Support
@@ -161,9 +163,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="workflow-type.html">
+        <li class="chapter " data-level="2.1" data-path="../entwicklung/workflow-type.html">
             
-                <a href="workflow-type.html">
+                <a href="../entwicklung/workflow-type.html">
             
                     
                     Workflow-Typen
@@ -174,9 +176,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="actions.html">
+        <li class="chapter " data-level="2.2" data-path="../entwicklung/actions.html">
             
-                <a href="actions.html">
+                <a href="../entwicklung/actions.html">
             
                     
                     Aktionen
@@ -187,9 +189,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3" data-path="weiteres.html">
+        <li class="chapter " data-level="2.3" data-path="../entwicklung/weiteres.html">
             
-                <a href="weiteres.html">
+                <a href="../entwicklung/weiteres.html">
             
                     
                     Weiteres
@@ -230,7 +232,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Weiteres</a>
+        <a href=".." >Features</a>
     </h1>
 </div>
 
@@ -245,13 +247,60 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="weiteres">Weiteres</h1>
-<p>Neben den dokumentierten Anpassungsm&#xF6;glichkeiten existieren noch weitere M&#xF6;glichkeiten, u.a.:</p>
+                                <h1 id="features">Features</h1>
+<h2 id="entwickertool">Entwickertool</h2>
 <ul>
-<li>Integration in eigene DCAs</li>
-<li>Workflows aus anderen Konfigurationsquellen</li>
-<li>Anpassung der Workflowkonfiguration anhand von Event Listenern</li>
-<li>Anpassung der Darstellungen von Workflow-Status, Transition</li>
+<li>Integration eigener Workflowtypen</li>
+<li>Integration workflowspezifischer Gesch&#xE4;ftslogik</li>
+<li>Unabh&#xE4;ngigkeit der Entit&#xE4;ten. Nutzen von Doctrine Entities, Contao Models, MetaModels, usw. </li>
+</ul>
+<h2 id="konfiguration">Konfiguration</h2>
+<ul>
+<li>Konfiguration von beliebigen Workflows direkt im Backend</li>
+<li>Bereitstellung eines <em>Default</em> Workflowtyps</li>
+<li>Aktivierung des Workflowtyps Default f&#xFC;r beliebige DCA-basierte Tabellen mittels Applikationskonfiguration</li>
+<li>Automatische Backend-Integration des Default Workflowtyps</li>
+</ul>
+<h2 id="berechtigungen">Berechtigungen</h2>
+<ul>
+<li>Berechtigungen je Workflow definieren</li>
+<li>Anwendbar der Berechtigungen f&#xFC;r Contao Benutzer und Mitglieder</li>
+<li>Beschr&#xE4;nkung von Transitions auf Berechtigungen</li>
+</ul>
+<h2 id="bedingungen">Bedingungen</h2>
+<ul>
+<li>Beliebige Bedingungen f&#xFC;r Transitions definierbar</li>
+<li>Konfiguration im Backend von Property Conditions<em> oder </em>Expression Conditions* konfigurierbar</li>
+</ul>
+<h2 id="backend-integration">Backend-Integration</h2>
+<ul>
+<li>Konfigurierbare Backend-Integration f&#xFC;r den Workflowtyp <em>Default</em></li>
+<li>Backend-Ansicht f&#xFC;r den Status</li>
+<li>Backend-Ansicht f&#xFC;r die Transition</li>
+<li>Bereitstellung von Hilfsklassen f&#xFC;r eigene Workflow-Integrationen</li>
+</ul>
+<h2 id="bereitgestellte-actions">Bereitgestellte Actions</h2>
+<h3 id="action-formular">Action Formular</h3>
+<ul>
+<li>Einbindung eines Formulars des Formulargenerators zur Erfassung beliebiger Daten je Transition</li>
+<li>Speicherung der Daten im aktuellen Status</li>
+</ul>
+<h3 id="action-notiz">Action Notiz</h3>
+<ul>
+<li>Erfassung einer einfachen Notiz je Transition</li>
+<li>Speicherung der Notiz im aktuellen Status</li>
+</ul>
+<h3 id="action-notification">Action Notification</h3>
+<ul>
+<li>Versand einer Notification &#xFC;ber das <a href="https://github.com/terminal42/contao-notification_center" target="_blank">Notification Center</a></li>
+<li>Versand abh&#xE4;ngig vom Erfolg einer Transition konfigurierbar</li>
+</ul>
+<h2 id="geplante-features">Geplante Features</h2>
+<ul>
+<li>Formulare anhand Teile der DCA-Konfiguration erstellen </li>
+<li>Zugriffsbeschr&#xE4;nkung je Workflow-Schritt anwenden</li>
+<li>Backend-Ansicht f&#xFC;r einen vergangenen Workflow-Status</li>
+<li>Frontend-Integration</li>
 </ul>
 
                                 
@@ -280,10 +329,14 @@
 
             
                 
-                <a href="actions.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Aktionen">
+                <a href="begriffe.html" class="navigation navigation-prev " aria-label="Previous page: Begriffe">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="quick-start.html" class="navigation navigation-next " aria-label="Next page: Quick Start">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -292,7 +345,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Weiteres","level":"2.3","depth":1,"previous":{"title":"Aktionen","level":"2.2","depth":1,"path":"entwicklung/actions.md","ref":"entwicklung/actions.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"entwicklung/weiteres.md","mtime":"2019-02-06T15:38:56.313Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-07T15:23:52.099Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Features","level":"1.3","depth":1,"next":{"title":"Quick Start","level":"1.4","depth":1,"path":"administration/quick-start.md","ref":"administration/quick-start.md","articles":[]},"previous":{"title":"Begriffe","level":"1.2","depth":1,"path":"administration/begriffe.md","ref":"administration/begriffe.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/features.md","mtime":"2019-02-07T15:03:24.416Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-07T15:23:52.099Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
