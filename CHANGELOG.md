@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.0.0-rc1] - 2019-07-02
+
 ### Added
 
  - Add provider configuration for non default workflow types
@@ -30,4 +32,5 @@
  - Remove interface `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\Manager`
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
-[Unreleased](https://github.com/netzmacht/contao-worklfow/compare/2.0.0-beta1...master)
+[Unreleased]: https://github.com/netzmacht/contao-worklfow/compare/2.0.0-rc1...master
+[2.0.0-rc1]: https://github.com/netzmacht/contao-worklfow/compare/2.0.0-beta1...2.0.0-rc1
