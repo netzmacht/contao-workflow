@@ -41,7 +41,11 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
             BundleConfig::create(SensioFrameworkExtraBundle::class),
             BundleConfig::create(NetzmachtContaoWorkflowBundle::class)
                 ->setLoadAfter(
-                    [ContaoCoreBundle::class, SensioFrameworkExtraBundle::class, NetzmachtContaoToolkitBundle::class]
+                    [
+                        ContaoCoreBundle::class,
+                        SensioFrameworkExtraBundle::class,
+                        NetzmachtContaoToolkitBundle::class
+                    ]
                 )
                 ->setReplace(['workflow'])
         ];
