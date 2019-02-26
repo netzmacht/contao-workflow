@@ -11,16 +11,13 @@
  * @filesource
  */
 
-
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection;
 
-use function array_keys;
-use function array_map;
-use function array_unique;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use function array_keys;
 
 /**
  * Class NetzmachtContaoWorkflowExtension
