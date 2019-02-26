@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
+use Contao\CoreBundle\Framework\Adapter;
 use Contao\DataContainer;
 use Contao\Input;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\EntityManager;
@@ -51,17 +52,30 @@ final class SubmitButtonsListener
     private $router;
 
     /**
+     * Input adapter.
+     *
+     * @var Adapter|Input
+     */
+    private $inputAdapter;
+
+    /**
      * SubmitButtonsListener constructor.
      *
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param EntityManager   $entityManager   Entity manager.
      * @param Router          $router          Router.
+     * @param Adapter|Input   $inputAdapter    Input adapter.
      */
-    public function __construct(WorkflowManager $workflowManager, EntityManager $entityManager, Router $router)
-    {
+    public function __construct(
+        WorkflowManager $workflowManager,
+        EntityManager $entityManager,
+        Router $router,
+        $inputAdapter
+    ) {
         $this->workflowManager = $workflowManager;
         $this->entityManager   = $entityManager;
         $this->router          = $router;
+        $this->inputAdapter    = $inputAdapter;
     }
 
     /**
@@ -127,7 +141,8 @@ final class SubmitButtonsListener
             [
                 'entityId'   => $entityId,
                 'transition' => $transition,
-                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflow,
+                'module'     => $this->inputAdapter->get('do'),
+                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflow ? '1' : '',
             ]
         );
 

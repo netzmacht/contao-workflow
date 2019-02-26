@@ -33,3 +33,4 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
       - '@router'
+      - '@netzmacht.contao_toolkit.contao.input_adapter'
