@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [2.0.0-rc2] - 2019-02-28
+
+### Added
+ 
+  - Test against PHP *nightly* and *7.4snapshot*
+
+### Fixed
+
+  - Fix issue with broken routes not container *module* parameter
+
 ## [2.0.0-rc1] - 2019-07-02
 
 ### Added
@@ -32,5 +42,6 @@
  - Remove interface `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\Manager`
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
-[Unreleased]: https://github.com/netzmacht/contao-worklfow/compare/2.0.0-rc1...master
-[2.0.0-rc1]: https://github.com/netzmacht/contao-worklfow/compare/2.0.0-beta1...2.0.0-rc1
+[Unreleased]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc1...master
+[2.0.0-rc2]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc1...2.0.0-rc2
+[2.0.0-rc1]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-beta1...2.0.0-rc1

@@ -31,7 +31,8 @@ final class StepController extends AbstractController
     /**
      * Execute the controller.
      *
-     * @param EntityId $entityId The enetity id.
+     * @param EntityId $entityId The entity id.
+     * @param string   $module   Module name.
      *
      * @return Response
      */
