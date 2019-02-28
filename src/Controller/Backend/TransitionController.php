@@ -65,14 +65,14 @@ final class TransitionController extends AbstractController
      *
      * @param EntityId $entityId   EntityId of current entity.
      * @param string   $transition The transition name.
+     * @param string   $module     The module name.
      * @param Request  $request    The web request.
      *
      * @return Response
      *
-     * @throws \RuntimeException For any runtime exception.
      * @throws WorkflowException When the workflow handling fails.
      */
-    public function __invoke(EntityId $entityId, string $transition, Request $request): Response
+    public function __invoke(EntityId $entityId, string $transition, string $module, Request $request): Response
     {
         $item      = $this->createItem($entityId);
         $workflow  = $this->workflowManager->getWorkflowByItem($item);
@@ -109,7 +109,7 @@ final class TransitionController extends AbstractController
         $view       = $this->viewFactory->create(
             $item,
             $transition,
-            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection()]
+            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection(), 'module' => $module]
         );
 
         return $view->render();

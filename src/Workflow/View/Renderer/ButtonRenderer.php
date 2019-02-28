@@ -130,7 +130,8 @@ final class ButtonRenderer extends AbstractRenderer
                 $params,
                 [
                     'entityId'   => $view->getItem()->getEntityId(),
-                    'transition' => $transitionName
+                    'transition' => $transitionName,
+                    'module'     => (string) $view->getOption('module')
                 ]
             ),
             'icon'   => $transition->getConfigValue('icon')

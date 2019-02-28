@@ -35,7 +35,7 @@ final class StepController extends AbstractController
      *
      * @return Response
      */
-    public function __invoke(EntityId $entityId): Response
+    public function __invoke(EntityId $entityId, string $module): Response
     {
         $item        = $this->createItem($entityId);
         $workflow    = $this->workflowManager->getWorkflowByItem($item);
@@ -46,6 +46,7 @@ final class StepController extends AbstractController
                 $this->router->generate(
                     'netzmacht.contao_workflow.backend.transition',
                     [
+                        'module'     => $module,
                         'entityId'   => (string) $entityId,
                         'transition' => $workflow->getStartTransition()->getName(),
                     ]
@@ -58,6 +59,7 @@ final class StepController extends AbstractController
                 $this->router->generate(
                     'netzmacht.contao_workflow.backend.transition',
                     [
+                        'module'     => $module,
                         'entityId'   => (string) $entityId,
                         'transition' => $workflow->getStartTransition()->getName(),
                         'detach'     => true,
@@ -67,7 +69,7 @@ final class StepController extends AbstractController
         }
 
         $currentStep = $workflow->getStep($item->getCurrentStepName());
-        $view        = $this->viewFactory->create($item, $currentStep);
+        $view        = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
 
         return $view->render();
     }
