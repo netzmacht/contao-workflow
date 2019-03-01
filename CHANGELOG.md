@@ -11,6 +11,7 @@
 ### Fixed
 
   - Fix issue with broken routes not container *module* parameter
+  - Register bundle `SensioFrameworkExtraBundle`
 
 ## [2.0.0-rc1] - 2019-07-02
 
