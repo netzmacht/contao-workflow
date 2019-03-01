@@ -98,8 +98,8 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      */
     public function findBySpecification(Specification $specification): iterable
     {
-        if ($specification instanceof ModelSpecification) {
-            $models   = $this->repository->findBySpecification($specification) ?: [];
+        if ($specification instanceof ContaoModelSpecificationAwareSpecification) {
+            $models   = $this->repository->findBySpecification($specification->asModelSpecification()) ?: [];
             $entities = [];
 
             foreach ($models as $model) {

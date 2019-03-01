@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Fixed
+ 
+ - Introduce `ContaoModelSpecificationAwareSpecification` to fix specification implementation of the 
+   `ContaoModelEntitySpecification`. Previous implementation wasn't compatible because both specifications interfaces
+   aren't compatible so couldn't be applied both.
+
 ## [2.0.0-rc2] - 2019-02-28
 
 ### Added
