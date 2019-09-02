@@ -160,7 +160,7 @@ final class WorkflowBuilder
 
             $step->setFinal((bool) $model->final);
 
-            if ($model->limitPermission) {
+            if ($model->limitPermission && $model->permission !== '') {
                 $step->setPermission(Permission::fromString($model->permission));
             }
 
@@ -223,7 +223,7 @@ final class WorkflowBuilder
                 )
             );
 
-            if ($model->limitPermission) {
+            if ($model->limitPermission && $model->permission !== '') {
                 $transition->setPermission(Permission::fromString($model->permission));
             }
 

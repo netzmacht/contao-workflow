@@ -1,9 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [2.0.0-rc3] - 2019-09-02
 
 ### Fixed
  
+ - Only limit permissions if a permission is selected 
  - Introduce `ContaoModelSpecificationAwareSpecification` to fix specification implementation of the 
    `ContaoModelEntitySpecification`. Previous implementation wasn't compatible because both specifications interfaces
    aren't compatible so couldn't be applied both.
