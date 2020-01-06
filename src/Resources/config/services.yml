@@ -132,8 +132,6 @@ services:
           name: 'netzmacht.contao_toolkit.repository',
           model: 'Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel'
         }
-    tags:
-      - { name: 'netzmacht.contao_toolkit.repository', table: 'tl_workflow_step' }
 
   netzmacht.contao_workflow.model.transition_repository:
     class: Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository
