@@ -14,10 +14,12 @@
 /*
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_workflow_transition']['name_legend']        = 'Transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend'] = 'Permssions';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']     = 'Backend integration';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['conditions_legend']  = 'Conditions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['name_legend']                   = 'Transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend']            = 'Permissions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions_legend'] = 'Conditional transitions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['actions_legend']                = 'Actions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']                = 'Backend integration';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditions_legend']             = 'Conditions';
 
 /*
  * Buttons
@@ -48,6 +50,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermission'][0]         = 'L
 $GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermission'][1]         = 'Limit permission to defined roles.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'][0]                  = 'Target';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['stepTo'][1]                  = 'Step which is reached after a successfull transition.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions'][0]  = 'Conditional transitions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions'][1]  = 'A list of transitions to branch to when executing this parent transition.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permission'][0]              = 'Permission';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permission'][1]              = 'Permission which is required to perform transition.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['hide'][0]                    = 'Hide';

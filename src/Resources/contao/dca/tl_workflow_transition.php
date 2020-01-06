@@ -78,12 +78,13 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'        => ['label', 'active', 'description', 'stepTo'],
-            'config'      => [],
-            'actions'     => ['actions'],
-            'permissions' => ['limitPermission'],
-            'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
-            'backend'     => ['icon', 'hide'],
+            'name'                   => ['label', 'active', 'description', 'stepTo'],
+            'config'                 => [],
+            'conditionaltransitions' => ['conditionaltransitions'],
+            'actions'                => ['actions'],
+            'permissions'            => ['limitPermission'],
+            'conditions'             => ['addPropertyConditions', 'addExpressionConditions'],
+            'backend'                => ['icon', 'hide'],
         ],
     ],
 
@@ -137,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'getStepsTo',
             ],
             'eval'             => [
-                'mandatory'          => true,
+                'mandatory'          => false,
                 'tl_class'           => 'w50',
                 'includeBlankOption' => true,
                 'chosen'             => true,
@@ -197,6 +198,38 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'conditionaltransitions'  => [
+            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions'],
+            'legend' => 'ABC',
+            'inputType'     => 'multiColumnWizard',
+            'load_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'loadConditionalTransitions'],
+            ],
+            'save_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'saveConditionalTransitions'],
+            ],
+            'eval'          => [
+                'tl_class'       => 'clr',
+                'columnFields'   => [
+                    'conditionaltransitions' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions'],
+                        'inputType'        => 'select',
+                        'options_callback' => [
+                            'netzmacht.contao_workflow.listeners.dca.transition',
+                            'getConditionalTransitions',
+                        ],
+                        'eval'             => [
+                            'style'              => 'width: 100%',
+                            'chosen'             => true,
+                            'includeBlankOption' => true,
+                        ],
+                    ],
+                ],
+                'flatArray'      => true,
+                'doNotSaveEmpty' => true,
+                'nullIfEmpty'    => true,
+            ],
         ],
         'actions'                 => [
             'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
