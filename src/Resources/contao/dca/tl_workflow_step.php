@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
 
     'metapalettes' => [
         'default' => [
-            'name'       => ['label', 'description', 'final'],
+            'name'       => ['label', 'description', 'final', 'triggerWorkflow'],
             'permission' => ['limitPermission'],
         ],
     ],
@@ -117,6 +117,16 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'triggerWorkflow' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['triggerWf'],
+            'inputType' => 'select',
+            'options_callback' => ['netzmacht.contao_workflow.listeners.dca.step', 'getWorkflows'],
+            'eval'             => [
+                'tl_class'  => 'clr w50',
+                'mandatory' => false,
+            ],
+            'sql'              => "int(10) unsigned",
         ],
         'limitPermission' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'],

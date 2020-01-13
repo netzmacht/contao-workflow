@@ -27,7 +27,6 @@ use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.

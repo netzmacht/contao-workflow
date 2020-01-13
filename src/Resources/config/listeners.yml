@@ -36,6 +36,13 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.action_factory'
 
+  netzmacht.contao_workflow.listeners.dca.step:
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\StepCallbackListener
+    public: true
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+
   netzmacht.contao_workflow.listeners.dca.permissions:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\PermissionCallbackListener
     public: true
