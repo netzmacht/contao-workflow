@@ -261,7 +261,7 @@
 }
 </code></pre>
 <p>Eine Action besitzt die M&#xF6;glichkeit einen bestimmten Payload, sprich von Benutzer zur Verf&#xFC;gung gestellte Daten, vorauszusetzen. Dazu dient die Method <code>getRequiredPayloadProperties</code>, die die erforderlichen Attribute als Liste zur&#xFC;ckgibt. Bevor eine Transition ausgef&#xFC;hrt wird, erfolgt die Validierung der bereitgestellten User-Inputs. Dazu implementiert eine Action die Methode <code>validate</code>. Der Payload steht als <code>Context#getPayload</code> zur Verf&#xFC;gung.</p>
-<p>Mit eigentliche Action wird in der Methode <code>transit</code> ausgef&#xFC;hrt.</p>
+<p>Die eigentliche Action wird in der Methode <code>transit</code> ausgef&#xFC;hrt.</p>
 <h2 id="action-registrieren">Action registrieren</h2>
 <h3 id="manuell-registrieren">Manuell registrieren</h3>
 <p>Actions lassen sich manuell zu einer Transition hinzuf&#xFC;gen. Dies kann in der <code>configure</code> Methode des implementierten Workflow-Typs erfolgen. Sinnvoll ist dieses Vorgehen f&#xFC;r Aktionen, die in der Transition des Workflows erfolgen soll.</p>
@@ -280,7 +280,7 @@
 <h3 id="automatisch-&#xFC;ber-backend-konfiguration">Automatisch &#xFC;ber Backend-Konfiguration</h3>
 <p>Dar&#xFC;ber hinaus lassen sich Actions im Backend der Workflow-Konfiguration konfigurieren.</p>
 <h4 id="interface-actiontypefactory">Interface ActionTypeFactory</h4>
-<p>Damit die nahtlose Integration in die Workflow-Erweiterung funktioniert, muss zusatzlich eine eine <em>Factory</em>-Klasse vom Typ <code>Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory</code> implementiert werden:</p>
+<p>Damit die nahtlose Integration in die Workflow-Erweiterung funktioniert, muss zusatzlich eine <em>Factory</em>-Klasse vom Typ <code>Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory</code> implementiert werden:</p>
 <pre><code class="lang-php"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ActionTypeFactory</span>
 </span>{
     <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCategory</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span></span>;
