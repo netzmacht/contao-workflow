@@ -1,16 +1,18 @@
-<h2 class="sub_headline">{{ "workflow.history"|trans }}</h2>
+{% trans_default_domain 'netzmacht_workflow' %}
+
+<h2 class="sub_headline">{{ "history"|trans }}</h2>
 
 <div class="workflow-content-box">
 <table class="workflow-history">
     <thead>
         <tr>
         {% for column in columns %}
-            <th>{{ ('workflow.history.' ~ column)|trans }}</th>
+            <th>{{ ('history.' ~ column)|trans }}</th>
         {% endfor %}
         </tr>
     </thead>
     {% for state in history %}
-        <tr class="workflow-history-state">
+        <tr class="workflow-history-state{% if state.successful is defined and not state.successful.value %} transition-failed{% endif %}">
             {% for name, value in state %}
                 <td class="workflow-history-{{ name }}">
                     {% if block(name) is defined %}
@@ -33,4 +35,8 @@
             {{ value }}
         {% endif %}
     {% endif %}
+{% endblock %}
+
+{% block successful %}
+    {% if value is defined %}{{ value.label }}{% endif %}
 {% endblock %}

@@ -21,8 +21,10 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -46,17 +48,37 @@ final class WorkflowCallbackListener
     private $repositoryManager;
 
     /**
+     * Database driven workflow loader.
+     *
+     * @var DatabaseDrivenWorkflowLoader
+     */
+    private $workflowLoader;
+
+    /**
+     * Translator.
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Workflow constructor.
      *
-     * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
-     * @param RepositoryManager    $repositoryManager Repository manager.
+     * @param WorkflowTypeRegistry         $typeRegistry      Workflow type registry.
+     * @param RepositoryManager            $repositoryManager Repository manager.
+     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
+     * @param TranslatorInterface          $translator        Translator.
      */
     public function __construct(
         WorkflowTypeRegistry $typeRegistry,
-        RepositoryManager $repositoryManager
+        RepositoryManager $repositoryManager,
+        DatabaseDrivenWorkflowLoader $workflowLoader,
+        TranslatorInterface $translator
     ) {
         $this->typeRegistry      = $typeRegistry;
         $this->repositoryManager = $repositoryManager;
+        $this->workflowLoader    = $workflowLoader;
+        $this->translator        = $translator;
     }
 
     /**
@@ -89,6 +111,33 @@ final class WorkflowCallbackListener
             // Do nothing
         }
         // @codingStandardsIgnoreEnd
+    }
+
+    /**
+     * Generate a row view.
+     *
+     * @param array $row Current data row.
+     *
+     * @return string
+     */
+    public function generateRow(array $row): string
+    {
+        $label = sprintf(
+            '<strong>%s</strong><br><span class="tl_gray">%s</span>',
+            $row['label'],
+            $row['description']
+        );
+
+        try {
+            $this->workflowLoader->loadWorkflowById((int) $row['id']);
+        } catch (\Exception $e) {
+            $label .= sprintf(
+                '<p class="workflow-definition-error">%s</p>',
+                $this->translator->trans('invalid-workflow-definition', [$e->getMessage()], 'contao_workflow')
+            );
+        }
+
+        return $label;
     }
 
     /**

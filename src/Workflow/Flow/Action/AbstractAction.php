@@ -23,5 +23,4 @@ use Netzmacht\Workflow\Flow\Base;
  */
 abstract class AbstractAction extends Base implements Action
 {
-    use GetEntity;
 }

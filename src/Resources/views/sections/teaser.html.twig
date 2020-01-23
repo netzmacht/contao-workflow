@@ -1,3 +1,5 @@
+{% trans_default_domain 'netzmacht_workflow' %}
+
 <h2 class="sub_headline">{{ headline }}</h2>
 
 {% if description %}
@@ -11,16 +13,16 @@
         <table class="tl_header_table">
             <tbody>
             <tr>
-                <td><span class="tl_label">{{ 'workflow.workflowName'|trans }}</span></td>
+                <td><span class="tl_label">{{ 'workflowName'|trans }}</span></td>
                 <td>{{ workflow.label }}</td>
             </tr>
             <tr>
-                <td><span class="tl_label">{{ 'workflow.currentStep'|trans }}</span></td>
+                <td><span class="tl_label">{{ 'currentStep'|trans }}</span></td>
                 <td>{{ currentStep != null ? currentStep.label : '-' }}</td>
             </tr>
             {% if item.latestState %}
                 <tr>
-                    <td><span class="tl_label">{{ 'workflow.reachedAt'|trans }}</span></td>
+                    <td><span class="tl_label">{{ 'reachedAt'|trans }}</span></td>
                     <td>{{ item.latestState.reachedAt.format('d.m.Y H:i') }}</td>
                 </tr>
             {% endif %}

@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Handler\TransitionHandler;
-use Netzmacht\Workflow\Manager\Manager as BaseManager;
+use Netzmacht\Workflow\Manager\Manager;
 
 /**
  * Class LazyLoadingWorkflowManager.
@@ -58,16 +58,6 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
-    public function getWorkflowById(int $workflowId): Workflow
-    {
-        $this->loadWorkflowDefinitions();
-
-        return $this->inner->getWorkflowById($workflowId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function handle(Item $item, string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
     {
         $this->loadWorkflowDefinitions();
@@ -78,7 +68,7 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
-    public function addWorkflow(Workflow $workflow): BaseManager
+    public function addWorkflow(Workflow $workflow): Manager
     {
         $this->inner->addWorkflow($workflow);
 

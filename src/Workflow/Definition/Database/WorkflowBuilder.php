@@ -102,7 +102,7 @@ final class WorkflowBuilder
     ): void {
         $workflow = $event->getWorkflow();
 
-        if ($workflow->getConfigValue(Definition::SOURCE) != Definition::SOURCE_DATABASE) {
+        if ($workflow->getConfigValue(Definition::SOURCE) !== Definition::SOURCE_DATABASE) {
             return;
         }
 
@@ -160,7 +160,7 @@ final class WorkflowBuilder
 
             $step->setFinal((bool) $model->final);
 
-            if ($model->limitPermission) {
+            if ($model->limitPermission && $model->permission !== '') {
                 $step->setPermission(Permission::fromString($model->permission));
             }
 
@@ -183,7 +183,7 @@ final class WorkflowBuilder
      *
      * @return void
      */
-    private function createTransitions(Workflow $workflow, EventDispatcher $eventDispatcher)
+    private function createTransitions(Workflow $workflow, EventDispatcher $eventDispatcher): void
     {
         /** @var TransitionRepository $repository */
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
@@ -223,7 +223,7 @@ final class WorkflowBuilder
                 )
             );
 
-            if ($model->limitPermission) {
+            if ($model->limitPermission && $model->permission !== '') {
                 $transition->setPermission(Permission::fromString($model->permission));
             }
 
@@ -273,7 +273,7 @@ final class WorkflowBuilder
      *
      * @return void
      */
-    private function createProcess(Workflow $workflow)
+    private function createProcess(Workflow $workflow): void
     {
         $process = StringUtil::deserialize($workflow->getConfigValue('process'), true);
 
@@ -283,7 +283,7 @@ final class WorkflowBuilder
                 continue;
             }
 
-            if ($definition['step'] == 'start') {
+            if ($definition['step'] === 'start') {
                 $workflow->setStartTransition($this->transitions[$definition['transition']]->getName());
             } else {
                 $step       = $this->steps[$definition['step']];
@@ -299,7 +299,7 @@ final class WorkflowBuilder
      *
      * @return void
      */
-    private function resetBuilder()
+    private function resetBuilder(): void
     {
         $this->transitions = array();
         $this->steps       = array();

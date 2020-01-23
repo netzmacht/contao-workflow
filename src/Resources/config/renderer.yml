@@ -53,3 +53,11 @@ services:
       - '%netzmacht.contao_workflow.templates.form%'
     tags:
       - { name: netzmacht.contao_workflow.view.renderer }
+
+  netzmacht.contao_workflow.view.error_renderer:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\ErrorRenderer
+    arguments:
+      - '@translator'
+      - '%netzmacht.contao_workflow.templates.errors%'
+    tags:
+      - { name: netzmacht.contao_workflow.view.renderer, priority: 20 }

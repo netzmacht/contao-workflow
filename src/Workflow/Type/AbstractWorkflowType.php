@@ -70,6 +70,7 @@ abstract class AbstractWorkflowType implements WorkflowType
      */
     public function configure(Workflow $workflow, callable $next): void
     {
+        $workflow->setConfigValue(WorkflowType::class, $this);
         $workflow->addCondition(new TypeCondition($this));
         $next();
     }

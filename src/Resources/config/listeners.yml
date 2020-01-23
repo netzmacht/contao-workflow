@@ -20,6 +20,8 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.type_registry'
       - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.definition.workflow_loader'
+      - '@translator'
 
   netzmacht.contao_workflow.listeners.dca.transition:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\TransitionCallbackListener
@@ -33,7 +35,7 @@ services:
     public: true
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
-      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.definition.workflow_loader'
       - '@netzmacht.contao_workflow.action_factory'
 
   netzmacht.contao_workflow.listeners.dca.step:
@@ -78,6 +80,7 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.expression_language'
       - '@security.authorization_checker'
+      - '@netzmacht.contao_workflow.property_access_manager'
     tags:
       - {
           name: 'kernel.event_listener',

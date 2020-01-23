@@ -10,7 +10,7 @@
 
 {% block main %}
     <div id="tl_buttons">
-        <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
+        <a href="javascript:history.back();" class="header_back" title="">{{ 'MSC.backBT'|trans({}, 'contao_default') }}</a>
     </div>
 
 {% for name, section in sections %}

@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
 
 use Contao\StringUtil;
+use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEvent;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\ExpressionCondition;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\PropertyCondition;
@@ -59,15 +60,27 @@ final class ConditionBuilder
     private $authorizationChecker;
 
     /**
+     * Property access manager.
+     *
+     * @var PropertyAccessManager
+     */
+    private $propertyAccessManager;
+
+    /**
      * ConditionBuilder constructor.
      *
-     * @param ExpressionLanguage   $expressionLanguage   The expression language.
-     * @param AuthorizationChecker $authorizationChecker Authorization checker.
+     * @param ExpressionLanguage    $expressionLanguage    The expression language.
+     * @param AuthorizationChecker  $authorizationChecker  Authorization checker.
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
      */
-    public function __construct(ExpressionLanguage $expressionLanguage, AuthorizationChecker $authorizationChecker)
-    {
-        $this->expressionLanguage   = $expressionLanguage;
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(
+        ExpressionLanguage $expressionLanguage,
+        AuthorizationChecker $authorizationChecker,
+        PropertyAccessManager $propertyAccessManager
+    ) {
+        $this->expressionLanguage    = $expressionLanguage;
+        $this->authorizationChecker  = $authorizationChecker;
+        $this->propertyAccessManager = $propertyAccessManager;
     }
 
     /**
@@ -88,7 +101,7 @@ final class ConditionBuilder
         $config = StringUtil::deserialize($transition->getConfigValue('propertyConditions'), true);
 
         foreach ($config as $row) {
-            $condition = new PropertyCondition();
+            $condition = new PropertyCondition($this->propertyAccessManager);
 
             if ($row['property']) {
                 $condition

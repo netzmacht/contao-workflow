@@ -15,16 +15,15 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\Database;
 
+use ArrayObject;
 use Doctrine\DBAL\Connection;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
-use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Data\Specification;
+use function is_array;
 
 /**
  * Class DataEntityRepository
- *
- * @package Netzmacht\ContaoWorkflowBundle\Entity\Data
  */
 final class DatabaseEntityRepository implements EntityRepository
 {
@@ -59,7 +58,7 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @throws \InvalidArgumentException When an entity could not be found.
      */
-    public function find($entityId)
+    public function find($entityId): ArrayObject
     {
         $statement = $this->connection->createQueryBuilder()
             ->select('*')
@@ -71,10 +70,7 @@ final class DatabaseEntityRepository implements EntityRepository
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
         if (is_array($row)) {
-            return new DatabaseEntity(
-                EntityId::fromProviderNameAndId($this->providerName, $entityId),
-                $row
-            );
+            return new ArrayObject($row);
         }
 
         throw new \InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
@@ -97,14 +93,14 @@ final class DatabaseEntityRepository implements EntityRepository
      */
     public function add($entity): void
     {
-        if (!$entity instanceof DatabaseEntity) {
+        if (!$entity instanceof ArrayObject) {
             throw UnsupportedEntity::forEntity($entity);
         }
 
-        if ($entity->getId()) {
-            $this->connection->update($this->providerName, $entity->toArray(), ['id' => $entity->getId()]);
+        if (isset($entity['id'])) {
+            $this->connection->update($this->providerName, $entity->getArrayCopy(), ['id' => $entity['id']]);
         } else {
-            $this->connection->insert($this->providerName, $entity->toArray());
+            $this->connection->insert($this->providerName, $entity->getArrayCopy());
         }
     }
 
@@ -115,10 +111,10 @@ final class DatabaseEntityRepository implements EntityRepository
      */
     public function remove($entity): void
     {
-        if (!$entity instanceof DatabaseEntity) {
+        if (!$entity instanceof ArrayObject) {
             throw UnsupportedEntity::forEntity($entity);
         }
         
-        $this->connection->delete($this->providerName, ['id' => $entity->getId()]);
+        $this->connection->delete($this->providerName, ['id' => $entity['id']]);
     }
 }

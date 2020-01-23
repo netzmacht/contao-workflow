@@ -55,7 +55,9 @@ final class HeadlineRenderer extends AbstractRenderer
                 break;
 
             case State::class:
+                // @codingStandardsIgnoreStart
                 // TODO: Implement state headline
+                // @codingStandardsIgnoreEnd
                 // No break
             default:
                 return [];

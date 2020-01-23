@@ -63,7 +63,7 @@ final class UserNavigationListener
             return $modules;
         }
 
-        $module = $request->query->get('module');
+        $module = $request->attributes->get('module');
 
         if ($request->attributes->get('_backend_module') === 'workflow') {
             foreach ($modules as $group => $groupModules) {

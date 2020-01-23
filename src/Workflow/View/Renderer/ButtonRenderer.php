@@ -84,10 +84,8 @@ final class ButtonRenderer extends AbstractRenderer
         $request  = $this->requestStack->getCurrentRequest();
         $context  = new Context();
 
-        if ($this->scopeMatcher->isBackendRequest($request)) {
-            if ($request->query->get('module')) {
-                $params['module'] = $request->query->get('module');
-            }
+        if ($request && $this->scopeMatcher->isBackendRequest($request)) {
+            $params['module'] = $request->attributes->get('module');
         }
 
         if ($view->getItem()->getWorkflowName() !== $view->getWorkflow()->getName()) {
@@ -132,7 +130,8 @@ final class ButtonRenderer extends AbstractRenderer
                 $params,
                 [
                     'entityId'   => $view->getItem()->getEntityId(),
-                    'transition' => $transitionName
+                    'transition' => $transitionName,
+                    'module'     => (string) $view->getOption('module')
                 ]
             ),
             'icon'   => $transition->getConfigValue('icon')
