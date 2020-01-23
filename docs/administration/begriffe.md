@@ -2,10 +2,9 @@
 
 ## Workflow
 
- * umfasst verschiedene Zustände, in denen sich eine Entität während seiner Existenz befinden kann
+ * umfasst verschiedene Zustände, in denen sich eine Entität während ihrer Existenz befinden kann
  * Workflows werden für einen bespzifschen Typ einer Entität definiert
  * Pro Entität können mehrere Workflows definiert werden
- * Workflows besitzen einen Typ, der beeinflusst 
  * Über Bedingungen wird geregelt, welcher Workflow für eine Entität zuständig ist
  
 ## Workflowtyp
@@ -43,8 +42,8 @@
 
 ## Transition Conditions
 
- * Es existieren zwei Arten von Bedingungen: Pre conditions uns conditions
- * Pre conditions müssen erfüllt sein, sodass diese führ einen Nutzer zugänglich sind
+ * Es existieren zwei Arten von Bedingungen: Pre conditions und conditions
+ * Pre conditions müssen erfüllt sein, sodass diese für einen Nutzer zugänglich sind
  * Conditions überprüfen auch den Payload und validieren somit den Payload
 
 ## Entität
@@ -67,4 +66,4 @@
 
  * Ein Item ist ein Wrapper für eine Entität und behinhaltet workflowspezifische Informationen
  * Es verfügt über die State-History
- * Es Verfügt über den Namen des aktuellen Workflows
+ * Es verfügt über den Namen des aktuellen Workflows

@@ -19,7 +19,7 @@ interface Action
 
 Eine Action besitzt die Möglichkeit einen bestimmten Payload, sprich von Benutzer zur Verfügung gestellte Daten, vorauszusetzen. Dazu dient die Method `getRequiredPayloadProperties`, die die erforderlichen Attribute als Liste zurückgibt. Bevor eine Transition ausgeführt wird, erfolgt die Validierung der bereitgestellten User-Inputs. Dazu implementiert eine Action die Methode `validate`. Der Payload steht als `Context#getPayload` zur Verfügung.
 
-Mit eigentliche Action wird in der Methode `transit` ausgeführt.
+Die eigentliche Action wird in der Methode `transit` ausgeführt.
 
 
 ## Action registrieren
@@ -49,7 +49,7 @@ Darüber hinaus lassen sich Actions im Backend der Workflow-Konfiguration konfig
 
 #### Interface ActionTypeFactory
 
-Damit die nahtlose Integration in die Workflow-Erweiterung funktioniert, muss zusatzlich eine eine *Factory*-Klasse vom Typ `Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory` implementiert werden:
+Damit die nahtlose Integration in die Workflow-Erweiterung funktioniert, muss zusatzlich eine *Factory*-Klasse vom Typ `Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory` implementiert werden:
 
 
 ```php
