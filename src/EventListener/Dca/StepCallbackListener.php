@@ -72,7 +72,6 @@ final class StepCallbackListener extends AbstractListener
     {
         $allWorkflows      = [];
 
-        $allWorkflows[''] = '';
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
         $collection = $repository->findAll();
 

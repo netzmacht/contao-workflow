@@ -119,12 +119,13 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
             'sql'       => "char(1) NOT NULL default ''",
         ],
         'triggerWorkflow' => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['triggerWf'],
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['triggerWorkflow'],
             'inputType' => 'select',
             'options_callback' => ['netzmacht.contao_workflow.listeners.dca.step', 'getWorkflows'],
             'eval'             => [
                 'tl_class'  => 'clr w50',
                 'mandatory' => false,
+                'includeBlankOption' => true,
             ],
             'sql'              => "int(10) unsigned",
         ],
