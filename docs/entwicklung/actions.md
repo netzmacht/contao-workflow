@@ -79,4 +79,4 @@ services:
 ```
 
 > **Hinweis**
-> Benötigt die Action zusätzliche Konfiguration, ist kann eine DCA-Palette mit dem Namen der Action angelegt werden.
+> Benötigt die Action zusätzliche Konfiguration, kann eine DCA-Palette mit dem Namen der Action angelegt werden.

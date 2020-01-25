@@ -13,13 +13,13 @@
  */
 
 
-$GLOBALS['TL_DCA']['tl_workflow_transition_conditionaltransition'] = [
+$GLOBALS['TL_DCA']['tl_workflow_action_conditionaltransition'] = [
     'config' => [
         'dataContainer' => 'Table',
         'sql'           => [
             'keys' => [
                 'id'      => 'primary',
-                'tid,ctid' => 'unique',
+                'tid,aid' => 'unique',
             ],
         ],
     ],
@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition_conditionaltransition'] = [
         'tid'     => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'ctid'     => [
+        'aid'     => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
     ],

@@ -32,3 +32,8 @@ services:
       - '@translator'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_factory.conditionaltransition:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ConditionalTransition\ConditionalTransitionActionFactory
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
