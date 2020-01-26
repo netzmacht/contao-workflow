@@ -28,9 +28,23 @@ final class ConditionalTransitionAction extends AbstractAction
     /**
      * A list of possible transitions.
      *
-     * @var array
+     * @var Transition[]
      */
     private $transitions;
+
+    /**
+     * Contains the selected conditional transition.
+     *
+     * @var Transition|null
+     */
+    private $selected_conditional_transition = null;
+
+    /**
+     * Value is set to true, when a conditional transition has been selected.
+     *
+     * @var bool
+     */
+    private $conditional_transition_has_been_chosen = false;
 
     /**
      * Construct.
@@ -75,6 +89,8 @@ final class ConditionalTransitionAction extends AbstractAction
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \Netzmacht\Workflow\Exception\WorkflowException
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
@@ -82,6 +98,23 @@ final class ConditionalTransitionAction extends AbstractAction
 
         $context->getProperties()->set($name, $context->getPayload()->get($name));
 
-        // TODO: implement
+        if ($allowed_transition = $this->getFirstAllowedTransition($item, $context)) {
+            $allowed_transition->execute($item, $context);
+        }
+    }
+
+    private function getFirstAllowedTransition(Item $item, Context $context): ?Transition
+    {
+        if (!$this->conditional_transition_has_been_chosen) {
+            $this->conditional_transition_has_been_chosen = true;
+            foreach ($this->transitions as $transition) {
+                if ($transition->isAllowed($item, $context)) {
+                    $this->selected_conditional_transition = $transition;
+                    break;
+                }
+            }
+        }
+
+        return $this->selected_conditional_transition;
     }
 }

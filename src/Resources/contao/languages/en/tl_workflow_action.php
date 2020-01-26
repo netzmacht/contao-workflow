@@ -64,7 +64,7 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'][1]     = 'Please ch
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][0] = 'Success states';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][1] = 'Only send notification if transition was made with success/failed.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'][0]  = 'Transitions';
-$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selected the finally executed transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selects the finally executed transition.';
 
 /*
  * Values
