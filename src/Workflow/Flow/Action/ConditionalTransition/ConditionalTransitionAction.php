@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ConditionalTransit
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 
@@ -98,9 +99,11 @@ final class ConditionalTransitionAction extends AbstractAction
 
         $context->getProperties()->set($name, $context->getPayload()->get($name));
 
-        if ($allowed_transition = $this->getFirstAllowedTransition($item, $context)) {
-            $allowed_transition->execute($item, $context);
+        $allowed_transition = $this->getFirstAllowedTransition($item, $context);
+        if ($allowed_transition == null) {
+            throw ActionFailedException::action($this, $context->getErrorCollection());
         }
+        $allowed_transition->execute($item, $context);
     }
 
     private function getFirstAllowedTransition(Item $item, Context $context): ?Transition
