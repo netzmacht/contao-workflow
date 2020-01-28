@@ -75,7 +75,17 @@ final class TransitionCallbackListener extends AbstractListener
     {
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
+        $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
+        $equalProviderWorkflows = WorkflowModel::findBy('providerName', $workflow->providerName);
+        $equalProviderWorkflowIds = [];
+        foreach ($equalProviderWorkflows as $equalProviderWorkflow) {
+            $equalProviderWorkflowIds[] = $equalProviderWorkflow->id;
+        }
+        //$collection = $repository->findBy(['.pid IN (?)'], [implode(",", $equalProviderWorkflowIds)], ['order' => '.label']);
+        $collection = $repository->findBy(['.pid IN (?)'], [$equalProviderWorkflowIds], ['order' => '.label']);
+        //$collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
+
+        $currentWorkflowId = $dataContainer->activeRecord->pid;
 
         if ($collection) {
             while ($collection->next()) {
@@ -83,6 +93,10 @@ final class TransitionCallbackListener extends AbstractListener
 
                 if ($collection->final) {
                     $steps[$collection->id] .= ' [final]';
+                }
+
+                if ($collection->pid != $currentWorkflowId) {
+                    $steps[$collection->id] .= ' (Workflow ' . $collection->pid . ')';
                 }
             }
         }

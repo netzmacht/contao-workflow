@@ -82,8 +82,10 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
         'id'              => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
-        'pid'             => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+        'pid'                     => [
+            'relation'   => ['type' => 'belongsTo', 'load' => 'lazy'],
+            'foreignKey' => 'tl_workflow.name',
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
         'tstamp'          => [
             'sql' => "int(10) unsigned NOT NULL default '0'",

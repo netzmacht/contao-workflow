@@ -80,7 +80,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         'default' => [
             'name'                   => ['label', 'active', 'description', 'stepTo'],
             'config'                 => [],
-            'conditionaltransitions' => ['conditionaltransitions'],
             'actions'                => ['actions'],
             'permissions'            => ['limitPermission'],
             'conditions'             => ['addPropertyConditions', 'addExpressionConditions'],
@@ -99,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'pid'                     => [
-            'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+            'relation'   => ['type' => 'belongsTo', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow.name',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
