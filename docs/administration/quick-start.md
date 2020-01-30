@@ -79,5 +79,5 @@ Der Prozess ist nun angelegt und sollte wie folgt aussehen:
 
 ## Workflow zuweisen
 
-Nun kann der Workflow beim Bearbeiten einer News ausgewählt werden. Dann der Konfiguration `submit_buttons: true` stehen
+Nun kann der Workflow beim Bearbeiten einer News ausgewählt werden. Dank der Konfiguration `submit_buttons: true` stehen
 nun die Transitions als zusätzliche Submitbuttons zur Verfügung.

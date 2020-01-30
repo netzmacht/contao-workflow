@@ -73,17 +73,11 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getStepsTo($dataContainer): array
     {
+        $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
+
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
-        $equalProviderWorkflows = WorkflowModel::findBy('providerName', $workflow->providerName);
-        $equalProviderWorkflowIds = [];
-        foreach ($equalProviderWorkflows as $equalProviderWorkflow) {
-            $equalProviderWorkflowIds[] = $equalProviderWorkflow->id;
-        }
-        //$collection = $repository->findBy(['.pid IN (?)'], [implode(",", $equalProviderWorkflowIds)], ['order' => '.label']);
-        $collection = $repository->findBy(['.pid IN (?)'], [$equalProviderWorkflowIds], ['order' => '.label']);
-        //$collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
+        $collection = $repository->findBy(['j1.`providerName`=?'], [$workflow->providerName], ['order' => '.label', 'eager' => true]);
 
         $currentWorkflowId = $dataContainer->activeRecord->pid;
 
@@ -96,7 +90,7 @@ final class TransitionCallbackListener extends AbstractListener
                 }
 
                 if ($collection->pid != $currentWorkflowId) {
-                    $steps[$collection->id] .= ' (Workflow ' . $collection->pid . ')';
+                    $steps[$collection->id] .= ' (switch to workflow ' . $collection->getRelated('pid')->label . ')';
                 }
             }
         }

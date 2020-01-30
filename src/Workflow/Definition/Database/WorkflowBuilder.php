@@ -147,30 +147,32 @@ final class WorkflowBuilder
         }
 
         while ($collection->next()) {
-            /** @var StepModel $model */
-            $model = $collection->current();
-            $step  = new Step(
-                'step_' . $model->id,
-                $model->label,
-                array_merge(
-                    $collection->row(),
-                    array(Definition::SOURCE => Definition::SOURCE_DATABASE)
-                )
-            );
-
-            $step->setFinal((bool) $model->final);
-
-            if ($model->limitPermission && $model->permission !== '') {
-                $step->setPermission(Permission::fromString($model->permission));
-            }
-
-            $workflow->addStep($step);
-
-            $event = new CreateStepEvent($workflow, $step);
-            $eventDispatcher->dispatch($event::NAME, $event);
-
-            $this->steps[$model->id] = $step;
+            $this->addStepFromDatabase($workflow, $eventDispatcher, $collection->current());
         }
+    }
+
+    private function addStepFromDatabase(Workflow $workflow,EventDispatcher $eventDispatcher, StepModel $model) {
+        $step  = new Step(
+            'step_' . $model->id,
+            $model->label,
+            array_merge(
+                $model->row(),
+                array(Definition::SOURCE => Definition::SOURCE_DATABASE)
+            )
+        );
+
+        $step->setFinal((bool) $model->final);
+
+        if ($model->limitPermission && $model->permission !== '') {
+            $step->setPermission(Permission::fromString($model->permission));
+        }
+
+        $workflow->addStep($step);
+
+        $event = new CreateStepEvent($workflow, $step);
+        $eventDispatcher->dispatch($event::NAME, $event);
+
+        $this->steps[$model->id] = $step;
     }
 
     /**
@@ -195,13 +197,19 @@ final class WorkflowBuilder
 
         foreach ($collection as $model) {
             if (!isset($this->steps[$model->stepTo])) {
-                throw new DefinitionException(
-                    sprintf(
-                        'Transition ID "%s" refers to step "%s" which does not exists.',
-                        $model->id,
-                        $model->stepTo
-                    )
-                );
+                $stepsRepository = $this->repositoryManager->getRepository(StepModel::class);
+                $step = $stepsRepository->findOneBy(['id'], [$model->stepTo]);
+                if ($step) {
+                    $this->addStepFromDatabase($workflow, $eventDispatcher, $step);
+                } else {
+                    throw new DefinitionException(
+                        sprintf(
+                            'Transition ID "%s" refers to step "%s" which does not exists.',
+                            $model->id,
+                            $model->stepTo
+                        )
+                    );
+                }
             }
 
             $data = $model->row();
