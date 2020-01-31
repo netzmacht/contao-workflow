@@ -27,6 +27,7 @@ use Contao\Model;
  * @property bool   $final           Step is a final step.
  * @property bool   $limitPermission Limit the permission.
  * @property string $permission      The permission id.
+ * @property string $triggerWorkflow The id of another workflow that should start when this step has been reached
  */
 final class StepModel extends Model
 {

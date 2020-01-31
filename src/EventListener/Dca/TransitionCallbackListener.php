@@ -73,13 +73,9 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getStepsTo($dataContainer): array
     {
-        $workflow = WorkflowModel::findByPk($dataContainer->activeRecord->pid);
-
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $collection = $repository->findBy(['j1.`providerName`=?'], [$workflow->providerName], ['order' => '.label', 'eager' => true]);
-
-        $currentWorkflowId = $dataContainer->activeRecord->pid;
+        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
 
         if ($collection) {
             while ($collection->next()) {
@@ -87,10 +83,6 @@ final class TransitionCallbackListener extends AbstractListener
 
                 if ($collection->final) {
                     $steps[$collection->id] .= ' [final]';
-                }
-
-                if ($collection->pid != $currentWorkflowId) {
-                    $steps[$collection->id] .= ' (switch to workflow ' . $collection->getRelated('pid')->label . ')';
                 }
             }
         }

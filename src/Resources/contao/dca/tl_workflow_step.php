@@ -129,7 +129,9 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
                 'mandatory' => false,
                 'includeBlankOption' => true,
             ],
-            'sql'              => "int(10) unsigned",
+            'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+            'foreignKey' => 'tl_workflow.name',
+            'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
         'limitPermission' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'],

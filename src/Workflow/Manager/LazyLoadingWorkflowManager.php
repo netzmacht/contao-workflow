@@ -65,6 +65,11 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->handle($item, $transitionName, $changeWorkflow);
     }
 
+    public function createTransitionHandler(Workflow $workflow, Item $item, string $transitionName, bool $changeWorkflow): TransitionHandler
+    {
+        return $this->inner->createTransitionHandler($workflow, $item, $transitionName, $changeWorkflow);
+    }
+
     /**
      * {@inheritDoc}
      */

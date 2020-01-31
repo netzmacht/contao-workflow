@@ -161,7 +161,9 @@ final class WorkflowBuilder
             )
         );
 
-        $step->setFinal((bool) $model->final);
+        $step
+            ->setFinal((bool) $model->final)
+            ->setTriggerWorkflow($model->triggerWorkflow);
 
         if ($model->limitPermission && $model->permission !== '') {
             $step->setPermission(Permission::fromString($model->permission));

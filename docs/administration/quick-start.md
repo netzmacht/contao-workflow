@@ -25,11 +25,11 @@ Für `tl_news` sieht der Beitrag wie folgt aus:
 
 ```yaml
 netzmacht_contao_workflow:
-    default_type:
-      tl_news:
-        palettes: ['default']
-        operation: first 
-        submit_buttons: true
+  default_type:
+    tl_news:
+      palettes: ['default']
+      operation: first
+      submit_buttons: true
 ```
 
 Damit die Konfiguration angewandt wird, muss der Cache neu aufgebaut werden:
