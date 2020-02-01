@@ -104,16 +104,19 @@ final class TransitionCallbackListener extends AbstractListener
             $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
 
             if ($workflow) {
-                $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
-                $fields        = array_keys($schemaManager->listTableColumns($workflow->providerName));
+                $fields        = $this->getRelations($workflow->providerName);
                 $options       = [];
-                $formatter     = $this->getFormatter((string) $workflow->providerName);
 
-                foreach ($fields as $field) {
-                    $options[$field] = sprintf(
+                foreach ($fields as $complexField) {
+                    $path_to_field = explode('.', $complexField);
+                    $path_to_field_parts_count = count($path_to_field);
+                    $field = $path_to_field[$path_to_field_parts_count - 1];
+                    $tableName = $path_to_field_parts_count == 1 ? $workflow->providerName : $path_to_field[$path_to_field_parts_count - 2];
+                    $formatter     = $this->getFormatter($tableName);
+                    $options[$complexField] = sprintf(
                         '%s [%s]',
                         $formatter->formatFieldLabel($field),
-                        $field
+                        $complexField
                     );
                 }
 
@@ -237,5 +240,28 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         return null;
+    }
+
+    private function getRelations(string $currentTable, string $prefix = "", &$knownTables = []) {
+        $r = [];
+        if (in_array($currentTable, $knownTables)) {
+            return $r;
+        }
+        \Controller::loadDataContainer($currentTable);
+        $knownTables[] = $currentTable;
+
+        foreach ($GLOBALS['TL_DCA'][$currentTable]['fields'] as $fieldid => $field) {
+            if (isset($field['relation'])) {
+                $relatedTable = isset($field['relation']['table']) ? $field['relation']['table'] : explode('.', $field['foreignKey'], 2)[0];
+                $d = $this->getRelations($relatedTable, $prefix . $relatedTable . '.', $knownTables);
+                foreach ($d as $dr) {
+                    $r[] = $dr;
+                }
+            } else {
+                $r[] = $prefix . $fieldid;
+            }
+        }
+
+        return $r;
     }
 }

@@ -255,7 +255,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                             'mandatory'          => true,
                             'includeBlankOption' => true,
                             'chosen'             => true,
-                            'style'              => 'width: 200px',
+                            'style'              => 'width: 300px',
                         ],
                     ],
                     'operator' => [
