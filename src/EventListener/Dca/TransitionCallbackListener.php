@@ -50,6 +50,13 @@ final class TransitionCallbackListener extends AbstractListener
     private $repositoryManager;
 
     /**
+     * A map for property paths to the related table names.
+     *
+     * @var array
+     */
+    private $prefixToTablenameCache = [];
+
+    /**
      * Transition constructor.
      *
      * @param DcaManager        $dcaManager        Data container manager.
@@ -108,11 +115,10 @@ final class TransitionCallbackListener extends AbstractListener
                 $options       = [];
 
                 foreach ($fields as $complexField) {
-                    $path_to_field = explode('.', $complexField);
-                    $path_to_field_parts_count = count($path_to_field);
-                    $field = $path_to_field[$path_to_field_parts_count - 1];
-                    $tableName = $path_to_field_parts_count == 1 ? $workflow->providerName : $path_to_field[$path_to_field_parts_count - 2];
-                    $formatter     = $this->getFormatter($tableName);
+                    $dotIndex = strrpos($complexField, '.');
+                    $field = ($dotIndex > 0) ? substr($complexField, $dotIndex + 1) : $complexField;
+                    $tableName = ($dotIndex > 0) ? $this->prefixToTablenameCache[substr($complexField, 0, $dotIndex)] : $workflow->providerName;
+                    $formatter = $this->getFormatter($tableName);
                     $options[$complexField] = sprintf(
                         '%s [%s]',
                         $formatter->formatFieldLabel($field),
@@ -253,7 +259,8 @@ final class TransitionCallbackListener extends AbstractListener
         foreach ($GLOBALS['TL_DCA'][$currentTable]['fields'] as $fieldid => $field) {
             if (isset($field['relation'])) {
                 $relatedTable = isset($field['relation']['table']) ? $field['relation']['table'] : explode('.', $field['foreignKey'], 2)[0];
-                $d = $this->getRelations($relatedTable, $prefix . $relatedTable . '.', $knownTables);
+                $this->prefixToTablenameCache[$prefix . $fieldid] = $relatedTable;
+                $d = $this->getRelations($relatedTable, $prefix . $fieldid . '.', $knownTables);
                 foreach ($d as $dr) {
                     $r[] = $dr;
                 }

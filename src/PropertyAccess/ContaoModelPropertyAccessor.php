@@ -77,6 +77,22 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function get(string $name)
     {
+        if (strpos($name, '.') > -1) {
+            $relationParts = explode('.', $name, 2);
+
+            //foreach ($thi)
+
+            $childModel = $this->model->getRelated($relationParts[0]);
+            if (is_a($childModel, '\Contao\Model\Collection')) {
+                $childModel = $childModel->first();
+            }
+            if ($childModel == null) {
+                return null;
+            }
+            $childPropertyAccessor = new ContaoModelPropertyAccessor($childModel);
+            return $childPropertyAccessor->get($relationParts[1]);
+        }
+
         return $this->model->$name;
     }
 
