@@ -24,7 +24,10 @@ use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
+use Netzmacht\Workflow\Exception\WorkflowNotFound;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Translation\TranslatorInterface;
+use function sprintf;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
@@ -67,17 +70,20 @@ final class WorkflowCallbackListener
      * @param WorkflowTypeRegistry         $typeRegistry      Workflow type registry.
      * @param RepositoryManager            $repositoryManager Repository manager.
      * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
+     * @param WorkflowManager              $workflowManager   The workflow manager.
      * @param TranslatorInterface          $translator        Translator.
      */
     public function __construct(
         WorkflowTypeRegistry $typeRegistry,
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
+        WorkflowManager $workflowManager,
         TranslatorInterface $translator
     ) {
         $this->typeRegistry      = $typeRegistry;
         $this->repositoryManager = $repositoryManager;
         $this->workflowLoader    = $workflowLoader;
+        $this->workflowManager   = $workflowManager;
         $this->translator        = $translator;
     }
 
@@ -217,14 +223,29 @@ final class WorkflowCallbackListener
             if ($collection) {
                 while ($collection->next()) {
                     $stepTo = $collection->getRelated('stepTo');
+                    $label   = sprintf('%s [ID %s]', $collection->label, $collection->id);
 
-                    $options[$collection->id] = sprintf(
-                        '%s [ID %s] --> %s [ID %s]',
-                        $collection->label,
-                        $collection->id,
-                        $stepTo->label,
-                        $stepTo->id
-                    );
+                    switch ($collection->type) {
+                        case 'actions':
+                            $label .= sprintf(' --> %s [ID %s]', $stepTo->label, $stepTo->id);
+                            break;
+
+                        case 'workflow':
+                            try {
+                                $workflowLabel = $this->workflowManager
+                                    ->getWorkflowByName((string) $collection->workflow)
+                                    ->getLabel();
+
+                                $workflowLabel .= sprintf(' [%s]', $collection->workflow);
+                            } catch (WorkflowNotFound $exception) {
+                                $workflowLabel = $collection->workflow;
+                            }
+
+                            $label = sprintf('%s -->  %s', $label, $workflowLabel);
+                            break;
+                    }
+
+                    $options[$collection->id] = $label;
                 }
             }
         }

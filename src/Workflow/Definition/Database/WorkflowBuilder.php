@@ -208,9 +208,7 @@ final class WorkflowBuilder
         }
 
         foreach ($collection as $model) {
-            if ($transition = $this->createTransition($workflow, $model, $eventDispatcher)) {
-                $this->transitions[$model->id] = $transition;
-            }
+            $this->transitions[$model->id] = $this->createTransition($workflow, $model, $eventDispatcher);
         }
     }
 
@@ -250,7 +248,7 @@ final class WorkflowBuilder
      * @param TransitionModel $model           The transition model.
      * @param EventDispatcher $eventDispatcher The event dispatcher.
      *
-     * @return Transition|null
+     * @return Transition
      *
      * @throws DefinitionException When invalid configuration exists.
      */
@@ -258,10 +256,10 @@ final class WorkflowBuilder
         Workflow $workflow,
         TransitionModel $model,
         EventDispatcher $eventDispatcher
-    ) : ?Transition {
+    ) : Transition {
         // Unknown transition type, skip it.
         if (!isset($this->transitionTypes[$model->type])) {
-            return null;
+            throw new DefinitionException(sprintf('Unsupported transition type "%s"', $model->type));
         }
 
         $this->guardTargetStepExists($model);

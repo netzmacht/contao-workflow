@@ -77,6 +77,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'][0]         = 'V
 $GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'][1]         = 'Value to compare with.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][0]  = 'Transitions';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selects the finally executed transition.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['workflow'][0]                = 'Workflow';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['workflow'][1]                = 'Workflow which shall be started.';
 
 $GLOBALS['TL_LANG']['tl_workflow_transition']['eq']  = 'equals';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['neq'] = 'not equals';
@@ -85,7 +87,9 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['gte'] = 'greater than or equals';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['lt']  = 'lesser than';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['lte'] = 'lesser than or equals';
 
-$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['default'][0]     = 'Default';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['default'][1]     = 'The default transition executes a set of defined actions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['actions'][0]     = 'Default';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['actions'][1]     = 'The default transition executes a set of defined actions';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['types']['conditional'][0] = 'Conditional';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['types']['conditional'][1] = 'The conditional transition executes the first available transition of a list of defined transitions.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['workflow'][0]    = 'Workflow change';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['workflow'][1]    = 'The workflow change transition starts a new workflow';

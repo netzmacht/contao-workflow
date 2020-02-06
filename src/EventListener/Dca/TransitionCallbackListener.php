@@ -27,6 +27,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use function array_filter;
 use function array_keys;
 use function array_map;
@@ -62,21 +63,31 @@ final class TransitionCallbackListener extends AbstractListener
     private $transitionTypes;
 
     /**
+     * Workflow manager.
+     *
+     * @var WorkflowManager
+     */
+    private $workflowManager;
+
+    /**
      * Transition constructor.
      *
      * @param DcaManager        $dcaManager        Data container manager.
      * @param RepositoryManager $repositoryManager Repository manager.
+     * @param WorkflowManager   $workflowManager   Workflow manager.
      * @param array<array>      $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager,
+        WorkflowManager $workflowManager,
         array $transitionTypes
     ) {
         parent::__construct($dcaManager);
 
         $this->repositoryManager = $repositoryManager;
         $this->transitionTypes   = $transitionTypes;
+        $this->workflowManager   = $workflowManager;
     }
 
     /**
@@ -396,5 +407,39 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         return null;
+    }
+
+    public function getWorkflows(DataContainer $dataContainer): array
+    {
+        if (! $dataContainer->activeRecord) {
+            $workflows = $this->workflowManager->getWorkflows();
+        } else {
+            $workflows     = [];
+            $workflowModel = $this->repositoryManager
+                ->getRepository(WorkflowModel::class)
+                ->find((int) $dataContainer->activeRecord->pid);
+
+            if ($workflowModel) {
+                foreach ($this->workflowManager->getWorkflows() as $workflow) {
+                    if ($workflow->getName() === 'workflow_' . $workflowModel->id
+                        || $workflow->getProviderName() !== $workflowModel->providerName
+                    ) {
+                        continue;
+                    }
+
+                    $workflows[] = $workflow;
+                }
+            } else {
+                $workflows = $this->workflowManager->getWorkflows();
+            }
+        }
+
+        $options = [];
+
+        foreach ($workflows as $workflow) {
+            $options[$workflow->getName()] = $workflow->getLabel();
+        }
+
+        return $options;
     }
 }
