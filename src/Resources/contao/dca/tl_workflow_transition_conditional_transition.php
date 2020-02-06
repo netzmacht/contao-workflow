@@ -7,19 +7,19 @@
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Erik Wegner <e_wegner@web.de>
- * @copyright  2014-2019 netzmacht David Molineus
+ * @copyright  2014-2020 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
 
 
-$GLOBALS['TL_DCA']['tl_workflow_action_conditionaltransition'] = [
+$GLOBALS['TL_DCA']['tl_workflow_transition_conditional_transition'] = [
     'config' => [
         'dataContainer' => 'Table',
         'sql'           => [
             'keys' => [
                 'id'      => 'primary',
-                'tid,aid' => 'unique',
+                'tid,pid' => 'unique',
             ],
         ],
     ],
@@ -34,10 +34,10 @@ $GLOBALS['TL_DCA']['tl_workflow_action_conditionaltransition'] = [
         'sorting' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'tid'     => [
+        'pid'     => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'aid'     => [
+        'tid'     => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
     ],

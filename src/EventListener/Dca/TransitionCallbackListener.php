@@ -25,8 +25,11 @@ use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
+use function array_filter;
+use function array_map;
+use function time;
 
 /**
  * Class Transition used for tl_workflow_transition callbacks.
@@ -50,18 +53,40 @@ final class TransitionCallbackListener extends AbstractListener
     private $repositoryManager;
 
     /**
+     * Names of available transition types.
+     *
+     * @var array<string>
+     */
+    private $transitionTypes;
+
+    /**
      * Transition constructor.
      *
      * @param DcaManager        $dcaManager        Data container manager.
      * @param RepositoryManager $repositoryManager Repository manager.
+     * @param array<string>     $transitionTypes   Names of available transition types.
      */
     public function __construct(
         DcaManager $dcaManager,
-        RepositoryManager $repositoryManager
+        RepositoryManager $repositoryManager,
+        array $transitionTypes
     ) {
         parent::__construct($dcaManager);
 
         $this->repositoryManager = $repositoryManager;
+        $this->transitionTypes   = $transitionTypes;
+    }
+
+    /**
+     * Get available transition types.
+     *
+     * @param DataContainer $datacontainer Data container driver.
+     *
+     * @return array
+     */
+    public function getTypes($datacontainer): array
+    {
+        return $this->transitionTypes;
     }
 
     /**
@@ -158,7 +183,7 @@ final class TransitionCallbackListener extends AbstractListener
     public function loadRelatedActions($value, $dataContainer)
     {
         $statement = $this->repositoryManager->getConnection()
-            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
+            ->prepare('SELECT pid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
 
         if ($statement->execute(['tid' => $dataContainer->id])) {
             return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
@@ -189,7 +214,7 @@ final class TransitionCallbackListener extends AbstractListener
         $statement->execute();
 
         while ($row = $statement->fetch()) {
-            $values[$row['aid']] = $row;
+            $values[$row['pid']] = $row;
         }
 
         $sorting = 0;
@@ -198,7 +223,7 @@ final class TransitionCallbackListener extends AbstractListener
             if (!isset($values[$actionId])) {
                 $data = [
                     'tstamp'  => time(),
-                    'aid'     => $actionId,
+                    'pid'     => $actionId,
                     'tid'     => $dataContainer->id,
                     'sorting' => $sorting,
                 ];
@@ -231,6 +256,123 @@ final class TransitionCallbackListener extends AbstractListener
         if ($ids) {
             $connection->executeUpdate(
                 'DELETE FROM tl_workflow_transition_action WHERE id IN(?)',
+                [$ids],
+                [Connection::PARAM_INT_ARRAY]
+            );
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Get all conditional transitions.
+     *
+     * @param DataContainer $dataContainer Data container driver.
+     *
+     * @return array
+     */
+    public function getConditionalTransitions($dataContainer): array
+    {
+        $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+
+        if ($dataContainer->activeRecord) {
+            $collection = $repository->findBy(['.id != ?'], [$dataContainer->activeRecord->id]);
+        } else {
+            $collection = $repository->findAll();
+        }
+
+        return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
+    }
+
+    /**
+     * Load conditional transitions.
+     *
+     * @param mixed          $value         The actual value.
+     * @param \DataContainer $dataContainer The data container driver.
+     *
+     * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @throws DBALException If any dbal error occurs.
+     */
+    public function loadConditionalTransitions($value, $dataContainer) {
+        $statement = $this->repositoryManager
+            ->getConnection()
+            ->prepare('SELECT tid FROM tl_workflow_transition_conditional_transition WHERE pid=:pid ORDER BY sorting');
+
+        if ($statement->execute(['pid' => $dataContainer->id])) {
+            return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
+        }
+
+        return [];
+    }
+
+    /**
+     * Save selected conditional transitions.
+     *
+     * @param mixed         $value         The value.
+     * @param DataContainer $dataContainer The data container driver.
+     *
+     * @return null
+     * @throws DBALException When an database related error occurs.
+     */
+    public function saveConditionalTransitions($value, $dataContainer)
+    {
+        $connection = $this->repositoryManager->getConnection();
+        $new        = array_filter(StringUtil::deserialize($value, true));
+        $values     = [];
+        $statement  = $connection->prepare(
+            'SELECT * FROM tl_workflow_transition_conditional_transition WHERE pid=:pid order BY sorting'
+        );
+
+        $statement->bindValue('pid', $dataContainer->id);
+        $statement->execute();
+
+        while ($row = $statement->fetch()) {
+            $values[$row['tid']] = $row;
+        }
+
+        $sorting = 0;
+
+        foreach ($new as $conditionalTransitionId) {
+            if (!isset($values[$conditionalTransitionId])) {
+                $data = [
+                    'tstamp'  => time(),
+                    'pid'     => $dataContainer->id,
+                    'tid'     => $conditionalTransitionId,
+                    'sorting' => $sorting,
+                ];
+
+                $connection->insert('tl_workflow_transition_conditional_transition', $data);
+                $sorting += 128;
+            } else {
+                if ($values[$conditionalTransitionId]['sorting'] <= ($sorting - 128)
+                    || $values[$conditionalTransitionId]['sorting'] >= ($sorting + 128)
+                ) {
+                    $connection->update(
+                        'tl_workflow_transition_conditional_transition',
+                        ['tstamp' => time(), 'sorting' => $sorting],
+                        ['id' => $values[$conditionalTransitionId]['id']]
+                    );
+                }
+
+                $sorting += 128;
+                unset($values[$conditionalTransitionId]);
+            }
+        }
+
+        $ids = array_map(
+            function ($item) {
+                return $item['id'];
+            },
+            $values
+        );
+
+        if ($ids) {
+            $connection->executeUpdate(
+                'DELETE FROM tl_workflow_transition_conditional_transition WHERE id IN(?)',
                 [$ids],
                 [Connection::PARAM_INT_ARRAY]
             );

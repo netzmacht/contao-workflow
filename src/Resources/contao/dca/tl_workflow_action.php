@@ -93,9 +93,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'notification extends default' => [
             'config' => ['notification_id', 'notification_states'],
         ],
-        'conditionaltransition extends default' => [
-            'config' => ['conditionaltransitions']
-        ],
     ],
 
     'metasubpalettes' => [
@@ -230,38 +227,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'multiple' => true,
             ],
             'sql'       => 'tinyblob NULL',
-        ],
-        'conditionaltransitions'  => [
-            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'],
-            'legend' => 'ABC',
-            'inputType'     => 'multiColumnWizard',
-            'load_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.action', 'loadConditionalTransitions'],
-            ],
-            'save_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.action', 'saveConditionalTransitions'],
-            ],
-            'eval'          => [
-                'tl_class'       => 'clr',
-                'columnFields'   => [
-                    'conditionaltransitions' => [
-                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'],
-                        'inputType'        => 'select',
-                        'options_callback' => [
-                            'netzmacht.contao_workflow.listeners.dca.action',
-                            'getConditionalTransitions',
-                        ],
-                        'eval'             => [
-                            'style'              => 'width: 100%',
-                            'chosen'             => true,
-                            'includeBlankOption' => true,
-                        ],
-                    ],
-                ],
-                'flatArray'      => true,
-                'doNotSaveEmpty' => true,
-                'nullIfEmpty'    => true,
-            ],
         ],
     ],
 ];

@@ -76,14 +76,22 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
     ],
 
+    'palettes' => [
+        '__selector__' => ['type'],
+    ],
+
     'metapalettes' => [
-        'default' => [
-            'name'        => ['label', 'active', 'description', 'stepTo'],
-            'config'      => [],
-            'actions'     => ['actions'],
-            'permissions' => ['limitPermission'],
-            'conditions'  => ['addPropertyConditions', 'addExpressionConditions'],
-            'backend'     => ['icon', 'hide'],
+        '__base__'                     => [
+            'name'    => ['label', 'type', 'active', 'description'],
+            'config'  => [],
+            'backend' => ['icon', 'hide'],
+        ],
+        'default extends __base__'     => [
+            '+name'  => ['stepTo'],
+            'config' => ['actions'],
+        ],
+        'conditional extends __base__' => [
+            'config' => ['conditionalTransitions']
         ],
     ],
 
@@ -118,6 +126,25 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'maxlength' => 64,
             ],
             'sql'       => "varchar(64) NOT NULL default ''",
+        ],
+        'type'         => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['type'],
+            'inputType'        => 'select',
+            'filter'           => true,
+            'reference'        => &$GLOBALS['TL_LANG']['tl_workflow_transition']['types'],
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.transition',
+                'getTypes',
+            ],
+            'exclude'          => true,
+            'eval'             => [
+                'tl_class'           => 'w50',
+                'mandatory'          => true,
+                'submitOnChange'     => true,
+                'includeBlankOption' => true,
+                'helpwizard'         => true,
+            ],
+            'sql'              => "varchar(64) NOT NULL default 'default'",
         ],
         'description'             => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['description'],
@@ -180,7 +207,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             ],
             'sql'       => 'binary(16) NULL',
         ],
-        'hide'                 => [
+        'hide'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['hide'],
             'inputType' => 'checkbox',
             'eval'      => [
@@ -322,6 +349,38 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 ],
             ],
             'sql'       => 'mediumblob NULL',
+        ],
+        'conditionalTransitions'  => [
+            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'],
+            'legend' => 'ABC',
+            'inputType'     => 'multiColumnWizard',
+            'load_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'loadConditionalTransitions'],
+            ],
+            'save_callback' => [
+                ['netzmacht.contao_workflow.listeners.dca.transition', 'saveConditionalTransitions'],
+            ],
+            'eval'          => [
+                'tl_class'       => 'clr',
+                'columnFields'   => [
+                    'transitions' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['transition'],
+                        'inputType'        => 'select',
+                        'options_callback' => [
+                            'netzmacht.contao_workflow.listeners.dca.transition',
+                            'getConditionalTransitions',
+                        ],
+                        'eval'             => [
+                            'style'              => 'width: 100%',
+                            'chosen'             => true,
+                            'includeBlankOption' => true,
+                        ],
+                    ],
+                ],
+                'flatArray'      => true,
+                'doNotSaveEmpty' => true,
+                'nullIfEmpty'    => true,
+            ],
         ],
     ],
 ];

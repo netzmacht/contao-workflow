@@ -1,6 +1,7 @@
 parameters:
   netzmacht.contao_workflow.type.default: []
   netzmacht.contao_workflow.dca_providers: []
+  netzmacht.contao_workflow.transition_types: ['default', 'conditional']
   netzmacht.contao_workflow.property_accessors:
     - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ArrayPropertyAccessor
     - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessor

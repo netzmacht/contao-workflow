@@ -29,6 +29,7 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
+      - '%netzmacht.contao_workflow.transition_types%'
 
   netzmacht.contao_workflow.listeners.dca.action:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\ActionCallbackListener
