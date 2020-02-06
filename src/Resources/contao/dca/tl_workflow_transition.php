@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'pid'                     => [
-            'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
+            'relation'   => ['type' => 'belongsTo', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow.name',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
@@ -255,7 +255,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                             'mandatory'          => true,
                             'includeBlankOption' => true,
                             'chosen'             => true,
-                            'style'              => 'width: 200px',
+                            'style'              => 'width: 300px',
                         ],
                     ],
                     'operator' => [
