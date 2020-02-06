@@ -29,6 +29,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use function array_filter;
 use function array_map;
+use function sprintf;
 use function time;
 
 /**
@@ -87,6 +88,22 @@ final class TransitionCallbackListener extends AbstractListener
     public function getTypes($datacontainer): array
     {
         return $this->transitionTypes;
+    }
+
+    /**
+     * Generate a row view.
+     *
+     * @param array $row Current data row.
+     *
+     * @return string
+     */
+    public function generateRow(array $row): string
+    {
+        return sprintf(
+            '%s <span class="tl_gray">[%s]</span>',
+            $row['label'],
+            $this->getFormatter()->formatValue('type', $row['type'])
+        );
     }
 
     /**

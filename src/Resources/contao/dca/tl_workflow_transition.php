@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'fields'                => ['sorting'],
             'disableGrouping'       => true,
             'child_record_callback' => [
-                'netzmacht.contao_workflow.listeners.dca.common',
+                'netzmacht.contao_workflow.listeners.dca.transition',
                 'generateRow',
             ],
         ],
