@@ -86,13 +86,19 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'config'  => [],
             'backend' => ['icon', 'hide'],
         ],
-        'default extends __base__'     => [
+        'default' => [
+            'name'    => ['label', 'type'],
+        ],
+        'actions extends __base__'     => [
             '+name'  => ['stepTo'],
             'config' => ['actions'],
         ],
         'conditional extends __base__' => [
-            'config' => ['conditionalTransitions']
+            'config' => ['conditionalTransitions'],
         ],
+        'workflow extends __base__' => [
+            'config' => ['workflow']
+        ]
     ],
 
     'metasubpalettes' => [
@@ -127,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             ],
             'sql'       => "varchar(64) NOT NULL default ''",
         ],
-        'type'         => [
+        'type'                    => [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['type'],
             'inputType'        => 'select',
             'filter'           => true,
@@ -352,7 +358,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
         'conditionalTransitions'  => [
             'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'],
-            'legend' => 'ABC',
+            'legend'        => 'ABC',
             'inputType'     => 'multiColumnWizard',
             'load_callback' => [
                 ['netzmacht.contao_workflow.listeners.dca.transition', 'loadConditionalTransitions'],
@@ -381,6 +387,17 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'doNotSaveEmpty' => true,
                 'nullIfEmpty'    => true,
             ],
+        ],
+        'workflow'         => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['workflow'],
+            'inputType'        => 'select',
+            'options_callback' => ['netzmacht.contao_workflow.listeners.dca.transition', 'getWorkflows'],
+            'eval'             => [
+                'tl_class'           => 'clr w50',
+                'mandatory'          => true,
+                'includeBlankOption' => true,
+            ],
+            'sql'              => "varchar(128) NOT NULL default ''",
         ],
     ],
 ];

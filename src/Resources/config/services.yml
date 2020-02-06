@@ -173,6 +173,13 @@ services:
     tags:
       - { name: 'netzmacht.contao_workflow.transition_form_builder' }
 
+  netzmacht.contao_workflow.form.workflow_change_form_builder:
+    class: Netzmacht\ContaoWorkflowBundle\Form\Builder\WorkflowChangeTransitionFormBuilder
+    arguments:
+      - '@netzmacht.contao_workflow.form.transition_actions_form_builder'
+    tags:
+      - { name: 'netzmacht.contao_workflow.transition_form_builder' }
+
   netzmacht.contao_workflow.view.factory:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\DelegatingViewFactory
     arguments:
