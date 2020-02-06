@@ -25,11 +25,11 @@ Für `tl_news` sieht der Beitrag wie folgt aus:
 
 ```yaml
 netzmacht_contao_workflow:
-    default_type:
-      tl_news:
-        palettes: ['default']
-        operation: first 
-        submit_buttons: true
+  default_type:
+    tl_news:
+      palettes: ['default']
+      operation: first
+      submit_buttons: true
 ```
 
 Damit die Konfiguration angewandt wird, muss der Cache neu aufgebaut werden:
@@ -79,5 +79,5 @@ Der Prozess ist nun angelegt und sollte wie folgt aussehen:
 
 ## Workflow zuweisen
 
-Nun kann der Workflow beim Bearbeiten einer News ausgewählt werden. Dann der Konfiguration `submit_buttons: true` stehen
+Nun kann der Workflow beim Bearbeiten einer News ausgewählt werden. Dank der Konfiguration `submit_buttons: true` stehen
 nun die Transitions als zusätzliche Submitbuttons zur Verfügung.
