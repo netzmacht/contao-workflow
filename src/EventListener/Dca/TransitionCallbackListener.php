@@ -200,9 +200,9 @@ final class TransitionCallbackListener extends AbstractListener
     public function loadRelatedActions($value, $dataContainer)
     {
         $statement = $this->repositoryManager->getConnection()
-            ->prepare('SELECT pid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
+            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE aid=:aid ORDER BY sorting');
 
-        if ($statement->execute(['tid' => $dataContainer->id])) {
+        if ($statement->execute(['aid' => $dataContainer->id])) {
             return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
         }
 
@@ -224,14 +224,14 @@ final class TransitionCallbackListener extends AbstractListener
         $new        = array_filter(StringUtil::deserialize($value, true));
         $values     = [];
         $statement  = $connection->prepare(
-            'SELECT * FROM tl_workflow_transition_action WHERE tid=:tid order BY sorting'
+            'SELECT * FROM tl_workflow_transition_action WHERE aid=:aid order BY sorting'
         );
 
-        $statement->bindValue('tid', $dataContainer->id);
+        $statement->bindValue('aid', $dataContainer->id);
         $statement->execute();
 
         while ($row = $statement->fetch()) {
-            $values[$row['pid']] = $row;
+            $values[$row['aid']] = $row;
         }
 
         $sorting = 0;
@@ -240,7 +240,7 @@ final class TransitionCallbackListener extends AbstractListener
             if (!isset($values[$actionId])) {
                 $data = [
                     'tstamp'  => time(),
-                    'pid'     => $actionId,
+                    'aid'     => $actionId,
                     'tid'     => $dataContainer->id,
                     'sorting' => $sorting,
                 ];
