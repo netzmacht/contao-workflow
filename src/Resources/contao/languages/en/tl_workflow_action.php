@@ -17,6 +17,8 @@
 $GLOBALS['TL_LANG']['tl_workflow_action']['name_legend']        = 'Workflow Action';
 $GLOBALS['TL_LANG']['tl_workflow_action']['description_legend'] = 'Description';
 $GLOBALS['TL_LANG']['tl_workflow_action']['config_legend']      = 'Config';
+$GLOBALS['TL_LANG']['tl_workflow_action']['conditions_legend']             = 'Conditions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionaltransitions_legend'] = 'Conditional transitions';
 
 /*
  * Buttons
@@ -61,6 +63,8 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'][0]     = 'Notificat
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'][1]     = 'Please choose a notification which should be send.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][0] = 'Success states';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][1] = 'Only send notification if transition was made with success/failed.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'][0]  = 'Transitions';
+$GLOBALS['TL_LANG']['tl_workflow_action']['conditionaltransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selects the finally executed transition.';
 
 /*
  * Values
@@ -72,6 +76,8 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]         = 'Form';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][1]         = 'Add data from a form generated with the form generator during transition.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][0] = 'Notification';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][1] = 'Send a notification with the Notification Center.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['conditionaltransition'][0]  = 'Conditional transition';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['conditionaltransition'][1]  = 'A list of transitions to branch to when executing this action.';
 
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['success'] = 'success';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['failed']  = 'failed';
