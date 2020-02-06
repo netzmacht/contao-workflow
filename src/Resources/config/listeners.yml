@@ -70,6 +70,13 @@ services:
     tags:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
 
+  netzmacht.contao_workflow.listeners.builder.conditional_transition_action:
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Workflow\CreateConditionalTransitionsListener
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
+
   netzmacht.contao_workflow.listeners.builder.transition_builder:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database\ConditionBuilder
     arguments:

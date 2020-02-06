@@ -15,109 +15,116 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ConditionalTransition;
 
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
+use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Class ConditionalTransitionAction
  */
-final class ConditionalTransitionAction extends AbstractAction
+final class ConditionalTransitionAction implements Action
 {
+    /**
+     * Unique action name.
+     *
+     * @var string
+     */
+    private $name;
+
     /**
      * A list of possible transitions.
      *
-     * @var Transition[]
+     * @var string[]
      */
-    private $transitions;
+    private $transitionNames;
 
     /**
-     * Contains the selected conditional transition.
+     * The corresponding workflow.
      *
-     * @var Transition|null
+     * @var Workflow
      */
-    private $selected_conditional_transition = null;
-
-    /**
-     * Value is set to true, when a conditional transition has been selected.
-     *
-     * @var bool
-     */
-    private $conditional_transition_has_been_chosen = false;
+    private $workflow;
 
     /**
      * Construct.
      *
-     * @param string $name      Name of the element.
-     * @param string $label     Label of the element.
-     * @param array  $transitions A list of possible transitions.
-     * @param array  $config    Configuration values.
+     * @param string   $name            Unique action name.
+     * @param Workflow $workflow        The corresponding workflow.
+     * @param array    $transitionNames A list of possible transition names.
      */
-    public function __construct(string $name, string $label, array $transitions, array $config = [])
+    public function __construct(string $name, Workflow $workflow, array $transitionNames)
     {
-        parent::__construct($name, $label, $config);
-
-        $this->transitions = $transitions;
+        $this->name            = $name;
+        $this->transitionNames = $transitionNames;
+        $this->workflow        = $workflow;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getRequiredPayloadProperties(Item $item): array
+    public function getRequiredPayloadProperties(Item $item) : array
     {
-        return [$this->getName() . '_conditionaltransition'];
+        $transition = $this->determineMatchingTransition($item, new Context());
+        if ($transition) {
+            return $transition->getRequiredPayloadProperties($item);
+        }
+
+        return [];
     }
 
     /**
-     * Check if conditionaltransition is required.
+     * {@inheritDoc}
+     */
+    public function validate(Item $item, Context $context) : bool
+    {
+        $transition = $this->determineMatchingTransition($item, $context);
+        if (!$transition) {
+            $context->addError('transition.conditional.failed.no_matching_transition');
+
+            return false;
+        }
+
+        $context->getProperties()->set($this->name, $transition->getName());
+
+        return $transition->validate($item, $context);
+    }
+
+    /**
+     * {@inheritDoc}
      *
-     * @return bool
+     * @throws ActionFailedException When no conditional transition is set in the properties.
      */
-    public function required(): bool
+    public function transit(Transition $transition, Item $item, Context $context) : void
     {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(Item $item, Context $context): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws \Netzmacht\Workflow\Exception\WorkflowException
-     */
-    public function transit(Transition $transition, Item $item, Context $context): void
-    {
-        $name = $this->getName() . '_conditionaltransition';
-
-        $context->getProperties()->set($name, $context->getPayload()->get($name));
-
-        $allowed_transition = $this->getFirstAllowedTransition($item, $context);
-        if ($allowed_transition == null) {
+        $conditionalTransitionName = $context->getProperties()->get($this->name);
+        if (!is_string($conditionalTransitionName)) {
             throw ActionFailedException::action($this, $context->getErrorCollection());
         }
-        $allowed_transition->execute($item, $context);
+
+        $conditionalTransition = $this->workflow->getTransition($conditionalTransitionName);
+        $conditionalTransition->execute($item, $context);
     }
 
-    private function getFirstAllowedTransition(Item $item, Context $context): ?Transition
+    /**
+     * Determine the first matching transition.
+     *
+     * @param Item    $item    Workflow item.
+     * @param Context $context Transition context.
+     *
+     * @return Transition|null
+     */
+    public function determineMatchingTransition(Item $item, Context $context) : ?Transition
     {
-        if (!$this->conditional_transition_has_been_chosen) {
-            $this->conditional_transition_has_been_chosen = true;
-            foreach ($this->transitions as $transition) {
-                if ($transition->isAllowed($item, $context)) {
-                    $this->selected_conditional_transition = $transition;
-                    break;
-                }
+        foreach ($this->transitionNames as $transitionName) {
+            $transition = $this->workflow->getTransition($transitionName);
+            if ($transition->isAllowed($item, $context)) {
+                return $transition;
             }
         }
 
-        return $this->selected_conditional_transition;
+        return null;
     }
 }
