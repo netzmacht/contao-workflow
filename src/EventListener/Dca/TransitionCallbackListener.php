@@ -28,6 +28,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use function array_filter;
+use function array_keys;
 use function array_map;
 use function sprintf;
 use function time;
@@ -54,9 +55,9 @@ final class TransitionCallbackListener extends AbstractListener
     private $repositoryManager;
 
     /**
-     * Names of available transition types.
+     * Configuration of available transition types.
      *
-     * @var array<string>
+     * @var array<array>
      */
     private $transitionTypes;
 
@@ -65,7 +66,7 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @param DcaManager        $dcaManager        Data container manager.
      * @param RepositoryManager $repositoryManager Repository manager.
-     * @param array<string>     $transitionTypes   Names of available transition types.
+     * @param array<array>      $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
         DcaManager $dcaManager,
@@ -83,11 +84,11 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @param DataContainer $datacontainer Data container driver.
      *
-     * @return array
+     * @return array<string>
      */
     public function getTypes($datacontainer): array
     {
-        return $this->transitionTypes;
+        return array_keys($this->transitionTypes);
     }
 
     /**

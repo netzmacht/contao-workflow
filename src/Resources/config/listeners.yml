@@ -59,6 +59,7 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.action_factory'
+      - '%netzmacht.contao_workflow.transition_types%'
     tags:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_workflow', method: 'createWorkflow' }
 

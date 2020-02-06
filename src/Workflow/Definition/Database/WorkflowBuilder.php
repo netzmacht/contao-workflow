@@ -73,15 +73,27 @@ final class WorkflowBuilder
     private $actionFactory;
 
     /**
+     * Configuration of available transition types.
+     *
+     * @var array
+     */
+    private $transitionTypes;
+
+    /**
      * WorkflowBuilder constructor.
      *
      * @param RepositoryManager $repositoryManager Contao model repository manager.
      * @param ActionFactory     $actionFactory     Action factory.
+     * @param array[]           $transitionTypes   Configuration of available transition types.
      */
-    public function __construct(RepositoryManager $repositoryManager, ActionFactory $actionFactory)
-    {
+    public function __construct(
+        RepositoryManager $repositoryManager,
+        ActionFactory $actionFactory,
+        array $transitionTypes
+    ) {
         $this->repositoryManager = $repositoryManager;
         $this->actionFactory     = $actionFactory;
+        $this->transitionTypes   = $transitionTypes;
     }
 
     /**
@@ -194,7 +206,12 @@ final class WorkflowBuilder
         }
 
         foreach ($collection as $model) {
-            if (!isset($this->steps[$model->stepTo])) {
+            // Unknown transition type, skip it.
+            if (!isset($this->transitionTypes[$model->type])) {
+                continue;
+            }
+
+            if ($this->transitionTypes[$model->type]['step'] && !isset($this->steps[$model->stepTo])) {
                 throw new DefinitionException(
                     sprintf(
                         'Transition ID "%s" refers to step "%s" which does not exists.',
@@ -215,7 +232,7 @@ final class WorkflowBuilder
             $transition = new Transition(
                 'transition_' . $model->id,
                 $workflow,
-                $this->steps[$model->stepTo],
+                $this->steps[$model->stepTo] ?: null,
                 (string) $model->label,
                 array_merge(
                     $data,
@@ -228,7 +245,10 @@ final class WorkflowBuilder
             }
 
             $workflow->addTransition($transition);
-            $this->createActions($transition);
+
+            if ($this->transitionTypes[$model->type]['actions']) {
+                $this->createActions($transition);
+            }
 
             $event = new CreateTransitionEvent($transition);
             $eventDispatcher->dispatch($event::NAME, $event);
