@@ -6,12 +6,10 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @author     Erik Wegner <e_wegner@web.de>
  * @copyright  2014-2020 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
-
 
 $GLOBALS['TL_DCA']['tl_workflow_transition_conditional_transition'] = [
     'config' => [

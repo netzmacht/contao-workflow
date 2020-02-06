@@ -37,10 +37,10 @@ interface TransitionFormBuilder
     /**
      * Build the transition form.
      *
-     * @param Transition   $transition  The workflow transition.
-     * @param Item         $item        The current transition item.
-     * @param Context      $context     The current transition context.
-     * @param FormBuilder  $formBuilder The form builder.
+     * @param Transition  $transition  The workflow transition.
+     * @param Item        $item        The current transition item.
+     * @param Context     $context     The current transition context.
+     * @param FormBuilder $formBuilder The form builder.
      *
      * @return void
      */

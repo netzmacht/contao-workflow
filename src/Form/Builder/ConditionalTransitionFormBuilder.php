@@ -44,7 +44,7 @@ class ConditionalTransitionFormBuilder implements TransitionFormBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(Transition $transition) : bool
     {
@@ -52,7 +52,7 @@ class ConditionalTransitionFormBuilder implements TransitionFormBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder) : void
     {

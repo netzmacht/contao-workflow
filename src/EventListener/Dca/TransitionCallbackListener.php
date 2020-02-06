@@ -82,11 +82,9 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get available transition types.
      *
-     * @param DataContainer $datacontainer Data container driver.
-     *
      * @return array<string>
      */
-    public function getTypes($datacontainer): array
+    public function getTypes(): array
     {
         return array_keys($this->transitionTypes);
     }
@@ -315,7 +313,8 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @throws DBALException If any dbal error occurs.
      */
-    public function loadConditionalTransitions($value, $dataContainer) {
+    public function loadConditionalTransitions($value, $dataContainer)
+    {
         $statement = $this->repositoryManager
             ->getConnection()
             ->prepare('SELECT tid FROM tl_workflow_transition_conditional_transition WHERE pid=:pid ORDER BY sorting');

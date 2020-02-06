@@ -57,7 +57,7 @@ final class DelegatingTransitionFormBuilder implements TransitionFormBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(Transition $transition) : bool
     {
@@ -65,7 +65,7 @@ final class DelegatingTransitionFormBuilder implements TransitionFormBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder) : void
     {

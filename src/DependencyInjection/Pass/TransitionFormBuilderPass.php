@@ -35,7 +35,7 @@ final class TransitionFormBuilderPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition('netzmacht.contao_workflow.form.transition_form_builder');
+        $definition   = $container->getDefinition('netzmacht.contao_workflow.form.transition_form_builder');
         $formBuilders = $this->findAndSortTaggedServices(
             'netzmacht.contao_workflow.transition_form_builder',
             $container

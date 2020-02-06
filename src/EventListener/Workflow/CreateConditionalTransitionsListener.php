@@ -27,7 +27,7 @@ use function array_map;
 class CreateConditionalTransitionsListener
 {
     /**
-     * Database connection
+     * Database connection.
      *
      * @var Connection
      */
@@ -83,9 +83,11 @@ class CreateConditionalTransitionsListener
         $statement->execute(['pid' => $transitionId]);
 
         return array_map(
+            // @codingStandardsIgnoreStart
             static function ($transitionId) : string {
                 return 'transition_' . $transitionId;
             },
+            // @codingStandardsIgnoreEnd
             $statement->fetchAll(PDO::FETCH_COLUMN)
         );
     }
