@@ -82,9 +82,10 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
 
     'metapalettes' => [
         '__base__'                     => [
-            'name'    => ['label', 'type', 'active', 'description'],
-            'config'  => [],
-            'backend' => ['icon', 'hide'],
+            'name'       => ['label', 'type', 'active', 'description'],
+            'config'     => [],
+            'conditions' => ['addPropertyConditions', 'addExpressionConditions'],
+            'backend'    => ['icon', 'hide'],
         ],
         'default' => [
             'name'    => ['label', 'type'],
