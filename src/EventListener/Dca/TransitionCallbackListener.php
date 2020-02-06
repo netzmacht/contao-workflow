@@ -31,7 +31,10 @@ use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function explode;
 use function sprintf;
+use function strrpos;
+use function substr;
 use function time;
 
 /**
@@ -68,6 +71,13 @@ final class TransitionCallbackListener extends AbstractListener
      * @var WorkflowManager
      */
     private $workflowManager;
+
+    /**
+     * A map for property paths to the related table names.
+     *
+     * @var array|string[]
+     */
+    private $prefixToTableNameCache = [];
 
     /**
      * Transition constructor.
@@ -151,29 +161,31 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getEntityProperties($dataContainer): array
     {
-        if ($dataContainer->activeRecord) {
-            $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-            $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
-
-            if ($workflow) {
-                $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
-                $fields        = array_keys($schemaManager->listTableColumns($workflow->providerName));
-                $options       = [];
-                $formatter     = $this->getFormatter((string) $workflow->providerName);
-
-                foreach ($fields as $field) {
-                    $options[$field] = sprintf(
-                        '%s [%s]',
-                        $formatter->formatFieldLabel($field),
-                        $field
-                    );
-                }
-
-                return $options;
-            }
+        if (! $dataContainer->activeRecord) {
+            return [];
         }
 
-        return [];
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+
+        if (!$workflow) {
+            return [];
+        }
+
+        $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
+        $fields        = array_keys($schemaManager->listTableColumns($workflow->providerName));
+        $options       = [];
+        $formatter     = $this->getFormatter((string) $workflow->providerName);
+
+        foreach ($fields as $field) {
+            $options[$field] = sprintf(
+                '%s [%s]',
+                $formatter->formatFieldLabel($field),
+                $field
+            );
+        }
+
+        return $options;
     }
 
     /**
@@ -441,5 +453,32 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         return $options;
+    }
+
+    private function getRelations(string $currentTable, string $prefix = '', array &$knownTables = []) : array
+    {
+        $r = [];
+
+        if (in_array($currentTable, $knownTables, true)) {
+            return $r;
+        }
+
+        \Controller::loadDataContainer($currentTable);
+        $knownTables[] = $currentTable;
+
+        foreach ($GLOBALS['TL_DCA'][$currentTable]['fields'] as $fieldid => $field) {
+            if (isset($field['relation'])) {
+                $relatedTable                                     = isset($field['relation']['table']) ? $field['relation']['table'] : explode('.', $field['foreignKey'], 2)[0];
+                $this->prefixToTableNameCache[$prefix . $fieldid] = $relatedTable;
+                $d                                                = $this->getRelations($relatedTable, $prefix . $fieldid . '.', $knownTables);
+                foreach ($d as $dr) {
+                    $r[] = $dr;
+                }
+            } else {
+                $r[] = $prefix . $fieldid;
+            }
+        }
+
+        return $r;
     }
 }
