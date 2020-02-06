@@ -17,6 +17,7 @@
 $GLOBALS['TL_LANG']['tl_workflow_action']['name_legend']        = 'Workflow Action';
 $GLOBALS['TL_LANG']['tl_workflow_action']['description_legend'] = 'Description';
 $GLOBALS['TL_LANG']['tl_workflow_action']['config_legend']      = 'Config';
+$GLOBALS['TL_LANG']['tl_workflow_action']['conditions_legend']  = 'Conditions';
 
 /*
  * Buttons

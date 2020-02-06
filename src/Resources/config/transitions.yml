@@ -1,0 +1,8 @@
+parameters:
+  netzmacht.contao_workflow.transition_types:
+    default:
+      step: true
+      actions: true
+    conditional:
+      step: false
+      actions: false

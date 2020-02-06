@@ -28,6 +28,7 @@ use Contao\Model\Collection;
  * @property bool   $limitPermission
  * @property string $permission
  * @property int    $stepTo
+ * @property string $type
  */
 final class TransitionModel extends Model
 {

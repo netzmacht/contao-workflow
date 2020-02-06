@@ -29,6 +29,7 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
+      - '%netzmacht.contao_workflow.transition_types%'
 
   netzmacht.contao_workflow.listeners.dca.action:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\ActionCallbackListener
@@ -58,6 +59,7 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.action_factory'
+      - '%netzmacht.contao_workflow.transition_types%'
     tags:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_workflow', method: 'createWorkflow' }
 
@@ -65,6 +67,13 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Workflow\CreateMetaDataActionListener
     arguments:
       - '@netzmacht.contao_workflow.action.metadata_action'
+    tags:
+      - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
+
+  netzmacht.contao_workflow.listeners.builder.conditional_transition_action:
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Workflow\CreateConditionalTransitionsListener
+    arguments:
+      - '@database_connection'
     tags:
       - { name: 'kernel.event_listener', event: 'netzmacht.contao_workflow.create_transition', method: 'onCreateTransition' }
 

@@ -36,6 +36,8 @@ use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use function array_merge;
+use function sprintf;
 
 /**
  * Class WorkflowBuilder builds an workflow.
@@ -73,15 +75,27 @@ final class WorkflowBuilder
     private $actionFactory;
 
     /**
+     * Configuration of available transition types.
+     *
+     * @var array
+     */
+    private $transitionTypes;
+
+    /**
      * WorkflowBuilder constructor.
      *
      * @param RepositoryManager $repositoryManager Contao model repository manager.
      * @param ActionFactory     $actionFactory     Action factory.
+     * @param array[]           $transitionTypes   Configuration of available transition types.
      */
-    public function __construct(RepositoryManager $repositoryManager, ActionFactory $actionFactory)
-    {
+    public function __construct(
+        RepositoryManager $repositoryManager,
+        ActionFactory $actionFactory,
+        array $transitionTypes
+    ) {
         $this->repositoryManager = $repositoryManager;
         $this->actionFactory     = $actionFactory;
+        $this->transitionTypes   = $transitionTypes;
     }
 
     /**
@@ -194,46 +208,9 @@ final class WorkflowBuilder
         }
 
         foreach ($collection as $model) {
-            if (!isset($this->steps[$model->stepTo])) {
-                throw new DefinitionException(
-                    sprintf(
-                        'Transition ID "%s" refers to step "%s" which does not exists.',
-                        $model->id,
-                        $model->stepTo
-                    )
-                );
+            if ($transition = $this->createTransition($workflow, $model, $eventDispatcher)) {
+                $this->transitions[$model->id] = $transition;
             }
-
-            $data = $model->row();
-
-            if ($data['icon']) {
-                $file         = $this->repositoryManager->getRepository(FilesModel::class)->findByUuid($data['icon']);
-                $data['icon'] = $file ? $file->path : null;
-            }
-
-            /** @var TransitionModel $model */
-            $transition = new Transition(
-                'transition_' . $model->id,
-                $workflow,
-                $this->steps[$model->stepTo],
-                (string) $model->label,
-                array_merge(
-                    $data,
-                    [Definition::SOURCE => Definition::SOURCE_DATABASE]
-                )
-            );
-
-            if ($model->limitPermission && $model->permission !== '') {
-                $transition->setPermission(Permission::fromString($model->permission));
-            }
-
-            $workflow->addTransition($transition);
-            $this->createActions($transition);
-
-            $event = new CreateTransitionEvent($transition);
-            $eventDispatcher->dispatch($event::NAME, $event);
-
-            $this->transitions[$model->id] = $transition;
         }
     }
 
@@ -264,6 +241,58 @@ final class WorkflowBuilder
                 $transition->addAction($action);
             }
         }
+    }
+
+    /**
+     * Create a new transition.
+     *
+     * @param Workflow        $workflow        The workflow.
+     * @param TransitionModel $model           The transition model.
+     * @param EventDispatcher $eventDispatcher The event dispatcher.
+     *
+     * @return Transition|null
+     *
+     * @throws DefinitionException When invalid configuration exists.
+     */
+    private function createTransition(
+        Workflow $workflow,
+        TransitionModel $model,
+        EventDispatcher $eventDispatcher
+    ) : ?Transition {
+        // Unknown transition type, skip it.
+        if (!isset($this->transitionTypes[$model->type])) {
+            return null;
+        }
+
+        $this->guardTargetStepExists($model);
+        $data = $this->getDataFromModel($model);
+
+        /** @var TransitionModel $model */
+        $transition = new Transition(
+            'transition_' . $model->id,
+            $workflow,
+            $this->steps[$model->stepTo] ?: null,
+            (string) $model->label,
+            array_merge(
+                $data,
+                [Definition::SOURCE => Definition::SOURCE_DATABASE]
+            )
+        );
+
+        if ($model->limitPermission && $model->permission !== '') {
+            $transition->setPermission(Permission::fromString($model->permission));
+        }
+
+        $workflow->addTransition($transition);
+
+        if ($this->transitionTypes[$model->type]['actions']) {
+            $this->createActions($transition);
+        }
+
+        $event = new CreateTransitionEvent($transition);
+        $eventDispatcher->dispatch($event::NAME, $event);
+
+        return $transition;
     }
 
     /**
@@ -303,5 +332,46 @@ final class WorkflowBuilder
     {
         $this->transitions = array();
         $this->steps       = array();
+    }
+
+    /**
+     * Guard that the target step of a transition exists.
+     *
+     * @param TransitionModel $model The transition model.
+     *
+     * @return void
+     *
+     * @throws DefinitionException When a target step is required but it does not exist.
+     */
+    private function guardTargetStepExists(TransitionModel $model) : void
+    {
+        if ($this->transitionTypes[$model->type]['step'] && !isset($this->steps[$model->stepTo])) {
+            throw new DefinitionException(
+                sprintf(
+                    'Transition ID "%s" refers to step "%s" which does not exists.',
+                    $model->id,
+                    $model->stepTo
+                )
+            );
+        }
+    }
+
+    /**
+     * Get the data from the model.
+     *
+     * @param TransitionModel $model The transition model.
+     *
+     * @return array
+     */
+    private function getDataFromModel(TransitionModel $model) : array
+    {
+        $data = $model->row();
+
+        if ($data['icon']) {
+            $file         = $this->repositoryManager->getRepository(FilesModel::class)->findByUuid($data['icon']);
+            $data['icon'] = $file ? $file->path : null;
+        }
+
+        return $data;
     }
 }

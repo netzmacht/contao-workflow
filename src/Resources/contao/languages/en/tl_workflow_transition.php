@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['name_legend']        = 'Transitio
 $GLOBALS['TL_LANG']['tl_workflow_transition']['permissions_legend'] = 'Permssions';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['backend_legend']     = 'Backend integration';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['conditions_legend']  = 'Conditions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['config_legend']      = 'Config';
 
 /*
  * Buttons
@@ -40,8 +41,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][1] = 'Activate/deactive 
  */
 $GLOBALS['TL_LANG']['tl_workflow_transition']['label'][0]                   = 'Label';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['label'][1]                   = 'Label of the transition.';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['name'][0]                    = 'Name';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['name'][1]                    = 'Name of the transition.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['type'][0]                    = 'Type';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['type'][1]                    = 'The type specifies what the transition is supposed to do.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['description'][0]             = 'Description';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['description'][1]             = 'Description of the transition.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['limitPermission'][0]         = 'Limit permissions';
@@ -74,6 +75,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['operator'][0]                = 'O
 $GLOBALS['TL_LANG']['tl_workflow_transition']['operator'][1]                = 'Choose a comparison operator.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'][0]         = 'Value';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'][1]         = 'Value to compare with.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][0]  = 'Transitions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selects the finally executed transition.';
 
 $GLOBALS['TL_LANG']['tl_workflow_transition']['eq']  = 'equals';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['neq'] = 'not equals';
@@ -81,3 +84,8 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['gt']  = 'greater than';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['gte'] = 'greater than or equals';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['lt']  = 'lesser than';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['lte'] = 'lesser than or equals';
+
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['default'][0]     = 'Default';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['default'][1]     = 'The default transition executes a set of defined actions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['conditional'][0] = 'Conditional';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['types']['conditional'][1] = 'The conditional transition executes the first available transition of a list of defined transitions.';
