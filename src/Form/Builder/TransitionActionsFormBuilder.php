@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form\Builder;
 
+use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
@@ -63,7 +65,7 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
     /**
      * {@inheritDoc}
      */
-    public function buildForm(Transition $transition, FormBuilder $formBuilder): void
+    public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
         foreach ($transition->getActions() as $action) {
             foreach ($this->builders as $builder) {

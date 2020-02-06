@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Form;
 
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionFormBuilder;
-use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Handler\TransitionHandler;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
@@ -50,8 +50,8 @@ final class TransitionFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['transition'])
-            ->setAllowedTypes('transition', Transition::class);
+            ->setRequired(['handler'])
+            ->setAllowedTypes('handler', TransitionHandler::class);
     }
 
     /**
@@ -59,13 +59,18 @@ final class TransitionFormType extends AbstractType
      */
     public function buildForm(FormBuilder $formBuilder, array $options): void
     {
-        /** @var Transition $transition */
-        $transition = $options['transition'];
+        /** @var TransitionHandler $transitionHandler */
+        $transitionHandler = $options['handler'];
+        $transition        = $transitionHandler->getTransition();
+        $item              = $transitionHandler->getItem();
+        $context           = $transitionHandler->getContext();
 
         foreach ($this->formBuilders as $builder) {
-            if ($builder->supports($transition)) {
-                $builder->buildForm($transition, $formBuilder);
+            if (! $builder->supports($transition)) {
+                continue;
             }
+
+            $builder->buildForm($transition, $item, $context, $formBuilder);
         }
 
         $formBuilder->add(

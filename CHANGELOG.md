@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Breaking
+
+ - Changed transition form type. It requires the transition handler instead of the transition now
+ - Change interface of TransitionFormBuilder
+
 ## [2.0.0-rc3] - 2019-09-02
 
 ### Fixed

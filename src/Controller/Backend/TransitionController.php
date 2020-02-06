@@ -85,7 +85,7 @@ final class TransitionController extends AbstractController
             $form = $this->formFactory->create(
                 TransitionFormType::class,
                 null,
-                ['transition' => $handler->getTransition()]
+                ['handler' => $handler]
             );
 
             $form->handleRequest($request);
