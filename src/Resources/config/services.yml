@@ -152,14 +152,24 @@ services:
   netzmacht.contao_workflow.form.transition_form:
     class: Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType
     arguments:
-      - !tagged netzmacht.contao_workflow.transition_form_builder
+      - '@netzmacht.contao_workflow.form.transition_form_builder'
     tags:
       - { name: 'form.type' }
+
+  netzmacht.contao_workflow.form.transition_form_builder:
+    class: Netzmacht\ContaoWorkflowBundle\Form\Builder\DelegatingTransitionFormBuilder
 
   netzmacht.contao_workflow.form.transition_actions_form_builder:
     class: Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionActionsFormBuilder
     arguments:
       - !tagged netzmacht.contao_workflow.action_form_builder
+    tags:
+      - { name: 'netzmacht.contao_workflow.transition_form_builder' }
+
+  netzmacht.contao_workflow.form.conditional_transitions_form_builder:
+    class: Netzmacht\ContaoWorkflowBundle\Form\Builder\ConditionalTransitionFormBuilder
+    arguments:
+      - '@netzmacht.contao_workflow.form.transition_actions_form_builder'
     tags:
       - { name: 'netzmacht.contao_workflow.transition_form_builder' }
 

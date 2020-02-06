@@ -28,20 +28,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class TransitionFormType extends AbstractType
 {
     /**
-     * The transition form builders.
+     * The transition form builder.
      *
-     * @var iterable|TransitionFormBuilder[]
+     * @var TransitionFormBuilder
      */
-    private $formBuilders;
+    private $formBuilder;
 
     /**
      * TransitionFormType constructor.
      *
-     * @param iterable $formBuilders The transition form builders.
+     * @param TransitionFormBuilder $formBuilder The transition form builder.
      */
-    public function __construct(iterable $formBuilders)
+    public function __construct(TransitionFormBuilder $formBuilder)
     {
-        $this->formBuilders = $formBuilders;
+        $this->formBuilder = $formBuilder;
     }
 
     /**
@@ -65,12 +65,8 @@ final class TransitionFormType extends AbstractType
         $item              = $transitionHandler->getItem();
         $context           = $transitionHandler->getContext();
 
-        foreach ($this->formBuilders as $builder) {
-            if (! $builder->supports($transition)) {
-                continue;
-            }
-
-            $builder->buildForm($transition, $item, $context, $formBuilder);
+        if ($this->formBuilder->supports($transition)) {
+            $this->formBuilder->buildForm($transition, $item, $context, $formBuilder);
         }
 
         $formBuilder->add(
