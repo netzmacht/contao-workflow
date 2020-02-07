@@ -21,7 +21,6 @@ env:
   - CONTAO_VERSION=contao/core-bundle ~4.6.0
 
 matrix:
-  exclude:
   allow_failures:
     - env: CONTAO_VERSION=contao/core-bundle ~4.5.0
     - env: CONTAO_VERSION=contao/core-bundle ~4.6.0
