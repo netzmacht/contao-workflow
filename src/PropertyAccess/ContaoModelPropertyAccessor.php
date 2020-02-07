@@ -17,8 +17,12 @@ namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
 use ArrayIterator;
 use Contao\Model;
+use Contao\Model\Collection;
+use Exception;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Traversable;
+use function array_pop;
+use function explode;
 
 /**
  * Class ContaoModelPropertyAccessor
@@ -69,7 +73,13 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function set(string $name, $value): void
     {
-        $this->model->$name = $value;
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
+
+        if ($model) {
+            $model->$property = $value;
+        }
     }
 
     /**
@@ -77,23 +87,15 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function get(string $name)
     {
-        if (strpos($name, '.') > -1) {
-            $relationParts = explode('.', $name, 2);
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
 
-            //foreach ($thi)
-
-            $childModel = $this->model->getRelated($relationParts[0]);
-            if (is_a($childModel, '\Contao\Model\Collection')) {
-                $childModel = $childModel->first();
-            }
-            if ($childModel == null) {
-                return null;
-            }
-            $childPropertyAccessor = new ContaoModelPropertyAccessor($childModel);
-            return $childPropertyAccessor->get($relationParts[1]);
+        if ($model === null) {
+            return null;
         }
 
-        return $this->model->$name;
+        return $this->model->$property;
     }
 
     /**
@@ -101,7 +103,16 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function has(string $name): bool
     {
-        return isset($this->model->$name);
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
+
+        if ($model === null) {
+            return false;
+
+        }
+
+        return isset($model->$property);
     }
 
     /**
@@ -110,5 +121,37 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->model->row());
+    }
+
+    /**
+     * Determine the model from a given path.
+     *
+     * @param array $path Property path checking releations
+     *
+     * @return Model|null
+     *
+     * @throws Exception When property is not relational.
+     */
+    private function determineModel(array $path) :? Model
+    {
+        if (count($path) === 0) {
+            return $this->model;
+        }
+
+        $model = $this->model;
+
+        foreach ($path as $part) {
+            $model = $model->getRelated($part);
+            if ($model === null) {
+                return null;
+            }
+
+            // Only n:1 relations are supported.
+            if ($model instanceof Collection) {
+                return null;
+            }
+        }
+
+        return $model;
     }
 }
