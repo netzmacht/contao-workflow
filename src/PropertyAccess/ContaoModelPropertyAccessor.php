@@ -17,8 +17,12 @@ namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
 use ArrayIterator;
 use Contao\Model;
+use Contao\Model\Collection;
+use Exception;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Traversable;
+use function array_pop;
+use function explode;
 
 /**
  * Class ContaoModelPropertyAccessor
@@ -69,7 +73,13 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function set(string $name, $value): void
     {
-        $this->model->$name = $value;
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
+
+        if ($model) {
+            $model->$property = $value;
+        }
     }
 
     /**
@@ -77,7 +87,15 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function get(string $name)
     {
-        return $this->model->$name;
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
+
+        if ($model === null) {
+            return null;
+        }
+
+        return $model->$property;
     }
 
     /**
@@ -85,7 +103,15 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      */
     public function has(string $name): bool
     {
-        return isset($this->model->$name);
+        $path     = explode('.', $name);
+        $property = array_pop($path);
+        $model    = $this->determineModel($path);
+
+        if ($model === null) {
+            return false;
+        }
+
+        return isset($model->$property);
     }
 
     /**
@@ -94,5 +120,37 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->model->row());
+    }
+
+    /**
+     * Determine the model from a given path.
+     *
+     * @param array $path Property path checking relations.
+     *
+     * @return Model|null
+     *
+     * @throws Exception When property is not relational.
+     */
+    private function determineModel(array $path) :? Model
+    {
+        if (count($path) === 0) {
+            return $this->model;
+        }
+
+        $model = $this->model;
+
+        foreach ($path as $part) {
+            $model = $model->getRelated($part);
+            if ($model === null) {
+                return null;
+            }
+
+            // Only n:1 relations are supported.
+            if ($model instanceof Collection) {
+                return null;
+            }
+        }
+
+        return $model;
     }
 }

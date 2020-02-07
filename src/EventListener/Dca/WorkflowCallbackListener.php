@@ -223,7 +223,7 @@ final class WorkflowCallbackListener
             if ($collection) {
                 while ($collection->next()) {
                     $stepTo = $collection->getRelated('stepTo');
-                    $label   = sprintf('%s [ID %s]', $collection->label, $collection->id);
+                    $label  = sprintf('%s [ID %s]', $collection->label, $collection->id);
 
                     switch ($collection->type) {
                         case 'actions':
@@ -243,6 +243,9 @@ final class WorkflowCallbackListener
 
                             $label = sprintf('%s -->  %s', $label, $workflowLabel);
                             break;
+
+                        default:
+                            // Do nothing
                     }
 
                     $options[$collection->id] = $label;

@@ -28,9 +28,15 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Symfony\Component\Translation\TranslatorInterface;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function array_merge;
+use function array_pop;
+use function explode;
+use function implode;
+use function in_array;
 use function sprintf;
 use function time;
 
@@ -70,17 +76,26 @@ final class TransitionCallbackListener extends AbstractListener
     private $workflowManager;
 
     /**
+     * Translator.
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Transition constructor.
      *
-     * @param DcaManager        $dcaManager        Data container manager.
-     * @param RepositoryManager $repositoryManager Repository manager.
-     * @param WorkflowManager   $workflowManager   Workflow manager.
-     * @param array<array>      $transitionTypes   Configuration of available transition types.
+     * @param DcaManager          $dcaManager        Data container manager.
+     * @param RepositoryManager   $repositoryManager Repository manager.
+     * @param WorkflowManager     $workflowManager   Workflow manager.
+     * @param TranslatorInterface $translator        Translator.
+     * @param array<array>        $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager,
         WorkflowManager $workflowManager,
+        TranslatorInterface $translator,
         array $transitionTypes
     ) {
         parent::__construct($dcaManager);
@@ -88,6 +103,7 @@ final class TransitionCallbackListener extends AbstractListener
         $this->repositoryManager = $repositoryManager;
         $this->transitionTypes   = $transitionTypes;
         $this->workflowManager   = $workflowManager;
+        $this->translator        = $translator;
     }
 
     /**
@@ -151,29 +167,41 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getEntityProperties($dataContainer): array
     {
-        if ($dataContainer->activeRecord) {
-            $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-            $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
-
-            if ($workflow) {
-                $schemaManager = $this->repositoryManager->getConnection()->getSchemaManager();
-                $fields        = array_keys($schemaManager->listTableColumns($workflow->providerName));
-                $options       = [];
-                $formatter     = $this->getFormatter((string) $workflow->providerName);
-
-                foreach ($fields as $field) {
-                    $options[$field] = sprintf(
-                        '%s [%s]',
-                        $formatter->formatFieldLabel($field),
-                        $field
-                    );
-                }
-
-                return $options;
-            }
+        if (! $dataContainer->activeRecord) {
+            return [];
         }
 
-        return [];
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+
+        if (!$workflow instanceof WorkflowModel) {
+            return [];
+        }
+
+        $options = [];
+
+        foreach ($this->getRelations($workflow->providerName) as $related) {
+            if ($related[1]) {
+                $lastColumn = end($related[1]);
+                $group      = sprintf(
+                    '%s: %s [%s]',
+                    $this->getFormatter($related[3])->formatFieldLabel($lastColumn),
+                    $related[0],
+                    implode('.', $related[1])
+                );
+            } else {
+                $group = $related[0];
+            }
+
+            $options[$group][implode('.', $related[1]) . '.' . $related[2]] = sprintf(
+                '%s [%s.%s]',
+                $this->getFormatter($related[0])->formatFieldLabel($related[2]),
+                $related[0],
+                $related[2]
+            );
+        }
+
+        return $options;
     }
 
     /**
@@ -210,9 +238,9 @@ final class TransitionCallbackListener extends AbstractListener
     public function loadRelatedActions($value, $dataContainer)
     {
         $statement = $this->repositoryManager->getConnection()
-            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE aid=:aid ORDER BY sorting');
+            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
 
-        if ($statement->execute(['aid' => $dataContainer->id])) {
+        if ($statement->execute(['tid' => $dataContainer->id])) {
             return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
         }
 
@@ -234,10 +262,10 @@ final class TransitionCallbackListener extends AbstractListener
         $new        = array_filter(StringUtil::deserialize($value, true));
         $values     = [];
         $statement  = $connection->prepare(
-            'SELECT * FROM tl_workflow_transition_action WHERE aid=:aid order BY sorting'
+            'SELECT * FROM tl_workflow_transition_action WHERE tid=:tid order BY sorting'
         );
 
-        $statement->bindValue('aid', $dataContainer->id);
+        $statement->bindValue('tid', $dataContainer->id);
         $statement->execute();
 
         while ($row = $statement->fetch()) {
@@ -409,6 +437,13 @@ final class TransitionCallbackListener extends AbstractListener
         return null;
     }
 
+    /**
+     * Get all workflow options for the workflow transition.
+     *
+     * @param DataContainer $dataContainer Data container driver.
+     *
+     * @return array
+     */
     public function getWorkflows(DataContainer $dataContainer): array
     {
         if (! $dataContainer->activeRecord) {
@@ -441,5 +476,73 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         return $options;
+    }
+
+    /**
+     * Get relations for the current table.
+     *
+     * Each iterable item contains an array of 4 items:
+     *  - current table
+     *  - prefix as array
+     *  - current field
+     *  - parent table if available
+     *
+     * @param string $currentTable The current table.
+     * @param int    $depth        Limit the depth. Detph 1 means it checks the first related level.
+     * @param string $parentTable  The parent table.
+     * @param array  $prefix       The prefix path as array.
+     * @param array  $knownTables  Cache of known tables. Required to avoid recursion.
+     *
+     * @return iterable
+     */
+    private function getRelations(
+        string $currentTable,
+        int $depth = 1,
+        string $parentTable = '',
+        array $prefix = [],
+        array &$knownTables = []
+    ) : iterable {
+        if (in_array($currentTable, $knownTables, true)) {
+            return [];
+        }
+
+        $definition    = $this->getDefinition($currentTable);
+        $knownTables[] = $currentTable;
+
+        foreach ($definition->get(['fields']) as $fieldName => $fieldConfiguration) {
+            if (! isset($fieldConfiguration['relation'])) {
+                yield [$currentTable, $prefix, $fieldName, $parentTable];
+
+                continue;
+            }
+
+            if (!isset($fieldConfiguration['relation']['type'])
+                || !in_array($fieldConfiguration['relation']['type'], ['hasOne', 'belongsTo'])
+            ) {
+                // Skip field, as it has an 1:m relation which is not supported.
+                continue;
+            }
+
+            if (isset($fieldConfiguration['relation']['table'])) {
+                $relatedTable = $fieldConfiguration['relation']['table'];
+            } elseif (isset($fieldConfiguration['foreignKey'])) {
+                $relatedTable = explode('.', $fieldConfiguration['foreignKey'], 2)[0];
+            } else {
+                // Can't determine related table, so skip field.
+                continue;
+            }
+
+            if (count($prefix) === $depth) {
+                continue;
+            }
+
+            yield from $this->getRelations(
+                $relatedTable,
+                $depth,
+                $currentTable,
+                array_merge($prefix, [$fieldName]),
+                $knownTables
+            );
+        }
     }
 }
