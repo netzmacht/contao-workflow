@@ -95,7 +95,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
             return null;
         }
 
-        return $this->model->$property;
+        return $model->$property;
     }
 
     /**
