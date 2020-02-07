@@ -37,6 +37,12 @@
     {% endif %}
 {% endblock %}
 
+{% block target %}
+    {% if value is defined %}
+        {{ value.step }} <span class="tl_gray">[{{ value.workflow }}]</span>
+    {% endif %}
+{% endblock %}
+
 {% block successful %}
     {% if value is defined %}{{ value.label }}{% endif %}
 {% endblock %}

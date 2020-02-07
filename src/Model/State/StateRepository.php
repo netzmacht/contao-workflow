@@ -109,15 +109,16 @@ final class StateRepository implements WorkflowStateRepository
     {
         $model = new StateModel();
 
-        $model->workflowName   = $state->getWorkflowName();
-        $model->entityId       = (string) $state->getEntityId();
-        $model->transitionName = $state->getTransitionName();
-        $model->stepName       = $state->getStepName();
-        $model->success        = $state->isSuccessful();
-        $model->errors         = $this->serialize($state->getErrors());
-        $model->data           = $this->serialize($state->getData());
-        $model->reachedAt      = $state->getReachedAt()->getTimestamp();
-        $model->tstamp         = time();
+        $model->workflowName       = $state->getStartWorkflowName();
+        $model->entityId           = (string) $state->getEntityId();
+        $model->transitionName     = $state->getTransitionName();
+        $model->stepName           = $state->getStepName();
+        $model->success            = $state->isSuccessful();
+        $model->errors             = $this->serialize($state->getErrors());
+        $model->data               = $this->serialize($state->getData());
+        $model->reachedAt          = $state->getReachedAt()->getTimestamp();
+        $model->targetWorkflowName = $state->getTargetWorkflowName();
+        $model->tstamp             = time();
 
         return $model;
     }
@@ -144,7 +145,8 @@ final class StateRepository implements WorkflowStateRepository
             (array) json_decode($model->data, true),
             $reachedAt,
             (array) json_decode($model->errors, true),
-            (int) $model->id
+            (int) $model->id,
+            $model->targetWorkflowName
         );
 
         return $state;

@@ -94,7 +94,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
         $history      = $view->getItem()->getStateHistory();
         $data         = [];
         $stateColumns = StringUtil::deserialize($workflow->getConfigValue('stepHistoryColumns'), true)
-            ?: ['workflow', 'transition', 'step', 'reachedAt', 'user', 'scope', 'successful'];
+            ?: ['start', 'transition', 'target', 'reachedAt', 'user', 'scope', 'successful'];
 
         foreach ($history as $state) {
             $row = [];
@@ -122,14 +122,17 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     private function renderStateColumn(State $state, string $column)
     {
         switch ($column) {
-            case 'workflow':
-                return $this->renderWorkflowName($state);
+            case 'start':
+                return $this->renderStartWorkflowName($state);
 
             case 'transition':
                 return $this->renderTransitionName($state);
 
-            case 'step':
-                return $this->renderStepName($state);
+            case 'target':
+                return [
+                    'workflow' => $this->renderTargetWorkflowName($state),
+                    'step'     => $this->renderStepName($state),
+                ];
 
             case 'successful':
                 $yesNo = $state->isSuccessful() ? 'yes' : 'no';
@@ -158,12 +161,28 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      *
      * @return string
      */
-    private function renderWorkflowName(State $state): string
+    private function renderStartWorkflowName(State $state): string
     {
         try {
-            return $this->manager->getWorkflowByName($state->getWorkflowName())->getLabel();
+            return $this->manager->getWorkflowByName($state->getStartWorkflowName())->getLabel();
         } catch (WorkflowException $e) {
-            return $state->getWorkflowName() ?: '-';
+            return $state->getStartWorkflowName() ?: '-';
+        }
+    }
+
+    /**
+     * Render the workflow name.
+     *
+     * @param State $state Workflow item state.
+     *
+     * @return string
+     */
+    private function renderTargetWorkflowName(State $state): string
+    {
+        try {
+            return $this->manager->getWorkflowByName($state->getTargetWorkflowName())->getLabel();
+        } catch (WorkflowException $e) {
+            return $state->getTargetWorkflowName() ?: '-';
         }
     }
 

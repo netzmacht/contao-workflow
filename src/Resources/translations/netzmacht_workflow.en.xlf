@@ -22,17 +22,17 @@
                 <source>history</source>
                 <target>History</target>
             </trans-unit>
-            <trans-unit id="history.workflow">
-                <source>history.workflow</source>
+            <trans-unit id="history.start">
+                <source>history.start</source>
                 <target>Workflow</target>
             </trans-unit>
             <trans-unit id="history.transition">
                 <source>history.transition</source>
                 <target>Transition</target>
             </trans-unit>
-            <trans-unit id="history.step">
-                <source>history.step</source>
-                <target>Transition</target>
+            <trans-unit id="history.target">
+                <source>history.target</source>
+                <target>Target</target>
             </trans-unit>
             <trans-unit id="history.successful">
                 <source>history.successful</source>

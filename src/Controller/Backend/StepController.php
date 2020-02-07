@@ -55,19 +55,19 @@ final class StepController extends AbstractController
             );
         }
 
-        if ($workflow->getName() !== $item->getWorkflowName()) {
-            return new RedirectResponse(
-                $this->router->generate(
-                    'netzmacht.contao_workflow.backend.transition',
-                    [
-                        'module'     => $module,
-                        'entityId'   => (string) $entityId,
-                        'transition' => $workflow->getStartTransition()->getName(),
-                        'detach'     => true,
-                    ]
-                )
-            );
-        }
+//        if ($workflow->getName() !== $item->getWorkflowName()) {
+//            return new RedirectResponse(
+//                $this->router->generate(
+//                    'netzmacht.contao_workflow.backend.transition',
+//                    [
+//                        'module'     => $module,
+//                        'entityId'   => (string) $entityId,
+//                        'transition' => $workflow->getStartTransition()->getName(),
+//                        'detach'     => true,
+//                    ]
+//                )
+//            );
+//        }
 
         $currentStep = $workflow->getStep($item->getCurrentStepName());
         $view        = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
