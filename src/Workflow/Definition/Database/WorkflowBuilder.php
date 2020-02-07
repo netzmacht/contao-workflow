@@ -169,7 +169,8 @@ final class WorkflowBuilder
                 array_merge(
                     $collection->row(),
                     array(Definition::SOURCE => Definition::SOURCE_DATABASE)
-                )
+                ),
+                $workflow->getName()
             );
 
             $step->setFinal((bool) $model->final);

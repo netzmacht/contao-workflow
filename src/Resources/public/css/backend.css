@@ -86,3 +86,15 @@
     padding: 5px 5px 5px 25px;
     margin: 0;
 }
+
+.edit_conditional_transition_column {
+    width: 16px;
+}
+
+.edit-all-transitions {
+    margin-top: 10px;
+}
+
+#ctrl_conditionalTransitions thead th:nth-child(2) {
+    display: none;
+}

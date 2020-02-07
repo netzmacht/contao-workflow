@@ -79,6 +79,7 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][0]  = 'T
 $GLOBALS['TL_LANG']['tl_workflow_transition']['conditionalTransitions'][1]  = 'A list of transitions to branch to when executing this action. The transitions are tested from top to bottom. The first matching condition selects the finally executed transition.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['workflow'][0]                = 'Workflow';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['workflow'][1]                = 'Workflow which shall be started.';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['editAllTransitions']         = 'Edit transitions';
 
 $GLOBALS['TL_LANG']['tl_workflow_transition']['eq']  = 'equals';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['neq'] = 'not equals';

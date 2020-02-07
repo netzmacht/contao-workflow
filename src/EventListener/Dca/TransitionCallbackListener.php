@@ -15,7 +15,10 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
+use Contao\Backend;
 use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -23,6 +26,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
+use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
@@ -33,7 +37,6 @@ use function array_filter;
 use function array_keys;
 use function array_map;
 use function array_merge;
-use function array_pop;
 use function explode;
 use function implode;
 use function in_array;
@@ -83,12 +86,20 @@ final class TransitionCallbackListener extends AbstractListener
     private $translator;
 
     /**
+     * Assets manager.
+     *
+     * @var AssetsManager
+     */
+    private $assetsManager;
+
+    /**
      * Transition constructor.
      *
      * @param DcaManager          $dcaManager        Data container manager.
      * @param RepositoryManager   $repositoryManager Repository manager.
      * @param WorkflowManager     $workflowManager   Workflow manager.
      * @param TranslatorInterface $translator        Translator.
+     * @param AssetsManager       $assetsManager     Assets manager.
      * @param array<array>        $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
@@ -96,6 +107,7 @@ final class TransitionCallbackListener extends AbstractListener
         RepositoryManager $repositoryManager,
         WorkflowManager $workflowManager,
         TranslatorInterface $translator,
+        AssetsManager $assetsManager,
         array $transitionTypes
     ) {
         parent::__construct($dcaManager);
@@ -104,6 +116,21 @@ final class TransitionCallbackListener extends AbstractListener
         $this->transitionTypes   = $transitionTypes;
         $this->workflowManager   = $workflowManager;
         $this->translator        = $translator;
+        $this->assetsManager     = $assetsManager;
+    }
+
+    /**
+     * Inject javscript in backend edit mask.
+     *
+     * @param DataContainer $dataContainer Data container driver.
+     *
+     * @return void
+     */
+    public function injectJs($dataContainer): void
+    {
+        if ($dataContainer->table === 'tl_workflow_transition' && Input::get('act') === 'edit') {
+            $this->assetsManager->addJavascript('bundles/netzmachtcontaoworkflow/js/backend.js');
+        }
     }
 
     /**
@@ -161,18 +188,17 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getEntityProperties($dataContainer): array
+    public function getEntityProperties(): array
     {
-        if (! $dataContainer->activeRecord) {
+        $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
+        if (! $transition) {
             return [];
         }
 
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+        $workflow   = $repository->find((int) $transition->pid);
 
         if (!$workflow instanceof WorkflowModel) {
             return [];
@@ -207,20 +233,19 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all actions.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getActions($dataContainer): array
+    public function getActions(): array
     {
-        if ($dataContainer->activeRecord) {
-            $repository = $this->repositoryManager->getRepository(ActionModel::class);
-            $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['.label']);
-
-            return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
+        $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
+        if (! $transition) {
+            return [];
         }
 
-        return [];
+        $repository = $this->repositoryManager->getRepository(ActionModel::class);
+        $collection = $repository->findBy(['.pid=?'], [$transition->pid], ['.label']);
+
+        return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
     }
 
     /**
@@ -323,18 +348,21 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all conditional transitions.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getConditionalTransitions($dataContainer): array
+    public function getConditionalTransitions(): array
     {
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+        $transition = $repository->find((int) Input::get('id'));
 
-        if ($dataContainer->activeRecord) {
-            $collection = $repository->findBy(['.id != ?'], [$dataContainer->activeRecord->id]);
+        if (!$transition) {
+            $collection = $repository->findAll(['order' => '.label']);
         } else {
-            $collection = $repository->findAll();
+            $collection = $repository->findBy(
+                ['.pid=?', '.id != ?'],
+                [$transition->pid, $transition->id],
+                ['order' => '.label']
+            );
         }
 
         return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
@@ -476,6 +504,48 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         return $options;
+    }
+
+    /**
+     * Generate conditional transition edit button.
+     *
+     * @return string
+     */
+    public function conditionalTransitionEditButton(): string
+    {
+        return sprintf(
+            '<a href="javascript:void(0);" class="edit_transition">%s</a>',
+            Image::getHtml('edit.svg')
+        );
+    }
+
+    /**
+     * Create edit all button for conditional transitions.
+     *
+     * @param DataContainer $dataContainer Data container driver.
+     *
+     * @return string
+     */
+    public function editAllTransitionsButton($dataContainer): string
+    {
+        // @codingStandardsIgnoreStart
+        $template = <<<'html'
+<div class="widget edit-all-transitions">
+    <div>
+        <p>
+        <a href="%s" onclick="Backend.openModalIframe({url:this.href, title:'%s'}); return false;" class="tl_submit" id="edit_all_transitions">%s</a>
+        </p>
+    </div>
+</div>
+html;
+        // @codingStandardsIgnoreEnd
+
+        return sprintf(
+            $template,
+            Backend::addToUrl('table=tl_workflow_transition&act=&id=' . $dataContainer->activeRecord->pid),
+            $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
+            $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition')
+        );
     }
 
     /**

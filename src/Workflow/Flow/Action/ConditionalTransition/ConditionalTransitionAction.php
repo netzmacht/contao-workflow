@@ -118,8 +118,6 @@ final class ConditionalTransitionAction implements Action
      */
     public function determineMatchingTransition(Item $item, Context $context) : ?Transition
     {
-        \dump($this->workflow);
-
         foreach ($this->transitionNames as $transitionName) {
             $transition = $this->workflow->getTransition($transitionName);
             if ($transition->isAllowed($item, $context)) {
