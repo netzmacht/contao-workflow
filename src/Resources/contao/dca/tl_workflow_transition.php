@@ -154,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'includeBlankOption' => true,
                 'helpwizard'         => true,
             ],
-            'sql'              => "varchar(64) NOT NULL default 'default'",
+            'sql'              => "varchar(64) NOT NULL default 'actions'",
         ],
         'description'             => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['description'],
