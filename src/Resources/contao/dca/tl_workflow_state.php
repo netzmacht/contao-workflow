@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'targetWorkflowName'   => [
-            'sql' => "varchar(32) NULL default NULL",
+            'sql' => 'varchar(32) NULL default NULL',
         ],
         'entityId'       => [
             'sql'     => "varchar(64) NOT NULL default ''",
