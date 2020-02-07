@@ -118,11 +118,9 @@ final class OptionsListener
             }
         }
 
-        if ($dataContainer) {
+        if ($dataContainer && count($options) > 0) {
             $options = array_merge(... $options);
             asort($options);
-
-            return $options;
         }
 
         return $options;
