@@ -2,12 +2,18 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2020-02-07
+
 ### Added
 
  - Add support for different transition types
  - Add support for workflow changes
  - Add support for conditional transitions
  - Allow to define property conditions depending on related models
+ 
+### Fixed
+
+ - Workaround issues with multi column wizard bundle [#14](https://github.com/netzmacht/contao-workflow/issues/14)
 
 ### Breaking
 
@@ -65,6 +71,8 @@
  - Remove interface `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\Manager`
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
-[Unreleased]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc1...master
+[Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.1.0]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc3...2.1.0
+[2.0.0-rc3]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc2...2.0.0-rc3
 [2.0.0-rc2]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc1...2.0.0-rc2
 [2.0.0-rc1]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-beta1...2.0.0-rc1
