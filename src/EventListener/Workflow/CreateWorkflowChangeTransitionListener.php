@@ -50,7 +50,7 @@ final class CreateWorkflowChangeTransitionListener
      *
      * @return void
      *
-     * @throws  DefinitionException When an invalid workflow value is given.
+     * @throws DefinitionException When an invalid workflow value is given.
      */
     public function onCreateTransition(CreateTransitionEvent $event): void
     {

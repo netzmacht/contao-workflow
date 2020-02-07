@@ -31,6 +31,7 @@ services:
       - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.manager'
+      - '@translator'
       - '%netzmacht.contao_workflow.transition_types%'
 
   netzmacht.contao_workflow.listeners.dca.action:

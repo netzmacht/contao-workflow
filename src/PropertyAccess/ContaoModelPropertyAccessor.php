@@ -109,7 +109,6 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
 
         if ($model === null) {
             return false;
-
         }
 
         return isset($model->$property);
@@ -126,7 +125,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     /**
      * Determine the model from a given path.
      *
-     * @param array $path Property path checking releations
+     * @param array $path Property path checking relations.
      *
      * @return Model|null
      *
