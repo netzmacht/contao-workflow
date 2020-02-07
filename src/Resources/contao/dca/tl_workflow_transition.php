@@ -147,6 +147,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'getTypes',
             ],
             'exclude'          => true,
+            'default'          => 'actions',
             'eval'             => [
                 'tl_class'           => 'w50',
                 'mandatory'          => true,
