@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -161,18 +162,17 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getEntityProperties($dataContainer): array
+    public function getEntityProperties(): array
     {
-        if (! $dataContainer->activeRecord) {
+        $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
+        if (! $transition) {
             return [];
         }
 
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+        $workflow   = $repository->find((int) $transition->pid);
 
         if (!$workflow instanceof WorkflowModel) {
             return [];
@@ -207,20 +207,19 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all actions.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getActions($dataContainer): array
+    public function getActions(): array
     {
-        if ($dataContainer->activeRecord) {
-            $repository = $this->repositoryManager->getRepository(ActionModel::class);
-            $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['.label']);
-
-            return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
+        $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
+        if (! $transition) {
+            return [];
         }
 
-        return [];
+        $repository = $this->repositoryManager->getRepository(ActionModel::class);
+        $collection = $repository->findBy(['.pid=?'], [$transition->pid], ['.label']);
+
+        return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
     }
 
     /**
@@ -323,18 +322,21 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all conditional transitions.
      *
-     * @param DataContainer $dataContainer Data container driver.
-     *
      * @return array
      */
-    public function getConditionalTransitions($dataContainer): array
+    public function getConditionalTransitions(): array
     {
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+        $transition = $repository->find((int) Input::get('id'));
 
-        if ($dataContainer->activeRecord) {
-            $collection = $repository->findBy(['.id != ?'], [$dataContainer->activeRecord->id]);
+        if (!$transition) {
+            $collection = $repository->findAll(['order' => '.label']);
         } else {
-            $collection = $repository->findAll();
+            $collection = $repository->findBy(
+                ['.pid=?', '.id != ?'],
+                [$transition->pid, $transition->id],
+                ['order' => '.label']
+            );
         }
 
         return OptionsBuilder::fromCollection($collection, 'label')->getOptions();

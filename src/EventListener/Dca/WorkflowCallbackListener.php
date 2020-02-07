@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
@@ -181,15 +182,13 @@ final class WorkflowCallbackListener
     /**
      * Get all start steps.
      *
-     * @param DataContainer $dataContainer The data container driver.
-     *
      * @return array
      */
-    public function getStartSteps($dataContainer): array
+    public function getStartSteps(): array
     {
         return [
             'process' => ['start'],
-            'steps'   => $this->getSteps((int) $dataContainer->activeRecord->id, true),
+            'steps'   => $this->getSteps((int) Input::get('id'), true),
         ];
     }
 
@@ -208,48 +207,43 @@ final class WorkflowCallbackListener
     /**
      * Get all transitions.
      *
-     * @param DataContainer $dataContainer The data container.
-     *
      * @return array
      */
-    public function getTransitions($dataContainer): array
+    public function getTransitions(): array
     {
-        $options = [];
+        $options    = [];
+        $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+        $collection = $repository->findBy(['.pid=?'], [Input::get('id')]);
 
-        if ($dataContainer->activeRecord) {
-            $repository = $this->repositoryManager->getRepository(TransitionModel::class);
-            $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->id]);
+        if ($collection) {
+            while ($collection->next()) {
+                $stepTo = $collection->getRelated('stepTo');
+                $label  = sprintf('%s [ID %s]', $collection->label, $collection->id);
 
-            if ($collection) {
-                while ($collection->next()) {
-                    $stepTo = $collection->getRelated('stepTo');
-                    $label  = sprintf('%s [ID %s]', $collection->label, $collection->id);
+                switch ($collection->type) {
+                    case 'actions':
+                        $label .= sprintf(' --> %s [ID %s]', $stepTo->label, $stepTo->id);
+                        break;
 
-                    switch ($collection->type) {
-                        case 'actions':
-                            $label .= sprintf(' --> %s [ID %s]', $stepTo->label, $stepTo->id);
-                            break;
+                    case 'workflow':
+                        try {
+                            $workflowLabel = $this->workflowManager
+                                ->getWorkflowByName((string) $collection->workflow)
+                                ->getLabel();
 
-                        case 'workflow':
-                            try {
-                                $workflowLabel = $this->workflowManager
-                                    ->getWorkflowByName((string) $collection->workflow)
-                                    ->getLabel();
+                            $workflowLabel .= sprintf(' [%s]', $collection->workflow);
+                        } catch (WorkflowNotFound $exception) {
+                            $workflowLabel = $collection->workflow;
+                        }
 
-                                $workflowLabel .= sprintf(' [%s]', $collection->workflow);
-                            } catch (WorkflowNotFound $exception) {
-                                $workflowLabel = $collection->workflow;
-                            }
+                        $label = sprintf('%s -->  %s', $label, $workflowLabel);
+                        break;
 
-                            $label = sprintf('%s -->  %s', $label, $workflowLabel);
-                            break;
-
-                        default:
-                            // Do nothing
-                    }
-
-                    $options[$collection->id] = $label;
+                    default:
+                        // Do nothing
                 }
+
+                $options[$collection->id] = $label;
             }
         }
 
