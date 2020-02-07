@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+ - Add support for different transition types
+ - Add support for workflow changes
+ - Add support for conditional transitions
+ - Allow to define property conditions depending on related models
+
 ### Breaking
 
  - Changed transition form type. It requires the transition handler instead of the transition now
