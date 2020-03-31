@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+ - Explicit declare used dependencies 
+
 ## [2.1.2] - 2020-03-31
 
 ### Fixed
