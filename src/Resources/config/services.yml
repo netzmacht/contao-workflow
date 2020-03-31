@@ -189,7 +189,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory\HtmlViewFactory
     arguments:
       - '@netzmacht.contao_workflow.manager'
-      - '@templating'
+      - '@twig'
       - '@netzmacht.contao_workflow.view.renderer'
       - '%netzmacht.contao_workflow.templates.html_view%'
     tags:

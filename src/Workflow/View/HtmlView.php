@@ -20,8 +20,8 @@ use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment as Twig;
 
 /**
  * Class View
@@ -43,11 +43,11 @@ final class HtmlView implements View
     private $workflow;
 
     /**
-     * Template engine.
+     * Twig template engine.
      *
-     * @var TemplateEngine
+     * @var Twig
      */
-    private $engine;
+    private $twig;
 
     /**
      * Template name.
@@ -98,7 +98,7 @@ final class HtmlView implements View
      * @param Workflow              $workflow The workflow definition.
      * @param Transition|Step|State $context  Current context.
      * @param Renderer              $renderer View renderer.
-     * @param TemplateEngine        $engine   The template engine.
+     * @param Twig                  $twig     The twig template engine.
      * @param string                $template The view template.
      * @param array                 $options  Options.
      */
@@ -107,13 +107,13 @@ final class HtmlView implements View
         Workflow $workflow,
         $context,
         Renderer $renderer,
-        TemplateEngine $engine,
+        Twig $twig,
         ?string $template = null,
         array $options = []
     ) {
         $this->item     = $item;
         $this->workflow = $workflow;
-        $this->engine   = $engine;
+        $this->twig   = $twig;
         $this->context  = $context;
         $this->options  = $options;
         $this->renderer = $renderer;
@@ -195,7 +195,7 @@ final class HtmlView implements View
             $this->renderer->render($this);
         }
 
-        $buffer = $this->engine->render(
+        $buffer = $this->twig->render(
             $this->template,
             [
                 'item'      => $this->item,

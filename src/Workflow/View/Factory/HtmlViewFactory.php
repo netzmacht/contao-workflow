@@ -21,7 +21,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
-use Symfony\Component\Templating\EngineInterface as TemplateEngine;
+use Twig\Environment as Twig;
 use Verraes\ClassFunctions\ClassFunctions;
 
 /**
@@ -37,11 +37,11 @@ final class HtmlViewFactory implements ViewFactory
     private $manager;
 
     /**
-     * Template engine.
+     * Twig template engine.
      *
-     * @var TemplateEngine
+     * @var Twig
      */
-    private $engine;
+    private $twig;
 
     /**
      * Map of context and template.
@@ -60,15 +60,15 @@ final class HtmlViewFactory implements ViewFactory
     /**
      * HtmlViewFactory constructor.
      *
-     * @param Manager        $manager   Workflow manager.
-     * @param TemplateEngine $engine    Template engine.
-     * @param Renderer       $renderer  View renderer.
-     * @param array          $templates Templates.
+     * @param Manager  $manager   Workflow manager.
+     * @param Twig     $twig      Twig template engine.
+     * @param Renderer $renderer  View renderer.
+     * @param array    $templates Templates.
      */
-    public function __construct(Manager $manager, TemplateEngine $engine, Renderer $renderer, array $templates = [])
+    public function __construct(Manager $manager, Twig $twig, Renderer $renderer, array $templates = [])
     {
         $this->manager   = $manager;
-        $this->engine    = $engine;
+        $this->twig      = $twig;
         $this->templates = $templates;
         $this->renderer  = $renderer;
     }
@@ -88,7 +88,7 @@ final class HtmlViewFactory implements ViewFactory
             $this->manager->getWorkflowByName($item->getWorkflowName()),
             $context,
             $this->renderer,
-            $this->engine,
+            $this->twig,
             $template ?: $this->getTemplate($context),
             $options
         );

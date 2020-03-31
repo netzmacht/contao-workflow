@@ -5,6 +5,7 @@
 ### Fixed
 
  - Fix yaml syntax for Contao 4.9 compatibility
+ - Use twig instead of templating component
 
 ## [2.1.1] - 2020-02-07
 
