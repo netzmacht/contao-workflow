@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.2] - 2020-03-31
+
 ### Fixed
 
  - Fix yaml syntax for Contao 4.9 compatibility
@@ -83,6 +85,8 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.1.2]: https://github.com/netzmacht/contao-workflow/compare/2.0.1...2.1.2
+[2.1.1]: https://github.com/netzmacht/contao-workflow/compare/2.0.0...2.1.1
 [2.1.0]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc3...2.1.0
 [2.0.0-rc3]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc2...2.0.0-rc3
 [2.0.0-rc2]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc1...2.0.0-rc2

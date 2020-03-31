@@ -113,7 +113,7 @@ final class HtmlView implements View
     ) {
         $this->item     = $item;
         $this->workflow = $workflow;
-        $this->twig   = $twig;
+        $this->twig     = $twig;
         $this->context  = $context;
         $this->options  = $options;
         $this->renderer = $renderer;
