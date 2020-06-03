@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Support · GitBook</title>
+        <title>Update property · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../actions/form.html" />
+    <link rel="next" href="../entwicklung/workflow-type.html" />
     
     
-    <link rel="prev" href="quick-start.html" />
+    <link rel="prev" href="notification.html" />
     
 
     </head>
@@ -104,9 +104,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="begriffe.html">
+        <li class="chapter " data-level="1.2" data-path="../administration/begriffe.html">
             
-                <a href="begriffe.html">
+                <a href="../administration/begriffe.html">
             
                     
                     Begriffe
@@ -117,9 +117,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="features.html">
+        <li class="chapter " data-level="1.3" data-path="../administration/features.html">
             
-                <a href="features.html">
+                <a href="../administration/features.html">
             
                     
                     Features
@@ -130,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="quick-start.html">
+        <li class="chapter " data-level="1.4" data-path="../administration/quick-start.html">
             
-                <a href="quick-start.html">
+                <a href="../administration/quick-start.html">
             
                     
                     Quick Start
@@ -143,9 +143,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="support.html">
+        <li class="chapter " data-level="1.5" data-path="../administration/support.html">
             
-                <a href="support.html">
+                <a href="../administration/support.html">
             
                     
                     Support
@@ -163,9 +163,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="../actions/form.html">
+        <li class="chapter " data-level="2.1" data-path="form.html">
             
-                <a href="../actions/form.html">
+                <a href="form.html">
             
                     
                     Formular
@@ -176,9 +176,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="../actions/note.html">
+        <li class="chapter " data-level="2.2" data-path="note.html">
             
-                <a href="../actions/note.html">
+                <a href="note.html">
             
                     
                     Notiz
@@ -189,9 +189,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="../actions/notification.html">
+        <li class="chapter " data-level="2.3" data-path="notification.html">
             
-                <a href="../actions/notification.html">
+                <a href="notification.html">
             
                     
                     Notification
@@ -202,9 +202,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.4" data-path="../actions/update_property.html">
+        <li class="chapter active" data-level="2.4" data-path="update_property.html">
             
-                <a href="../actions/update_property.html">
+                <a href="update_property.html">
             
                     
                     Update property
@@ -291,7 +291,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Support</a>
+        <a href=".." >Update property</a>
     </h1>
 </div>
 
@@ -306,14 +306,31 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="support--individualentwicklung">Support &amp; Individualentwicklung</h1>
-<h2 id="kostenloser-support">Kostenloser Support</h2>
-<p>F&#xFC;r kostenlosen Support kann eine Anfrage in der <a href="https://community.contao.org" target="_blank">Contao Community</a> gestellt werden. &#xDC;ber weitere Kan&#xE4;le erfolgt kein kostenloser Support.</p>
-<h2 id="kostenpflichtiger-support">Kostenpflichtiger Support</h2>
-<p>Bei Bedarf stehe ich f&#xFC;r kostenpflichtige Anfragen zur Verf&#xFC;gung. <a href="https://netzmacht.de" target="_blank">Kontaktdaten</a> stehen auf meiner Website.</p>
-<h2 id="indidivualentwicklung">Indidivualentwicklung</h2>
-<p>Bei Bedarf stehe ich f&#xFC;r zus&#xE4;tzliche Individualentwicklungen auf Basis von <strong>netzmacht/contao-workflow</strong> zur Verf&#xFC;gung. <a href="https://netzmacht.de" target="_blank">Kontaktdaten</a> stehen auf meiner Website.</p>
+                                <h1 id="action-update-property">Action Update Property</h1>
+<p>Mithilfe der Action kann die Eigenschaft einer Entit&#xE4;t &#xFC;berschrieben werden.</p>
+<p>Optional kann als neuer Wert eine Expression auf Basis der 
+<a href="https://symfony.com/doc/current/components/expression_language/syntax.html" target="_blank">Symfony Expression Language</a>
+angegeben werden. Derzeit stehen folgende Daten zur Verf&#xFC;gung:</p>
+<ul>
+<li><code>now</code>: Instanz von <code>\DateTimeImmutable</code></li>
+<li><code>entity</code>: Instanz von <code>\Netzmacht\ContaoWorkflowBundle\PropertyAccess\ReadonlyPropertyAccessor</code></li>
+</ul>
+<p>Letzeres erlaubt den Zugriff auf die Werte einer Entit&#xE4;t &#xFC;ber folgende Syntax:</p>
+<pre><code>## Get raw value
+entity.raw(&apos;author&apos;)
 
+## Get deserialized value
+entity.get(&apos;headline&apos;)
+</code></pre><h2 id="contao-models">Contao Models</h2>
+<p>F&#xFC;r Contao Models besteht der Zugriff auch auf abh&#xE4;ngige Models, die in einer 1:1 oder n:1 Beziehung stehen. Der Zugriff
+gilt sowohl f&#xFC;r den Schreib- als auch Lesezugriff.</p>
+<p>Die Werte der abh&#xE4;ngigen Entit&#xE4;t sind &#xFC;ber den Pfad der Eigenschaft zug&#xE4;nglich, z.b. <code>author.name</code>.</p>
+<pre><code>## Get raw value
+entity.raw(&apos;author.name&apos;)
+
+## Get deserialized value
+5 in entity.get(&apos;author.groups&apos;)
+</code></pre>
                                 
                                 </section>
                             
@@ -340,12 +357,12 @@
 
             
                 
-                <a href="quick-start.html" class="navigation navigation-prev " aria-label="Previous page: Quick Start">
+                <a href="notification.html" class="navigation navigation-prev " aria-label="Previous page: Notification">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../actions/form.html" class="navigation navigation-next " aria-label="Next page: Formular">
+                <a href="../entwicklung/workflow-type.html" class="navigation navigation-next " aria-label="Next page: Workflow-Typen">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -356,7 +373,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Support","level":"1.5","depth":1,"next":{"title":"Formular","level":"2.1","depth":1,"path":"actions/form.md","ref":"actions/form.md","articles":[]},"previous":{"title":"Quick Start","level":"1.4","depth":1,"path":"administration/quick-start.md","ref":"administration/quick-start.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"administration/support.md","mtime":"2020-02-06T08:00:41.771Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-03T08:33:20.855Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Update property","level":"2.4","depth":1,"next":{"title":"Workflow-Typen","level":"3.1","depth":1,"path":"entwicklung/workflow-type.md","ref":"entwicklung/workflow-type.md","articles":[]},"previous":{"title":"Notification","level":"2.3","depth":1,"path":"actions/notification.md","ref":"actions/notification.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"language":"de","gitbook":"*"},"file":{"path":"actions/update_property.md","mtime":"2020-06-03T08:30:56.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-03T08:33:20.855Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
