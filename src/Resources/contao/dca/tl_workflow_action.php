@@ -265,7 +265,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'tl_class'       => 'clr',
                 'decodeEntities' => true,
             ],
-            'sql'       => "tinytext NULL",
+            'sql'       => 'tinytext NULL',
         ],
     ],
 ];
