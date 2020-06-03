@@ -23,24 +23,6 @@ use IteratorAggregate;
 interface PropertyAccessor extends IteratorAggregate
 {
     /**
-     * Check if entity supports property access.
-     *
-     * @param mixed $object Given object.
-     *
-     * @return bool
-     */
-    public static function supports($object): bool;
-
-    /**
-     * Create property accessor for a given object.
-     *
-     * @param mixed $object Given object.
-     *
-     * @return PropertyAccessor
-     */
-    public static function create($object): self;
-
-    /**
      * Set a property.
      *
      * @param string $name  Name of the property.

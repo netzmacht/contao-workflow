@@ -18,9 +18,10 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
 use Assert\Assertion;
 use Contao\Model;
 use Netzmacht\Contao\Toolkit\Data\Model\Repository;
-use Netzmacht\Contao\Toolkit\Data\Model\Specification as ModelSpecification;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
+use function get_class;
 
 /**
  * Class EntityRepository stores an entity.
@@ -37,13 +38,34 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     private $repository;
 
     /**
+     * Related model change tracker.
+     *
+     * @var ContaoModelRelatedModelChangeTracker
+     */
+    private $changeTracker;
+
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
      * Construct.
      *
-     * @param Repository $repository Contao model repository.
+     * @param Repository                           $repository        Contao model repository.
+     * @param ContaoModelRelatedModelChangeTracker $changeTracker     Related model change tracker.
+     * @param RepositoryManager                    $repositoryManager The repository manager.
      */
-    public function __construct(Repository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        Repository $repository,
+        ContaoModelRelatedModelChangeTracker $changeTracker,
+        RepositoryManager $repositoryManager
+    ) {
+        $this->repository        = $repository;
+        $this->changeTracker     = $changeTracker;
+        $this->repositoryManager = $repositoryManager;
     }
 
     /**
@@ -65,6 +87,11 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
 
         /** @var Model $entity */
         $this->repository->save($entity);
+
+        foreach ($this->changeTracker->release($entity) as $model) {
+            $repository = $this->repositoryManager->getRepository(get_class($model));
+            $repository->save($model);
+        }
     }
 
     /**
@@ -118,9 +145,11 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
 
         return array_filter(
             $entities,
-            function (Model $entity) use ($specification) {
+            // @codingStandardsIgnoreStart
+            static function (Model $entity) use ($specification) {
                 return $specification->isSatisfiedBy($entity);
             }
+            // @codingStandardsIgnoreEnd
         );
     }
 

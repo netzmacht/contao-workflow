@@ -79,19 +79,22 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 
     'metapalettes' => [
-        'default'                      => [
+        'default'                         => [
             'name'        => ['label', 'type', 'sorting', 'active'],
             'description' => [':hide', 'description'],
             'config'      => [],
         ],
-        'form extends default'         => [
+        'form extends default'            => [
             'config' => ['form_formId', 'form_fieldset'],
         ],
-        'note extends default'         => [
+        'note extends default'            => [
             'config' => ['note_required'],
         ],
-        'notification extends default' => [
+        'notification extends default'    => [
             'config' => ['notification_id', 'notification_states'],
+        ],
+        'update_property extends default' => [
+            'config' => ['property', 'property_expression', 'property_value'],
         ],
     ],
 
@@ -227,6 +230,42 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'multiple' => true,
             ],
             'sql'       => 'tinyblob NULL',
+        ],
+        'property'            => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['property'],
+            'inputType'        => 'select',
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.action',
+                'getEntityProperties',
+            ],
+            'eval'             => [
+                'mandatory'          => true,
+                'includeBlankOption' => true,
+                'chosen'             => true,
+                'tl_class'           => 'w50',
+            ],
+            'sql'              => "varchar(255) NOT NULL default ''",
+        ],
+        'property_expression' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['property_expression'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'default'   => '1',
+            'eval'      => [
+                'tl_class'       => 'm12 w50',
+                'submitOnChange' => true,
+            ],
+            'sql'       => "char(1) NOT NULL default '1'",
+        ],
+        'property_value'      => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['property_value'],
+            'inputType' => 'textarea',
+            'eval'      => [
+                'chosen'         => true,
+                'tl_class'       => 'clr',
+                'decodeEntities' => true,
+            ],
+            'sql'       => "tinytext NULL",
         ],
     ],
 ];

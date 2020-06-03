@@ -16,19 +16,36 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
+use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use NotificationCenter\Model\Notification;
+use function end;
+use function implode;
+use function sprintf;
 
 /**
  * Class Action is used for tl_workflow_action callbacks.
  *
  * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
-final class ActionCallbackListener
+final class ActionCallbackListener extends AbstractListener
 {
+    use EntityPropertiesTrait;
+
+    /**
+     * The data container name.
+     *
+     * @var string
+     */
+    protected static $name = 'tl_workflow_action';
+
     /**
      * Repository manager.
      *
@@ -53,15 +70,19 @@ final class ActionCallbackListener
     /**
      * Action constructor.
      *
+     * @param DcaManager                   $dcaManager        Data container manager.
      * @param RepositoryManager            $repositoryManager Repository manager.
      * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
      * @param ActionFactory                $actionFactory     The action factory.
      */
     public function __construct(
+        DcaManager $dcaManager,
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
         ActionFactory $actionFactory
     ) {
+        parent::__construct($dcaManager);
+
         $this->repositoryManager = $repositoryManager;
         $this->workflowLoader    = $workflowLoader;
         $this->actionFactory     = $actionFactory;
@@ -102,5 +123,26 @@ final class ActionCallbackListener
                 return sprintf('%s [ID %s]', $row['title'], $row['id']);
             }
         )->getOptions();
+    }
+
+    /**
+     * Get entity properties.
+     *
+     * @return array
+     */
+    public function getEntityProperties(): array
+    {
+        $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
+        if (! $action) {
+            return [];
+        }
+
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflow   = $repository->find((int) $action->pid);
+        if (!$workflow instanceof WorkflowModel) {
+            return [];
+        }
+
+        return $this->getEntityPropertiesForWorkflow($workflow);
     }
 }
