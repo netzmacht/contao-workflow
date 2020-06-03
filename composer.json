@@ -51,7 +51,8 @@
     },
     "require-dev": {
         "contao/manager-plugin": "^2.1",
-        "phpcq/all-tasks": "^1.2"
+        "phpcq/all-tasks": "^1.2",
+        "bossa/phpspec2-expect": "^3.1"
     },
     "extra": {
         "branch-alias": {

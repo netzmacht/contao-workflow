@@ -20,6 +20,7 @@ use Contao\Model;
 use Contao\Model\Collection;
 use Exception;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
 use Traversable;
 use function array_pop;
 use function explode;
@@ -37,19 +38,30 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     private $model;
 
     /**
+     * Related model changes registry.
+     *
+     * @var ContaoModelRelatedModelChangeTracker|null
+     */
+    private $changesRegistry;
+
+    /**
      * ContaoModelPropertyAccessor constructor.
      *
-     * @param Model $model Contao model.
+     * @param Model                                     $model           Contao model.
+     * @param ContaoModelRelatedModelChangeTracker|null $changesRegistry Related model changes registry.
      */
-    public function __construct(Model $model)
+    public function __construct(Model $model, ?ContaoModelRelatedModelChangeTracker $changesRegistry = null)
     {
-        $this->model = $model;
+        $this->model           = $model;
+        $this->changesRegistry = $changesRegistry;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
-    public static function supports($object): bool
+    public static function supports($object) : bool
     {
         return $object instanceof Model;
     }
@@ -58,6 +70,8 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      * {@inheritDoc}
      *
      * @throws PropertyAccessFailed When data structure is not supported.
+     *
+     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
     public static function create($object): PropertyAccessor
     {
@@ -77,8 +91,13 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         $property = array_pop($path);
         $model    = $this->determineModel($path);
 
-        if ($model) {
-            $model->$property = $value;
+        if ($model === null) {
+            return;
+        }
+
+        $model->$property = $value;
+        if ($this->changesRegistry && $this->model !== $model) {
+            $this->changesRegistry->track($this->model, $model);
         }
     }
 
@@ -131,7 +150,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      *
      * @throws Exception When property is not relational.
      */
-    private function determineModel(array $path) :? Model
+    private function determineModel(array $path): ?Model
     {
         if (count($path) === 0) {
             return $this->model;
