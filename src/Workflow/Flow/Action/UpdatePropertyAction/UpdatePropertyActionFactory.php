@@ -89,7 +89,7 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
 
         return new UpdatePropertyAction(
             $config['property'],
-            $config['property_value'],
+            (string) $config['property_value'],
             (bool) $config['property_expression'],
             $this->propertyAccessManager,
             $this->createExpressionLanguage()
