@@ -42,7 +42,7 @@
         "symfony/http-kernel": "^3.4 || ^4.0",
         "symfony/options-resolver": "^3.4 || ^4.0",
         "symfony/routing": "^3.4 || ^4.0",
-        "symfony/security-core": "^3.4 || ^4.0",
+        "symfony/security-core": "^3.4 || ^4.1.12",
         "symfony/templating": "^3.4 || ^4.0",
         "symfony/translation": "^3.4 || ^4.0",
         "symfony/validator": "^3.4 || ^4.0",
@@ -56,8 +56,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1.x-dev",
-            "dev-develop": "2.2.x-dev"
+            "dev-master": "2.2.x-dev",
+            "dev-develop": "2.3.x-dev"
         },
         "contao-manager-plugin": "Netzmacht\\ContaoWorkflowBundle\\ContaoManager\\Plugin"
     },
