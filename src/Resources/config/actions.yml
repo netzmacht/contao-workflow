@@ -32,3 +32,10 @@ services:
       - '@translator'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao.workflow.action_factory.update_property:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction\UpdatePropertyActionFactory
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }

@@ -62,17 +62,25 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'][0]     = 'Notificat
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'][1]     = 'Please choose a notification which should be send.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][0] = 'Success states';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'][1] = 'Only send notification if transition was made with success/failed.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property'][0]            = 'Property';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property'][1]            = 'Select a property which should be changed';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property_expression'][0] = 'Evaluate expression';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property_expression'][1] = 'The property value is a symfony expression.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property_value'][0]      = 'Property value/expression';
+$GLOBALS['TL_LANG']['tl_workflow_action']['property_value'][1]      = 'The new property value. If an expression is used, access to <em>entity</em> and <em>now</em> is granted. Example: <em>entity.get(\'author.admin\') ? \'\' : (now.getTimestamp() + 86400)</em>';
 
 /*
  * Values
  */
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['default']         = 'Default';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][0]         = 'Note';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][1]         = 'Add a note during transition.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]         = 'Form';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][1]         = 'Add data from a form generated with the form generator during transition.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][0] = 'Notification';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][1] = 'Send a notification with the Notification Center.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['default']            = 'Default';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][0]            = 'Note';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][1]            = 'Add a note during transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]            = 'Form';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][1]            = 'Add data from a form generated with the form generator during transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][0]    = 'Notification';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][1]    = 'Send a notification with the Notification Center.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property'][0] = 'Update property';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property'][1] = 'Update property value of an entity.';
 
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['success'] = 'success';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['failed']  = 'failed';

@@ -39,6 +39,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\ActionCallbackListener
     public: true
     arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
       - '@netzmacht.contao_workflow.action_factory'
