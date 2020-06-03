@@ -33,24 +33,6 @@
  * Backend-Ansicht für die Transition
  * Bereitstellung von Hilfsklassen für eigene Workflow-Integrationen
 
-## Bereitgestellte Actions
-
-### Action Formular
-
- * Einbindung eines Formulars des Formulargenerators zur Erfassung beliebiger Daten je Transition
- * Speicherung der Daten im aktuellen Status
-
-
-### Action Notiz 
- 
- * Erfassung einer einfachen Notiz je Transition
- * Speicherung der Notiz im aktuellen Status
-
-### Action Notification 
-
- * Versand einer Notification über das [Notification Center](https://github.com/terminal42/contao-notification_center)
- * Versand abhängig vom Erfolg einer Transition konfigurierbar
-
 ## Geplante Features
 
  * Formulare anhand Teile der DCA-Konfiguration erstellen 

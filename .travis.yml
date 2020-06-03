@@ -15,16 +15,7 @@ php:
 
 env:
   - CONTAO_VERSION=contao/core-bundle ~4.4.0
-  - CONTAO_VERSION=contao/core-bundle ~4.8.0
-  - CONTAO_VERSION=contao/core-bundle ~4.7.0
-  - CONTAO_VERSION=contao/core-bundle ~4.5.0
-  - CONTAO_VERSION=contao/core-bundle ~4.6.0
-
-matrix:
-  allow_failures:
-    - env: CONTAO_VERSION=contao/core-bundle ~4.5.0
-    - env: CONTAO_VERSION=contao/core-bundle ~4.6.0
-    - env: CONTAO_VERSION=contao/core-bundle ~4.7.0
+  - CONTAO_VERSION=contao/core-bundle ~4.9.0
 
 before_script:
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini

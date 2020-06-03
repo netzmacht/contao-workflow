@@ -1,9 +1,6 @@
 parameters:
   netzmacht.contao_workflow.type.default: []
   netzmacht.contao_workflow.dca_providers: []
-  netzmacht.contao_workflow.property_accessors:
-    - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ArrayPropertyAccessor
-    - Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessor
 
 services:
   _defaults:
@@ -42,11 +39,15 @@ services:
     arguments:
       - !tagged netzmacht.contao_workflow.entity_repository_factory
 
+  netzmacht.contao_workflow.entity_repository_factory.contao_model.related_changes:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker
+
   netzmacht.contao_workflow.entity_repository_factory.contao_model:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelEntityRepositoryFactory
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_toolkit.contao.model_adapter'
+      - '@netzmacht.contao_workflow.entity_repository_factory.contao_model.related_changes'
     tags:
       - { name: netzmacht.contao_workflow.entity_repository_factory, priority: -50 }
 
@@ -198,4 +199,16 @@ services:
   netzmacht.contao_workflow.property_access_manager:
     class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager
     arguments:
-      - '%netzmacht.contao_workflow.property_accessors%'
+      - !tagged_iterator netzmacht.contao_workflow.property_accessor_factory
+
+  netzmacht.contao_workflow.property_accessor.array:
+    class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\ArrayPropertyAccessorFactory
+    tags:
+      - { name: netzmacht.contao_workflow.property_accessor_factory }
+
+  netzmacht.contao_workflow.property_accessor.contao_model:
+    class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessorFactory
+    arguments:
+      - '@netzmacht.contao_workflow.entity_repository_factory.contao_model.related_changes'
+    tags:
+      - { name: netzmacht.contao_workflow.property_accessor_factory }

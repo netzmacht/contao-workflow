@@ -46,6 +46,8 @@ final class ArrayPropertyAccessor implements PropertyAccessor
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
     public static function supports($object): bool
     {
@@ -56,6 +58,8 @@ final class ArrayPropertyAccessor implements PropertyAccessor
      * {@inheritDoc}
      *
      * @throws PropertyAccessFailed When data structure is not supported.
+     *
+     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
     public static function create($object): PropertyAccessor
     {

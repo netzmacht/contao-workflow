@@ -36,10 +36,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use function array_filter;
 use function array_keys;
 use function array_map;
-use function array_merge;
-use function explode;
 use function implode;
-use function in_array;
 use function sprintf;
 use function time;
 
@@ -50,6 +47,8 @@ use function time;
  */
 final class TransitionCallbackListener extends AbstractListener
 {
+    use EntityPropertiesTrait;
+
     /**
      * Table name.
      *
@@ -204,30 +203,7 @@ final class TransitionCallbackListener extends AbstractListener
             return [];
         }
 
-        $options = [];
-
-        foreach ($this->getRelations($workflow->providerName) as $related) {
-            if ($related[1]) {
-                $lastColumn = end($related[1]);
-                $group      = sprintf(
-                    '%s: %s [%s]',
-                    $this->getFormatter($related[3])->formatFieldLabel($lastColumn),
-                    $related[0],
-                    implode('.', $related[1])
-                );
-            } else {
-                $group = $related[0];
-            }
-
-            $options[$group][implode('.', $related[1]) . '.' . $related[2]] = sprintf(
-                '%s [%s.%s]',
-                $this->getFormatter($related[0])->formatFieldLabel($related[2]),
-                $related[0],
-                $related[2]
-            );
-        }
-
-        return $options;
+        return $this->getEntityPropertiesForWorkflow($workflow);
     }
 
     /**
@@ -546,73 +522,5 @@ html;
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition')
         );
-    }
-
-    /**
-     * Get relations for the current table.
-     *
-     * Each iterable item contains an array of 4 items:
-     *  - current table
-     *  - prefix as array
-     *  - current field
-     *  - parent table if available
-     *
-     * @param string $currentTable The current table.
-     * @param int    $depth        Limit the depth. Detph 1 means it checks the first related level.
-     * @param string $parentTable  The parent table.
-     * @param array  $prefix       The prefix path as array.
-     * @param array  $knownTables  Cache of known tables. Required to avoid recursion.
-     *
-     * @return iterable
-     */
-    private function getRelations(
-        string $currentTable,
-        int $depth = 1,
-        string $parentTable = '',
-        array $prefix = [],
-        array &$knownTables = []
-    ) : iterable {
-        if (in_array($currentTable, $knownTables, true)) {
-            return [];
-        }
-
-        $definition    = $this->getDefinition($currentTable);
-        $knownTables[] = $currentTable;
-
-        foreach ($definition->get(['fields']) as $fieldName => $fieldConfiguration) {
-            if (! isset($fieldConfiguration['relation'])) {
-                yield [$currentTable, $prefix, $fieldName, $parentTable];
-
-                continue;
-            }
-
-            if (!isset($fieldConfiguration['relation']['type'])
-                || !in_array($fieldConfiguration['relation']['type'], ['hasOne', 'belongsTo'])
-            ) {
-                // Skip field, as it has an 1:m relation which is not supported.
-                continue;
-            }
-
-            if (isset($fieldConfiguration['relation']['table'])) {
-                $relatedTable = $fieldConfiguration['relation']['table'];
-            } elseif (isset($fieldConfiguration['foreignKey'])) {
-                $relatedTable = explode('.', $fieldConfiguration['foreignKey'], 2)[0];
-            } else {
-                // Can't determine related table, so skip field.
-                continue;
-            }
-
-            if (count($prefix) === $depth) {
-                continue;
-            }
-
-            yield from $this->getRelations(
-                $relatedTable,
-                $depth,
-                $currentTable,
-                array_merge($prefix, [$fieldName]),
-                $knownTables
-            );
-        }
     }
 }

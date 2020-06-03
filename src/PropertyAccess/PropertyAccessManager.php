@@ -18,7 +18,6 @@ namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 use Assert\Assert;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use function array_key_exists;
-use function call_user_func;
 use function is_object;
 use function spl_object_hash;
 
@@ -28,29 +27,29 @@ use function spl_object_hash;
 final class PropertyAccessManager
 {
     /**
-     * Property access classes.
+     * Property access factories.
      *
-     * @var string[]
+     * @var PropertyAccessorFactory[]
      */
-    private $accessors;
+    private $factories;
 
     /**
      * Cache of mapped property accessors.
      *
-     * @var PropertyAccessor[]
+     * @var iterable|PropertyAccessor[]
      */
     private $mapping = [];
 
     /**
      * PropertyAccessManager constructor.
      *
-     * @param string[] $accessors Property access class names.
+     * @param iterable|string[] $factories Property access factories.
      */
-    public function __construct(array $accessors)
+    public function __construct(iterable $factories)
     {
-        Assert::thatAll($accessors)->subclassOf(PropertyAccessor::class);
+        Assert::thatAll($factories)->subclassOf(PropertyAccessorFactory::class);
 
-        $this->accessors = $accessors;
+        $this->factories = $factories;
     }
 
     /**
@@ -62,8 +61,8 @@ final class PropertyAccessManager
      */
     public function supports($data): bool
     {
-        foreach ($this->accessors as $accessor) {
-            if (call_user_func([$accessor, 'supports'], $data)) {
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($data)) {
                 return true;
             }
         }
@@ -88,9 +87,9 @@ final class PropertyAccessManager
             return $this->mapping[$hash];
         }
 
-        foreach ($this->accessors as $accessor) {
-            if (call_user_func([$accessor, 'supports'], $data)) {
-                $accessor = call_user_func([$accessor, 'create'], $data);
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($data)) {
+                $accessor = $factory->create($data);
 
                 if ($hash) {
                     $this->mapping[$hash] = $accessor;

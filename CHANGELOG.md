@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [2.2.0] - 2020-06-03
+
+### Added
+
+ - Add UpdateProperty action
+ - Add ability to register own property accessors
+ - Track changes of related models
+ 
+### Changed
+ - Introduce a PropertyAccessorFactory
+ 
 ### Fixed
 
  - Explicit declare used dependencies 
