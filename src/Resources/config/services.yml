@@ -199,7 +199,7 @@ services:
   netzmacht.contao_workflow.property_access_manager:
     class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager
     arguments:
-      - !tagged_iterator netzmacht.contao_workflow.property_accessor_factory
+      - !tagged netzmacht.contao_workflow.property_accessor_factory
 
   netzmacht.contao_workflow.property_accessor.array:
     class: Netzmacht\ContaoWorkflowBundle\PropertyAccess\ArrayPropertyAccessorFactory

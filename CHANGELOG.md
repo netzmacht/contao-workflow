@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [2.2.1] - 2020-06-23
+
+### Fixed
+ - Restore compatibility with Contao 4.4 and Symfony 3.4 ([#19](https://github.com/netzmacht/contao-workflow/issues/19))
+
 ## [2.2.0] - 2020-06-03
 
 ### Added
