@@ -5,6 +5,7 @@
 ### Fixed
  
  - Fix `errors.html.twig` template for twig 2.0
+ - Do not communicate errors when detecting matching conditional transition
 
 ## [2.2.1] - 2020-06-23
 

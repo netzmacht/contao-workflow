@@ -120,7 +120,7 @@ final class ConditionalTransitionAction implements Action
     {
         foreach ($this->transitionNames as $transitionName) {
             $transition = $this->workflow->getTransition($transitionName);
-            if ($transition->isAllowed($item, $context)) {
+            if ($transition->isAllowed($item, $context->createCleanCopy())) {
                 return $transition;
             }
         }
