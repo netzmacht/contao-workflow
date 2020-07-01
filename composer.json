@@ -29,7 +29,7 @@
         "menatwork/contao-multicolumnwizard-bundle": "^3.3.14",
         "netzmacht/contao-form-bundle": "~1.0",
         "netzmacht/contao-toolkit": "~3.0",
-        "netzmacht/workflow": "^2.1@dev",
+        "netzmacht/workflow": "^2.1.0",
         "patchwork/utf8": "^1.2",
         "psr/log": "^1.1",
         "sensio/framework-extra-bundle": "~5.0",

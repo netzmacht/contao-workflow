@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.2.2] - 2020-07-01
+
 ### Fixed
  
  - Fix `errors.html.twig` template for twig 2.0
