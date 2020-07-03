@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.2.3] - 2020-07-03
+
+### Fixed
+
+ - Property conditions couldn't be deleted
+
 ## [2.2.2] - 2020-07-01
 
 ### Fixed
@@ -112,6 +118,10 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.2.3]: https://github.com/netzmacht/contao-workflow/compare/2.2.2...2.2.3
+[2.2.2]: https://github.com/netzmacht/contao-workflow/compare/2.2.1...2.2.2
+[2.2.1]: https://github.com/netzmacht/contao-workflow/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/netzmacht/contao-workflow/compare/2.1.2...2.2.0
 [2.1.2]: https://github.com/netzmacht/contao-workflow/compare/2.0.1...2.1.2
 [2.1.1]: https://github.com/netzmacht/contao-workflow/compare/2.0.0...2.1.1
 [2.1.0]: https://github.com/netzmacht/contao-workflow/compare/2.0.0-rc3...2.1.0

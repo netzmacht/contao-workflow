@@ -41,8 +41,10 @@ function workflowConditionalTransitionsButtonClick()
 
 $(window).addEvent('domready', function () {
     MultiColumnWizard.addOperationUpdateCallback('new', function (el, row) {
-        console.log(el,  row);
         var button = $(row).getElement('a.edit_transition');
+        if (button === null) {
+            return;
+        }
         workflowConditionalTransitionsUpdateEditButton(button);
         button.addEvent('click', workflowConditionalTransitionsButtonClick);
         $(row).getElement('select').addEvent('change', function () {
@@ -51,7 +53,10 @@ $(window).addEvent('domready', function () {
     });
 
     $$('#ctrl_conditionalTransitions select').addEvent('change', function () {
-        workflowConditionalTransitionsUpdateEditButton($(this).getParent('tr').getElement('a.edit_transition'));
+        var button = $(this).getParent('tr').getElement('a.edit_transition');
+        if (button !== null) {
+            workflowConditionalTransitionsUpdateEditButton(button);
+        }
     });
     $$('#ctrl_conditionalTransitions a.edit_transition').each(function (button) {
         workflowConditionalTransitionsUpdateEditButton(button);

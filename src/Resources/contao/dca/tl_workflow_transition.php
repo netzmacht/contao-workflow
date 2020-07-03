@@ -281,6 +281,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'inputType' => 'multiColumnWizard',
             'eval'      => [
                 'tl_class'     => 'clr',
+                'style'        => 'max-width: 800px',
                 'columnFields' => [
                     'property' => [
                         'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['entityProperty'],
@@ -293,7 +294,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                             'mandatory'          => true,
                             'includeBlankOption' => true,
                             'chosen'             => true,
-                            'style'              => 'width: 300px',
+                            'style'              => 'width: 100%',
                         ],
                     ],
                     'operator' => [
@@ -310,14 +311,14 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                         ],
                         'eval'      => [
                             'mandatory' => true,
-                            'style'     => 'width: 120px',
+                            'style'     => 'width: 100%',
                         ],
                     ],
                     'value'    => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'],
                         'inputType' => 'text',
                         'eval'      => [
-                            'style' => 'width: 200px',
+                            'style' => 'width: 100%',
                         ],
                     ],
                 ],
