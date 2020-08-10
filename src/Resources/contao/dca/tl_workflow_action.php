@@ -252,8 +252,8 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'exclude'   => true,
             'default'   => '1',
             'eval'      => [
-                'tl_class'       => 'm12 w50',
-                'submitOnChange' => true,
+                'tl_class'          => 'm12 w50',
+                'submitOnChange'    => true,
             ],
             'sql'       => "char(1) NOT NULL default '1'",
         ],
@@ -261,9 +261,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['property_value'],
             'inputType' => 'textarea',
             'eval'      => [
-                'chosen'         => true,
-                'tl_class'       => 'clr',
-                'decodeEntities' => true,
+                'chosen'            => true,
+                'tl_class'          => 'clr',
+                'useRawRequestData' => true,
             ],
             'sql'       => 'tinytext NULL',
         ],

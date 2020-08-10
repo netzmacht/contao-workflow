@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.2.4] - 2020-10-08
+
+### Fixed
+
+ - Disable input encoding / filter at all for `property_value`
+ 
 ## [2.2.3] - 2020-07-03
 
 ### Fixed
@@ -118,6 +124,7 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.2.4]: https://github.com/netzmacht/contao-workflow/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/netzmacht/contao-workflow/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/netzmacht/contao-workflow/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/netzmacht/contao-workflow/compare/2.2.0...2.2.1
