@@ -145,4 +145,35 @@ final class ActionCallbackListener extends AbstractListener
 
         return $this->getEntityPropertiesForWorkflow($workflow);
     }
+
+    /**
+     * Get entity properties.
+     *
+     * @return array
+     */
+    public function getEditableEntityProperties(): array
+    {
+        $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
+        if (! $action) {
+            return [];
+        }
+
+        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflow   = $repository->find((int) $action->pid);
+        if (!$workflow instanceof WorkflowModel) {
+            return [];
+        }
+
+        $definition = $this->getDefinition($workflow->providerName);
+        $options    = [];
+        foreach ($definition->get('fields') as $name => $config) {
+            if (!isset($config['inputType'])) {
+                continue;
+            }
+
+            $options[$name] = isset($config['label'][0]) ? sprintf('%s [%s]', $config['label'][0], $name) : $name;
+        }
+
+        return $options;
+    }
 }

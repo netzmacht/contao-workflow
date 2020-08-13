@@ -96,6 +96,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'update_property extends default' => [
             'config' => ['property', 'property_expression', 'property_value'],
         ],
+        'update_entity extends default'   => [
+            'config' => ['update_entity_properties'],
+        ],
     ],
 
     'metasubpalettes' => [
@@ -103,18 +106,18 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 
     'fields' => [
-        'id'                  => [
+        'id'                       => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
-        'pid'                 => [
+        'pid'                      => [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'tstamp'              => [
+        'tstamp'                   => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'label'               => [
+        'label'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['label'],
             'inputType' => 'text',
             'exclude'   => true,
@@ -126,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(64) NOT NULL default ''",
         ],
-        'type'                => [
+        'type'                     => [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['type'],
             'inputType'        => 'select',
             'exclude'          => true,
@@ -142,7 +145,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'              => "varchar(32) NOT NULL default ''",
         ],
-        'description'         => [
+        'description'              => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['description'],
             'inputType' => 'text',
             'exclude'   => true,
@@ -152,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
-        'active'              => [
+        'active'                   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['active'],
             'inputType' => 'checkbox',
             'exclude'   => true,
@@ -162,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
-        'form_formId'         => [
+        'form_formId'              => [
             'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_formId'],
             'inputType'  => 'select',
             'exclude'    => true,
@@ -172,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'foreignKey' => 'tl_form.title',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'form_fieldset'       => [
+        'form_fieldset'            => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_fieldset'],
             'inputType' => 'checkbox',
             'exclude'   => true,
@@ -183,7 +186,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "char(1) NOT NULL default '1'",
         ],
-        'note_required'       => [
+        'note_required'            => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_required'],
             'inputType' => 'checkbox',
             'exclude'   => true,
@@ -193,7 +196,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
-        'note_minlength'      => [
+        'note_minlength'           => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['note_minlength'],
             'inputType' => 'text',
             'exclude'   => true,
@@ -204,7 +207,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => "int(3) NOT NULL default '0'",
         ],
-        'notification_id'     => [
+        'notification_id'          => [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['notification_id'],
             'inputType'        => 'select',
             'filter'           => true,
@@ -219,7 +222,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'              => "int(10) NOT NULL default '0'",
         ],
-        'notification_states' => [
+        'notification_states'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['notification_states'],
             'inputType' => 'checkbox',
             'reference' => &$GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options'],
@@ -231,7 +234,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'       => 'tinyblob NULL',
         ],
-        'property'            => [
+        'property'                 => [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['property'],
             'inputType'        => 'select',
             'options_callback' => [
@@ -246,18 +249,18 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'              => "varchar(255) NOT NULL default ''",
         ],
-        'property_expression' => [
+        'property_expression'      => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['property_expression'],
             'inputType' => 'checkbox',
             'exclude'   => true,
             'default'   => '1',
             'eval'      => [
-                'tl_class'          => 'm12 w50',
-                'submitOnChange'    => true,
+                'tl_class'       => 'm12 w50',
+                'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default '1'",
         ],
-        'property_value'      => [
+        'property_value'           => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['property_value'],
             'inputType' => 'textarea',
             'eval'      => [
@@ -266,6 +269,20 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'useRawRequestData' => true,
             ],
             'sql'       => 'tinytext NULL',
+        ],
+        'update_entity_properties' => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties'],
+            'inputType'        => 'checkboxWizard',
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.action',
+                'getEditableEntityProperties',
+            ],
+            'eval'             => [
+                'mandatory' => true,
+                'multiple'  => true,
+                'tl_class'  => 'clr long',
+            ],
+            'sql'              => 'blob NULL',
         ],
     ],
 ];

@@ -39,3 +39,18 @@ services:
       - '@netzmacht.contao_workflow.property_access_manager'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao.workflow.action_factory.update_entity:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction\UpdateEntityActionFactory
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@netzmacht.contao_workflow.property_access_manager'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_form_builder.update_entity:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction\UpdateEntityActionFormBuilder
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }
