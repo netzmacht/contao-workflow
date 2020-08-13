@@ -171,7 +171,13 @@ final class ActionCallbackListener extends AbstractListener
                 continue;
             }
 
-            $options[$name] = isset($config['label'][0]) ? sprintf('%s [%s]', $config['label'][0], $name) : $name;
+            $options[$name] = isset($config['label'][0])
+                ? sprintf(
+                    '%s <span style="display:inline-block;" class="tl_gray">[%s]</span>',
+                    $config['label'][0],
+                    $name
+                )
+                : $name;
         }
 
         return $options;
