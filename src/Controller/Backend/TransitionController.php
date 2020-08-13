@@ -84,8 +84,8 @@ final class TransitionController extends AbstractController
         if ($handler->getRequiredPayloadProperties()) {
             $form = $this->formFactory->create(
                 TransitionFormType::class,
-                null,
-                ['handler' => $handler]
+                [],
+                ['handler' => $handler, 'item' => $item]
             );
 
             $form->handleRequest($request);

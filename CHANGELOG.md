@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+ - Add interface `DataWareActionFromBuilder` to allow actions define default form values
+
 ## [2.2.4] - 2020-10-08
 
 ### Fixed
