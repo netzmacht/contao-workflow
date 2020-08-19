@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction;
 
+use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
 use Contao\StringUtil;
 use Netzmacht\ContaoFormBundle\Form\DcaFormType;
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\DataAwareActionFormBuilder;
@@ -64,11 +65,22 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
         assert($action instanceof UpdateEntityAction);
 
         $formBuilder->add(
-            $action->getName(),
-            DcaFormType::class,
+            $action->getName() . '_fieldset',
+            FieldsetType::class,
             [
-                'dataContainer' => $transition->getWorkflow()->getProviderName(),
-                'fields'        => StringUtil::deserialize($action->getConfigValue('update_entity_properties', true)),
+                'legend' => $action->getLabel(),
+                'fields' => [
+                    [
+                        'name' => $action->getName(),
+                        'type' => DcaFormType::class,
+                        'attr' => [
+                            'dataContainer' => $transition->getWorkflow()->getProviderName(),
+                            'fields'        => StringUtil::deserialize(
+                                $action->getConfigValue('update_entity_properties', true)
+                            ),
+                        ],
+                    ],
+                ],
             ]
         );
     }
