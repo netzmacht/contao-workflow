@@ -17,9 +17,9 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAction;
 use Netzmacht\Workflow\Flow\Context;
+use Netzmacht\Workflow\Flow\Context\Properties;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
-use function array_key_exists;
 use function assert;
 use function is_array;
 
@@ -46,11 +46,11 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
             return false;
         }
 
-        if (!isset($payload[$this->getName()])) {
+        if (! $payload->has($this->getName())) {
             return false;
         }
 
-        return is_array($payload[$this->getName()]);
+        return is_array($payload->get($this->getName()));
     }
 
     /**
@@ -60,12 +60,14 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
     {
         $payload = $context->getPayload();
         $name    = $this->getName();
-        assert(is_array($payload));
-        assert(array_key_exists($name, $payload));
-        assert(is_array($payload[$name]));
+        assert($payload instanceof Properties);
+        assert($payload->has($name));
+
+        $data = $payload->get($name);
+        assert(is_array($data));
 
         $accessor = $this->propertyAccessManager->provideAccess($item->getEntity());
-        foreach ($payload[$name] as $key => $value) {
+        foreach ($data as $key => $value) {
             $accessor->set($key, $value);
         }
     }
