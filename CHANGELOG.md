@@ -6,10 +6,12 @@
 
  - Add interface `DataWareActionFromBuilder` to allow actions define default form values
  - Add update entity action for dca using `useRawRequestData` flag
+
  
 ### Fixed
 
  - Fix security system for frontend user and guests
+ - Readd option to limit permissions for transitions
 
 ## [2.2.4] - 2020-10-08
 
