@@ -91,13 +91,23 @@ services:
 
   netzmacht.contao_workflow.security.step_voter:
     class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'security.voter' }
 
   netzmacht.contao_workflow.security.transition_voter:
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
     class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
     tags:
       - { name: 'security.voter' }
+
+  netzmacht.contao_workflow.security.user:
+    class: Netzmacht\ContaoWorkflowBundle\Security\WorkflowUser
+    arguments:
+      - '@security.helper'
+      - '@database_connection'
 
   netzmacht.contao_workflow.model.workflow_repository:
     class: Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository
