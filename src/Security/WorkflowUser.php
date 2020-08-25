@@ -25,6 +25,7 @@ use PDO;
 use Symfony\Component\Security\Core\Security;
 use function array_flip;
 use function array_key_exists;
+use function array_map;
 use function get_class;
 
 /**
@@ -78,6 +79,19 @@ final class WorkflowUser implements User
     public function hasPermission(Permission $permission): bool
     {
         return array_key_exists($permission->__toString(), $this->getUserPermissions());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPermissions(): array
+    {
+        return array_map(
+            static function (string $permission): Permission {
+                return Permission::fromString($permission);
+            },
+            array_keys($this->getUserPermissions())
+        );
     }
 
     /**

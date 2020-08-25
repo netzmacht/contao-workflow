@@ -30,4 +30,11 @@ interface User
      * @return bool
      */
     public function hasPermission(Permission $permission): bool;
+
+    /**
+     * Get list of all permissions granted to the current user.
+     *
+     * @return Permission[]
+     */
+    public function getPermissions(): array;
 }
