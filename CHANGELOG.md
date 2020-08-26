@@ -6,7 +6,7 @@
 
  - Add interface `DataWareActionFromBuilder` to allow actions define default form values
  - Add update entity action for dca using `useRawRequestData` flag
-
+ - Add option to store current step permission
  
 ### Fixed
 

@@ -87,9 +87,11 @@ final class WorkflowUser implements User
     public function getPermissions(): array
     {
         return array_map(
+            // @codingStandardsIgnoreStart
             static function (string $permission): Permission {
                 return Permission::fromString($permission);
             },
+            // @codingStandardsIgnoreEnd
             array_keys($this->getUserPermissions())
         );
     }

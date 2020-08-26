@@ -17,6 +17,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
     arguments:
       - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.manager'
       - '%netzmacht.contao_workflow.type.default%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }

@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
+ * @copyright  2014-2020 netzmacht David Molineus
  * @license    LGPL 3.0-or-later
  * @filesource
  */
@@ -21,6 +21,7 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Manager\Manager;
 
 /**
  * Class UpdateEntityAction updates the entity of a default workflow item
@@ -28,13 +29,36 @@ use Netzmacht\Workflow\Flow\Transition;
 final class UpdateEntityAction extends AbstractPropertyAccessAction
 {
     /**
+     * Workflow manager.
+     *
+     * @var Manager
+     */
+    private $workflowManager;
+
+    /**
+     * Flag to store current step permission.
+     *
+     * @var bool
+     */
+    private $storePermission;
+
+    /**
      * Construct.
      *
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     * @param Manager               $workflowManager       Workflow manager.
+     * @param bool                  $storePermission       Store current step permission.
      */
-    public function __construct(PropertyAccessManager $propertyAccessManager)
-    {
+    public function __construct(
+        PropertyAccessManager $propertyAccessManager,
+        Manager $workflowManager,
+        bool $storePermission
+    ) {
         parent::__construct($propertyAccessManager, 'Update entity action');
+
+        $this->workflowManager       = $workflowManager;
+        $this->storePermission       = $storePermission;
+        $this->propertyAccessManager = $propertyAccessManager;
     }
 
     /**
@@ -68,5 +92,11 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
         $accessor = $this->propertyAccessManager->provideAccess($entity);
         $accessor->set('workflow', $item->getWorkflowName());
         $accessor->set('workflowStep', $item->getCurrentStepName());
+
+        if ($this->storePermission) {
+            $workflow   = $this->workflowManager->getWorkflowByName($item->getWorkflowName());
+            $permission = $workflow->getStep($item->getCurrentStepName())->getPermission();
+            $accessor->set('workflowStepPermission', $permission ? $permission->__toString() : null);
+        }
     }
 }
