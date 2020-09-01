@@ -59,6 +59,14 @@
             "dev-master": "2.2.x-dev",
             "dev-develop": "2.3.x-dev"
         },
+        "contao": {
+            "transifex": {
+                "project": "contao-workflow",
+                "prefix": "",
+                "languages_cto": "src/Resources/contao/languages",
+                "languages_tx": ".tx"
+            }
+        },
         "contao-manager-plugin": "Netzmacht\\ContaoWorkflowBundle\\ContaoManager\\Plugin"
     },
     "autoload": {
