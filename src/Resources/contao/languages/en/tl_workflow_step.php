@@ -11,8 +11,9 @@
  * @filesource
  */
 
-$GLOBALS['TL_LANG']['tl_workflow_step']['name_legend'] = 'Workflow Step';
+$GLOBALS['TL_LANG']['tl_workflow_step']['name_legend']       = 'Workflow Step';
 $GLOBALS['TL_LANG']['tl_workflow_step']['permission_legend'] = 'Permission';
+$GLOBALS['TL_LANG']['tl_workflow_step']['expert_legend']     = 'Expert';
 
 /*
  * Buttons
@@ -41,3 +42,5 @@ $GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'][0] = 'Limit Permissio
 $GLOBALS['TL_LANG']['tl_workflow_step']['limitPermission'][1] = 'Limit permission of the step.';
 $GLOBALS['TL_LANG']['tl_workflow_step']['permission'][0]      = 'Permission';
 $GLOBALS['TL_LANG']['tl_workflow_step']['permission'][1]      = 'Permission which is required to access item when it has reached this step.';
+$GLOBALS['TL_LANG']['tl_workflow_step']['className'][0]       = 'CSS class';
+$GLOBALS['TL_LANG']['tl_workflow_step']['className'][1]       = 'CSS class name which may be used to style an item in the current state';
