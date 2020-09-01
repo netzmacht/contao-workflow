@@ -70,13 +70,18 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['property_value'][0]           = 'Prop
 $GLOBALS['TL_LANG']['tl_workflow_action']['property_value'][1]           = 'The new property value. If an expression is used, access to <em>entity</em> and <em>now</em> is granted. Example: <em>entity.get(\'author.admin\') ? \'\' : (now.getTimestamp() + 86400)</em>';
 $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties'][0] = 'Properties';
 $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties'][1] = 'Please choose the properties which should be updated within this action.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['reference'][0]                = 'Reference';
+$GLOBALS['TL_LANG']['tl_workflow_action']['reference'][1]                = 'Reference action defined on workflow level.';
 
 /*
  * Values
  */
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['default']            = 'Default';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['transitions']        = 'Transitions';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][0]            = 'Note';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][1]            = 'Add a note during transition.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][0] = 'Reference';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][1] = 'Reference to an action defined on workflow level.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]            = 'Form';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][1]            = 'Add data from a form generated with the form generator during transition.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][0]    = 'Notification';

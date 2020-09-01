@@ -30,7 +30,6 @@ array_insert(
                     'tl_workflow_step',
                     'tl_workflow_transition',
                     'tl_workflow_action',
-                    'tl_workflow_transition_action',
                     'tl_workflow_transition_conditional_transition',
                 ],
             ],
