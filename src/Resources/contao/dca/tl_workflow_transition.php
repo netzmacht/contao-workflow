@@ -52,9 +52,9 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'icon'  => 'edit.gif',
             ],
             'actions' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
-                'href'  => 'table=tl_workflow_action',
-                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
+                'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
+                'href'            => 'table=tl_workflow_action',
+                'icon'            => 'bundles/netzmachtcontaoworkflow/img/action.png',
                 'button_callback' => [
                     'netzmacht.contao_workflow.listeners.dca.transition',
                     'generateActionButton',
@@ -103,6 +103,9 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
         'default'                      => [
             'name' => ['label', 'type'],
+        ],
+        'actions extends __base__'     => [
+            '+name' => ['stepTo'],
         ],
         'conditional extends __base__' => [
             'config' => ['conditionalTransitions', 'editAllTransitions'],
