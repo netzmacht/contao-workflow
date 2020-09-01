@@ -223,3 +223,8 @@ services:
       - '@netzmacht.contao_workflow.entity_repository_factory.contao_model.related_changes'
     tags:
       - { name: netzmacht.contao_workflow.property_accessor_factory }
+
+  Netzmacht\ContaoWorkflowBundle\Migration\TransitionActionsMigration:
+    public: true
+    arguments:
+      - '@database_connection'

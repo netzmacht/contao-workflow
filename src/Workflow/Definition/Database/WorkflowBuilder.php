@@ -18,23 +18,23 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
 use Contao\FilesModel;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateStepEvent;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEvent;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateWorkflowEvent;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Exception\DefinitionException;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepRepository;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionRepository;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateStepEvent;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEvent;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateWorkflowEvent;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Exception\DefinitionException;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Condition\Workflow\ProviderNameCondition;
+use Netzmacht\Workflow\Flow\Security\Permission;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Netzmacht\Workflow\Flow\Security\Permission;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use function array_merge;
 use function sprintf;
@@ -231,9 +231,16 @@ final class WorkflowBuilder
         }
 
         foreach ($collection as $model) {
-            $type   = (string) $model->type;
-            $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
+            $type = (string) $model->type;
+            if ($type === 'reference') {
+                $model = $model->getRelated('reference');
+                if (! $model instanceof ActionModel) {
+                    continue;
+                }
+                $type = (string) $model->type;
+            }
 
+            $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
             if ($this->actionFactory->isPostAction($type)) {
                 $transition->addPostAction($action);
             } else {

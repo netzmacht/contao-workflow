@@ -15,10 +15,11 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
         'dataContainer' => 'Table',
         'ptable'        => 'tl_workflow',
+        'dynamicPtable' => true,
         'sql'           => [
             'keys' => [
-                'id'  => 'primary',
-                'pid' => 'index',
+                'id'                 => 'primary',
+                'pid,ptable,sorting' => 'index',
             ],
         ],
     ],
@@ -26,11 +27,11 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'list' => [
         'sorting' => [
             'mode'                  => 4,
-            'flag'                  => 11,
-            'fields'                => ['label'],
+            'flag'                  => 1,
+            'fields'                => ['sorting'],
             'headerFields'          => ['label', 'type', 'description'],
             'child_record_callback' => [
-                'netzmacht.contao_workflow.listeners.dca.common',
+                'netzmacht.contao_workflow.listeners.dca.action',
                 'generateRow',
             ],
             'panelLayout'           => 'filter;search,limit',
@@ -80,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
 
     'metapalettes' => [
         'default'                         => [
-            'name'        => ['label', 'type', 'sorting', 'active'],
+            'name'        => ['label', 'type', 'active'],
             'description' => [':hide', 'description'],
             'config'      => [],
         ],
@@ -99,6 +100,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'update_entity extends default'   => [
             'config' => ['update_entity_properties'],
         ],
+        'reference'                       => [
+            'name' => ['reference', 'type', 'active'],
+        ],
     ],
 
     'metasubpalettes' => [
@@ -113,6 +117,12 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'ptable'                   => [
+            'sql' => "varchar(64) NOT NULL default ''",
+        ],
+        'sorting'                  => [
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ],
         'tstamp'                   => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -284,5 +294,27 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             ],
             'sql'              => 'blob NULL',
         ],
+        'reference'                => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['reference'],
+            'inputType'        => 'select',
+            'exclude'          => true,
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.action',
+                'getWorkflowActions',
+            ],
+            'eval'             => [
+                'tl_class'  => 'w50',
+                'mandatory' => true,
+            ],
+            'foreignKey'       => 'tl_workflow_action.label',
+            'relation' => [
+                'type' => 'hasOne',
+            ],
+            'sql'              => "int(10) unsigned NOT NULL default '0'",
+        ],
     ],
 ];
+
+if (\Contao\Input::get('ptable') !== 'tl_workflow') {
+    $GLOBALS['TL_DCA']['tl_workflow_action']['config']['ptable'] = 'tl_workflow_transition';
+}

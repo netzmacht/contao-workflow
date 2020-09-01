@@ -8,6 +8,10 @@
  - Add update entity action for dca using `useRawRequestData` flag
  - Add option to store current step permission
  
+### Changed
+ 
+ - Actions can be defined on transition level. Workflow related actions are supported yet and can be referenced. 
+ 
 ### Fixed
 
  - Fix security system for frontend user and guests

@@ -16,6 +16,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
     'config' => [
         'dataContainer'   => 'Table',
         'ptable'          => 'tl_workflow',
+        'ctable'          => ['tl_workflow_action'],
         'sql'             => [
             'keys' => [
                 'id'  => 'primary',
@@ -45,19 +46,28 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
 
         'operations' => [
-            'edit'   => [
+            'edit'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ],
-            'delete' => [
+            'actions' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
+                'href'  => 'table=tl_workflow_action',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
+                'button_callback' => [
+                    'netzmacht.contao_workflow.listeners.dca.transition',
+                    'generateActionButton',
+                ],
+            ],
+            'delete'  => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm']
                     . '\'))return false;Backend.getScrollOffset()"',
             ],
-            'toggle' => [
+            'toggle'  => [
                 'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
                 'icon'            => 'visible.gif',
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
@@ -71,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                     ],
                 ],
             ],
-            'show'   => [
+            'show'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
@@ -93,10 +103,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
         'default'                      => [
             'name' => ['label', 'type'],
-        ],
-        'actions extends __base__'     => [
-            '+name'  => ['stepTo'],
-            'config' => ['actions'],
         ],
         'conditional extends __base__' => [
             'config' => ['conditionalTransitions', 'editAllTransitions'],
@@ -236,37 +242,6 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
-        ],
-        'actions'                 => [
-            'label'         => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
-            'inputType'     => 'multiColumnWizard',
-            'load_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.transition', 'loadRelatedActions'],
-            ],
-            'save_callback' => [
-                ['netzmacht.contao_workflow.listeners.dca.transition', 'saveRelatedActions'],
-            ],
-            'eval'          => [
-                'tl_class'       => 'clr',
-                'columnFields'   => [
-                    'action' => [
-                        'label'            => &$GLOBALS['TL_LANG']['tl_workflow_transition']['action'],
-                        'inputType'        => 'select',
-                        'options_callback' => [
-                            'netzmacht.contao_workflow.listeners.dca.transition',
-                            'getActions',
-                        ],
-                        'eval'             => [
-                            'style'              => 'width: 100%',
-                            'chosen'             => true,
-                            'includeBlankOption' => true,
-                        ],
-                    ],
-                ],
-                'flatArray'      => true,
-                'doNotSaveEmpty' => true,
-                'nullIfEmpty'    => true,
-            ],
         ],
         'addPropertyConditions'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['addPropertyConditions'],
@@ -408,7 +383,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         'editAllTransitions'      => [
             'input_field_callback' => [
                 'netzmacht.contao_workflow.listeners.dca.transition',
-                'editAllTransitionsButton'
+                'editAllTransitionsButton',
             ],
         ],
         'workflow'                => [

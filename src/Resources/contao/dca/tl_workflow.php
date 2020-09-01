@@ -47,11 +47,6 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ],
-            'actions' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['actions'],
-                'href'  => 'table=tl_workflow_action',
-                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
-            ],
             'steps'       => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['steps'],
                 'href'  => 'table=tl_workflow_step',
@@ -61,6 +56,11 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['transitions'],
                 'href'  => 'table=tl_workflow_transition',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/transition.png',
+            ],
+            'actions' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_workflow']['actions'],
+                'href'  => 'table=tl_workflow_action&ptable=tl_workflow',
+                'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
             ],
             'delete'      => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],

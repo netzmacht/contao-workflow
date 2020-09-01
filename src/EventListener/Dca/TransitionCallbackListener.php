@@ -36,8 +36,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use function array_filter;
 use function array_keys;
 use function array_map;
-use function implode;
 use function sprintf;
+use function str_replace;
 use function time;
 
 /**
@@ -223,103 +223,6 @@ final class TransitionCallbackListener extends AbstractListener
 
         return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
     }
-
-    /**
-     * Load related actions.
-     *
-     * @param mixed          $value         The actual value.
-     * @param \DataContainer $dataContainer The data container driver.
-     *
-     * @return array
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @throws DBALException If any dbal error occurs.
-     */
-    public function loadRelatedActions($value, $dataContainer)
-    {
-        $statement = $this->repositoryManager->getConnection()
-            ->prepare('SELECT aid FROM tl_workflow_transition_action WHERE tid=:tid ORDER BY sorting');
-
-        if ($statement->execute(['tid' => $dataContainer->id])) {
-            return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
-        }
-
-        return [];
-    }
-
-    /**
-     * Save all related actions.
-     *
-     * @param mixed         $value         The value.
-     * @param DataContainer $dataContainer The data container driver.
-     *
-     * @return null
-     * @throws DBALException When an database related error occurs.
-     */
-    public function saveRelatedActions($value, $dataContainer)
-    {
-        $connection = $this->repositoryManager->getConnection();
-        $new        = array_filter(StringUtil::deserialize($value, true));
-        $values     = [];
-        $statement  = $connection->prepare(
-            'SELECT * FROM tl_workflow_transition_action WHERE tid=:tid order BY sorting'
-        );
-
-        $statement->bindValue('tid', $dataContainer->id);
-        $statement->execute();
-
-        while ($row = $statement->fetch()) {
-            $values[$row['aid']] = $row;
-        }
-
-        $sorting = 0;
-
-        foreach ($new as $actionId) {
-            if (!isset($values[$actionId])) {
-                $data = [
-                    'tstamp'  => time(),
-                    'aid'     => $actionId,
-                    'tid'     => $dataContainer->id,
-                    'sorting' => $sorting,
-                ];
-
-                $connection->insert('tl_workflow_transition_action', $data);
-                $sorting += 128;
-            } else {
-                if ($values[$actionId]['sorting'] <= ($sorting - 128)
-                    || $values[$actionId]['sorting'] >= ($sorting + 128)
-                ) {
-                    $connection->update(
-                        'tl_workflow_transition_action',
-                        ['tstamp' => time(), 'sorting' => $sorting],
-                        ['id' => $values[$actionId]['id']]
-                    );
-                }
-
-                $sorting += 128;
-                unset($values[$actionId]);
-            }
-        }
-
-        $ids = array_map(
-            function ($item) {
-                return $item['id'];
-            },
-            $values
-        );
-
-        if ($ids) {
-            $connection->executeUpdate(
-                'DELETE FROM tl_workflow_transition_action WHERE id IN(?)',
-                [$ids],
-                [Connection::PARAM_INT_ARRAY]
-            );
-        }
-
-        return null;
-    }
-
 
     /**
      * Get all conditional transitions.
@@ -522,5 +425,39 @@ html;
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition')
         );
+    }
+
+    /**
+     * Generate the actions button depending transition type.
+     *
+     * @param array       $row        The dataset row.
+     * @param string|null $href       The link target.
+     * @param string      $label      The label.
+     * @param string      $title      The title.
+     * @param string|null $icon       The icon.
+     * @param string      $attributes Additional html attributes.
+     *
+     * @return string
+     */
+    public function generateActionButton(
+        array $row,
+        ?string $href,
+        string $label,
+        string $title,
+        ?string $icon,
+        string $attributes
+    ): string {
+        $supported = ($this->transitionTypes[$row['type']]['actions'] ?? false);
+        if ($supported) {
+            return sprintf(
+                '<a href="%s" title="%s" %s>%s</a> ',
+                Backend::addToUrl($href),
+                StringUtil::specialchars($label),
+                $attributes,
+                Image::getHtml($icon, $title)
+            );
+        }
+
+        return Image::getHtml(str_replace('.', '_.', $icon), $title) . ' ';
     }
 }
