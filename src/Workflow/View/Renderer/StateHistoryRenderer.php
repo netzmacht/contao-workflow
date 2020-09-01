@@ -119,7 +119,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      *
      * @return string|array|null
      */
-    private function renderStateColumn(State $state, string $column)
+    public function renderStateColumn(State $state, string $column)
     {
         switch ($column) {
             case 'start':
