@@ -108,3 +108,10 @@ services:
       - name: 'kernel.event_listener'
         event: 'netzmacht.contao_workflow.create_transition'
         method: 'createPropertyConditions'
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\Workflow\AddFormattedEntityNotificationTokensListener:
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_toolkit.dca.manager'
+    tags:
+      - { name: kernel.event_listener, event: netzmacht.contao_workflow.build_notification_tokens, method: __invoke }

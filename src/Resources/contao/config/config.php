@@ -63,6 +63,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
     'workflow_transition' => [
         'recipients'           => [
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -73,6 +74,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         'email_subject'        => [
             'successful',
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -83,6 +85,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         'email_text'           => [
             'successful',
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -93,6 +96,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         'email_html'           => [
             'successful',
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -102,6 +106,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         ],
         'email_sender_address' => [
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -111,6 +116,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         ],
         'email_recipient_cc'   => [
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -120,6 +126,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         ],
         'email_recipient_bcc'  => [
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -129,6 +136,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         ],
         'email_replyTo'        => [
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',
@@ -139,6 +147,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['workflow'] = [
         'file_content'         => [
             'successful',
             'entity_*',
+            'formatted_*',
             'properties_*',
             'step_*',
             'transition_*',

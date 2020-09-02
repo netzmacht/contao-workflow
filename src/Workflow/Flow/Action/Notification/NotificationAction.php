@@ -24,6 +24,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Transition;
 use NotificationCenter\Model\Notification;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
 
 /**
@@ -57,6 +58,13 @@ final class NotificationAction extends AbstractAction
     private $translator;
 
     /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * Success states.
      *
      * @var int
@@ -74,8 +82,9 @@ final class NotificationAction extends AbstractAction
      * Construct.
      *
      * @param PropertyAccessManager $propertyAccess    Property access manager.
-     * @param RepositoryManager     $repositoryManager Repository manager-
+     * @param RepositoryManager     $repositoryManager Repository manager.
      * @param Translator            $translator        Translator.
+     * @param EventDispatcher       $eventDispatcher   The event dispatcher.
      * @param string                $name              Name of the element.
      * @param string                $label             Label of the element.
      * @param int                   $notificationId    Notification id.
@@ -86,6 +95,7 @@ final class NotificationAction extends AbstractAction
         PropertyAccessManager $propertyAccess,
         RepositoryManager $repositoryManager,
         Translator $translator,
+        EventDispatcher $eventDispatcher,
         string $name,
         string $label,
         int $notificationId,
@@ -99,6 +109,7 @@ final class NotificationAction extends AbstractAction
         $this->translator        = $translator;
         $this->notificationId    = $notificationId;
         $this->successStates     = $successStates;
+        $this->eventDispatcher   = $eventDispatcher;
     }
 
     /**
@@ -203,6 +214,9 @@ final class NotificationAction extends AbstractAction
             }
         }
 
-        return $tokens;
+        $event = new BuildNotificationTokensEvent($transition, $item, $context, $tokens);
+        $this->eventDispatcher->dispatch('netzmacht.contao_workflow.build_notification_tokens', $event);
+
+        return $event->getTokens();
     }
 }
