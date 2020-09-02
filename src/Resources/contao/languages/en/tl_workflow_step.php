@@ -23,7 +23,7 @@ $GLOBALS['TL_LANG']['tl_workflow_step']['edit'][0]   = 'Edit step settings';
 $GLOBALS['TL_LANG']['tl_workflow_step']['edit'][1]   = 'Edit step ID "%s" settings';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show'][0]   = 'Show step details';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show'][1]   = 'Step details';
-$GLOBALS['TL_LANG']['tl_workflow_step']['delete'][0] = 'Delte step';
+$GLOBALS['TL_LANG']['tl_workflow_step']['delete'][0] = 'Delete step';
 $GLOBALS['TL_LANG']['tl_workflow_step']['delete'][1] = 'Delete step ID "%s"';
 
 /*
