@@ -76,7 +76,7 @@ final class AddFormattedEntityNotificationTokensListener
             try {
                 $event->addToken('formatted_' . $key, $formatter->formatValue($key, $value));
             } catch (\Exception $exception) {
-                //
+                // Skip if any error occurs
             }
         }
     }

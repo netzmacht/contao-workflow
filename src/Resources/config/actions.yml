@@ -30,6 +30,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.property_access_manager'
       - '@translator'
+      - '@event_dispatcher'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 

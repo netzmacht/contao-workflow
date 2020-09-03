@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
+ * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
+ *
+ * @package    workflow
+ * @author     David Molineus <david.molineus@netzmacht.de>
+ * @copyright  2014-2020 netzmacht David Molineus
+ * @license    LGPL 3.0-or-later
+ * @filesource
+ */
+
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
@@ -46,9 +57,9 @@ final class BuildNotificationTokensEvent extends Event
      * BuildNotificationTokensEvent constructor.
      *
      * @param Transition $transition Current workflow transition being processed.
-     * @param Item $item The workflow item.
-     * @param Context $context The transition context.
-     * @param array $tokens The generated tokens.
+     * @param Item       $item       The workflow item.
+     * @param Context    $context    The transition context.
+     * @param array      $tokens     The generated tokens.
      */
     public function __construct(Transition $transition, Item $item, Context $context, array $tokens)
     {
@@ -101,8 +112,8 @@ final class BuildNotificationTokensEvent extends Event
     /**
      * Add token.
      *
-     * @param string $key The token key.
-     * @param mixed $value The token value.
+     * @param string $key   The token key.
+     * @param mixed  $value The token value.
      *
      * @return void
      */
