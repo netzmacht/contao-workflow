@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory;
 
+use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\HtmlView;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
@@ -23,6 +24,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
 use Twig\Environment as Twig;
 use Verraes\ClassFunctions\ClassFunctions;
+use function is_string;
 
 /**
  * Class HtmlViewFactory
@@ -58,19 +60,33 @@ final class HtmlViewFactory implements ViewFactory
     private $renderer;
 
     /**
+     * Request scope matcher.
+     *
+     * @var RequestScopeMatcher
+     */
+    private $scopeMatcher;
+
+    /**
      * HtmlViewFactory constructor.
      *
-     * @param Manager  $manager   Workflow manager.
-     * @param Twig     $twig      Twig template engine.
-     * @param Renderer $renderer  View renderer.
-     * @param array    $templates Templates.
+     * @param Manager             $manager      Workflow manager.
+     * @param Twig                $twig         Twig template engine.
+     * @param Renderer            $renderer     View renderer.
+     * @param RequestScopeMatcher $scopeMatcher Scope matcher.
+     * @param array               $templates    Templates.
      */
-    public function __construct(Manager $manager, Twig $twig, Renderer $renderer, array $templates = [])
-    {
-        $this->manager   = $manager;
-        $this->twig      = $twig;
-        $this->templates = $templates;
-        $this->renderer  = $renderer;
+    public function __construct(
+        Manager $manager,
+        Twig $twig,
+        Renderer $renderer,
+        RequestScopeMatcher $scopeMatcher,
+        array $templates = []
+    ) {
+        $this->manager      = $manager;
+        $this->twig         = $twig;
+        $this->templates    = $templates;
+        $this->renderer     = $renderer;
+        $this->scopeMatcher = $scopeMatcher;
     }
 
     /**
@@ -105,8 +121,20 @@ final class HtmlViewFactory implements ViewFactory
     {
         $type = strtolower(ClassFunctions::short($context));
 
-        if (isset($this->templates[$type])) {
+        if (!isset($this->templates[$type])) {
+            return null;
+        }
+
+        if (is_string($this->templates[$type])) {
             return $this->templates[$type];
+        }
+
+        if ($this->scopeMatcher->isBackendRequest()) {
+            return ($this->templates[$type]['backend'] ?? null);
+        }
+
+        if ($this->scopeMatcher->isFrontendRequest()) {
+            return ($this->templates[$type]['frontend'] ?? null);
         }
 
         return null;

@@ -14,6 +14,12 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\CommonListener
     public: true
 
+  netzmacht.contao_workflow.listeners.dca.module:
+    class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\ModuleCallbackListener
+    public: true
+    arguments:
+      - '@netzmacht.contao_workflow.manager'
+
   netzmacht.contao_workflow.listeners.dca.workflow:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\WorkflowCallbackListener
     public: true

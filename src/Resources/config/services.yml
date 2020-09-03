@@ -203,6 +203,7 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@twig'
       - '@netzmacht.contao_workflow.view.renderer'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
       - '%netzmacht.contao_workflow.templates.html_view%'
     tags:
       - { name: 'netzmacht.contao_workflow.view_factory', content_type: 'text/html' }
@@ -228,3 +229,19 @@ services:
     public: true
     arguments:
       - '@database_connection'
+
+  Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionModuleFactory:
+    arguments:
+      - '@templating'
+      - '@translator'
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@form.factory'
+      - '@netzmacht.contao_workflow.view.factory'
+      - '@request_stack'
+      - '@netzmacht.contao_toolkit.contao.input_adapter'
+      - '@netzmacht.contao_toolkit.contao.config_adapter'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+    tags:
+      - { name: 'netzmacht.contao_toolkit.component.frontend_module', alias: 'workflow_transition', category: 'workflow' }
