@@ -17,6 +17,7 @@
 
  - Fix security system for frontend user and guests
  - Readd option to limit permissions for transitions
+ - Fix removal of permissions
 
 ## [2.2.4] - 2020-10-08
 
