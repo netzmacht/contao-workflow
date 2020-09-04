@@ -451,7 +451,7 @@ html;
         if ($supported) {
             return sprintf(
                 '<a href="%s" title="%s" %s>%s</a> ',
-                Backend::addToUrl($href),
+                Backend::addToUrl($href . '&id=' . $row['id']),
                 StringUtil::specialchars($label),
                 $attributes,
                 Image::getHtml($icon, $title)
