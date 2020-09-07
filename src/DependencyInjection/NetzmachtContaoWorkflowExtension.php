@@ -53,6 +53,7 @@ final class NetzmachtContaoWorkflowExtension extends Extension
                 'workflow'        => true,
                 'step'            => true,
                 'step_permission' => $config['default_type'][$provider]['step_permission'],
+                'assign_users'    => $config['default_type'][$provider]['assign_users'],
             ];
         }
 

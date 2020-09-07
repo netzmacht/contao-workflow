@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
 
+use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
 
 /**
@@ -22,6 +23,13 @@ use Netzmacht\Workflow\Flow\Security\Permission;
  */
 interface User
 {
+    /**
+     * Get the entity id of the current user.
+     *
+     * @return EntityId|null
+     */
+    public function getUserId(): ?EntityId;
+
     /**
      * Check if user as a given permission.
      *

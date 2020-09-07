@@ -155,7 +155,7 @@ services:
   netzmacht.contao_workflow.action.metadata_action:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata\MetadataAction
     arguments:
-      - '@security.token_storage'
+      - '@netzmacht.contao_workflow.security.user'
       - '@request_stack'
 
   netzmacht.contao_workflow.form.factory:
@@ -245,3 +245,8 @@ services:
       - '@netzmacht.contao_toolkit.routing.scope_matcher'
     tags:
       - { name: 'netzmacht.contao_toolkit.component.frontend_module', alias: 'workflow_transition', category: 'workflow' }
+
+  Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices:
+    arguments:
+      - '@database_connection'
+      - '@translator'

@@ -20,6 +20,7 @@ use Contao\FrontendUser;
 use Contao\StringUtil;
 use Contao\User as ContaoUser;
 use Doctrine\DBAL\Connection;
+use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use PDO;
 use Symfony\Component\Security\Core\Security;
@@ -67,6 +68,22 @@ final class WorkflowUser implements User
     {
         $this->security   = $security;
         $this->connection = $connection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUserId(): ?EntityId
+    {
+        $user = $this->security->getUser();
+        if ($user instanceof FrontendUser) {
+            return EntityId::fromProviderNameAndId('tl_member', $user->id);
+        }
+        if ($user instanceof BackendUser) {
+            return EntityId::fromProviderNameAndId('tl_user', $user->id);
+        }
+
+        return null;
     }
 
     /**

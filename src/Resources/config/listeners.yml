@@ -49,6 +49,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
       - '@netzmacht.contao_workflow.action_factory'
+      - '%netzmacht.contao_workflow.dca_providers%'
 
   netzmacht.contao_workflow.listeners.dca.permissions:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Dca\PermissionCallbackListener

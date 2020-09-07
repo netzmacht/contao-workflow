@@ -14,6 +14,22 @@ services:
     tags:
       - { name: 'netzmacht.contao_workflow.action_form_builder' }
 
+  netzmacht.contao_workflow.action_factory.assign_user:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser\AssignUserActionFactory
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.security.user'
+      - '%netzmacht.contao_workflow.dca_providers%'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_factory.assign_user.form:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser\AssignUserActionFormBuilder
+    arguments:
+      - '@Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }
+
   netzmacht.contao_workflow.action_factory.form:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFactory
     tags:

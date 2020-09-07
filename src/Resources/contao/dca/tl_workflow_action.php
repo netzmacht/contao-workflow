@@ -103,6 +103,9 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         'reference'                       => [
             'name' => ['reference', 'type', 'active'],
         ],
+        'assign_user extends default'     => [
+            'config' => ['assign_user_property', 'assign_user_permission', 'assign_user_current_user'],
+        ],
     ],
 
     'metasubpalettes' => [
@@ -307,10 +310,45 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'mandatory' => true,
             ],
             'foreignKey'       => 'tl_workflow_action.label',
-            'relation' => [
+            'relation'         => [
                 'type' => 'hasOne',
             ],
             'sql'              => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'assign_user_current_user' => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['assign_current_user'],
+            'inputType' => 'checkbox',
+            'exclude'   => true,
+            'eval'      => [
+                'tl_class'       => 'w50',
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'assign_user_property'     => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_property'],
+            'inputType'        => 'select',
+            'options_callback' => [
+                'netzmacht.contao_workflow.listeners.dca.action',
+                'getUserAssignProperties',
+            ],
+            'eval'             => [
+                'mandatory' => true,
+                'multiple'  => false,
+                'tl_class'  => 'clr w50',
+            ],
+            'sql'              => 'blob NULL',
+        ],
+        'assign_user_permission'   => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission'],
+            'inputType'        => 'select',
+            'exclude'          => true,
+            'options_callback' => ['netzmacht.contao_workflow.listeners.dca.action', 'getWorkflowPermissions'],
+            'eval'             => [
+                'tl_class'           => 'w50',
+                'multiple'           => false,
+                'includeBlankOption' => true,
+            ],
+            'sql'              => 'varchar(32) NOT NULL default \'\'',
         ],
     ],
 ];

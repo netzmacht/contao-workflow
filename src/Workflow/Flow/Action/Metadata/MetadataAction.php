@@ -15,16 +15,12 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata;
 
-use Contao\BackendUser;
-use Contao\FrontendUser;
-use Contao\User;
-use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\ContaoWorkflowBundle\Security\User;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as TokenStorage;
 
 /**
  * Class MetadataAction
@@ -32,11 +28,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class MetadataAction implements Action
 {
     /**
-     * The token storage.
+     * The workflow user.
      *
-     * @var TokenStorage
+     * @var User
      */
-    private $tokenStorage;
+    private $user;
 
     /**
      * The request stack.
@@ -48,12 +44,12 @@ final class MetadataAction implements Action
     /**
      * TrackUserAction constructor.
      *
-     * @param TokenStorage $tokenStorage
-     * @param RequestStack $requestStack
+     * @param User         $user         The workflow user.
+     * @param RequestStack $requestStack The request stack.
      */
-    public function __construct(TokenStorage $tokenStorage, RequestStack $requestStack)
+    public function __construct(User $user, RequestStack $requestStack)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->user         = $user;
         $this->requestStack = $requestStack;
     }
 
@@ -78,24 +74,14 @@ final class MetadataAction implements Action
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $token    = $this->tokenStorage->getToken();
+        $userId   = $this->user->getUserId();
         $metadata = [
             'scope'  => null,
-            'userId' => null,
+            'userId' => $userId ? (string) $userId : null,
         ];
 
         if ($this->requestStack->getCurrentRequest()) {
             $metadata['scope'] = $this->requestStack->getCurrentRequest()->attributes->get('_scope');
-        }
-
-        if ($token && ($user = $token->getUser()) instanceof User) {
-            if ($user instanceof FrontendUser) {
-                $metadata['userId'] = (string) EntityId::fromProviderNameAndId('tl_member', $user->id);
-            }
-
-            if ($user instanceof BackendUser) {
-                $metadata['userId'] = (string) EntityId::fromProviderNameAndId('tl_user', $user->id);
-            }
         }
 
         $context->getProperties()->set('metadata', $metadata);

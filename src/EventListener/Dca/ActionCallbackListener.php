@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2020 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Contao\Input;
+use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
@@ -27,6 +28,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
+use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 use NotificationCenter\Model\Notification;
 use function assert;
 use function sprintf;
@@ -69,24 +71,34 @@ final class ActionCallbackListener extends AbstractListener
     private $actionFactory;
 
     /**
+     * Provider configuration.
+     *
+     * @var array
+     */
+    private $providerConfiguration;
+
+    /**
      * Action constructor.
      *
-     * @param DcaManager                   $dcaManager        Data container manager.
-     * @param RepositoryManager            $repositoryManager Repository manager.
-     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
-     * @param ActionFactory                $actionFactory     The action factory.
+     * @param DcaManager                   $dcaManager            Data container manager.
+     * @param RepositoryManager            $repositoryManager     Repository manager.
+     * @param DatabaseDrivenWorkflowLoader $workflowLoader        Database driven workflow loader.
+     * @param ActionFactory                $actionFactory         The action factory.
+     * @param array                        $providerConfiguration Provider configuration.
      */
     public function __construct(
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
-        ActionFactory $actionFactory
+        ActionFactory $actionFactory,
+        array $providerConfiguration
     ) {
         parent::__construct($dcaManager);
 
-        $this->repositoryManager = $repositoryManager;
-        $this->workflowLoader    = $workflowLoader;
-        $this->actionFactory     = $actionFactory;
+        $this->repositoryManager     = $repositoryManager;
+        $this->workflowLoader        = $workflowLoader;
+        $this->actionFactory         = $actionFactory;
+        $this->providerConfiguration = $providerConfiguration;
     }
 
     /**
@@ -212,7 +224,7 @@ final class ActionCallbackListener extends AbstractListener
     public function getWorkflowActions(): array
     {
         $workflow = $this->getWorkflowModelByAction();
-        if (! $workflow instanceof WorkflowModel) {
+        if (!$workflow instanceof WorkflowModel) {
             return [];
         }
 
@@ -235,7 +247,7 @@ final class ActionCallbackListener extends AbstractListener
     private function getWorkflowModelByAction(): ?WorkflowModel
     {
         $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
-        if (! $action) {
+        if (!$action) {
             return null;
         }
 
@@ -265,5 +277,46 @@ final class ActionCallbackListener extends AbstractListener
         }
 
         return null;
+    }
+
+    /**
+     * Get user assign properties.
+     *
+     * @return array
+     */
+    public function getUserAssignProperties(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        if ($workflow === null) {
+            return [];
+        }
+
+        return ($this->providerConfiguration[$workflow->providerName]['assign_users'] ?? []);
+    }
+
+    /**
+     * Get workflow permissions.
+     *
+     * @return array
+     */
+    public function getWorkflowPermissions(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        $options  = [];
+
+        if ($workflow) {
+            $permissions = StringUtil::deserialize($workflow->permissions, true);
+
+            foreach ($permissions as $config) {
+                $permission = WorkflowPermission::forWorkflowName(
+                    'workflow_' . $workflow->id,
+                    (string) $config['name']
+                );
+
+                $options[(string) $permission] = $config['label'] ?: $config['name'];
+            }
+        }
+
+        return $options;
     }
 }

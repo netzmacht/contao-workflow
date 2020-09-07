@@ -20,13 +20,12 @@ use Contao\Model;
 /**
  * WorkflowModel using Contao models.
  *
- * @package Netzmacht\ContaoWorkflowBundle\Contao\Model
- *
- * @property int        $id           The workflow id.
- * @property array      $process      The process definition.
- * @property string     $type         The workflow type.
- * @property string     $providerName Provider name.
- * @property string     $label        Label.
+ * @property int               $id           The workflow id.
+ * @property array             $process      The process definition.
+ * @property string            $type         The workflow type.
+ * @property string            $providerName Provider name.
+ * @property string            $label        Label.
+ * @property array|string|null permissions   Defined permissions.
  */
 final class WorkflowModel extends Model
 {
