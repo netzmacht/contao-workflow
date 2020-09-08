@@ -72,6 +72,12 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties'][0] = 'Prop
 $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties'][1] = 'Please choose the properties which should be updated within this action.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['reference'][0]                = 'Reference';
 $GLOBALS['TL_LANG']['tl_workflow_action']['reference'][1]                = 'Reference action defined on workflow level.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_property'][0]     = 'User property';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_property'][1]     = 'Please select a property which is used for the assigned user.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission'][0]   = 'Required permission';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission'][1]   = 'The permission is used to filter the assignable users.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_current_user'][0] = 'Assign current user';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_current_user'][1] = 'There is no select form to assign a user but the current user is used.';
 
 /*
  * Values
@@ -80,8 +86,8 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['types']['default']            = 'Defa
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['transitions']        = 'Transitions';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][0]            = 'Note';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['note'][1]            = 'Add a note during transition.';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][0] = 'Reference';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][1] = 'Reference to an action defined on workflow level.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][0]       = 'Reference';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['reference'][1]       = 'Reference to an action defined on workflow level.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][0]            = 'Form';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['form'][1]            = 'Add data from a form generated with the form generator during transition.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][0]    = 'Notification';
@@ -89,7 +95,9 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['types']['notification'][1]    = 'Send
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property'][0] = 'Update property';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property'][1] = 'Update property value of an entity.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_entity'][0]   = 'Update entity';
-$GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_entity'][1]   = 'Update entity by providing a form with selected properties';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_entity'][1]   = 'Update entity by providing a form with selected properties.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['assign_user'][0]     = 'Assign user';
+$GLOBALS['TL_LANG']['tl_workflow_action']['types']['assign_user'][1]     = 'Assign a user to the entity. An assigned user may have access without having a permission.';
 
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['success'] = 'success';
 $GLOBALS['TL_LANG']['tl_workflow_action']['notification_state_options']['failed']  = 'failed';
