@@ -98,17 +98,25 @@ services:
     tags:
       - { name: 'security.voter' }
 
+  Netzmacht\ContaoWorkflowBundle\Security\TransitionVoter:
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
+    tags:
+      - { name: 'security.voter' }
+
   netzmacht.contao_workflow.security.step_voter:
     class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
+    deprecated: ~
     arguments:
       - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'security.voter' }
 
   netzmacht.contao_workflow.security.transition_voter:
+    class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
+    deprecated: ~
     arguments:
       - '@netzmacht.contao_workflow.security.user'
-    class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
     tags:
       - { name: 'security.voter' }
 

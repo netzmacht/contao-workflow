@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 /**
  * Class AbstractPermissionVoter
  *
- * @package Netzmacht\ContaoWorkflowBundle\Security
+ * @deprecated Deprecated since version 2.3.0 and will be removed in version 3.0.0.
  */
 abstract class AbstractPermissionVoter extends Voter
 {

@@ -63,11 +63,11 @@ final class TransitionPermissionCondition implements Condition
     {
         $permission = $transition->getPermission();
 
-        if ($permission === null) {
-            if ($this->grantAccessByDefault) {
-                return true;
-            }
-        } elseif ($this->authorizationChecker->isGranted($permission, $transition)) {
+        if (! $this->grantAccessByDefault && $permission === null) {
+            return false;
+        }
+
+        if ($this->authorizationChecker->isGranted($transition, $item)) {
             return true;
         }
 

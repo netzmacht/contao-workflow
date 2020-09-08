@@ -20,7 +20,7 @@ use Netzmacht\Workflow\Flow\Transition;
 /**
  * Class WorkflowPermissionVoter
  *
- * @package Netzmacht\ContaoWorkflowBundle\Security
+ * @deprecated Deprecated since version 2.3.0 and will be removed in version 3.0.0.
  */
 final class TransitionPermissionVoter extends AbstractPermissionVoter
 {
