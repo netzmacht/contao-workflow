@@ -20,8 +20,10 @@ use Contao\Input;
 use Contao\StringUtil;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
+use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Routing\RouterInterface as Router;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class OperationListener handles the workflow operation button
@@ -50,17 +52,30 @@ final class OperationListener
     private $router;
 
     /**
+     * Authorization checker.
+     *
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * OperationListener constructor.
      *
-     * @param WorkflowManager $workflowManager The workflow manager.
-     * @param EntityManager   $entityManager   Entity manager.
-     * @param Router          $router          The router.
+     * @param WorkflowManager               $workflowManager      The workflow manager.
+     * @param EntityManager                 $entityManager        Entity manager.
+     * @param Router                        $router               The router.
+     * @param AuthorizationCheckerInterface $authorizationChecker Authorization checker.
      */
-    public function __construct(WorkflowManager $workflowManager, EntityManager $entityManager, Router $router)
-    {
-        $this->workflowManager = $workflowManager;
-        $this->entityManager   = $entityManager;
-        $this->router          = $router;
+    public function __construct(
+        WorkflowManager $workflowManager,
+        EntityManager $entityManager,
+        Router $router,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->workflowManager      = $workflowManager;
+        $this->entityManager        = $entityManager;
+        $this->router               = $router;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -91,6 +106,21 @@ final class OperationListener
 
         if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
             return '';
+        }
+
+        $item     = $this->workflowManager->createItem($entityId, $entity);
+        $stepName = $item->getCurrentStepName();
+        if ($stepName !== null) {
+            try {
+                $workflow = $this->workflowManager->getWorkflow($entityId, $entity);
+                $step     = $workflow->getStep($item->getCurrentStepName());
+            } catch (StepNotFoundException $exception) {
+                return '';
+            }
+
+            if (!$this->authorizationChecker->isGranted($step, $item)) {
+                return '';
+            }
         }
 
         $href = $this->router->generate(

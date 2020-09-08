@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Workflow;
 
-use Contao\Model;
 use Netzmacht\Contao\Toolkit\Assertion\AssertionFailed;
 use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
@@ -23,6 +22,8 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification\BuildNotifi
 
 /**
  * Class AddFormattedEntityNotificationTokensListener enriches the notifications with formatted values.
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 final class AddFormattedEntityNotificationTokensListener
 {

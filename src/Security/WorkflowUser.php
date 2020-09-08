@@ -24,6 +24,7 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use PDO;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use function array_flip;
 use function array_key_exists;
 use function array_map;
@@ -37,13 +38,6 @@ use function get_class;
  */
 final class WorkflowUser implements User
 {
-    /**
-     * Internal cache of user permissions.
-     *
-     * @var array|array<string,array<string,int>>
-     */
-    private $permissions = [];
-
     /**
      * Symfony security component.
      *
@@ -73,9 +67,9 @@ final class WorkflowUser implements User
     /**
      * {@inheritDoc}
      */
-    public function getUserId(): ?EntityId
+    public function getUserId(?UserInterface $user = null): ?EntityId
     {
-        $user = $this->security->getUser();
+        $user = $user ?: $this->security->getUser();
         if ($user instanceof FrontendUser) {
             return EntityId::fromProviderNameAndId('tl_member', $user->id);
         }
@@ -87,21 +81,17 @@ final class WorkflowUser implements User
     }
 
     /**
-     * Check if user as a given permission.
-     *
-     * @param Permission $permission The permission to check.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function hasPermission(Permission $permission): bool
+    public function hasPermission(Permission $permission, ?UserInterface $user = null): bool
     {
-        return array_key_exists($permission->__toString(), $this->getUserPermissions());
+        return array_key_exists($permission->__toString(), $this->getUserPermissions($user));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getPermissions(): array
+    public function getPermissions(?UserInterface $user = null): array
     {
         return array_map(
             // @codingStandardsIgnoreStart
@@ -109,28 +99,26 @@ final class WorkflowUser implements User
                 return Permission::fromString($permission);
             },
             // @codingStandardsIgnoreEnd
-            array_keys($this->getUserPermissions())
+            array_keys($this->getUserPermissions($user))
         );
     }
 
     /**
      * Load all user permissions.
      *
+     * @param UserInterface|null $user The user to check. If empty the user the current security user is used.
+     *
      * @return array
      */
-    private function getUserPermissions(): array
+    private function getUserPermissions(?UserInterface $user = null): array
     {
-        $user = $this->security->getUser();
+        $user = $user ?: $this->security->getUser();
         $key  = '__GUEST__';
 
         if ($user instanceof ContaoUser) {
             $key = get_class($user);
         } elseif ($user !== null) {
             return [];
-        }
-
-        if (isset($this->permissions[$key])) {
-            return $this->permissions[$key];
         }
 
         switch ($key) {
@@ -150,7 +138,7 @@ final class WorkflowUser implements User
                 return [];
         }
 
-        return $this->permissions[$key] = array_flip($permissions);
+        return array_flip($permissions);
     }
 
     /**

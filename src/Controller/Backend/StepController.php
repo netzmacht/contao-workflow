@@ -15,9 +15,15 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
+use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Data\EntityManager;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Routing\RouterInterface as Router;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class StepController
@@ -29,12 +35,42 @@ use Symfony\Component\HttpFoundation\Response;
 final class StepController extends AbstractController
 {
     /**
+     * Authorization checker.
+     *
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
+     * AbstractController constructor.
+     *
+     * @param WorkflowManager               $workflowManager      Workflow manager.
+     * @param EntityManager                 $entityManager        Entity manager.
+     * @param ViewFactory                   $viewFactory          View factory.
+     * @param Router                        $router               Router.
+     * @param AuthorizationCheckerInterface $authorizationChecker Authorization checker.
+     */
+    public function __construct(
+        WorkflowManager $workflowManager,
+        EntityManager $entityManager,
+        ViewFactory $viewFactory,
+        Router $router,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        parent::__construct($workflowManager, $entityManager, $viewFactory, $router);
+
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    /**
      * Execute the controller.
      *
      * @param EntityId $entityId The entity id.
      * @param string   $module   Module name.
      *
      * @return Response
+     *
+     * @throws AccessDeniedHttpException When no access is granted.
      */
     public function __invoke(EntityId $entityId, string $module): Response
     {
@@ -70,7 +106,11 @@ final class StepController extends AbstractController
         }
 
         $currentStep = $workflow->getStep($item->getCurrentStepName());
-        $view        = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
+        if (! $this->authorizationChecker->isGranted($currentStep, $item)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $view = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
 
         return $view->render();
     }

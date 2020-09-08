@@ -95,20 +95,20 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
             foreach ($collection as $model) {
                 try {
                     $workflows[] = $this->createWorkflow($model);
-                } catch (WorkflowTypeNotFound $e) {
+                } catch (WorkflowTypeNotFound $exception) {
                     $this->logger->error(
                         sprintf(
                             'Creating workflow for model "%s" failed with message: %s',
                             $model->id,
-                            $e->getMessage()
+                            $exception->getMessage()
                         )
                     );
-                } catch (DefinitionException $e) {
+                } catch (DefinitionException $exception) {
                     $this->logger->error(
                         sprintf(
                             'Creating workflow for model "%s" failed with message: %s',
                             $model->id,
-                            $e->getMessage()
+                            $exception->getMessage()
                         )
                     );
                 }

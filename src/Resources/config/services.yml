@@ -90,6 +90,14 @@ services:
       - '@netzmacht.contao_workflow.manager.lazy.inner'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
 
+  Netzmacht\ContaoWorkflowBundle\Security\StepVoter:
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
+      - '@netzmacht.contao_workflow.property_access_manager'
+      - '%netzmacht.contao_workflow.dca_providers%'
+    tags:
+      - { name: 'security.voter' }
+
   netzmacht.contao_workflow.security.step_voter:
     class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
     arguments:

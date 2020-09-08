@@ -12,6 +12,7 @@ services:
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_workflow.view.factory'
       - '@router'
+      - '@security.authorization_checker'
 
   netzmacht.contao_workflow.backend.transition_controller:
     class: Netzmacht\ContaoWorkflowBundle\Controller\Backend\TransitionController
