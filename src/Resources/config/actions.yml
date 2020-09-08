@@ -54,6 +54,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction\UpdatePropertyActionFactory
     arguments:
       - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.expression_language'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 

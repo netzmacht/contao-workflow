@@ -154,6 +154,13 @@ services:
 
   netzmacht.contao_workflow.expression_language:
     class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+    arguments:
+      - null
+      - []
+
+  Netzmacht\ContaoWorkflowBundle\ExpressionLanguage\ExpressionFunctionProvider:
+    tags:
+      - { name: netzmacht.contao_workflow.expression_language.function_provider }
 
   netzmacht.contao_workflow.request.param_converter.entity_id:
     class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter

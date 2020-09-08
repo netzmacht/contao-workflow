@@ -36,13 +36,22 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
     private $propertyAccessManager;
 
     /**
+     * Symfony expression language.
+     *
+     * @var ExpressionLanguage
+     */
+    private $expressionLanguage;
+
+    /**
      * UpdatePropertyActionFactory constructor.
      *
-     * @param PropertyAccessManager $propertyAccessManager
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     * @param ExpressionLanguage    $expressionLanguage    Expression language.
      */
-    public function __construct(PropertyAccessManager $propertyAccessManager)
+    public function __construct(PropertyAccessManager $propertyAccessManager, ExpressionLanguage $expressionLanguage)
     {
         $this->propertyAccessManager = $propertyAccessManager;
+        $this->expressionLanguage    = $expressionLanguage;
     }
 
     /**
@@ -92,37 +101,7 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
             (string) $config['property_value'],
             (bool) $config['property_expression'],
             $this->propertyAccessManager,
-            $this->createExpressionLanguage()
+            $this->expressionLanguage
         );
-    }
-
-    /**
-     * Create the expression language.
-     *
-     * @return ExpressionLanguage
-     */
-    private function createExpressionLanguage() : ExpressionLanguage
-    {
-        static $expressionLanguage;
-
-        if ($expressionLanguage === null) {
-            $expressionLanguage = new ExpressionLanguage();
-            $expressionLanguage->register(
-                'constant',
-                // @codingStandardsIgnoreStart
-                static function () {
-                    return "throw new \\InvalidArgumentException('Cannot use the constant() function in the expression' 
-                        . ' for security reasons.');";
-                },
-                static function () {
-                    throw new \InvalidArgumentException(
-                        'Cannot use the constant() function in the expression for security reasons.'
-                    );
-                }
-                // @codingStandardsIgnoreEnd
-            );
-        }
-
-        return $expressionLanguage;
     }
 }
