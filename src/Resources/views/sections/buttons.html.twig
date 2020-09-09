@@ -1,11 +1,14 @@
-
+{% if actions|length %}
 <div class="workflow-content-box">
 {% for action in actions %}
-    <a href="{{ path(action.route, action.params) }}" class="tl_submit" title="{{ action.title }}">
-        {% if action.icon %}
-            <img src="{{ action.icon }}" width="14" height="14" alt="{{ action.label }}">
-        {% endif %}
-        {{ action.label }}
-    </a>
+    <form action="{{ path(action.route, action.params) }}" method="post" class="workflow-transition-form">
+        <button type="submit" class="tl_submit" title="{{ action.title }}">
+            {% if action.icon %}
+                <img src="{{ action.icon }}" width="14" height="14" alt="{{ action.label }}">
+            {% endif %}
+            {{ action.label }}
+        </button>
+    </form>
 {% endfor %}
 </div>
+{% endif %}

@@ -87,6 +87,10 @@
     margin: 0;
 }
 
+.workflow-transition-form {
+    display: inline-block;
+}
+
 .edit_conditional_transition_column {
     width: 16px;
 }

@@ -75,7 +75,7 @@ final class AssignUserActionFormBuilder implements ActionFormBuilder
                 'legend' => $action->getLabel(),
                 'fields' => [
                     [
-                        'name' => $action->getName() . '_note',
+                        'name' => $action->getName() . '_user',
                         'type' => ChoiceType::class,
                         'attr' => [
                             'label'   => $action->getConfigValue('description'),

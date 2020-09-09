@@ -13,9 +13,12 @@
     </div>
 
     {% for name, section in sections %}
+        {% set content = include(sections.template(name), section )|trim %}
+        {% if content|length %}
         <div class="workflow-section">
-            {% include sections.template(name) with section only %}
+            {{ content|raw }}
         </div>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

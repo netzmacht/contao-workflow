@@ -23,8 +23,6 @@ use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
 use Contao\StringUtil;
-use League\Uri\Components\Query;
-use League\Uri\Http;
 use Netzmacht\Contao\Toolkit\Assertion\AssertionFailed;
 use Netzmacht\Contao\Toolkit\Component\Module\AbstractModule;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
@@ -357,16 +355,12 @@ final class TransitionModule extends AbstractModule
         if ($this->get('jumpTo')) {
             $page = $this->repositoryManager->getRepository(PageModel::class)->find((int) $this->get('jumpTo'));
             if ($page instanceof PageModel) {
-                throw new RedirectResponseException($page->getFrontendUrl());
+                throw new RedirectResponseException($page->getAbsoluteUrl());
             }
         }
 
         $request = $this->requestStack->getCurrentRequest();
         assert($request instanceof Request);
-
-        if ($this->get('redirectBack')) {
-            throw new RedirectResponseException($this->inputAdapter->getReferer());
-        }
 
         throw new RedirectResponseException($request->getRequestUri());
     }

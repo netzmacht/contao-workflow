@@ -146,7 +146,7 @@ final class SubmitButtonsListener
             ]
         );
 
-        throw new RedirectResponseException($route);
+        throw new RedirectResponseException($route, 307);
     }
 
     /**

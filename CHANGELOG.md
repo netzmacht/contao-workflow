@@ -12,7 +12,8 @@
  
 ### Changed
  
- - Actions can be defined on transition level. Workflow related actions are supported yet and can be referenced. 
+ - Actions can be defined on transition level. Workflow related actions are supported yet and can be referenced.
+ - Transitions are triggered as post request now 
  
 ### Fixed
 
