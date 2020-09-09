@@ -96,7 +96,7 @@ final class StepVoter extends Voter
         $permissionLimited = $permission !== null;
 
         // First check is permission is limited by permission
-        if ($permissionLimited && $this->workflowUser->hasPermission($permission)) {
+        if ($permissionLimited && $this->workflowUser->hasPermission($permission, $token->getUser())) {
             return true;
         }
 

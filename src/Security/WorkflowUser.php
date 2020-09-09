@@ -198,6 +198,19 @@ SQL;
      */
     private function loadBackendUserPermissions(BackendUser $user): array
     {
-        return (array) $user->workflow;
+        if (! $user->isAdmin) {
+            return $user->workflow;
+        }
+
+        $sql = <<<'SQL'
+SELECT DISTINCT permission 
+           FROM tl_workflow_permission
+          WHERE source = :source
+            AND source_id = :sourceId
+SQL;
+
+        $statement = $this->connection->executeQuery($sql, ['source' => 'tl_user', 'sourceId' => $user->id]);
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 }

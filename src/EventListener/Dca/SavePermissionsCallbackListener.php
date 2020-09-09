@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Contao\StringUtil;
+use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
 
@@ -112,7 +113,7 @@ final class SavePermissionsCallbackListener
 
         if ($values) {
             $queryBuilder->andWhere('permission NOT IN (:permissions)');
-            $queryBuilder->setParameter('permissions', $values);
+            $queryBuilder->setParameter('permissions', $values, Connection::PARAM_STR_ARRAY);
         }
 
         $queryBuilder->execute();
