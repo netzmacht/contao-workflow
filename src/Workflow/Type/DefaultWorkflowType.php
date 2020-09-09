@@ -16,6 +16,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Type;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Integration\UpdateEntityAction;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\PropertyCondition;
+use Netzmacht\Workflow\Flow\Condition\Workflow\OrCondition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager;
 use function array_keys;
@@ -74,9 +75,16 @@ final class DefaultWorkflowType extends AbstractWorkflowType
     {
         parent::configure($workflow, $next);
 
-        $workflow->addCondition(
-            new PropertyCondition($this->propertyAccessManager, 'workflow', $workflow->getName())
-        );
+        $condition = new PropertyCondition($this->propertyAccessManager, 'workflow', $workflow->getName());
+        if ($workflow->getConfigValue('autoAssign', false)) {
+            $condition = new OrCondition(
+                [
+                    $condition,
+                    new PropertyCondition($this->propertyAccessManager, 'workflow', ''),
+                ]
+            );
+        }
+        $workflow->addCondition($condition);
 
         $permission = ($this->defaultWorkflowTypes[$workflow->getProviderName()]['step_permission'] ?? false);
         $action     = new UpdateEntityAction($this->propertyAccessManager, $this->workflowManager, $permission);

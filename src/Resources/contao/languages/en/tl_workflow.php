@@ -73,6 +73,8 @@ $GLOBALS['TL_LANG']['tl_workflow']['permission_guest'][0]      = 'Guest';
 $GLOBALS['TL_LANG']['tl_workflow']['permission_guest'][1]      = 'Assign this permission to unauthorized users.';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][0] = 'Ignore Contao admin permission';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][1] = 'By default the Contao admin has all permissions to every step. If you activate the checkbox the admin users are handled as normal users.';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'][0]            = 'Default workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'][1]            = 'If no workflow is assigned to an entity use this workflow as default.';
 
 /*
  * Values

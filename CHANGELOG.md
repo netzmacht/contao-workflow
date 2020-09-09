@@ -8,6 +8,7 @@
  - Add update entity action for dca using `useRawRequestData` flag
  - Add option to store current step permission
  - Add frontend module workflow transition
+ - Add option to auto assign a workflow of a default type
  
 ### Changed
  

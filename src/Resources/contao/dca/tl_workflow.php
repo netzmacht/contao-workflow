@@ -13,26 +13,26 @@
 
 $GLOBALS['TL_DCA']['tl_workflow'] = [
     'config' => [
-        'dataContainer' => 'Table',
-        'ctable'        => [
+        'dataContainer'     => 'Table',
+        'ctable'            => [
             'tl_workflow_step',
             'tl_workflow_transition',
-            'tl_workflow_action'
+            'tl_workflow_action',
         ],
-        'sql'           => [
+        'sql'               => [
             'keys' => [
                 'id' => 'primary',
             ],
         ],
         'onsubmit_callback' => [
-            ['netzmacht.contao_workflow.listeners.dca.workflow', 'saveProviderName']
+            ['netzmacht.contao_workflow.listeners.dca.workflow', 'saveProviderName'],
         ],
     ],
 
     'list' => [
         'sorting' => [
             'mode'        => 1,
-            'flag' => 11,
+            'flag'        => 11,
             'fields'      => ['type'],
             'panelLayout' => 'sorting,filter;search',
         ],
@@ -57,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'href'  => 'table=tl_workflow_transition',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/transition.png',
             ],
-            'actions' => [
+            'actions'     => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['actions'],
                 'href'  => 'table=tl_workflow_action&ptable=tl_workflow',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
@@ -96,17 +96,19 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
     ],
 
     'metapalettes' => [
-        'default' => [
-            'name'        => ['label', 'type'],
+        'default'                       => [
+            'name' => ['label', 'type'],
         ],
-        '__base__' => [
+        '__base__'                      => [
             'name'        => ['label', 'type', 'providerName', 'active'],
             'description' => [':hide', 'description'],
             'permissions' => ['permissions'],
             'process'     => ['process'],
             'config'      => [],
         ],
-        'default_type extends __base__' => []
+        'default_type extends __base__' => [
+            '+name' => ['autoAssign'],
+        ],
     ],
 
     'fields' => [
@@ -138,9 +140,9 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             ],
             'exclude'          => true,
             'eval'             => [
-                'tl_class'       => 'w50',
-                'mandatory'      => true,
-                'submitOnChange' => true,
+                'tl_class'           => 'w50',
+                'mandatory'          => true,
+                'submitOnChange'     => true,
                 'includeBlankOption' => true,
             ],
             'sql'              => "varchar(64) NOT NULL default ''",
@@ -259,6 +261,14 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'eval'      => [
                 'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
+            ],
+            'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'autoAssign'   => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'],
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class' => 'w50',
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
