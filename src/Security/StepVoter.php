@@ -117,10 +117,14 @@ final class StepVoter extends Voter
         // Only entity which properties are accessible can be checked
         $accessor = $this->provideAccess($item);
         if ($accessor === null) {
-            return false;
+            return !$permissionLimited;
         }
 
-        return $this->checkAssignableProperties($assignUserProperties, $accessor, $userId);
+        if ($this->checkAssignableProperties($assignUserProperties, $accessor, $userId)) {
+            return true;
+        }
+
+        return !$permissionLimited;
     }
 
     /**
