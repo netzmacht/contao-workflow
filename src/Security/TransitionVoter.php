@@ -28,8 +28,22 @@ use function assert;
  */
 final class TransitionVoter extends Voter
 {
-    /** @var User */
+    /**
+     * Workflow user.
+     *
+     * @var User
+     */
     private $user;
+
+    /**
+     * TransitionVoter constructor.
+     *
+     * @param User $user Workflow user.
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
     /**
      * {@inheritDoc}
