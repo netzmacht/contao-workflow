@@ -23,6 +23,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Step;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\User\UserInterface;
 use function assert;
 
 /**
@@ -94,9 +95,13 @@ final class StepVoter extends Voter
 
         $permission        = $step->getPermission();
         $permissionLimited = $permission !== null;
+        $user              = $token->getUser();
+        if (! $user instanceof UserInterface) {
+            $user = null;
+        }
 
         // First check is permission is limited by permission
-        if ($permissionLimited && $this->workflowUser->hasPermission($permission, $token->getUser())) {
+        if ($permissionLimited && $this->workflowUser->hasPermission($permission, $user)) {
             return true;
         }
 
