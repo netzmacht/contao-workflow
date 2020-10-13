@@ -180,6 +180,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             ],
             'eval'          => [
                 'tl_class'     => 'clr',
+                'style'        => 'max-width: 1000px',
                 'columnFields' => [
                     'step'       => [
                         'label'            => &$GLOBALS['TL_LANG']['tl_workflow']['step'],
@@ -190,7 +191,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                         ],
                         'reference'        => &$GLOBALS['TL_LANG']['tl_workflow']['process'],
                         'eval'             => [
-                            'style'              => 'width:200px',
+                            'style'              => 'width:100%',
                             'includeBlankOption' => true,
                             'chosen'             => true,
                         ],
@@ -203,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'getTransitions',
                         ],
                         'eval'             => [
-                            'style'              => 'width:400px',
+                            'style'              => 'width:500px',
                             'includeBlankOption' => true,
                             'chosen'             => true,
                         ],
@@ -221,6 +222,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             ],
             'eval'          => [
                 'tl_class'     => 'clr',
+                'style'        => 'max-width: 1000px',
                 'columnFields' => [
                     'label' => [
                         'label'            => &$GLOBALS['TL_LANG']['tl_workflow']['permission_label'],
@@ -230,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'getStartSteps',
                         ],
                         'eval'             => [
-                            'style' => 'width:350px',
+                            'style' => 'width:100%',
                         ],
                     ],
                     'name'  => [
@@ -241,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'getStartSteps',
                         ],
                         'eval'             => [
-                            'style' => 'width:230px',
+                            'style' => 'width:100%',
                         ],
                     ],
                     'guest' => [
