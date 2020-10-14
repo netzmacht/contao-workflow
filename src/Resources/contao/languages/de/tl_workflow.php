@@ -8,14 +8,15 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2020-10-13T07:00:49+00:00
+ * last-updated: 2020-10-13T07:00:59+00:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_workflow']['actions']['0']               = 'Aktionen';
 $GLOBALS['TL_LANG']['tl_workflow']['actions']['1']               = 'Workflow-Aktionen verwalten';
 $GLOBALS['TL_LANG']['tl_workflow']['active']['0']                = 'Aktiv';
 $GLOBALS['TL_LANG']['tl_workflow']['active']['1']                = 'Workflow aktivieren';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign']['0']            = 'Standard-Workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign']['1']            = 'Wenn einer Entität kein Workflow zugeordnet wurde wird dieser Workflow als Standard benutzt. ';
 $GLOBALS['TL_LANG']['tl_workflow']['config_legend']              = 'Einstellungen';
 $GLOBALS['TL_LANG']['tl_workflow']['delete']['0']                = 'Workflow-Einstellungen bearbeiten';
 $GLOBALS['TL_LANG']['tl_workflow']['delete']['1']                = 'Workflow ID "%s" löschen';

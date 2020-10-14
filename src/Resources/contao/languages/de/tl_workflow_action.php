@@ -8,12 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2020-10-13T07:00:50+00:00
+ * last-updated: 2020-10-13T07:00:59+00:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_workflow_action']['active']['0']                           = 'Aktivieren';
 $GLOBALS['TL_LANG']['tl_workflow_action']['active']['1']                           = 'Aktive Aktionen werden während der Transition ausgeführt.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission']['0']           = 'Benötigte Berechtigung';
+$GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_property']['0']             = 'Benutzer-Eigenschaft';
 $GLOBALS['TL_LANG']['tl_workflow_action']['conditions_legend']                     = 'Bedingungen';
 $GLOBALS['TL_LANG']['tl_workflow_action']['config_legend']                         = 'Einstellungen';
 $GLOBALS['TL_LANG']['tl_workflow_action']['delete']['0']                           = 'Löschen';
