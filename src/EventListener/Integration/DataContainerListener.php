@@ -138,7 +138,7 @@ final class DataContainerListener
                 'inputType'        => 'select',
                 'exclude'          => true,
                 'filter'           => true,
-                'default'          => ($this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? 0),
+                'default'          => ($this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? ''),
                 'eval'             => [
                     'includeBlankOption' => true,
                     'chosen'             => true,
