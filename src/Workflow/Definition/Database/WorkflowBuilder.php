@@ -17,6 +17,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
 
 use Contao\FilesModel;
 use Contao\StringUtil;
+use Exception;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
@@ -240,7 +241,12 @@ final class WorkflowBuilder
                 $type = (string) $model->type;
             }
 
-            $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
+            try {
+                $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
+            } catch (Exception $exception) {
+                return;
+            }
+
             if ($this->actionFactory->isPostAction($type)) {
                 $transition->addPostAction($action);
             } else {
