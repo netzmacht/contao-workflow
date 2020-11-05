@@ -279,8 +279,7 @@ final class DataContainerListener
         ];
 
         if ($position === 'first') {
-            $operations = $definition->get(['list', 'operations'], []);
-            array_unshift($operations, $configuration);
+            $operations = ['workflow' => $configuration] + $definition->get(['list', 'operations'], []);
             $definition->set(['list', 'operations'], $operations);
 
             return;
