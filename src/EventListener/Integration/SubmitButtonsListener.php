@@ -24,6 +24,7 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Routing\RouterInterface as Router;
+use function sprintf;
 
 /**
  * Class SubmitButtonsListener
@@ -104,6 +105,10 @@ final class SubmitButtonsListener
         $item     = $this->workflowManager->createItem($entityId, $entity);
 
         foreach ($workflow->getAvailableTransitions($item) as $transition) {
+            if ($transition->getConfigValue('hide')) {
+                continue;
+            }
+
             $name           = 'saveNtransition_' . $transition->getName();
             $buttons[$name] = $this->generateTransitionButton($name, $transition);
         }

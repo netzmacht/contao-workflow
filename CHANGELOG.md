@@ -20,6 +20,7 @@
  - Fix security system for frontend user and guests
  - Readd option to limit permissions for transitions
  - Fix removal of permissions
+ - Do not show transition marked as hidden as submit button
 
 ## [2.2.4] - 2020-10-08
 
