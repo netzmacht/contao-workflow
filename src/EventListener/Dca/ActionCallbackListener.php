@@ -18,6 +18,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
+use Exception;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
@@ -30,6 +31,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWork
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 use NotificationCenter\Model\Notification;
+use function array_merge;
 use function assert;
 use function sprintf;
 
@@ -138,17 +140,31 @@ final class ActionCallbackListener extends AbstractListener
             return $this->actionFactory->getTypeNames();
         }
 
-        if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
-            $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
-            $actions  = [];
-        } else {
+        try {
+            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
+                $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
+
+                return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
+            }
+
             $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
             $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
             $workflow        = $this->workflowLoader->loadWorkflowById((int) $transitionModel->pid);
-            $actions         = ['transitions' => ['reference']];
-        }
 
-        return array_merge($actions, $this->actionFactory->getSupportedTypeNamesCategorized($workflow));
+            return array_merge(
+                ['transitions' => ['reference']],
+                $this->actionFactory->getSupportedTypeNamesCategorized($workflow)
+            );
+        } catch (Exception $exception) {
+            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
+                return $this->actionFactory->getTypeNames();
+            }
+
+            return array_merge(
+                ['reference'],
+                $this->actionFactory->getTypeNames()
+            );
+        }
     }
 
     /**

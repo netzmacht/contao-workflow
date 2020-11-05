@@ -241,11 +241,7 @@ final class WorkflowBuilder
                 $type = (string) $model->type;
             }
 
-            try {
-                $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
-            } catch (Exception $exception) {
-                return;
-            }
+            $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
 
             if ($this->actionFactory->isPostAction($type)) {
                 $transition->addPostAction($action);
