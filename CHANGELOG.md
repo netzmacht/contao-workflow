@@ -21,6 +21,7 @@
  - Readd option to limit permissions for transitions
  - Fix removal of permissions
  - Do not show transition marked as hidden as submit button
+ - Provide context for Contao models in the `AddFormattedEntityNotificationTokensListener` listener
 
 ## [2.2.4] - 2020-10-08
 
