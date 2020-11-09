@@ -24,6 +24,8 @@
  - Fix removal of permissions
  - Do not show transition marked as hidden as submit button
  - Provide context for Contao models in the `AddFormattedEntityNotificationTokensListener` listener
+ - Fixed `payload_*` and `properties_*` notification tokens were not set
+ - Fixed `admin_email` payload token was missing
 
 ## [2.2.4] - 2020-10-08
 

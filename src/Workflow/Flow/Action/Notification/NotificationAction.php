@@ -179,6 +179,7 @@ final class NotificationAction extends AbstractAction
         $step            = null;
         $entity          = $item->getEntity();
         $tokens          = [
+            'admin_email'     => $GLOBALS['TL_ADMIN_EMAIL'] ?? '',
             'transition_name' => $transition->getName(),
             'successful'      => $latestState
                 ? $this->translator->trans('workflow.successful.yes')
@@ -198,11 +199,11 @@ final class NotificationAction extends AbstractAction
             }
         }
 
-        foreach ($context->getProperties() as $name => $value) {
+        foreach ($context->getProperties()->toArray() as $name => $value) {
             $tokens['property_' . $name] = $value;
         }
 
-        foreach ($context->getPayload() as $name => $value) {
+        foreach ($context->getPayload()->toArray() as $name => $value) {
             $tokens['payload_' . $name] = $value;
         }
 
