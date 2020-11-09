@@ -78,6 +78,8 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission'][0]   = 'Requ
 $GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_permission'][1]   = 'The permission is used to filter the assignable users.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_current_user'][0] = 'Assign current user';
 $GLOBALS['TL_LANG']['tl_workflow_action']['assign_user_current_user'][1] = 'There is no select form to assign a user but the current user is used.';
+$GLOBALS['TL_LANG']['tl_workflow_action']['payload_name'][0]             = 'Payload name';
+$GLOBALS['TL_LANG']['tl_workflow_action']['payload_name'][1]             = 'Name used to identify action data in the payload/state properties.';
 
 /*
  * Values

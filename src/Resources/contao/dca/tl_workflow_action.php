@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'config' => ['form_formId', 'form_fieldset'],
         ],
         'note extends default'            => [
-            'config' => ['note_required'],
+            'config' => ['note_required', 'payload_name'],
         ],
         'notification extends default'    => [
             'config' => ['notification_id', 'notification_states'],
@@ -177,6 +177,15 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'submitOnChange' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
+        ],
+        'payload_name'                     => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['payload_name'],
+            'inputType'        => 'string',
+            'exclude'          => true,
+            'eval'             => [
+                'tl_class' => 'w50',
+            ],
+            'sql'              => "varchar(32) NOT NULL default ''",
         ],
         'form_formId'              => [
             'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_formId'],

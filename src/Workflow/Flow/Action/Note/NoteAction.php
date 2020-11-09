@@ -62,7 +62,7 @@ final class NoteAction extends AbstractAction
      */
     public function getRequiredPayloadProperties(Item $item): array
     {
-        return [$this->getName() . '_note'];
+        return [$this->payloadName()];
     }
 
     /**
@@ -94,7 +94,7 @@ final class NoteAction extends AbstractAction
      */
     public function validate(Item $item, Context $context): bool
     {
-        $name = $this->getName() . '_note';
+        $name = $this->payloadName();
 
         if (!$this->required) {
             return true;
@@ -125,8 +125,18 @@ final class NoteAction extends AbstractAction
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $name = $this->getName() . '_note';
+        $name = $this->payloadName();
 
         $context->getProperties()->set($name, $context->getPayload()->get($name));
+    }
+
+    /**
+     * Get the payload name.
+     *
+     * @return string
+     */
+    public function payloadName(): string
+    {
+        return $this->getConfigValue('playload_name') ?: ($this->getName() . '_note');
     }
 }

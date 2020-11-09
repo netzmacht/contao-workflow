@@ -10,6 +10,7 @@
  - Add frontend module workflow transition
  - Add option to auto assign a workflow of a default type
  - Provide `userId` and the user model as `user` for the `UpdatePropertyAction` expression
+ - Add ability to customize payload name of the note action note
  
 ### Changed
  
