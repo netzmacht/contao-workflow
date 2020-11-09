@@ -9,6 +9,7 @@
  - Add option to store current step permission
  - Add frontend module workflow transition
  - Add option to auto assign a workflow of a default type
+ - Provide `userId` and the user model as `user` for the `UpdatePropertyAction` expression
  
 ### Changed
  

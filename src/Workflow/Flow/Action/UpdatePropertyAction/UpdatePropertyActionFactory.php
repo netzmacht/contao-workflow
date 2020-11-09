@@ -16,7 +16,9 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction;
 
 use Assert\Assert;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
+use Netzmacht\ContaoWorkflowBundle\Security\User;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
@@ -43,15 +45,36 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
     private $expressionLanguage;
 
     /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */    private $repositoryManager;
+
+    /**
+     * Workflow user.
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
      * UpdatePropertyActionFactory constructor.
      *
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param ExpressionLanguage    $expressionLanguage    Expression language.
+     * @param RepositoryManager     $repositoryManager     Repository manager.
+     * @param User                  $user                  Workflow user.
      */
-    public function __construct(PropertyAccessManager $propertyAccessManager, ExpressionLanguage $expressionLanguage)
-    {
+    public function __construct(
+        PropertyAccessManager $propertyAccessManager,
+        ExpressionLanguage $expressionLanguage,
+        RepositoryManager $repositoryManager,
+        User $user
+    ) {
         $this->propertyAccessManager = $propertyAccessManager;
         $this->expressionLanguage    = $expressionLanguage;
+        $this->repositoryManager     = $repositoryManager;
+        $this->user                  = $user;
     }
 
     /**
@@ -101,7 +124,9 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
             (string) $config['property_value'],
             (bool) $config['property_expression'],
             $this->propertyAccessManager,
-            $this->expressionLanguage
+            $this->expressionLanguage,
+            $this->repositoryManager,
+            $this->user
         );
     }
 }

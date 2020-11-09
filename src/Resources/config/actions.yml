@@ -55,6 +55,8 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.property_access_manager'
       - '@netzmacht.contao_workflow.expression_language'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
