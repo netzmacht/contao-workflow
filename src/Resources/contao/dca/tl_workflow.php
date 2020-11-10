@@ -253,6 +253,13 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'style' => 'width:80px',
                         ],
                     ],
+                    'admin' => [
+                        'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permission_admin'],
+                        'inputType' => 'checkbox',
+                        'eval'      => [
+                            'style' => 'width:80px',
+                        ],
+                    ],
                 ],
             ],
             'sql'           => 'mediumblob NULL',

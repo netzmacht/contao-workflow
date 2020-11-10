@@ -27,7 +27,11 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function array_flip;
 use function array_key_exists;
+use function array_keys;
 use function array_map;
+use function array_merge;
+use function array_unique;
+use function array_values;
 use function get_class;
 
 /**
@@ -94,7 +98,7 @@ final class WorkflowUser implements User
     public function getPermissions(?UserInterface $user = null): array
     {
         return array_map(
-            // @codingStandardsIgnoreStart
+        // @codingStandardsIgnoreStart
             static function (string $permission): Permission {
                 return Permission::fromString($permission);
             },
@@ -123,7 +127,7 @@ final class WorkflowUser implements User
 
         switch ($key) {
             case '__GUEST__':
-                $permissions = $this->loadGuestPermissions();
+                $permissions = $this->loadPermissionsFilteredBy('guest');
                 break;
 
             case FrontendUser::class:
@@ -144,16 +148,18 @@ final class WorkflowUser implements User
     /**
      * Load permissions of a guest.
      *
+     * @param string $key The filter key. Valid values are guest or admin.
+     *
      * @return array
      */
-    private function loadGuestPermissions(): array
+    private function loadPermissionsFilteredBy(string $key): array
     {
         $permissions = [];
         $statement   = $this->connection->executeQuery('SELECT id, permissions FROM tl_workflow');
 
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             foreach (StringUtil::deserialize($row['permissions'], true) as $permission) {
-                if (! $permission['guest']) {
+                if (! $permission[$key]) {
                     continue;
                 }
 
@@ -211,6 +217,10 @@ SQL;
 
         $statement = $this->connection->executeQuery($sql, ['source' => 'tl_user', 'sourceId' => $user->id]);
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return array_values(
+            array_unique(
+                array_merge($statement->fetchAll(PDO::FETCH_COLUMN), $this->loadPermissionsFilteredBy('admin'))
+            )
+        );
     }
 }
