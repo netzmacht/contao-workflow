@@ -170,6 +170,8 @@ final class NotificationAction extends AbstractAction
      * @param Context    $context    Transition context.
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function buildNotificationTokens(Transition $transition, Item $item, Context $context): array
     {
@@ -179,7 +181,7 @@ final class NotificationAction extends AbstractAction
         $step            = null;
         $entity          = $item->getEntity();
         $tokens          = [
-            'admin_email'     => $GLOBALS['TL_ADMIN_EMAIL'] ?? '',
+            'admin_email'     => ($GLOBALS['TL_ADMIN_EMAIL'] ?? ''),
             'transition_name' => $transition->getName(),
             'successful'      => $latestState
                 ? $this->translator->trans('workflow.successful.yes')
