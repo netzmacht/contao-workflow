@@ -15,10 +15,12 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form\Builder;
 
+use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
+use function is_array;
 
 /**
  * The transition action builder creates the forms for the actions which requires user data.
@@ -67,20 +69,54 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
      */
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
+        $formData = $formBuilder->getData();
+        $data     = is_array($formData) ? $formData : [];
+
         foreach ($transition->getActions() as $action) {
-            foreach ($this->builders as $builder) {
-                if ($builder->supports($action)) {
-                    $builder->buildForm($action, $transition, $formBuilder);
-                }
-            }
+            $data = $this->buildActionForm($action, $transition, $context, $item, $formBuilder, $data);
         }
 
         foreach ($transition->getPostActions() as $action) {
-            foreach ($this->builders as $builder) {
-                if ($builder->supports($action)) {
-                    $builder->buildForm($action, $transition, $formBuilder);
-                }
+            $data = $this->buildActionForm($action, $transition, $context, $item, $formBuilder, $data);
+        }
+
+        if (is_array($formData)) {
+            $formBuilder->setData($data);
+        }
+    }
+
+    /**
+     * Build the form for an action and return the populated form data.
+     *
+     * @param Action      $action      The current action.
+     * @param Transition  $transition  The workflow transition.
+     * @param Context     $context     The current transition context.
+     * @param Item        $item        The current transition item.
+     * @param FormBuilder $formBuilder The form builder.
+     * @param array       $data        The form data.
+     *
+     * @return array
+     */
+    private function buildActionForm(
+        Action $action,
+        Transition $transition,
+        Context $context,
+        Item $item,
+        FormBuilder $formBuilder,
+        array $data
+    ): array {
+        foreach ($this->builders as $builder) {
+            if (! $builder->supports($action)) {
+                continue;
+            }
+
+            $builder->buildForm($action, $transition, $formBuilder);
+
+            if ($builder instanceof DataAwareActionFormBuilder) {
+                $data = $builder->buildFormData($action, $transition, $context, $item, $data);
             }
         }
+
+        return $data;
     }
 }

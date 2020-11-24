@@ -22,6 +22,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use function in_array;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -46,6 +47,13 @@ final class NotificationActionFactory implements ActionTypeFactory
     private $propertyAccessManager;
 
     /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * Translator.
      *
      * @var Translator
@@ -58,15 +66,18 @@ final class NotificationActionFactory implements ActionTypeFactory
      * @param RepositoryManager     $repositoryManager     Repository manager.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param TranslatorInterface   $translator            Translator.
+     * @param EventDispatcher       $eventDispatcher       The event dispatcher.
      */
     public function __construct(
         RepositoryManager $repositoryManager,
         PropertyAccessManager $propertyAccessManager,
-        Translator $translator
+        Translator $translator,
+        EventDispatcher $eventDispatcher
     ) {
         $this->repositoryManager     = $repositoryManager;
         $this->propertyAccessManager = $propertyAccessManager;
         $this->translator            = $translator;
+        $this->eventDispatcher       = $eventDispatcher;
     }
 
     /**
@@ -110,6 +121,7 @@ final class NotificationActionFactory implements ActionTypeFactory
             $this->propertyAccessManager,
             $this->repositoryManager,
             $this->translator,
+            $this->eventDispatcher,
             'action_' . $config['id'],
             $config['label'],
             (int) $config['notification_id'],

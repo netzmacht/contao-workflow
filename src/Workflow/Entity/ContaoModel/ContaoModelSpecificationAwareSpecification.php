@@ -20,6 +20,8 @@ use Netzmacht\Workflow\Data\Specification;
 
 /**
  * Interface ContaoModelSpecification
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 interface ContaoModelSpecificationAwareSpecification extends Specification
 {

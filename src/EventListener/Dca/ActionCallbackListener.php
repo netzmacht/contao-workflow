@@ -6,7 +6,7 @@
  *
  * @package    workflow
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
+ * @copyright  2014-2020 netzmacht David Molineus
  * @license    LGPL 3.0
  * @filesource
  */
@@ -17,17 +17,22 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Contao\Input;
+use Contao\StringUtil;
+use Exception;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
+use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 use NotificationCenter\Model\Notification;
-use function end;
-use function implode;
+use function array_merge;
+use function assert;
 use function sprintf;
 
 /**
@@ -68,24 +73,58 @@ final class ActionCallbackListener extends AbstractListener
     private $actionFactory;
 
     /**
+     * Provider configuration.
+     *
+     * @var array
+     */
+    private $providerConfiguration;
+
+    /**
      * Action constructor.
      *
-     * @param DcaManager                   $dcaManager        Data container manager.
-     * @param RepositoryManager            $repositoryManager Repository manager.
-     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
-     * @param ActionFactory                $actionFactory     The action factory.
+     * @param DcaManager                   $dcaManager            Data container manager.
+     * @param RepositoryManager            $repositoryManager     Repository manager.
+     * @param DatabaseDrivenWorkflowLoader $workflowLoader        Database driven workflow loader.
+     * @param ActionFactory                $actionFactory         The action factory.
+     * @param array                        $providerConfiguration Provider configuration.
      */
     public function __construct(
         DcaManager $dcaManager,
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
-        ActionFactory $actionFactory
+        ActionFactory $actionFactory,
+        array $providerConfiguration
     ) {
         parent::__construct($dcaManager);
 
-        $this->repositoryManager = $repositoryManager;
-        $this->workflowLoader    = $workflowLoader;
-        $this->actionFactory     = $actionFactory;
+        $this->repositoryManager     = $repositoryManager;
+        $this->workflowLoader        = $workflowLoader;
+        $this->actionFactory         = $actionFactory;
+        $this->providerConfiguration = $providerConfiguration;
+    }
+
+    /**
+     * Generate a row view.
+     *
+     * @param array $row Current data row.
+     *
+     * @return string
+     */
+    public function generateRow(array $row): string
+    {
+        if ($row['type'] === 'reference') {
+            $reference = $this->repositoryManager->getRepository(ActionModel::class)->find((int) $row['reference']);
+            if ($reference === null) {
+                return sprintf('<strong>ID %s</strong>', $row['id']);
+            }
+            $row = $reference->row();
+        }
+
+        return sprintf(
+            '<strong>%s</strong><br>%s',
+            $row['label'],
+            $row['description']
+        );
     }
 
     /**
@@ -101,9 +140,31 @@ final class ActionCallbackListener extends AbstractListener
             return $this->actionFactory->getTypeNames();
         }
 
-        $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
+        try {
+            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
+                $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
 
-        return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
+                return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
+            }
+
+            $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
+            $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
+            $workflow        = $this->workflowLoader->loadWorkflowById((int) $transitionModel->pid);
+
+            return array_merge(
+                ['transitions' => ['reference']],
+                $this->actionFactory->getSupportedTypeNamesCategorized($workflow)
+            );
+        } catch (Exception $exception) {
+            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
+                return $this->actionFactory->getTypeNames();
+            }
+
+            return array_merge(
+                ['reference'],
+                $this->actionFactory->getTypeNames()
+            );
+        }
     }
 
     /**
@@ -132,17 +193,146 @@ final class ActionCallbackListener extends AbstractListener
      */
     public function getEntityProperties(): array
     {
-        $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
-        if (! $action) {
-            return [];
-        }
-
-        $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $workflow   = $repository->find((int) $action->pid);
+        $workflow = $this->getWorkflowModelByAction();
         if (!$workflow instanceof WorkflowModel) {
             return [];
         }
 
         return $this->getEntityPropertiesForWorkflow($workflow);
+    }
+
+    /**
+     * Get entity properties.
+     *
+     * @return array
+     */
+    public function getEditableEntityProperties(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        if (!$workflow instanceof WorkflowModel) {
+            return [];
+        }
+
+        $definition = $this->getDefinition($workflow->providerName);
+        $options    = [];
+        foreach ($definition->get('fields') as $name => $config) {
+            if (!isset($config['inputType'])) {
+                continue;
+            }
+
+            $options[$name] = isset($config['label'][0])
+                ? sprintf(
+                    '%s <span style="display:inline-block;" class="tl_gray">[%s]</span>',
+                    $config['label'][0],
+                    $name
+                )
+                : $name;
+        }
+
+        return $options;
+    }
+
+    /**
+     * Get actions defined as global actions.
+     *
+     * @return array
+     */
+    public function getWorkflowActions(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        if (!$workflow instanceof WorkflowModel) {
+            return [];
+        }
+
+        $repository = $this->repositoryManager->getRepository(ActionModel::class);
+        assert($repository instanceof ActionRepository);
+        $collection = $repository->findByWorkflow((int) $workflow->id) ?: [];
+        $options    = [];
+        foreach ($collection as $model) {
+            $options[$model->id] = $model->label;
+        }
+
+        return $options;
+    }
+
+    /**
+     * Get the related workflow model by the action.
+     *
+     * @return WorkflowModel|null
+     */
+    private function getWorkflowModelByAction(): ?WorkflowModel
+    {
+        $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
+        if (!$action) {
+            return null;
+        }
+
+        switch ($action->ptable) {
+            case 'tl_workflow':
+                $workflowId = (int) $action->pid;
+                break;
+
+            case 'tl_workflow_transition':
+                $transitionRepository = $this->repositoryManager->getRepository(TransitionModel::class);
+                $transitionModel      = $transitionRepository->find((int) $action->pid);
+                if ($transitionModel === null) {
+                    return null;
+                }
+                $workflowId = (int) $transitionModel->pid;
+                break;
+
+            default:
+                return null;
+        }
+
+        $repository    = $this->repositoryManager->getRepository(WorkflowModel::class);
+        $workflowModel = $repository->find($workflowId);
+
+        if ($workflowModel instanceof WorkflowModel) {
+            return $workflowModel;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get user assign properties.
+     *
+     * @return array
+     */
+    public function getUserAssignProperties(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        if ($workflow === null) {
+            return [];
+        }
+
+        return ($this->providerConfiguration[$workflow->providerName]['assign_users'] ?? []);
+    }
+
+    /**
+     * Get workflow permissions.
+     *
+     * @return array
+     */
+    public function getWorkflowPermissions(): array
+    {
+        $workflow = $this->getWorkflowModelByAction();
+        $options  = [];
+
+        if ($workflow) {
+            $permissions = StringUtil::deserialize($workflow->permissions, true);
+
+            foreach ($permissions as $config) {
+                $permission = WorkflowPermission::forWorkflowName(
+                    'workflow_' . $workflow->id,
+                    (string) $config['name']
+                );
+
+                $options[(string) $permission] = $config['label'] ?: $config['name'];
+            }
+        }
+
+        return $options;
     }
 }

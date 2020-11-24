@@ -17,6 +17,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\DefaultWorkflowType
     arguments:
       - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.manager'
       - '%netzmacht.contao_workflow.type.default%'
     tags:
       - { name: 'netzmacht.contao_workflow.type' }
@@ -89,15 +90,41 @@ services:
       - '@netzmacht.contao_workflow.manager.lazy.inner'
       - '@netzmacht.contao_workflow.definition.workflow_loader'
 
+  Netzmacht\ContaoWorkflowBundle\Security\StepVoter:
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
+      - '@netzmacht.contao_workflow.property_access_manager'
+      - '%netzmacht.contao_workflow.dca_providers%'
+    tags:
+      - { name: 'security.voter' }
+
+  Netzmacht\ContaoWorkflowBundle\Security\TransitionVoter:
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
+    tags:
+      - { name: 'security.voter' }
+
   netzmacht.contao_workflow.security.step_voter:
     class: Netzmacht\ContaoWorkflowBundle\Security\StepPermissionVoter
+    deprecated: ~
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'security.voter' }
 
   netzmacht.contao_workflow.security.transition_voter:
     class: Netzmacht\ContaoWorkflowBundle\Security\TransitionPermissionVoter
+    deprecated: ~
+    arguments:
+      - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'security.voter' }
+
+  netzmacht.contao_workflow.security.user:
+    class: Netzmacht\ContaoWorkflowBundle\Security\WorkflowUser
+    arguments:
+      - '@security.helper'
+      - '@database_connection'
 
   netzmacht.contao_workflow.model.workflow_repository:
     class: Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository
@@ -135,6 +162,13 @@ services:
 
   netzmacht.contao_workflow.expression_language:
     class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+    arguments:
+      - null
+      - []
+
+  Netzmacht\ContaoWorkflowBundle\ExpressionLanguage\ExpressionFunctionProvider:
+    tags:
+      - { name: netzmacht.contao_workflow.expression_language.function_provider }
 
   netzmacht.contao_workflow.request.param_converter.entity_id:
     class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter
@@ -144,7 +178,7 @@ services:
   netzmacht.contao_workflow.action.metadata_action:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata\MetadataAction
     arguments:
-      - '@security.token_storage'
+      - '@netzmacht.contao_workflow.security.user'
       - '@request_stack'
 
   netzmacht.contao_workflow.form.factory:
@@ -192,6 +226,7 @@ services:
       - '@netzmacht.contao_workflow.manager'
       - '@twig'
       - '@netzmacht.contao_workflow.view.renderer'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
       - '%netzmacht.contao_workflow.templates.html_view%'
     tags:
       - { name: 'netzmacht.contao_workflow.view_factory', content_type: 'text/html' }
@@ -212,3 +247,29 @@ services:
       - '@netzmacht.contao_workflow.entity_repository_factory.contao_model.related_changes'
     tags:
       - { name: netzmacht.contao_workflow.property_accessor_factory }
+
+  Netzmacht\ContaoWorkflowBundle\Migration\TransitionActionsMigration:
+    public: true
+    arguments:
+      - '@database_connection'
+
+  Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionModuleFactory:
+    arguments:
+      - '@templating'
+      - '@translator'
+      - '@netzmacht.contao_workflow.manager'
+      - '@netzmacht.contao_workflow.entity_manager'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@form.factory'
+      - '@netzmacht.contao_workflow.view.factory'
+      - '@request_stack'
+      - '@netzmacht.contao_toolkit.contao.input_adapter'
+      - '@netzmacht.contao_toolkit.contao.config_adapter'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+    tags:
+      - { name: 'netzmacht.contao_toolkit.component.frontend_module', alias: 'workflow_transition', category: 'workflow' }
+
+  Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices:
+    arguments:
+      - '@database_connection'
+      - '@translator'

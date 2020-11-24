@@ -88,11 +88,11 @@ final class StepPermissionCondition implements Condition
         $step       = $transition->getWorkflow()->getStep($stepName);
         $permission = $step->getPermission();
 
-        if ($permission === null) {
-            if ($this->grantAccessByDefault) {
-                return true;
-            }
-        } elseif ($this->authorizationChecker->isGranted($permission, $step)) {
+        if (!$this->grantAccessByDefault && $permission === null) {
+            return false;
+        }
+
+        if ($this->authorizationChecker->isGranted($step, $item)) {
             return true;
         }
 

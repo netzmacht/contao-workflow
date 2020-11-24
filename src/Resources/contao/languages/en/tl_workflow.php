@@ -71,8 +71,12 @@ $GLOBALS['TL_LANG']['tl_workflow']['permission_name'][0]       = 'Name';
 $GLOBALS['TL_LANG']['tl_workflow']['permission_name'][1]       = 'Name of the permission has to be unique in the workflow. Changing a name will break the assignments!';
 $GLOBALS['TL_LANG']['tl_workflow']['permission_guest'][0]      = 'Guest';
 $GLOBALS['TL_LANG']['tl_workflow']['permission_guest'][1]      = 'Assign this permission to unauthorized users.';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_admin'][0]      = 'Admin';
+$GLOBALS['TL_LANG']['tl_workflow']['permission_admin'][1]      = 'Assign this permission to all admin users.';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][0] = 'Ignore Contao admin permission';
 $GLOBALS['TL_LANG']['tl_workflow']['ignoreAdminPermission'][1] = 'By default the Contao admin has all permissions to every step. If you activate the checkbox the admin users are handled as normal users.';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'][0]            = 'Default workflow';
+$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'][1]            = 'If no workflow is assigned to an entity use this workflow as default.';
 
 /*
  * Values

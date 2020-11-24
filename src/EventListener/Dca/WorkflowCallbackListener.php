@@ -140,7 +140,7 @@ final class WorkflowCallbackListener
         } catch (\Exception $e) {
             $label .= sprintf(
                 '<p class="workflow-definition-error">%s</p>',
-                $this->translator->trans('invalid-workflow-definition', [$e->getMessage()], 'contao_workflow')
+                $this->translator->trans('workflow.invalid-workflow-definition', [$e->getMessage()], 'contao_workflow')
             );
         }
 

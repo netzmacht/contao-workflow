@@ -68,13 +68,13 @@ final class NoteActionFormBuilder implements ActionFormBuilder
                 'legend' => $action->getLabel(),
                 'fields' => [
                     [
-                        'name' => $action->getName() . '_note',
+                        'name' => $action->payloadName(),
                         'type' => TextareaType::class,
                         'attr' => [
                             'constraints' => $constraints,
                             'label'       => $action->getConfigValue('description'),
-                            'required' => $action->required(),
-                            'attr'        => $attributes
+                            'required'    => $action->required(),
+                            'attr'        => $attributes,
                         ],
                     ],
                 ],

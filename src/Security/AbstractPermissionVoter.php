@@ -15,8 +15,6 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
 
-use Contao\BackendUser;
-use Contao\FrontendUser;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface as Token;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -24,10 +22,27 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 /**
  * Class AbstractPermissionVoter
  *
- * @package Netzmacht\ContaoWorkflowBundle\Security
+ * @deprecated Deprecated since version 2.3.0 and will be removed in version 3.0.0.
  */
 abstract class AbstractPermissionVoter extends Voter
 {
+    /**
+     * The workflow user.
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
+     * AbstractPermissionVoter constructor.
+     *
+     * @param User $user The workflow user.
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -57,18 +72,11 @@ abstract class AbstractPermissionVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, Token $token)
     {
-        $user = $token->getUser();
-
-        // Only Contao users are supported.
-        if (!$user instanceof FrontendUser && !$user instanceof BackendUser) {
+        if (! $attribute instanceof Permission) {
             return false;
         }
 
-        if ($user->hasAccess((string) $attribute, 'workflow')) {
-            return true;
-        }
-
-        return false;
+        return $this->user->hasPermission($attribute);
     }
 
     /**

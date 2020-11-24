@@ -23,18 +23,20 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['config_legend']      = 'Config';
 /*
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][0]    = 'Create transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][1]    = 'Create a new transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['copy'][0]   = 'Create transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['copy'][1]   = 'Create a new transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][0]   = 'Edit transition settings';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][1]   = 'Edit transition ID "%s" settings';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][0]   = 'Show transition details';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][1]   = 'transition details';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][0] = 'Delte transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][1] = 'Delete transition ID "%s"';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][0] = 'Activate/deactive transition';
-$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][1] = 'Activate/deactive transition ID %s';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][0]     = 'Create transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['new'][1]     = 'Create a new transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['copy'][0]    = 'Create transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['copy'][1]    = 'Create a new transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][0]    = 'Edit transition settings';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'][1]    = 'Edit transition ID "%s" settings';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][0]    = 'Show transition details';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['show'][1]    = 'transition details';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][0]  = 'Delte transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'][1]  = 'Delete transition ID "%s"';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][0]  = 'Activate/deactive transition';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'][1]  = 'Activate/deactive transition ID %s';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'][0] = 'Actions';
+$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'][1] = 'Manage transition actions';
 
 /*
  * Fields

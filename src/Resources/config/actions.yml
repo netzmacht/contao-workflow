@@ -14,6 +14,22 @@ services:
     tags:
       - { name: 'netzmacht.contao_workflow.action_form_builder' }
 
+  netzmacht.contao_workflow.action_factory.assign_user:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser\AssignUserActionFactory
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.security.user'
+      - '%netzmacht.contao_workflow.dca_providers%'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_factory.assign_user.form:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser\AssignUserActionFormBuilder
+    arguments:
+      - '@Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }
+
   netzmacht.contao_workflow.action_factory.form:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form\FormActionFactory
     tags:
@@ -30,6 +46,7 @@ services:
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.property_access_manager'
       - '@translator'
+      - '@event_dispatcher'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 
@@ -37,5 +54,23 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction\UpdatePropertyActionFactory
     arguments:
       - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.expression_language'
+      - '@netzmacht.contao_toolkit.repository_manager'
+      - '@netzmacht.contao_workflow.security.user'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao.workflow.action_factory.update_entity:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction\UpdateEntityActionFactory
+    arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
+      - '@netzmacht.contao_workflow.property_access_manager'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action' }
+
+  netzmacht.contao_workflow.action_form_builder.update_entity:
+    class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction\UpdateEntityActionFormBuilder
+    arguments:
+      - '@netzmacht.contao_workflow.property_access_manager'
+    tags:
+      - { name: 'netzmacht.contao_workflow.action_form_builder' }

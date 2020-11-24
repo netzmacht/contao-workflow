@@ -11,5 +11,4 @@
  * @filesource
  */
 
-$m = &$GLOBALS['TL_LANG']['workflow_messages'];
-$m['transition']['condition']['transition-permission'] = 'Permission "%s" is required to perform transition.';
+$GLOBALS['TL_LANG']['workflow_messages']['transition']['condition']['transition-permission'] = 'Permission "%s" is required to perform transition.';

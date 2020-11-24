@@ -9,6 +9,7 @@ netzmacht.contao_workflow.backend.step:
 
 netzmacht.contao_workflow.backend.transition:
   path: /contao/workflow/{module}/{entityId}/{transition}
+  methods: POST
   defaults:
     _controller: netzmacht.contao_workflow.backend.transition_controller
     _scope: "backend"

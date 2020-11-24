@@ -14,9 +14,9 @@
 
 $GLOBALS['TL_DCA']['tl_workflow_step'] = [
     'config' => [
-        'dataContainer'   => 'Table',
-        'ptable'          => 'tl_workflow',
-        'sql'             => [
+        'dataContainer' => 'Table',
+        'ptable'        => 'tl_workflow',
+        'sql'           => [
             'keys' => [
                 'id'  => 'primary',
                 'pid' => 'index',
@@ -39,7 +39,6 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
         'label'   => [
             'fields' => ['label', 'description'],
             'format' => '<strong>%s</strong><br>%s',
-
         ],
 
         'operations' => [
@@ -71,6 +70,7 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
         'default' => [
             'name'       => ['label', 'description', 'final'],
             'permission' => ['limitPermission'],
+            'expert'     => [':hide', 'className'],
         ],
     ],
 
@@ -136,6 +136,16 @@ $GLOBALS['TL_DCA']['tl_workflow_step'] = [
                 'mandatory' => true,
             ],
             'sql'              => "varchar(32) NOT NULL default ''",
+        ],
+        'className'       => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_workflow_step']['className'],
+            'inputType' => 'text',
+            'exclude'   => true,
+            'eval'      => [
+                'tl_class'  => 'clr long',
+                'maxlength' => 64,
+            ],
+            'sql'       => "varchar(64) NOT NULL default ''",
         ],
     ],
 ];

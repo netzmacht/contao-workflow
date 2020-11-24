@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Form;
 
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionFormBuilder;
+use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -50,8 +51,10 @@ final class TransitionFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
+            ->setDefaults(['item' => null])
             ->setRequired(['handler'])
-            ->setAllowedTypes('handler', TransitionHandler::class);
+            ->setAllowedTypes('handler', TransitionHandler::class)
+            ->setAllowedTypes('item', Item::class);
     }
 
     /**

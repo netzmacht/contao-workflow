@@ -16,7 +16,9 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction;
 
 use Assert\Assert;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
+use Netzmacht\ContaoWorkflowBundle\Security\User;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
@@ -36,13 +38,43 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
     private $propertyAccessManager;
 
     /**
+     * Symfony expression language.
+     *
+     * @var ExpressionLanguage
+     */
+    private $expressionLanguage;
+
+    /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */    private $repositoryManager;
+
+    /**
+     * Workflow user.
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
      * UpdatePropertyActionFactory constructor.
      *
-     * @param PropertyAccessManager $propertyAccessManager
+     * @param PropertyAccessManager $propertyAccessManager Property access manager.
+     * @param ExpressionLanguage    $expressionLanguage    Expression language.
+     * @param RepositoryManager     $repositoryManager     Repository manager.
+     * @param User                  $user                  Workflow user.
      */
-    public function __construct(PropertyAccessManager $propertyAccessManager)
-    {
+    public function __construct(
+        PropertyAccessManager $propertyAccessManager,
+        ExpressionLanguage $expressionLanguage,
+        RepositoryManager $repositoryManager,
+        User $user
+    ) {
         $this->propertyAccessManager = $propertyAccessManager;
+        $this->expressionLanguage    = $expressionLanguage;
+        $this->repositoryManager     = $repositoryManager;
+        $this->user                  = $user;
     }
 
     /**
@@ -92,37 +124,9 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
             (string) $config['property_value'],
             (bool) $config['property_expression'],
             $this->propertyAccessManager,
-            $this->createExpressionLanguage()
+            $this->expressionLanguage,
+            $this->repositoryManager,
+            $this->user
         );
-    }
-
-    /**
-     * Create the expression language.
-     *
-     * @return ExpressionLanguage
-     */
-    private function createExpressionLanguage() : ExpressionLanguage
-    {
-        static $expressionLanguage;
-
-        if ($expressionLanguage === null) {
-            $expressionLanguage = new ExpressionLanguage();
-            $expressionLanguage->register(
-                'constant',
-                // @codingStandardsIgnoreStart
-                static function () {
-                    return "throw new \\InvalidArgumentException('Cannot use the constant() function in the expression' 
-                        . ' for security reasons.');";
-                },
-                static function () {
-                    throw new \InvalidArgumentException(
-                        'Cannot use the constant() function in the expression for security reasons.'
-                    );
-                }
-                // @codingStandardsIgnoreEnd
-            );
-        }
-
-        return $expressionLanguage;
     }
 }

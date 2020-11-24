@@ -100,6 +100,10 @@ final class DataContainerListener
             $this->addWorkflowStepFieldToDefinition($definition);
         }
 
+        if ($this->dcaProviders[$dataContainerName]['step_permission']) {
+            $this->addWorkflowStepPermissionFieldToDefinition($definition);
+        }
+
         if (!isset($this->defaultConfiguration[$dataContainerName])) {
             return;
         }
@@ -116,7 +120,7 @@ final class DataContainerListener
      *
      * @return void
      *
-     * @throws FieldAlreadyExists When workflowStep is already configured in data container.
+     * @throws FieldAlreadyExists When workflow is already configured in data container.
      */
     private function addWorkflowFieldToDefinition(Definition $definition): void
     {
@@ -134,7 +138,7 @@ final class DataContainerListener
                 'inputType'        => 'select',
                 'exclude'          => true,
                 'filter'           => true,
-                'default'          => ($this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? 0),
+                'default'          => ($this->defaultConfiguration[$definition->getName()]['default_workflow'] ?? ''),
                 'eval'             => [
                     'includeBlankOption' => true,
                     'chosen'             => true,
@@ -154,7 +158,7 @@ final class DataContainerListener
      *
      * @return void
      *
-     * @throws FieldAlreadyExists When workflowDefaultCurrentStep is already configured in data container.
+     * @throws FieldAlreadyExists When workflowStep is already configured in data container.
      */
     private function addWorkflowStepFieldToDefinition(Definition $definition): void
     {
@@ -185,6 +189,43 @@ final class DataContainerListener
     }
 
     /**
+     * Add the workflow step permission field to the data container definition.
+     *
+     * @param Definition $definition The data container definition.
+     *
+     * @return void
+     *
+     * @throws FieldAlreadyExists When workflowStepPermission is already configured in data container.
+     */
+    private function addWorkflowStepPermissionFieldToDefinition(Definition $definition): void
+    {
+        if ($definition->has(['fields', 'workflowStepPermission'])) {
+            throw FieldAlreadyExists::namedInDataContainer('workflowStepPermission', $definition->getName());
+        }
+
+        $definition->set(
+            ['fields', 'workflowStepPermission'],
+            [
+                'label'            => [
+                    $this->translator->trans('integration.current_step_permission.0', [], 'netzmacht_workflow'),
+                    $this->translator->trans('integration.current_step_permission.1', [], 'netzmacht_workflow'),
+                ],
+                'inputType'        => 'select',
+                'exclude'          => true,
+                'filter'           => true,
+                'default'          => '',
+                'eval'             => [
+                    'includeBlankOption' => true,
+                    'tl_class'           => 'w50',
+                    'disabled'           => true,
+                ],
+                'options_callback' => [OptionsListener::class, 'stepPermissionOptions'],
+                'sql'              => 'varchar(64) NULL default NULL',
+            ]
+        );
+    }
+
+    /**
      * Adjust the palettes.
      *
      * @param Definition $definition The data container definition.
@@ -207,6 +248,7 @@ final class DataContainerListener
         }
 
         $definition->set(['metasubselectpalettes', 'workflow'], ['!' => ['workflowStep']]);
+        $definition->set(['metasubselectpalettes', 'workflowStep'], ['!' => ['workflowStepPermission']]);
     }
 
     /**
@@ -237,8 +279,7 @@ final class DataContainerListener
         ];
 
         if ($position === 'first') {
-            $operations = $definition->get(['list', 'operations'], []);
-            array_unshift($operations, $configuration);
+            $operations = (['workflow' => $configuration] + $definition->get(['list', 'operations'], []));
             $definition->set(['list', 'operations'], $operations);
 
             return;

@@ -1,0 +1,8 @@
+
+{% include sections.template('headline') with sections.get('headline') only %}
+
+{% for name, section in sections %}
+    <div class="workflow-section">
+        {% include sections.template(name) with section only %}
+    </div>
+{% endfor %}

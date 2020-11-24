@@ -15,10 +15,11 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Model\Action;
 
-use Contao\Database\Result;
 use Contao\Model\Collection;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 
 /**
  * Class ActionRepository
@@ -54,7 +55,7 @@ final class ActionRepository extends ContaoRepository
      */
     public function findByTransition(int $transitionId, array $options = ['order' => '.sorting'])
     {
-        return $this->findBy(['.pid=?'], [$transitionId], $options);
+        return $this->findBy(['.ptable=?', '.pid=?'], [TransitionModel::getTable(), $transitionId], $options);
     }
 
     /**
@@ -66,24 +67,28 @@ final class ActionRepository extends ContaoRepository
      *
      * @return ActionModel[]|Collection|null
      */
-    public function findActiveByTransition(int $transitionId, string $orderField = 'sorting', string $direction = 'ASC')
-    {
-        $builder = $this->connection->createQueryBuilder()
-            ->select('a.*')
-            ->from('tl_workflow_action', 'a')
-            ->join('a', 'tl_workflow_transition_action', 't', 't.aid = a.id')
-            ->where('t.tid = :tid')
-            ->setParameter('tid', $transitionId)
-            ->orderBy($orderField, $direction);
-
-        $statement = $builder->execute();
-        if ($statement->rowCount() === 0) {
-            return null;
-        }
-
-        return Collection::createFromDbResult(
-            new Result($statement, $builder->getSQL()),
-            ActionModel::getTable()
+    public function findActiveByTransition(
+        int $transitionId,
+        string $orderField = '.sorting',
+        string $direction = 'ASC'
+    ) {
+        return $this->findBy(
+            ['.ptable=?', '.pid=?', '.active=?'],
+            [TransitionModel::getTable(), $transitionId, '1'],
+            ['order' => $orderField . ' ' . $direction]
         );
+    }
+
+    /**
+     * Find global actions defined for a workflow.
+     *
+     * @param int   $workflowId The workflow id.
+     * @param array $options    Query options.
+     *
+     * @return ActionModel[]|Collection|null
+     */
+    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting'])
+    {
+        return $this->findBy(['.ptable=?', '.pid=?'], [WorkflowModel::getTable(), $workflowId], $options);
     }
 }

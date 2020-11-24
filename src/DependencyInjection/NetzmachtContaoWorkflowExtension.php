@@ -49,7 +49,12 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         $providers     = $config['providers'];
 
         foreach (array_keys($config['default_type']) as $provider) {
-            $providers[$provider] = ['workflow' => true, 'step' => true];
+            $providers[$provider] = [
+                'workflow'        => true,
+                'step'            => true,
+                'step_permission' => $config['default_type'][$provider]['step_permission'],
+                'assign_users'    => $config['default_type'][$provider]['assign_users'],
+            ];
         }
 
         $container->setParameter('netzmacht.contao_workflow.dca_providers', $providers);

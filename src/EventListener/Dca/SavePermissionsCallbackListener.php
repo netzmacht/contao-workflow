@@ -55,18 +55,20 @@ final class SavePermissionsCallbackListener
     /**
      * Invoke the callback.
      *
-     * @param mixed         $value         The value.
+     * @param mixed         $permissions   The value.
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return mixed
      */
-    public function onSaveCallback($value, $dataContainer)
+    public function onSaveCallback($permissions, $dataContainer)
     {
-        $this->loadPermissions($dataContainer->table, (int) $dataContainer->id);
-        $this->createNewPermissions($value, $dataContainer);
-        $this->deleteRemovedPermissions();
+        $permissions = StringUtil::deserialize($permissions, true);
 
-        return $value;
+        $this->loadPermissions($dataContainer->table, (int) $dataContainer->id);
+        $this->createNewPermissions($permissions, $dataContainer);
+        $this->deleteRemovedPermissions($permissions, $dataContainer->table, (int) $dataContainer->id);
+
+        return $permissions;
     }
 
     /**
@@ -94,33 +96,40 @@ final class SavePermissionsCallbackListener
     /**
      * Delete permissions which where removed.
      *
+     * @param array  $values   List of active permissions.
+     * @param string $source   Source table.
+     * @param int    $sourceId Source id.
+     *
      * @return void
      */
-    private function deleteRemovedPermissions(): void
+    private function deleteRemovedPermissions(array $values, string $source, int $sourceId): void
     {
-        if (!$this->permissions) {
-            return;
+        $queryBuilder = $this->repositoryManager->getConnection()->createQueryBuilder()
+            ->delete('tl_workflow_permission')
+            ->where('source = :source')
+            ->andWhere('source_id = :source_id')
+            ->setParameter('source', $source)
+            ->setParameter('source_id', $sourceId);
+
+        if ($values) {
+            $queryBuilder->andWhere('permission NOT IN (:permissions)');
+            $queryBuilder->setParameter('permissions', $values, Connection::PARAM_STR_ARRAY);
         }
 
-        $statement = $this->repositoryManager
-            ->getConnection()
-            ->prepare('DELETE FROM tl_workflow_permission WHERE id IN (:ids)');
-
-        $statement->bindValue('ids', $this->permissions, Connection::PARAM_INT_ARRAY);
-        $statement->execute();
+        $queryBuilder->execute();
     }
 
     /**
      * Create new permissions.
      *
-     * @param mixed         $value         The serialized permissions.
+     * @param array         $permissions   The permissions as string representations.
      * @param DataContainer $dataContainer The data container.
      *
      * @return void
      */
-    private function createNewPermissions($value, $dataContainer): void
+    private function createNewPermissions(array $permissions, DataContainer $dataContainer): void
     {
-        foreach (StringUtil::deserialize($value, true) as $permission) {
+        foreach ($permissions as $permission) {
             if (isset($this->permissions[$permission])) {
                 unset($this->permissions[$permission]);
             } else {

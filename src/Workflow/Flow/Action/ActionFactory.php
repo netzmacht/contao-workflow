@@ -20,6 +20,8 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use function array_map;
+use function sort;
 
 /**
  * Class ActionFactory.
@@ -91,6 +93,10 @@ final class ActionFactory
 
         foreach ($this->getSupportedTypes($workflow) as $factory) {
             $names[$factory->getCategory()][] = $factory->getName();
+        }
+
+        foreach ($names as &$actions) {
+            sort($actions);
         }
 
         return $names;

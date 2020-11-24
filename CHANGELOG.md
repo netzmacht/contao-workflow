@@ -2,6 +2,36 @@
 
 ## [Unreleased]
 
+## [2.3.0] - 2020-11-24
+
+### Added
+
+ - Allow creating transition specific actions
+ - Add interface `DataWareActionFromBuilder` to allow actions define default form values
+ - Add update entity action for dca using `useRawRequestData` flag
+ - Add option to store current step permission
+ - Add frontend module workflow transition
+ - Add option to auto assign a workflow of a default type
+ - Provide `userId` and the user model as `user` for the `UpdatePropertyAction` expression
+ - Add ability to customize payload name of the note action note
+ - Provide german translation
+ 
+### Changed
+ 
+ - Actions can be defined on transition level. Workflow related actions are supported yet and can be referenced.
+ - Transitions are triggered as post request now 
+ - Permissions for admins needs to be explicit granted
+ 
+### Fixed
+
+ - Fix security system for frontend user and guests
+ - Readd option to limit permissions for transitions
+ - Fix removal of permissions
+ - Do not show transition marked as hidden as submit button
+ - Provide context for Contao models in the `AddFormattedEntityNotificationTokensListener` listener
+ - Fixed `payload_*` and `properties_*` notification tokens were not set
+ - Fixed `admin_email` payload token was missing
+
 ## [2.2.4] - 2020-10-08
 
 ### Fixed
@@ -124,6 +154,7 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.30]: https://github.com/netzmacht/contao-workflow/compare/2.2.4...2.3.0
 [2.2.4]: https://github.com/netzmacht/contao-workflow/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/netzmacht/contao-workflow/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/netzmacht/contao-workflow/compare/2.2.1...2.2.2

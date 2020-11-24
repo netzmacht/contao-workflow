@@ -15,10 +15,15 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction;
 
+use Contao\MemberModel;
+use Contao\Model;
+use Contao\UserModel;
 use DateTimeImmutable;
+use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessor;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\ReadonlyPropertyAccessor;
+use Netzmacht\ContaoWorkflowBundle\Security\User;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -59,6 +64,20 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
     private $isExpression;
 
     /**
+     * Repository manager.
+     *
+     * @var RepositoryManager
+     */
+    private $repositoryManager;
+
+    /**
+     * Workflow user.
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
      * Construct.
      *
      * @param string                $property              The property to be changed.
@@ -66,13 +85,17 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
      * @param bool                  $isExpression          Value is an expression which has to be evaluated.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param ExpressionLanguage    $expressionLanguage    The expression language.
+     * @param RepositoryManager     $repositoryManager     Repository manager.
+     * @param User                  $user                  Workflow user.
      */
     public function __construct(
         string $property,
         $value,
         bool $isExpression,
         PropertyAccessManager $propertyAccessManager,
-        ExpressionLanguage $expressionLanguage
+        ExpressionLanguage $expressionLanguage,
+        RepositoryManager $repositoryManager,
+        User $user
     ) {
         parent::__construct($propertyAccessManager, 'Update property action');
 
@@ -80,6 +103,8 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
         $this->value              = $value;
         $this->isExpression       = $isExpression;
         $this->expressionLanguage = $expressionLanguage;
+        $this->repositoryManager  = $repositoryManager;
+        $this->user               = $user;
     }
 
     /**
@@ -131,7 +156,22 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
             [
                 'entity' => new ReadonlyPropertyAccessor($propertyAccessor),
                 'now'    => new DateTimeImmutable(),
+                'userId' => $this->user->getUserId(),
+                'user'   => $this->fetchUserModel()
             ]
         );
+    }
+
+    /** @return UserModel|MemberModel|null */
+    private function fetchUserModel(): ?Model
+    {
+        $userId = $this->user->getUserId();
+        if ($userId === null) {
+            return null;
+        }
+
+        $repository = $this->repositoryManager->getRepository(Model::getClassFromTable($userId->getProviderName()));
+
+        return $repository->find((int) $userId->getIdentifier());
     }
 }

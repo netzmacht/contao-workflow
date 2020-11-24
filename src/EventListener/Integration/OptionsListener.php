@@ -16,8 +16,10 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\DataContainer;
+use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
+use Netzmacht\Workflow\Flow\Security\Permission;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use function array_merge;
@@ -127,6 +129,43 @@ final class OptionsListener
     }
 
     /**
+     * Get the step permission options.
+     *
+     * @param DataContainer|null $dataContainer Data container driver.
+     *
+     * @return array
+     */
+    public function stepPermissionOptions(?DataContainer $dataContainer = null): array
+    {
+        if (!$dataContainer || !$dataContainer->activeRecord || $dataContainer->activeRecord->workflowStep) {
+            return [];
+        }
+
+        try {
+            $selectedWorkflow = $this->getSelectedWorkflow($dataContainer);
+            if (!$selectedWorkflow) {
+                return [];
+            }
+
+            $workflow = $this->workflowManager->getWorkflowByName($selectedWorkflow);
+        } catch (WorkflowNotFound $exception) {
+            return [];
+        }
+
+        $stepName = $dataContainer->activeRecord->workflowStep;
+        if (!$workflow->hasStep($stepName)) {
+            return [];
+        }
+
+        $permission = $workflow->getStep($stepName)->getPermission();
+        if ($permission === null) {
+            return [];
+        }
+
+        return [$permission->__toString() => $this->getPermissionLabel($permission, $workflow)];
+    }
+
+    /**
      * Get the selected workflow.
      *
      * @param DataContainer $dataContainer Data container driver.
@@ -168,5 +207,26 @@ final class OptionsListener
         }
 
         return $options;
+    }
+
+    /**
+     * Get the label for the permission.
+     *
+     * @param Permission $permission The permission.
+     * @param Workflow   $workflow   The related workflow.
+     *
+     * @return string
+     */
+    private function getPermissionLabel(Permission $permission, Workflow $workflow): string
+    {
+        $label       = $permission->getPermissionId();
+        $permissions = StringUtil::deserialize($workflow->getConfigValue('permissions'), true);
+        foreach ($permissions as $config) {
+            if ($config['name'] === $permission->getPermissionId() && $config['label']) {
+                $label = $config['label'];
+            }
+        }
+
+        return $label;
     }
 }
