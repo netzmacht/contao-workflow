@@ -2,8 +2,11 @@
 
 ## [Unreleased]
 
+## [2.3.0] - 2020-11-24
+
 ### Added
 
+ - Allow creating transition specific actions
  - Add interface `DataWareActionFromBuilder` to allow actions define default form values
  - Add update entity action for dca using `useRawRequestData` flag
  - Add option to store current step permission
@@ -11,6 +14,7 @@
  - Add option to auto assign a workflow of a default type
  - Provide `userId` and the user model as `user` for the `UpdatePropertyAction` expression
  - Add ability to customize payload name of the note action note
+ - Provide german translation
  
 ### Changed
  
@@ -150,6 +154,7 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.30]: https://github.com/netzmacht/contao-workflow/compare/2.2.4...2.3.0
 [2.2.4]: https://github.com/netzmacht/contao-workflow/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/netzmacht/contao-workflow/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/netzmacht/contao-workflow/compare/2.2.1...2.2.2
