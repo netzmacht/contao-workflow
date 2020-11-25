@@ -21,6 +21,7 @@ parameters:
     "text/html": '@@NetzmachtContaoWorkflow/sections/errors.html.twig'
 
   netzmacht.contao_workflow.templates.html_view:
+    unknown: '@@NetzmachtContaoWorkflow/backend/default.html.twig'
     step: '@@NetzmachtContaoWorkflow/backend/step.html.twig'
     transition:
       frontend: '@@NetzmachtContaoWorkflow/frontend/transition.html.twig'

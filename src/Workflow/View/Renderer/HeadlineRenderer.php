@@ -17,6 +17,8 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
+use function is_object;
+use function is_string;
 
 /**
  * Class HeadlineRenderer
@@ -44,6 +46,10 @@ final class HeadlineRenderer extends AbstractRenderer
     protected function renderParameters(View $view): array
     {
         $context = $view->getContext();
+
+        if (!is_object($context)) {
+            return ['headline' => $view->getWorkflow()->getLabel()];
+        }
 
         switch (get_class($context)) {
             case Step::class:

@@ -79,16 +79,9 @@ final class StepController extends AbstractController
         $currentStep = null;
 
         if (!$item->isWorkflowStarted()) {
-            return new RedirectResponse(
-                $this->router->generate(
-                    'netzmacht.contao_workflow.backend.transition',
-                    [
-                        'module'     => $module,
-                        'entityId'   => (string) $entityId,
-                        'transition' => $workflow->getStartTransition()->getName(),
-                    ]
-                )
-            );
+            $view = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
+
+            return $view->render();
         }
 
         if ($workflow->getName() !== $item->getWorkflowName()) {

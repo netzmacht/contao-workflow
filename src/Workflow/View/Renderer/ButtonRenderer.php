@@ -19,6 +19,7 @@ use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
 
@@ -68,7 +69,7 @@ final class ButtonRenderer extends AbstractRenderer
      */
     public function supports(View $view): bool
     {
-        return $view->getContext() instanceof Step;
+        return $view->getContext() instanceof Step || $view->getContext() === null;
     }
 
     /**
@@ -79,7 +80,6 @@ final class ButtonRenderer extends AbstractRenderer
         /** @var Step $step */
         $step     = $view->getContext();
         $workflow = $view->getWorkflow();
-        $actions  = [];
         $params   = [];
         $request  = $this->requestStack->getCurrentRequest();
         $context  = new Context();
@@ -92,20 +92,8 @@ final class ButtonRenderer extends AbstractRenderer
             $params['detach'] = true;
         }
 
-        foreach ($step->getAllowedTransitions() as $transitionName) {
-            if (!$workflow->hasTransition($transitionName)) {
-                continue;
-            }
-
-            $transition = $workflow->getTransition($transitionName);
-
-            if ($transition->isAllowed($view->getItem(), $context) && !$transition->getConfigValue('hide')) {
-                $actions[] = $this->buildAction($view, $transitionName, $params);
-            }
-        }
-
         return [
-            'actions' => $actions
+            'actions' => $this->buildActions($step, $workflow, $view, $context, $params)
         ];
     }
 
@@ -136,5 +124,43 @@ final class ButtonRenderer extends AbstractRenderer
             ),
             'icon'   => $transition->getConfigValue('icon')
         ];
+    }
+
+    /**
+     * Build actions.
+     *
+     * @param Step|null $step     The current step.
+     * @param Workflow  $workflow The workflow.
+     * @param View      $view     The view.
+     * @param Context   $context  The context.
+     * @param array     $params   The params.
+     *
+     * @return array
+     */
+    protected function buildActions(?Step $step, Workflow $workflow, View $view, Context $context, array $params): array
+    {
+        $actions = [];
+        if (!$step) {
+            $transition = $workflow->getStartTransition();
+            if ($transition->isAllowed($view->getItem(), $context)) {
+                $actions[] = $this->buildAction($view, $transition->getName(), $params);
+            }
+
+            return $actions;
+        }
+
+        foreach ($step->getAllowedTransitions() as $transitionName) {
+            if (!$workflow->hasTransition($transitionName)) {
+                continue;
+            }
+
+            $transition = $workflow->getTransition($transitionName);
+
+            if ($transition->isAllowed($view->getItem(), $context) && !$transition->getConfigValue('hide')) {
+                $actions[] = $this->buildAction($view, $transitionName, $params);
+            }
+        }
+
+        return $actions;
     }
 }

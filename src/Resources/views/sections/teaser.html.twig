@@ -12,6 +12,12 @@
     <div class="tl_header">
         <table class="tl_header_table">
             <tbody>
+            {% if entityLabel %}
+            <tr>
+                <td><span class="tl_label">{{ 'dataRecord'|trans }}</span></td>
+                <td>{{ entityLabel }}</td>
+            </tr>
+            {% endif %}
             <tr>
                 <td><span class="tl_label">{{ 'workflowName'|trans }}</span></td>
                 <td>{{ workflow.label }}</td>

@@ -54,7 +54,7 @@ final class HtmlView implements View
      *
      * @var string
      */
-    private $template = '@NetzmachtContaoWorkflow/default.html.twig';
+    private $template = '@NetzmachtContaoWorkflow/backend/default.html.twig';
 
     /**
      * Template sections.

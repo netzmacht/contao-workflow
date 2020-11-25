@@ -24,7 +24,9 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
 use Twig\Environment as Twig;
 use Verraes\ClassFunctions\ClassFunctions;
+use function is_object;
 use function is_string;
+use function strtolower;
 
 /**
  * Class HtmlViewFactory
@@ -99,9 +101,16 @@ final class HtmlViewFactory implements ViewFactory
         ?string $template = null,
         string $contentType = View::CONTENT_TYPE_HTML
     ): View {
+        $workflowName = $item->getWorkflowName();
+        if ($workflowName) {
+            $workflow = $this->manager->getWorkflowByName($workflowName);
+        } else {
+            $workflow = $this->manager->getWorkflowByItem($item);
+        }
+
         return new HtmlView(
             $item,
-            $this->manager->getWorkflowByName($item->getWorkflowName()),
+            $workflow,
             $context,
             $this->renderer,
             $this->twig,
@@ -119,7 +128,11 @@ final class HtmlViewFactory implements ViewFactory
      */
     private function getTemplate($context): ?string
     {
-        $type = strtolower(ClassFunctions::short($context));
+        if (is_object($context)) {
+            $type = strtolower(ClassFunctions::short($context));
+        } else {
+            $type = 'unknown';
+        }
 
         if (!isset($this->templates[$type])) {
             return null;

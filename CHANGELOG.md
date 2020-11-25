@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.3.1] - 2020-11-25
+
+### Fixed
+
+ - Redirect for non started workflows is broken. Create explicit view for it.
+
 ## [2.3.0] - 2020-11-24
 
 ### Added
