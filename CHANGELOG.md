@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+ - Fix customization of note payload name
+
 ## [2.3.1] - 2020-11-25
 
 ### Fixed

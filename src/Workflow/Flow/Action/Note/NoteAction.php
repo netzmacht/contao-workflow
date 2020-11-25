@@ -137,6 +137,6 @@ final class NoteAction extends AbstractAction
      */
     public function payloadName(): string
     {
-        return $this->getConfigValue('playload_name') ?: ($this->getName() . '_note');
+        return $this->getConfigValue('payload_name') ?: ($this->getName() . '_note');
     }
 }
