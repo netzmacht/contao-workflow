@@ -42,6 +42,7 @@ services:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer\TeaserRenderer
     arguments:
       - '@translator'
+      - '@netzmacht.contao_workflow.property_access_manager'
       - '%netzmacht.contao_workflow.templates.teaser%'
     tags:
       - { name: netzmacht.contao_workflow.view.renderer, priority: 10 }
