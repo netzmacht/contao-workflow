@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.3.2] - 2020-11-25
+
 ### Fixed
 
  - Fix customization of note payload name
@@ -164,7 +166,9 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
-[2.30]: https://github.com/netzmacht/contao-workflow/compare/2.2.4...2.3.0
+[2.3.2]: https://github.com/netzmacht/contao-workflow/compare/2.3.1...2.3.2
+[2.3.1]: https://github.com/netzmacht/contao-workflow/compare/2.3.0...2.3.1
+[2.3.0]: https://github.com/netzmacht/contao-workflow/compare/2.2.4...2.3.0
 [2.2.4]: https://github.com/netzmacht/contao-workflow/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/netzmacht/contao-workflow/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/netzmacht/contao-workflow/compare/2.2.1...2.2.2
