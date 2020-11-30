@@ -20,6 +20,7 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
  * Class PermissionCondition
@@ -67,8 +68,14 @@ final class TransitionPermissionCondition implements Condition
             return false;
         }
 
-        if ($this->authorizationChecker->isGranted($transition, $item)) {
-            return true;
+        try {
+            if ($this->authorizationChecker->isGranted($transition, $item)) {
+                return true;
+            }
+        } catch (AuthenticationCredentialsNotFoundException $exception) {
+            if ($this->grantAccessByDefault) {
+                return true;
+            }
         }
 
         $context->addError(
