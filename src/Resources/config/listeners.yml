@@ -61,6 +61,7 @@ services:
     public: true
     arguments:
       - '@netzmacht.contao_toolkit.assets_manager'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
     tags:
       - { name: 'kernel.event_listener', event: 'kernel.request', method: 'addBackendAssets' }
 

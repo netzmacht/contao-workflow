@@ -16,24 +16,51 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Backend;
 
+use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
 use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
+/**
+ * Class AssetListener
+ */
 class AssetListener
 {
     /**
-     * Asset Manager
+     * Asset Manager.
      *
      * @var AssetsManager
      */
     private AssetsManager $assetsManager;
 
-    public function __construct(AssetsManager $assetsManager)
+    /**
+     * @var RequestScopeMatcher
+     */
+    private RequestScopeMatcher $scopeMatcher;
+
+    /**
+     * AssetListener constructor.
+     *
+     * @param AssetsManager $assetsManager
+     */
+    public function __construct(AssetsManager $assetsManager, RequestScopeMatcher $scopeMatcher)
     {
         $this->assetsManager = $assetsManager;
+        $this->scopeMatcher = $scopeMatcher;
     }
 
-    public function addBackendAssets()
+    /**
+     * Adds extensions' stylesheet to back-end.
+     *
+     * @param RequestEvent $event
+     *
+     * @return void
+     */
+    public function addBackendAssets(RequestEvent $event)
     {
+        if (!$this->scopeMatcher->isBackendRequest($event->getRequest())) {
+            return;
+        }
+
         $this->assetsManager->addStylesheet('bundles/netzmachtcontaoworkflow/css/backend.css');
     }
 }

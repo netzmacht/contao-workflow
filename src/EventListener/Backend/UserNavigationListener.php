@@ -33,11 +33,11 @@ final class UserNavigationListener
     /**
      * UserNavigationListener constructor.
      *
-     * @param RequestStack  $requestStack  Request stack.
+     * @param RequestStack $requestStack  Request stack.
      */
     public function __construct(RequestStack $requestStack)
     {
-        $this->requestStack  = $requestStack;
+        $this->requestStack = $requestStack;
     }
 
     /**
