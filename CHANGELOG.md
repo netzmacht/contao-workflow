@@ -179,6 +179,7 @@
  - Remove `Netzmacht\ContaoWorkflowBundle\Wokrlfow\Manager\ContaoWorkflowManager`
 
 [Unreleased]: https://github.com/netzmacht/contao-workflow/compare/master...develop
+[2.3.4]: https://github.com/netzmacht/contao-workflow/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/netzmacht/contao-workflow/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/netzmacht/contao-workflow/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/netzmacht/contao-workflow/compare/2.3.0...2.3.1
