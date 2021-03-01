@@ -15,8 +15,11 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Migration;
 
+use Contao\CoreBundle\Doctrine\Schema\DcaSchemaProvider;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Schema;
 use PDO;
+use function assert;
 
 /**
  * Migrates action relations to reference actions
@@ -31,13 +34,22 @@ final class TransitionActionsMigration
     private $connection;
 
     /**
+     * Dca Schema provider.
+     *
+     * @var DcaSchemaProvider
+     */
+    private $schemaProvider;
+
+    /**
      * TransitionActionsMigration constructor.
      *
-     * @param Connection $connection Database connection.
+     * @param Connection        $connection     Database connection.
+     * @param DcaSchemaProvider $schemaProvider Dca schema provider.
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, DcaSchemaProvider $schemaProvider)
     {
-        $this->connection = $connection;
+        $this->connection     = $connection;
+        $this->schemaProvider = $schemaProvider;
     }
 
     /**
@@ -56,6 +68,16 @@ final class TransitionActionsMigration
             return;
         }
 
+        $schemaManager = $this->connection->getSchemaManager();
+        $fromTable     = $schemaManager->createSchema()->getTable('tl_workflow_action');
+        $toTable       = $this->schemaProvider->createSchema()->getTable('tl_workflow_action');
+        $fromSchema    = new Schema([$fromTable]);
+        $toSchema      = new Schema([$toTable]);
+
+        foreach ($fromSchema->getMigrateToSql($toSchema, $this->connection->getDatabasePlatform()) as $sql) {
+            $this->connection->executeStatement($sql);
+        }
+
         $sql = <<<'SQL'
     SELECT r.*, a.active 
       FROM tl_workflow_transition_action r
@@ -67,6 +89,8 @@ SQL;
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             $this->migrateRelation($row);
         }
+
+        $this->connection->update('tl_workflow_action', ['ptable' => 'tl_workflow'], ['ptable' => '']);
 
         $schemaManager->dropTable('tl_workflow_transition_action');
     }

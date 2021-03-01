@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.3.4] - 2021-03-01
+
+### Fixed
+
+ - Fix transition action migration script
+
 ## [2.3.3] - 2020-11-30
 
 ### Fixed

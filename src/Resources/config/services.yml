@@ -252,6 +252,7 @@ services:
     public: true
     arguments:
       - '@database_connection'
+      - '@contao.doctrine.schema_provider'
 
   Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionModuleFactory:
     arguments:
