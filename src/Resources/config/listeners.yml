@@ -57,12 +57,19 @@ services:
     arguments:
       - '@netzmacht.contao_toolkit.repository_manager'
 
+  Netzmacht\ContaoWorkflowBundle\EventListener\Backend\AssetListener:
+    public: true
+    arguments:
+      - '@netzmacht.contao_toolkit.assets_manager'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+    tags:
+      - { name: 'kernel.event_listener', event: 'kernel.request', method: 'addBackendAssets' }
+
   netzmacht.cotnao_workflow.listeners.hook.backend_user_navigation:
     class: Netzmacht\ContaoWorkflowBundle\EventListener\Backend\UserNavigationListener
     public: true
     arguments:
       - '@request_stack'
-      - '@netzmacht.contao_toolkit.assets_manager'
     tags:
       - { name: 'contao.hook', hook: 'getUserNavigation' }
 
