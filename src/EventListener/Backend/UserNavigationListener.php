@@ -31,22 +31,13 @@ final class UserNavigationListener
     private $requestStack;
 
     /**
-     * Assets manager.
-     *
-     * @var AssetsManager
-     */
-    private $assetsManager;
-
-    /**
      * UserNavigationListener constructor.
      *
-     * @param RequestStack  $requestStack  Request stack.
-     * @param AssetsManager $assetsManager Assets manager.
+     * @param RequestStack $requestStack  Request stack.
      */
-    public function __construct(RequestStack $requestStack, AssetsManager $assetsManager)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->requestStack  = $requestStack;
-        $this->assetsManager = $assetsManager;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -71,8 +62,6 @@ final class UserNavigationListener
                     $modules[$group]['modules'][$module]['isActive'] = true;
                 }
             }
-
-            $this->assetsManager->addStylesheet('bundles/netzmachtcontaoworkflow/css/backend.css');
         }
 
         return $modules;
