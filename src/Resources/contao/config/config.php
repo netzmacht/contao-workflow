@@ -15,7 +15,6 @@ array_insert(
     [
         'workflow' => [
             'workflows' => [
-                'stylesheet' => 'bundles/netzmachtcontaoworkflow/css/backend.css',
                 'tables'     => [
                     'tl_workflow',
                     'tl_workflow_step',
