@@ -73,8 +73,8 @@ final class SavePermissionsCallbackListener
         $statement   = $this->repositoryManager->getConnection()->prepare($query);
         $results     = $statement->executeQuery(['source' => $source, 'source_id' => $rowId]);
 
-        while ($result = (object) $results->fetchAssociative()) {
-            $permissions[$result->permission] = $result->id;
+        while ($result = $results->fetchAssociative()) {
+            $permissions[$result['permission']] = $result['id'];
         }
 
         $this->permissions = $permissions;
