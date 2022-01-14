@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Factory;
@@ -24,13 +13,11 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
 use Twig\Environment as Twig;
 use Verraes\ClassFunctions\ClassFunctions;
+
 use function is_object;
 use function is_string;
 use function strtolower;
 
-/**
- * Class HtmlViewFactory
- */
 final class HtmlViewFactory implements ViewFactory
 {
     /**
@@ -50,7 +37,7 @@ final class HtmlViewFactory implements ViewFactory
     /**
      * Map of context and template.
      *
-     * @var array
+     * @var array<string,string|array<string,string|null>|null>
      */
     private $templates;
 
@@ -69,13 +56,11 @@ final class HtmlViewFactory implements ViewFactory
     private $scopeMatcher;
 
     /**
-     * HtmlViewFactory constructor.
-     *
-     * @param Manager             $manager      Workflow manager.
-     * @param Twig                $twig         Twig template engine.
-     * @param Renderer            $renderer     View renderer.
-     * @param RequestScopeMatcher $scopeMatcher Scope matcher.
-     * @param array               $templates    Templates.
+     * @param Manager                                             $manager      Workflow manager.
+     * @param Twig                                                $twig         Twig template engine.
+     * @param Renderer                                            $renderer     View renderer.
+     * @param RequestScopeMatcher                                 $scopeMatcher Scope matcher.
+     * @param array<string,string|array<string,string|null>|null> $templates    Templates.
      */
     public function __construct(
         Manager $manager,
@@ -123,8 +108,6 @@ final class HtmlViewFactory implements ViewFactory
      * Get the template for the view.
      *
      * @param mixed $context Given context.
-     *
-     * @return null|string
      */
     private function getTemplate($context): ?string
     {
@@ -134,7 +117,7 @@ final class HtmlViewFactory implements ViewFactory
             $type = 'unknown';
         }
 
-        if (!isset($this->templates[$type])) {
+        if (! isset($this->templates[$type])) {
             return null;
         }
 
@@ -143,11 +126,11 @@ final class HtmlViewFactory implements ViewFactory
         }
 
         if ($this->scopeMatcher->isBackendRequest()) {
-            return ($this->templates[$type]['backend'] ?? null);
+            return $this->templates[$type]['backend'] ?? null;
         }
 
         if ($this->scopeMatcher->isFrontendRequest()) {
-            return ($this->templates[$type]['frontend'] ?? null);
+            return $this->templates[$type]['frontend'] ?? null;
         }
 
         return null;

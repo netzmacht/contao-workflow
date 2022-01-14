@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Manager;
@@ -22,11 +11,6 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager;
 
-/**
- * Class LazyLoadingWorkflowManager.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Manager
- */
 final class LazyLoadingWorkflowManager implements Manager
 {
     /**
@@ -44,8 +28,6 @@ final class LazyLoadingWorkflowManager implements Manager
     private $workflowLoader;
 
     /**
-     * LazyLoadingWorkflowManager constructor.
-     *
      * @param Manager        $inner          Decorated workflow manager.
      * @param WorkflowLoader $workflowLoader The workflow definition loader.
      */
@@ -55,19 +37,13 @@ final class LazyLoadingWorkflowManager implements Manager
         $this->workflowLoader = $workflowLoader;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function handle(Item $item, string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
+    public function handle(Item $item, ?string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
     {
         $this->loadWorkflowDefinitions();
 
         return $this->inner->handle($item, $transitionName, $changeWorkflow);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addWorkflow(Workflow $workflow): Manager
     {
         $this->inner->addWorkflow($workflow);
@@ -85,9 +61,6 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->getWorkflow($entityId, $entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWorkflowByName(string $name): Workflow
     {
         $this->loadWorkflowDefinitions();
@@ -95,9 +68,6 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->getWorkflowByName($name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWorkflowByItem(Item $item): Workflow
     {
         $this->loadWorkflowDefinitions();
@@ -135,8 +105,6 @@ final class LazyLoadingWorkflowManager implements Manager
 
     /**
      * Load all workflow definitions.
-     *
-     * @return void
      */
     private function loadWorkflowDefinitions(): void
     {

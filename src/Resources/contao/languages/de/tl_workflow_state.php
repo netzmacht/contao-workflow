@@ -1,16 +1,6 @@
 <?php
-/**
- * Translations are managed using Transifex. To create a new translation
- * or to help to maintain an existing one, please register at transifex.com.
- *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/contao-workflow/language/de/
- *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2020-10-13T07:00:50+00:00
- */
 
+declare(strict_types=1);
 
 $GLOBALS['TL_LANG']['tl_workflow_state']['entityId']['0']       = 'Entität';
 $GLOBALS['TL_LANG']['tl_workflow_state']['entityId']['1']       = 'Entitäts-ID, kombiniert aus Provider-Name und ID.';
@@ -26,4 +16,3 @@ $GLOBALS['TL_LANG']['tl_workflow_state']['transitionName']['0'] = 'Transition';
 $GLOBALS['TL_LANG']['tl_workflow_state']['transitionName']['1'] = 'Zuletzt durchgeführte Transition';
 $GLOBALS['TL_LANG']['tl_workflow_state']['workflowName']['0']   = 'Workflow';
 $GLOBALS['TL_LANG']['tl_workflow_state']['workflowName']['1']   = 'Name des Workflows';
-

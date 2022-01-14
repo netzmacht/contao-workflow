@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
@@ -30,8 +19,6 @@ final class ReadonlyPropertyAccessor
     private $propertyAccessor;
 
     /**
-     * PropertyReadAccessor constructor.
-     *
      * @param PropertyAccessor $propertyAccessor Property accessor.
      */
     public function __construct(PropertyAccessor $propertyAccessor)
@@ -43,10 +30,8 @@ final class ReadonlyPropertyAccessor
      * Check if property exists for the object.
      *
      * @param string $name Name of the property.
-     *
-     * @return bool
      */
-    public function has(string $name) : bool
+    public function has(string $name): bool
     {
         return $this->propertyAccessor->has($name);
     }

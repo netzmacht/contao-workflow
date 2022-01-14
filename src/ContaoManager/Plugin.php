@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\ContaoManager;
@@ -27,9 +16,6 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouteCollection;
 
-/**
- * Class Plugin
- */
 final class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
     /**
@@ -44,16 +30,14 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
                     [
                         ContaoCoreBundle::class,
                         SensioFrameworkExtraBundle::class,
-                        NetzmachtContaoToolkitBundle::class
+                        NetzmachtContaoToolkitBundle::class,
                     ]
                 )
-                ->setReplace(['workflow'])
+                ->setReplace(['workflow']),
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
     {
         $loader = $resolver->resolve(__DIR__ . '/../Resources/config/routing.yml');

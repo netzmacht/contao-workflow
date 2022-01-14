@@ -1,15 +1,6 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
+declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow_state'] = [
     'config' => [
@@ -45,18 +36,10 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
     ],
 
     'fields' => [
-        'id'             => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
-        ],
-        'tstamp'         => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'workflowName'   => [
-            'sql' => "varchar(32) NOT NULL default ''",
-        ],
-        'targetWorkflowName'   => [
-            'sql' => 'varchar(32) NULL default NULL',
-        ],
+        'id'             => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
+        'tstamp'         => ['sql' => "int(10) unsigned NOT NULL default '0'"],
+        'workflowName'   => ['sql' => "varchar(32) NOT NULL default ''"],
+        'targetWorkflowName'   => ['sql' => 'varchar(32) NULL default NULL'],
         'entityId'       => [
             'sql'     => "varchar(64) NOT NULL default ''",
             'sorting' => true,
@@ -74,15 +57,9 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
             'filter' => true,
             'sql'    => "char(1) NOT NULL default ''",
         ],
-        'reachedAt'      => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'data'           => [
-            'sql' => 'text NULL',
-        ],
-        'errors'         => [
-            'sql' => 'text NULL',
-        ],
+        'reachedAt'      => ['sql' => "int(10) unsigned NOT NULL default '0'"],
+        'data'           => ['sql' => 'text NULL'],
+        'errors'         => ['sql' => 'text NULL'],
     ],
 
 ];

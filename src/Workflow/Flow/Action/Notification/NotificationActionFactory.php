@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
@@ -22,14 +11,12 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
-use function in_array;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
-/**
- * Class NotificationActionFactory
- */
+use function in_array;
+
+/** @SuppressWarnings(PHPMD.LongVariable) */
 final class NotificationActionFactory implements ActionTypeFactory
 {
     /**
@@ -61,11 +48,9 @@ final class NotificationActionFactory implements ActionTypeFactory
     private $translator;
 
     /**
-     * NotificationActionFactory constructor.
-     *
      * @param RepositoryManager     $repositoryManager     Repository manager.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
-     * @param TranslatorInterface   $translator            Translator.
+     * @param Translator            $translator            Translator.
      * @param EventDispatcher       $eventDispatcher       The event dispatcher.
      */
     public function __construct(
@@ -80,33 +65,21 @@ final class NotificationActionFactory implements ActionTypeFactory
         $this->eventDispatcher       = $eventDispatcher;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getCategory(): string
     {
         return 'default';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'notification';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isPostAction(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(Workflow $workflow): bool
     {
         return true;
@@ -133,8 +106,6 @@ final class NotificationActionFactory implements ActionTypeFactory
      * Determine the success states.
      *
      * @param mixed $states Raw success state value.
-     *
-     * @return int
      */
     private function determineSuccessStates($states): int
     {

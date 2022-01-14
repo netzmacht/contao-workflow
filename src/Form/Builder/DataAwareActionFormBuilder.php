@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form\Builder;
@@ -30,13 +19,13 @@ interface DataAwareActionFormBuilder extends ActionFormBuilder
     /**
      * Build the form data and return the changed data.
      *
-     * @param Action     $action     The action the form belongs to.
-     * @param Transition $transition The transition being build.
-     * @param Context    $context    The workflow context.
-     * @param Item       $item       The current workflow item.
-     * @param array      $data       Default form data.
+     * @param Action              $action     The action the form belongs to.
+     * @param Transition          $transition The transition being build.
+     * @param Context             $context    The workflow context.
+     * @param Item                $item       The current workflow item.
+     * @param array<string,mixed> $data       Default form data.
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function buildFormData(
         Action $action,

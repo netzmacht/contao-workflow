@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
@@ -32,8 +21,6 @@ trait ChangeLogging
 
     /**
      * Consider if changes are logged.
-     *
-     * @return bool
      */
     public function isLoggingEnabled(): bool
     {
@@ -42,8 +29,6 @@ trait ChangeLogging
 
     /**
      * Enable logging.
-     *
-     * @return void
      */
     public function enableLogging(): void
     {
@@ -52,8 +37,6 @@ trait ChangeLogging
 
     /**
      * Disable logging.
-     *
-     * @return void
      */
     public function disableLogging(): void
     {
@@ -66,32 +49,32 @@ trait ChangeLogging
      * @param string  $property Property name.
      * @param mixed   $value    Property value.
      * @param Context $context  Transition context.
-     *
-     * @return void
      */
     protected function propertyChanged(string $property, $value, Context $context): void
     {
-        if ($this instanceof Base && $this->isLoggingEnabled()) {
-            $context->getProperties()->set($this->getName() . '_' . $property, $value);
+        if (! ($this instanceof Base) || ! $this->isLoggingEnabled()) {
+            return;
         }
+
+        $context->getProperties()->set($this->getName() . '_' . $property, $value);
     }
 
     /**
      * Log multiple changes.
      *
-     * @param array   $values  Changes properties as associated array['name' => 'val'].
-     * @param Context $context Transition context.
-     *
-     * @return void
+     * @param array<string,mixed> $values  Changes properties as associated array['name' => 'val'].
+     * @param Context             $context Transition context.
      */
     protected function propertiesChanged(array $values, Context $context): void
     {
-        if ($this instanceof Base && $this->isLoggingEnabled()) {
-            $properties = $context->getProperties();
+        if (! ($this instanceof Base) || ! $this->isLoggingEnabled()) {
+            return;
+        }
 
-            foreach ($values as $name => $value) {
-                $properties->set($this->getName() . '_' . $name, $value);
-            }
+        $properties = $context->getProperties();
+
+        foreach ($values as $name => $value) {
+            $properties->set($this->getName() . '_' . $name, $value);
         }
     }
 }

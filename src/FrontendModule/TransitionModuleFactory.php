@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\FrontendModule;
@@ -30,10 +19,13 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
+
 use function assert;
 
 /**
  * Class TransitionModuleFactory creates an instance of the transition module.
+ *
+ * @psalm-suppress DeprecatedInterface
  */
 final class TransitionModuleFactory implements ComponentFactory
 {
@@ -44,11 +36,15 @@ final class TransitionModuleFactory implements ComponentFactory
      */
     private $templateEngine;
 
+    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     /**
      * The translator.
      *
+     * @psalm-suppress DeprecatedClass
+     *
      * @var Translator
      */
+    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     private $translator;
 
     /**
@@ -114,8 +110,9 @@ final class TransitionModuleFactory implements ComponentFactory
      */
     private $requestScopeMatcher;
 
+    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
     /**
-     * TransitionModuleFactory constructor.
+     * @psalm-suppress DeprecatedClass
      *
      * @param TemplateEngine      $templateEngine      The template engine.
      * @param Translator          $translator          The translator.
@@ -131,6 +128,7 @@ final class TransitionModuleFactory implements ComponentFactory
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
+    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
     public function __construct(
         TemplateEngine $templateEngine,
         Translator $translator,
@@ -144,7 +142,6 @@ final class TransitionModuleFactory implements ComponentFactory
         Adapter $configAdapter,
         RequestScopeMatcher $requestScopeMatcher
     ) {
-
         $this->templateEngine      = $templateEngine;
         $this->translator          = $translator;
         $this->workflowManager     = $workflowManager;
@@ -168,6 +165,8 @@ final class TransitionModuleFactory implements ComponentFactory
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress DeprecatedClass
      */
     public function create($model, string $column): Component
     {

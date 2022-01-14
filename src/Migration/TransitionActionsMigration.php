@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Migration;
@@ -18,8 +7,6 @@ namespace Netzmacht\ContaoWorkflowBundle\Migration;
 use Contao\CoreBundle\Doctrine\Schema\DcaSchemaProvider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use PDO;
-use function assert;
 
 /**
  * Migrates action relations to reference actions
@@ -41,8 +28,6 @@ final class TransitionActionsMigration
     private $schemaProvider;
 
     /**
-     * TransitionActionsMigration constructor.
-     *
      * @param Connection        $connection     Database connection.
      * @param DcaSchemaProvider $schemaProvider Dca schema provider.
      */
@@ -54,25 +39,20 @@ final class TransitionActionsMigration
 
     /**
      * Invoke the migration.
-     *
-     * @return void
      */
     public function __invoke(): void
     {
         $schemaManager = $this->connection->getSchemaManager();
-        if ($schemaManager === null) {
-            return;
-        }
-
         if (! $schemaManager->tablesExist(['tl_workflow_action', 'tl_workflow_transition_action'])) {
             return;
         }
 
         $schemaManager = $this->connection->getSchemaManager();
         $fromTable     = $schemaManager->createSchema()->getTable('tl_workflow_action');
-        $toTable       = $this->schemaProvider->createSchema()->getTable('tl_workflow_action');
-        $fromSchema    = new Schema([$fromTable]);
-        $toSchema      = new Schema([$toTable]);
+        /** @psalm-suppress DeprecatedMethod - Deprecated in Contao 4.11 */
+        $toTable    = $this->schemaProvider->createSchema()->getTable('tl_workflow_action');
+        $fromSchema = new Schema([$fromTable]);
+        $toSchema   = new Schema([$toTable]);
 
         foreach ($fromSchema->getMigrateToSql($toSchema, $this->connection->getDatabasePlatform()) as $sql) {
             $this->connection->executeStatement($sql);
@@ -86,7 +66,7 @@ INNER JOIN tl_workflow_action a ON a.id = r.aid
 SQL;
 
         $statement = $this->connection->executeQuery($sql);
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             $this->migrateRelation($row);
         }
 
@@ -98,9 +78,7 @@ SQL;
     /**
      * Migrate a transition action relation.
      *
-     * @param array $row The relation dataset.
-     *
-     * @return void
+     * @param array<string,mixed> $row The relation dataset.
      */
     private function migrateRelation(array $row): void
     {
@@ -113,7 +91,7 @@ SQL;
                 'pid'       => $row['tid'],
                 'sorting'   => $row['sorting'],
                 'reference' => $row['aid'],
-                'active'    => $row['active']
+                'active'    => $row['active'],
             ]
         );
     }

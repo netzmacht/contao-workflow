@@ -1,15 +1,6 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
+declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection;
 
@@ -17,17 +8,17 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use function array_keys;
 
-/**
- * Class NetzmachtContaoWorkflowExtension
- */
+use function array_keys;
+use function array_merge;
+use function dirname;
+
 final class NetzmachtContaoWorkflowExtension extends Extension
 {
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader(
             $container,
@@ -59,6 +50,7 @@ final class NetzmachtContaoWorkflowExtension extends Extension
 
         $container->setParameter('netzmacht.contao_workflow.dca_providers', $providers);
         $container->setParameter('netzmacht.contao_workflow.type.default', $config['default_type']);
+        /** @psalm-suppress PossiblyInvalidArgument */
         $container->setParameter(
             'netzmacht.contao_workflow.transition_types',
             array_merge($config['transitions'], $container->getParameter('netzmacht.contao_workflow.transition_types'))

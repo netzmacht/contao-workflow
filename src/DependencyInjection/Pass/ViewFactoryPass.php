@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass;
@@ -20,9 +9,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * Class ViewFactoryPass
- */
+use function sprintf;
+
 final class ViewFactoryPass implements CompilerPassInterface
 {
     /**
@@ -32,7 +20,7 @@ final class ViewFactoryPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('netzmacht.contao_workflow.view.factory')) {
+        if (! $container->hasDefinition('netzmacht.contao_workflow.view.factory')) {
             return;
         }
 
@@ -42,7 +30,7 @@ final class ViewFactoryPass implements CompilerPassInterface
 
         foreach ($serviceIds as $serviceId => $tags) {
             foreach ($tags as $attributes) {
-                if (!isset($attributes['content_type'])) {
+                if (! isset($attributes['content_type'])) {
                     throw new InvalidConfigurationException(
                         sprintf(
                             'Service "%s" is tagged as workflow view factory but content_type attribute is missing',

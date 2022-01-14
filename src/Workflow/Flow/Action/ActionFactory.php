@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action;
@@ -20,12 +9,10 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+
 use function array_map;
 use function sort;
 
-/**
- * Class ActionFactory.
- */
 final class ActionFactory
 {
     /**
@@ -36,8 +23,6 @@ final class ActionFactory
     private $factories;
 
     /**
-     * ActionFactory constructor.
-     *
      * @param iterable|ActionTypeFactory[] $factories Action factories.
      */
     public function __construct(iterable $factories)
@@ -50,7 +35,7 @@ final class ActionFactory
     /**
      * Get the action names.
      *
-     * @return array
+     * @return list<string>
      */
     public function getTypeNames(): array
     {
@@ -68,12 +53,12 @@ final class ActionFactory
      *
      * @param Workflow $workflow The workflow.
      *
-     * @return array
+     * @return list<string>
      */
     public function getSupportedTypeNames(Workflow $workflow): array
     {
         return array_map(
-            function (ActionTypeFactory $factory) {
+            static function (ActionTypeFactory $factory) {
                 return $factory->getName();
             },
             $this->getSupportedTypes($workflow)
@@ -85,7 +70,7 @@ final class ActionFactory
      *
      * @param Workflow $workflow The workflow.
      *
-     * @return array
+     * @return array<string,list<string>>
      */
     public function getSupportedTypeNamesCategorized(Workflow $workflow): array
     {
@@ -114,9 +99,11 @@ final class ActionFactory
         $supported = [];
 
         foreach ($this->factories as $factory) {
-            if ($factory->supports($workflow)) {
-                $supported[] = $factory;
+            if (! $factory->supports($workflow)) {
+                continue;
             }
+
+            $supported[] = $factory;
         }
 
         return $supported;
@@ -125,11 +112,9 @@ final class ActionFactory
     /**
      * Create an action.
      *
-     * @param string     $type       The action type.
-     * @param array      $config     The action config.
-     * @param Transition $transition Transition to which the action belongs.
-     *
-     * @return Action
+     * @param string              $type       The action type.
+     * @param array<string,mixed> $config     The action config.
+     * @param Transition          $transition Transition to which the action belongs.
      *
      * @throws UnsupportedAction When no action could be created.
      */
@@ -150,8 +135,6 @@ final class ActionFactory
      * Returns also false if action type is unknown.
      *
      * @param string $type The action type.
-     *
-     * @return bool
      */
     public function isPostAction(string $type): bool
     {

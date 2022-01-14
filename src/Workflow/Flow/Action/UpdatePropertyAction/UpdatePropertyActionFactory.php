@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction;
@@ -27,6 +16,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * Factory to create a new instance of the update property action.
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class UpdatePropertyActionFactory implements ActionTypeFactory
 {
@@ -58,8 +49,6 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
     private $user;
 
     /**
-     * UpdatePropertyActionFactory constructor.
-     *
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param ExpressionLanguage    $expressionLanguage    Expression language.
      * @param RepositoryManager     $repositoryManager     Repository manager.
@@ -77,34 +66,22 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
         $this->user                  = $user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getCategory() : string
+    public function getCategory(): string
     {
         return 'default';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getName() : string
+    public function getName(): string
     {
         return 'update_property';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isPostAction() : bool
+    public function isPostAction(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function supports(Workflow $workflow) : bool
+    public function supports(Workflow $workflow): bool
     {
         return true;
     }
@@ -112,7 +89,7 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
-    public function create(array $config, Transition $transition) : Action
+    public function create(array $config, Transition $transition): Action
     {
         Assert::that($config)
             ->keyExists('property')

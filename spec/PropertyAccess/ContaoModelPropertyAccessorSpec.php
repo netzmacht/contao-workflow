@@ -1,26 +1,20 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace spec\Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
+use Contao\Database\Result;
 use Contao\Model;
+use Contao\Model\Collection;
+use Exception;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessor;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessor;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
 use PhpSpec\ObjectBehavior;
+
 use function expect;
+use function sprintf;
 
 final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
 {
@@ -86,25 +80,34 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
         expect($this->changeTracker->release($this->model))->shouldHaveCount(1);
     }
 
-    private function modelInstance(array $data = []) : Model
+    /** @param array<string,mixed> $data */
+    private function modelInstance(array $data = []): Model
     {
         $model = new class extends Model {
+            /** @var string */
             protected static $strTable = 'tl_example';
 
-            public function __construct($objResult = null)
+            public function __construct(?Result $objResult = null)
             {
                 // Do not call parent constructor as it requires contao framework being initialized
             }
 
+            /**
+             * @param string|mixed        $strKey
+             * @param array<string,mixed> $arrOptions
+             *
+             * @return Model|Collection|null
+             */
             public function getRelated($strKey, array $arrOptions = [])
             {
                 static $instance;
                 if ($strKey === 'parent') {
                     if ($instance === null) {
                         $instance = new class extends Model {
+                            /** @var string */
                             protected static $strTable = 'tl_example_parent';
 
-                            public function __construct($objResult = null)
+                            public function __construct(?Result $objResult = null)
                             {
                                 // Do not call parent constructor as it requires contao framework being initialized
                             }
@@ -116,7 +119,7 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
                     return $instance;
                 }
 
-                throw new \Exception("Field $strKey does not seem to be related");
+                throw new Exception(sprintf('Field %s does not seem to be related', $strKey));
             }
         };
 

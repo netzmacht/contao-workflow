@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
@@ -24,8 +13,8 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Transition;
 use NotificationCenter\Model\Notification;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 /**
  * Class NotificationAction send an notification as post action.
@@ -89,7 +78,7 @@ final class NotificationAction extends AbstractAction
      * @param string                $label             Label of the element.
      * @param int                   $notificationId    Notification id.
      * @param int                   $successStates     Success states.
-     * @param array                 $config            Configuration values.
+     * @param array<string,mixed>   $config            Configuration values.
      */
     public function __construct(
         PropertyAccessManager $propertyAccess,
@@ -120,26 +109,22 @@ final class NotificationAction extends AbstractAction
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function validate(Item $item, Context $context): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
-        $latestState = $item->getLatestState(false);
-        if ($latestState === false || !$this->matchSuccessState($latestState)) {
+        $latestState = $item->getLatestStateOccurred();
+        if ($latestState === null || ! $this->matchSuccessState($latestState)) {
             return;
         }
 
         $notification = $this->repositoryManager->getRepository(Notification::class)->find($this->notificationId);
-        if (!$notification instanceof Notification) {
+        if (! $notification instanceof Notification) {
             return;
         }
 
@@ -150,8 +135,6 @@ final class NotificationAction extends AbstractAction
      * Check if success state is matched.
      *
      * @param State $latestState Given success state.
-     *
-     * @return bool
      */
     private function matchSuccessState(State $latestState): bool
     {
@@ -169,16 +152,16 @@ final class NotificationAction extends AbstractAction
      * @param Item       $item       Workflow item.
      * @param Context    $context    Transition context.
      *
-     * @return array
+     * @return array<string,mixed>
      *
      * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function buildNotificationTokens(Transition $transition, Item $item, Context $context): array
     {
         $workflow        = $transition->getWorkflow();
         $currentStepName = $item->getCurrentStepName();
-        $latestState     = $item->getLatestState(false);
-        $step            = null;
+        $latestState     = $item->getLatestStateOccurred();
         $entity          = $item->getEntity();
         $tokens          = [
             'admin_email'     => ($GLOBALS['TL_ADMIN_EMAIL'] ?? ''),
@@ -192,7 +175,7 @@ final class NotificationAction extends AbstractAction
             $tokens['transition_' . $name] = StringUtil::deserialize($value);
         }
 
-        if ($workflow->hasStep($currentStepName)) {
+        if ($currentStepName && $workflow->hasStep($currentStepName)) {
             $step                = $workflow->getStep($currentStepName);
             $tokens['step_name'] = $step->getName();
 
@@ -218,7 +201,7 @@ final class NotificationAction extends AbstractAction
         }
 
         $event = new BuildNotificationTokensEvent($transition, $item, $context, $tokens);
-        $this->eventDispatcher->dispatch('netzmacht.contao_workflow.build_notification_tokens', $event);
+        $this->eventDispatcher->dispatch($event, 'netzmacht.contao_workflow.build_notification_tokens');
 
         return $event->getTokens();
     }

@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
@@ -23,9 +12,6 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
-/**
- * Class View
- */
 final class HtmlView implements View
 {
     /**
@@ -59,14 +45,14 @@ final class HtmlView implements View
     /**
      * Template sections.
      *
-     * @var array|string[]
+     * @var array<string,array<string,mixed>>
      */
     private $sections = [];
 
     /**
      * Default section templates.
      *
-     * @var array
+     * @var array<string,string|null>
      */
     private $sectionTemplates = [];
 
@@ -80,7 +66,7 @@ final class HtmlView implements View
     /**
      * Options.
      *
-     * @var array
+     * @var array<string,mixed>
      */
     private $options;
 
@@ -92,15 +78,13 @@ final class HtmlView implements View
     private $renderer;
 
     /**
-     * HtmlStepView constructor.
-     *
      * @param Item                  $item     The workflow item.
      * @param Workflow              $workflow The workflow definition.
      * @param Transition|Step|State $context  Current context.
      * @param Renderer              $renderer View renderer.
      * @param Twig                  $twig     The twig template engine.
-     * @param string                $template The view template.
-     * @param array                 $options  Options.
+     * @param string|null           $template The view template.
+     * @param array<string,mixed>   $options  Options.
      */
     public function __construct(
         Item $item,
@@ -118,9 +102,11 @@ final class HtmlView implements View
         $this->options  = $options;
         $this->renderer = $renderer;
 
-        if ($template) {
-            $this->template = $template;
+        if (! $template) {
+            return;
         }
+
+        $this->template = $template;
     }
 
     /**
@@ -131,28 +117,19 @@ final class HtmlView implements View
         return $this->context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getItem(): Item
     {
         return $this->item;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getWorkflow(): Workflow
     {
         return $this->workflow;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContentType(): string
     {
-        return static::CONTENT_TYPE_HTML;
+        return self::CONTENT_TYPE_HTML;
     }
 
     /**
@@ -178,17 +155,11 @@ final class HtmlView implements View
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasSection(string $name): bool
     {
         return isset($this->sections[$name]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(): Response
     {
         if ($this->renderer->supports($this)) {

@@ -1,16 +1,6 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
+declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
     'config' => [
@@ -76,9 +66,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                     'handleButtonCallback',
                 ],
                 'toolkit'         => [
-                    'state_button' => [
-                        'stateColumn' => 'active',
-                    ],
+                    'state_button' => ['stateColumn' => 'active'],
                 ],
             ],
             'show'    => [
@@ -122,20 +110,14 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
     ],
 
     'fields' => [
-        'id'                      => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
-        ],
+        'id'                      => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
         'pid'                     => [
             'relation'   => ['type' => 'belongsTo', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow.name',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'tstamp'                  => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'sorting'                 => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
+        'tstamp'                  => ['sql' => "int(10) unsigned NOT NULL default '0'"],
+        'sorting'                 => ['sql' => "int(10) unsigned NOT NULL default '0'"],
         'label'                   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['label'],
             'inputType' => 'text',
@@ -296,9 +278,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                     'value'    => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow_transition']['comparisonValue'],
                         'inputType' => 'text',
-                        'eval'      => [
-                            'style' => 'width: 100%',
-                        ],
+                        'eval'      => ['style' => 'width: 100%'],
                     ],
                 ],
             ],
@@ -369,9 +349,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                     ],
                     'edit'        => [
                         'label'                => &$GLOBALS['TL_LANG']['tl_module']['merger_data_edit'],
-                        'eval'                 => [
-                            'tl_class' => 'edit_conditional_transition_column',
-                        ],
+                        'eval'                 => ['tl_class' => 'edit_conditional_transition_column'],
                         'input_field_callback' => [
                             'netzmacht.contao_workflow.listeners.dca.transition',
                             'conditionalTransitionEditButton',

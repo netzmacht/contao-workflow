@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
@@ -18,11 +7,8 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * Class BuildNotificationTokensEvent
- */
 final class BuildNotificationTokensEvent extends Event
 {
     /**
@@ -49,17 +35,15 @@ final class BuildNotificationTokensEvent extends Event
     /**
      * The generated tokens.
      *
-     * @var array
+     * @var array<string,mixed>
      */
     private $tokens;
 
     /**
-     * BuildNotificationTokensEvent constructor.
-     *
-     * @param Transition $transition Current workflow transition being processed.
-     * @param Item       $item       The workflow item.
-     * @param Context    $context    The transition context.
-     * @param array      $tokens     The generated tokens.
+     * @param Transition          $transition Current workflow transition being processed.
+     * @param Item                $item       The workflow item.
+     * @param Context             $context    The transition context.
+     * @param array<string,mixed> $tokens     The generated tokens.
      */
     public function __construct(Transition $transition, Item $item, Context $context, array $tokens)
     {
@@ -71,8 +55,6 @@ final class BuildNotificationTokensEvent extends Event
 
     /**
      * Get the workflow transition.
-     *
-     * @return Transition
      */
     public function getTransition(): Transition
     {
@@ -81,8 +63,6 @@ final class BuildNotificationTokensEvent extends Event
 
     /**
      * Get the workflow item.
-     *
-     * @return Item
      */
     public function getItem(): Item
     {
@@ -91,8 +71,6 @@ final class BuildNotificationTokensEvent extends Event
 
     /**
      * Get the current context.
-     *
-     * @return Context
      */
     public function getContext(): Context
     {
@@ -102,7 +80,7 @@ final class BuildNotificationTokensEvent extends Event
     /**
      * Get the tokens.
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getTokens(): array
     {
@@ -114,8 +92,6 @@ final class BuildNotificationTokensEvent extends Event
      *
      * @param string $key   The token key.
      * @param mixed  $value The token value.
-     *
-     * @return void
      */
     public function addToken(string $key, $value): void
     {
@@ -126,8 +102,6 @@ final class BuildNotificationTokensEvent extends Event
      * Add set of tokens.
      *
      * @param array<string, mixed> $tokens Set of tokens.
-     *
-     * @return void
      */
     public function addTokens(array $tokens): void
     {

@@ -1,43 +1,30 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
 use ArrayAccess;
 use ArrayIterator;
+use IteratorAggregate;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
+use Netzmacht\ContaoWorkflowBundle\Exception\RuntimeException;
 use Traversable;
+
 use function array_key_exists;
 use function is_array;
 
-/**
- * Class ArrayPropertyAccessor
- */
 final class ArrayPropertyAccessor implements PropertyAccessor
 {
     /**
      * Data array.
      *
-     * @var array|ArrayAccess
+     * @var array<mixed,mixed>|ArrayAccess<mixed,mixed>
      */
     private $array;
 
     /**
-     * ArrayPropertyAccess constructor.
-     *
-     * @param array|ArrayAccess $array Data array.
+     * @param array<mixed,mixed>|ArrayAccess<mixed,mixed> $array Data array.
      */
     public function __construct($array)
     {
@@ -45,9 +32,9 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
+     *
+     * @param mixed $object
      */
     public static function supports($object): bool
     {
@@ -55,14 +42,15 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     }
 
     /**
-     * {@inheritDoc}
+     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
+     *
+     * @param mixed $object
      *
      * @throws PropertyAccessFailed When data structure is not supported.
-     *
-     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
     public static function create($object): PropertyAccessor
     {
+        /** @psalm-suppress DeprecatedMethod */
         if (self::supports($object)) {
             return new self($object);
         }
@@ -83,12 +71,9 @@ final class ArrayPropertyAccessor implements PropertyAccessor
      */
     public function get(string $name)
     {
-        return ($this->array[$name] ?? null);
+        return $this->array[$name] ?? null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name): bool
     {
         if ($this->array instanceof ArrayAccess) {
@@ -98,11 +83,21 @@ final class ArrayPropertyAccessor implements PropertyAccessor
         return array_key_exists($name, $this->array);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @return Traversable<mixed,mixed> */
     public function getIterator(): Traversable
     {
-        return new ArrayIterator($this->array);
+        if (is_array($this->array)) {
+            return new ArrayIterator($this->array);
+        }
+
+        if ($this->array instanceof IteratorAggregate) {
+            return $this->array->getIterator();
+        }
+
+        if ($this->array instanceof Traversable) {
+            return $this->array;
+        }
+
+        throw new RuntimeException('Unable to create iterator for ArrayAccess object');
     }
 }

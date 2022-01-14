@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
@@ -19,6 +8,7 @@ use Contao\Backend;
 use Contao\DataContainer;
 use Contao\Image;
 use Contao\Input;
+use Contao\Model\Collection;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -32,10 +22,12 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function assert;
 use function sprintf;
 use function str_replace;
 use function time;
@@ -43,7 +35,7 @@ use function time;
 /**
  * Class Transition used for tl_workflow_transition callbacks.
  *
- * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class TransitionCallbackListener extends AbstractListener
 {
@@ -66,7 +58,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Configuration of available transition types.
      *
-     * @var array<array>
+     * @var array<array<string,mixed>>
      */
     private $transitionTypes;
 
@@ -92,14 +84,12 @@ final class TransitionCallbackListener extends AbstractListener
     private $assetsManager;
 
     /**
-     * Transition constructor.
-     *
-     * @param DcaManager          $dcaManager        Data container manager.
-     * @param RepositoryManager   $repositoryManager Repository manager.
-     * @param WorkflowManager     $workflowManager   Workflow manager.
-     * @param TranslatorInterface $translator        Translator.
-     * @param AssetsManager       $assetsManager     Assets manager.
-     * @param array<array>        $transitionTypes   Configuration of available transition types.
+     * @param DcaManager                 $dcaManager        Data container manager.
+     * @param RepositoryManager          $repositoryManager Repository manager.
+     * @param WorkflowManager            $workflowManager   Workflow manager.
+     * @param TranslatorInterface        $translator        Translator.
+     * @param AssetsManager              $assetsManager     Assets manager.
+     * @param array<array<string,mixed>> $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
         DcaManager $dcaManager,
@@ -122,20 +112,20 @@ final class TransitionCallbackListener extends AbstractListener
      * Inject javscript in backend edit mask.
      *
      * @param DataContainer $dataContainer Data container driver.
-     *
-     * @return void
      */
-    public function injectJs($dataContainer): void
+    public function injectJs(DataContainer $dataContainer): void
     {
-        if ($dataContainer->table === 'tl_workflow_transition' && Input::get('act') === 'edit') {
-            $this->assetsManager->addJavascript('bundles/netzmachtcontaoworkflow/js/backend.js');
+        if ($dataContainer->table !== 'tl_workflow_transition' || Input::get('act') !== 'edit') {
+            return;
         }
+
+        $this->assetsManager->addJavascript('bundles/netzmachtcontaoworkflow/js/backend.js');
     }
 
     /**
      * Get available transition types.
      *
-     * @return array<string>
+     * @return list<string>
      */
     public function getTypes(): array
     {
@@ -145,39 +135,44 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Generate a row view.
      *
-     * @param array $row Current data row.
-     *
-     * @return string
+     * @param array<string,mixed> $row Current data row.
      */
     public function generateRow(array $row): string
     {
+        /** @psalm-suppress PossiblyInvalidCast */
         return sprintf(
             '%s <span class="tl_gray">[%s]</span>',
             $row['label'],
-            $this->getFormatter()->formatValue('type', $row['type'])
+            (string) $this->getFormatter()->formatValue('type', $row['type'])
         );
     }
 
     /**
      * Get steps which can be a target.
      *
-     * @param \DataContainer $dataContainer Data container driver.
+     * @param DataContainer $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string|int,string>
      */
-    public function getStepsTo($dataContainer): array
+    public function getStepsTo(DataContainer $dataContainer): array
     {
+        assert($dataContainer->activeRecord !== null);
+
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
         $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
 
         if ($collection) {
-            while ($collection->next()) {
-                $steps[$collection->id] = $collection->label;
+            foreach ($collection as $model) {
+                assert($model instanceof StepModel);
 
-                if ($collection->final) {
-                    $steps[$collection->id] .= ' [final]';
+                $steps[$model->id] = $model->label;
+
+                if (! $model->final) {
+                    continue;
                 }
+
+                $steps[$model->id] .= ' [final]';
             }
         }
 
@@ -187,7 +182,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getEntityProperties(): array
     {
@@ -199,7 +194,7 @@ final class TransitionCallbackListener extends AbstractListener
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
         $workflow   = $repository->find((int) $transition->pid);
 
-        if (!$workflow instanceof WorkflowModel) {
+        if (! $workflow instanceof WorkflowModel) {
             return [];
         }
 
@@ -209,7 +204,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all actions.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getActions(): array
     {
@@ -227,14 +222,14 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all conditional transitions.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getConditionalTransitions(): array
     {
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
         $transition = $repository->find((int) Input::get('id'));
 
-        if (!$transition) {
+        if (! $transition) {
             $collection = $repository->findAll(['order' => '.label']);
         } else {
             $collection = $repository->findBy(
@@ -244,32 +239,32 @@ final class TransitionCallbackListener extends AbstractListener
             );
         }
 
+        assert($collection instanceof Collection || $collection === null);
+
         return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
     }
 
     /**
      * Load conditional transitions.
      *
-     * @param mixed          $value         The actual value.
-     * @param \DataContainer $dataContainer The data container driver.
+     * @param mixed         $value         The actual value.
+     * @param DataContainer $dataContainer The data container driver.
      *
-     * @return array
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return list<string>
      *
      * @throws DBALException If any dbal error occurs.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function loadConditionalTransitions($value, $dataContainer)
+    public function loadConditionalTransitions($value, DataContainer $dataContainer): array
     {
         $statement = $this->repositoryManager
             ->getConnection()
             ->prepare('SELECT tid FROM tl_workflow_transition_conditional_transition WHERE pid=:pid ORDER BY sorting');
 
-        if ($statement->execute(['pid' => $dataContainer->id])) {
-            return $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
-        }
-
-        return [];
+        return $statement
+            ->executeQuery(['pid' => $dataContainer->id])
+            ->fetchFirstColumn();
     }
 
     /**
@@ -279,9 +274,10 @@ final class TransitionCallbackListener extends AbstractListener
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return null
+     *
      * @throws DBALException When an database related error occurs.
      */
-    public function saveConditionalTransitions($value, $dataContainer)
+    public function saveConditionalTransitions($value, DataContainer $dataContainer)
     {
         $connection = $this->repositoryManager->getConnection();
         $new        = array_filter(StringUtil::deserialize($value, true));
@@ -291,16 +287,16 @@ final class TransitionCallbackListener extends AbstractListener
         );
 
         $statement->bindValue('pid', $dataContainer->id);
-        $statement->execute();
+        $result = $statement->executeQuery();
 
-        while ($row = $statement->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $values[$row['tid']] = $row;
         }
 
         $sorting = 0;
 
         foreach ($new as $conditionalTransitionId) {
-            if (!isset($values[$conditionalTransitionId])) {
+            if (! isset($values[$conditionalTransitionId])) {
                 $data = [
                     'tstamp'  => time(),
                     'pid'     => $dataContainer->id,
@@ -311,8 +307,9 @@ final class TransitionCallbackListener extends AbstractListener
                 $connection->insert('tl_workflow_transition_conditional_transition', $data);
                 $sorting += 128;
             } else {
-                if ($values[$conditionalTransitionId]['sorting'] <= ($sorting - 128)
-                    || $values[$conditionalTransitionId]['sorting'] >= ($sorting + 128)
+                if (
+                    $values[$conditionalTransitionId]['sorting'] <= ($sorting - 128)
+                    || $values[$conditionalTransitionId]['sorting'] >= $sorting + 128
                 ) {
                     $connection->update(
                         'tl_workflow_transition_conditional_transition',
@@ -327,14 +324,14 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         $ids = array_map(
-            function ($item) {
+            static function (array $item): string {
                 return $item['id'];
             },
             $values
         );
 
         if ($ids) {
-            $connection->executeUpdate(
+            $connection->executeStatement(
                 'DELETE FROM tl_workflow_transition_conditional_transition WHERE id IN(?)',
                 [$ids],
                 [Connection::PARAM_INT_ARRAY]
@@ -349,7 +346,7 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @param DataContainer $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getWorkflows(DataContainer $dataContainer): array
     {
@@ -363,7 +360,8 @@ final class TransitionCallbackListener extends AbstractListener
 
             if ($workflowModel) {
                 foreach ($this->workflowManager->getWorkflows() as $workflow) {
-                    if ($workflow->getName() === 'workflow_' . $workflowModel->id
+                    if (
+                        $workflow->getName() === 'workflow_' . $workflowModel->id
                         || $workflow->getProviderName() !== $workflowModel->providerName
                     ) {
                         continue;
@@ -387,8 +385,6 @@ final class TransitionCallbackListener extends AbstractListener
 
     /**
      * Generate conditional transition edit button.
-     *
-     * @return string
      */
     public function conditionalTransitionEditButton(): string
     {
@@ -402,11 +398,11 @@ final class TransitionCallbackListener extends AbstractListener
      * Create edit all button for conditional transitions.
      *
      * @param DataContainer $dataContainer Data container driver.
-     *
-     * @return string
      */
-    public function editAllTransitionsButton($dataContainer): string
+    public function editAllTransitionsButton(DataContainer $dataContainer): string
     {
+        assert($dataContainer->activeRecord !== null);
+
         // @codingStandardsIgnoreStart
         $template = <<<'html'
 <div class="widget edit-all-transitions">
@@ -430,21 +426,19 @@ html;
     /**
      * Generate the actions button depending transition type.
      *
-     * @param array       $row        The dataset row.
-     * @param string|null $href       The link target.
-     * @param string      $label      The label.
-     * @param string      $title      The title.
-     * @param string|null $icon       The icon.
-     * @param string      $attributes Additional html attributes.
-     *
-     * @return string
+     * @param array<string,mixed> $row        The dataset row.
+     * @param string              $href       The link target.
+     * @param string              $label      The label.
+     * @param string              $title      The title.
+     * @param string              $icon       The icon.
+     * @param string              $attributes Additional html attributes.
      */
     public function generateActionButton(
         array $row,
-        ?string $href,
+        string $href,
         string $label,
         string $title,
-        ?string $icon,
+        string $icon,
         string $attributes
     ): string {
         $supported = ($this->transitionTypes[$row['type']]['actions'] ?? false);

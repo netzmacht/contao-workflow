@@ -1,44 +1,34 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
 
-/**
- * Class Sections
- */
-final class Sections implements \IteratorAggregate
+use ArrayIterator;
+use IteratorAggregate;
+use RuntimeException;
+
+use function array_key_exists;
+
+final class Sections implements IteratorAggregate
 {
     /**
      * The generated sections.
      *
-     * @var array|string[]
+     * @var array<string,array<string,string>>
      */
     private $sections;
 
     /**
      * The section templates.
      *
-     * @var array
+     * @var array<string,string|null>
      */
     private $templates;
 
     /**
-     * Sections constructor.
-     *
-     * @param array $sections  The generated sections.
-     * @param array $templates The section templates.
+     * @param array<string,array<string,string>> $sections  The generated sections.
+     * @param array<string,string|null>          $templates The section templates.
      */
     public function __construct(array $sections, array $templates)
     {
@@ -49,14 +39,11 @@ final class Sections implements \IteratorAggregate
     /**
      * Render the sections.
      *
-     * @param string $name
-     * @param bool   $remove
-     *
-     * @return array
+     * @return array<string,string>
      */
     public function get(string $name, bool $remove = true): array
     {
-        if (!isset($this->sections[$name])) {
+        if (! isset($this->sections[$name])) {
             return [];
         }
 
@@ -73,8 +60,6 @@ final class Sections implements \IteratorAggregate
      * Get the template of a section.
      *
      * @param string $name The section name.
-     *
-     * @return null|string
      */
     public function getTemplate(string $name): ?string
     {
@@ -85,47 +70,41 @@ final class Sections implements \IteratorAggregate
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetExists($offset)
+    public function offsetExists(string $offset): bool
     {
         return array_key_exists($offset, $this->sections);
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,string>|null
      */
-    public function offsetGet($offset)
+    public function offsetGet(string $offset): ?array
     {
-        return $this->sections[$offset];
+        return $this->sections[$offset] ?? null;
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
-     * @throws \RuntimeException Overriding sections is not allowed.
+     * @throws RuntimeException Overriding sections is not allowed.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(string $offset, $value): void
     {
-        throw new \RuntimeException('Overriding sections is not allowed.');
+        throw new RuntimeException('Overriding sections is not allowed.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetUnset($offset)
+    public function offsetUnset(string $offset): void
     {
         unset($this->sections[$offset]);
     }
 
     /**
-     * Allow to iterate over the sections.
-     *
-     * @return \ArrayIterator
+     * Allow iterating over the sections.
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->sections);
+        return new ArrayIterator($this->sections);
     }
 }

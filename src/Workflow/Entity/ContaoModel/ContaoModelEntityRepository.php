@@ -1,32 +1,27 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
 
 use Assert\Assertion;
+use Assert\AssertionFailedException;
 use Contao\Model;
+use Contao\Model\Collection;
+use InvalidArgumentException;
 use Netzmacht\Contao\Toolkit\Data\Model\Repository;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
+
+use function array_filter;
+use function assert;
 use function get_class;
+use function is_array;
+use function sprintf;
 
 /**
  * Class EntityRepository stores an entity.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Entity
  */
 final class ContaoModelEntityRepository implements WorkflowEntityRepository
 {
@@ -71,11 +66,9 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     /**
      * Add an entity to the repository.
      *
-     * @param Model $entity The new entity.
+     * @param Model|mixed $entity The new entity.
      *
-     * @return void
-     *
-     * @throws \Assert\AssertionFailedException If an invalid entity type is given.
+     * @throws AssertionFailedException If an invalid entity type is given.
      */
     public function add($entity): void
     {
@@ -85,7 +78,6 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
             'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        /** @var Model $entity */
         $this->repository->save($entity);
 
         foreach ($this->changeTracker->release($entity) as $model) {
@@ -97,18 +89,16 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     /**
      * Find an entity by id.
      *
-     * @param int $entityId The Entity id.
+     * @param int|mixed $entityId The Entity id.
      *
-     * @return Model
-     *
-     * @throws \InvalidArgumentException If no entity were found.
+     * @throws InvalidArgumentException If no entity were found.
      */
     public function find($entityId): Model
     {
         $model = $this->repository->find((int) $entityId);
 
-        if (!$model) {
-            throw new \InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
+        if (! $model) {
+            throw new InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
         }
 
         return $model;
@@ -129,6 +119,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
             $models   = $this->repository->findBySpecification($specification->asModelSpecification()) ?: [];
             $entities = [];
 
+            assert($models instanceof Collection || is_array($models));
             foreach ($models as $model) {
                 $entities[] = $model;
             }
@@ -139,6 +130,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
         $models   = $this->repository->findAll() ?: [];
         $entities = [];
 
+        assert($models instanceof Collection || is_array($models));
         foreach ($models as $model) {
             $entities[] = $model;
         }
@@ -158,7 +150,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * {@inheritdoc}
      *
-     * @throws \Assert\AssertionFailedException If an invalid entity type is given.
+     * @throws AssertionFailedException If an invalid entity type is given.
      */
     public function remove($entity): void
     {
@@ -168,7 +160,6 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
             'Entity repository requires an instance of the ContaoModelEntity'
         );
 
-        /** @var Model $entity */
         $this->repository->delete($entity);
     }
 }

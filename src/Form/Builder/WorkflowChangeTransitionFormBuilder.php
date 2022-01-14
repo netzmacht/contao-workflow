@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form\Builder;
@@ -21,9 +10,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
-/**
- * Class ConditionalTransitionFormBuilder
- */
+/** @SuppressWarnings(PHPMD.LongVariable) */
 class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
 {
     /**
@@ -34,8 +21,6 @@ class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
     private $transitionFormBuilder;
 
     /**
-     * ConditionalTransitionFormBuilder constructor.
-     *
      * @param TransitionFormBuilder $transitionFormBuilder Transition form builder.
      */
     public function __construct(TransitionFormBuilder $transitionFormBuilder)
@@ -43,18 +28,12 @@ class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
         $this->transitionFormBuilder = $transitionFormBuilder;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function supports(Transition $transition) : bool
+    public function supports(Transition $transition): bool
     {
         return $transition->getConfigValue('type') === 'workflow';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder) : void
+    public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
         foreach ($transition->getPostActions() as $action) {
             if (! $action instanceof WorkflowChangeAction) {
@@ -62,9 +41,11 @@ class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
             }
 
             $startTransition = $action->getStartTransition();
-            if ($this->transitionFormBuilder->supports($startTransition)) {
-                $this->transitionFormBuilder->buildForm($startTransition, $item, $context, $formBuilder);
+            if (! $this->transitionFormBuilder->supports($startTransition)) {
+                continue;
             }
+
+            $this->transitionFormBuilder->buildForm($startTransition, $item, $context, $formBuilder);
         }
     }
 }

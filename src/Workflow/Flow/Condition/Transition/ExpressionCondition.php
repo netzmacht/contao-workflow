@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
@@ -23,8 +12,6 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * ExpressionCondition uses the symfony expression syntax for defining conditions.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Condition\Transition
  */
 final class ExpressionCondition implements Condition
 {
@@ -56,8 +43,6 @@ final class ExpressionCondition implements Condition
 
     /**
      * Get expression.
-     *
-     * @return string
      */
     public function getExpression(): string
     {
@@ -77,7 +62,7 @@ final class ExpressionCondition implements Condition
             'item'       => $item,
             'context'    => $context,
             'entity'     => $item->getEntity(),
-            'entityId'   => $item->getEntityId()
+            'entityId'   => $item->getEntityId(),
         ];
 
         if ($this->expressionLanguage->evaluate($this->expression, $values)) {

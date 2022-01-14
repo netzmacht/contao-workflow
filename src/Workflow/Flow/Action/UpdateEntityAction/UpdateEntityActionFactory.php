@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction;
@@ -25,6 +14,8 @@ use Netzmacht\Workflow\Flow\Workflow;
 
 /**
  * Factory creates update entity action
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class UpdateEntityActionFactory implements ActionTypeFactory
 {
@@ -43,8 +34,6 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
     private $propertyAccessManager;
 
     /**
-     * UpdateEntityActionFactory constructor.
-     *
      * @param DcaManager $dcaManager Data container definition manager.
      */
     public function __construct(DcaManager $dcaManager, PropertyAccessManager $propertyAccessManager)
@@ -53,33 +42,21 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getCategory(): string
     {
         return 'default';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'update_entity';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isPostAction(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(Workflow $workflow): bool
     {
         try {

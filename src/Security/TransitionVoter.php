@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
@@ -20,6 +9,7 @@ use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 use function assert;
 
 /**
@@ -37,8 +27,6 @@ final class TransitionVoter extends Voter
     private $user;
 
     /**
-     * TransitionVoter constructor.
-     *
      * @param User $user Workflow user.
      */
     public function __construct(User $user)
@@ -51,6 +39,7 @@ final class TransitionVoter extends Voter
      */
     protected function supports($attribute, $subject): bool
     {
+        /** @psalm-suppress RedundantConditionGivenDocblockType - TODO: Do we need to fix the attribute type */
         if (! $attribute instanceof Transition) {
             return false;
         }
@@ -63,6 +52,7 @@ final class TransitionVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        /** @psalm-suppress DocblockTypeContradiction - TODO: Do we need to fix the attribute type */
         assert($attribute instanceof Transition);
         assert($subject instanceof Item);
 

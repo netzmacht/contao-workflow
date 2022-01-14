@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
@@ -22,12 +11,11 @@ use Exception;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
 use Traversable;
+
 use function array_pop;
+use function count;
 use function explode;
 
-/**
- * Class ContaoModelPropertyAccessor
- */
 final class ContaoModelPropertyAccessor implements PropertyAccessor
 {
     /**
@@ -45,8 +33,6 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     private $changesRegistry;
 
     /**
-     * ContaoModelPropertyAccessor constructor.
-     *
      * @param Model                                     $model           Contao model.
      * @param ContaoModelRelatedModelChangeTracker|null $changesRegistry Related model changes registry.
      */
@@ -57,24 +43,25 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     }
 
     /**
-     * {@inheritDoc}
+     * @deprecated Will be removed in the next major release. use PropertyAccessorFactory instead.
      *
-     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
+     * @param mixed $object
      */
-    public static function supports($object) : bool
+    public static function supports($object): bool
     {
         return $object instanceof Model;
     }
 
     /**
-     * {@inheritDoc}
+     * @deprecated Will be removed in the next major release. use PropertyAccessorFactory instead.
+     *
+     * @param mixed $object
      *
      * @throws PropertyAccessFailed When data structure is not supported.
-     *
-     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      */
     public static function create($object): PropertyAccessor
     {
+        /** @psalm-suppress DeprecatedMethod */
         if (self::supports($object)) {
             return new self($object);
         }
@@ -96,9 +83,11 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         }
 
         $model->$property = $value;
-        if ($this->changesRegistry && $this->model !== $model) {
-            $this->changesRegistry->track($this->model, $model);
+        if (! $this->changesRegistry || $this->model === $model) {
+            return;
         }
+
+        $this->changesRegistry->track($this->model, $model);
     }
 
     /**
@@ -117,9 +106,6 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         return $model->$property;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name): bool
     {
         $path     = explode('.', $name);
@@ -133,9 +119,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         return isset($model->$property);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @return ArrayIterator<string,mixed> */
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->model->row());
@@ -144,9 +128,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     /**
      * Determine the model from a given path.
      *
-     * @param array $path Property path checking relations.
-     *
-     * @return Model|null
+     * @param list<string> $path Property path checking relations.
      *
      * @throws Exception When property is not relational.
      */

@@ -1,36 +1,26 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader;
 
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
-use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowRepository;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Definition;
+use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateWorkflowEvent;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Exception\DefinitionException;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Workflow;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
-/**
- * Class DatabaseDrivenWorkflowLoader
- */
+use function array_merge;
+use function assert;
+use function sprintf;
+
 final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
 {
     /**
@@ -62,8 +52,6 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
     private $logger;
 
     /**
-     * DatabaseDrivenWorkflowLoader constructor.
-     *
      * @param RepositoryManager    $repositoryManager Contao model repository manager.
      * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
      * @param EventDispatcher      $eventDispatcher   Event dispatcher.
@@ -86,10 +74,10 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
      */
     public function load(): array
     {
-        /** @var WorkflowRepository $workflowRepository */
         $workflowRepository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $collection         = $workflowRepository->findActive();
-        $workflows          = [];
+        assert($workflowRepository instanceof WorkflowRepository);
+        $collection = $workflowRepository->findActive();
+        $workflows  = [];
 
         if ($collection) {
             foreach ($collection as $model) {
@@ -123,17 +111,15 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
      *
      * @param int $workflowId The workflow id.
      *
-     * @return Workflow
-     *
      * @throws WorkflowNotFound When workflow is not defined in the database.
      */
     public function loadWorkflowById(int $workflowId): Workflow
     {
-        /** @var WorkflowRepository $workflowRepository */
         $workflowRepository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $model              = $workflowRepository->findOneBy(['.id=?'], [$workflowId]);
+        assert($workflowRepository instanceof WorkflowRepository);
+        $model = $workflowRepository->findOneBy(['.id=?'], [$workflowId]);
 
-        if (!$model) {
+        if (! $model instanceof WorkflowModel) {
             throw new WorkflowNotFound(sprintf('Workflow with ID "%s" not found.', $workflowId));
         }
 
@@ -145,25 +131,23 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
      *
      * @param WorkflowModel $model Databse workflow model.
      *
-     * @return Workflow
-     *
      * @throws WorkflowTypeNotFound When workflow type is not found.
      */
     public function createWorkflow(WorkflowModel $model): Workflow
     {
         $workflow = new Workflow(
             'workflow_' . $model->id,
-            (string) $model->providerName,
-            (string) $model->label,
+            $model->providerName,
+            $model->label,
             array_merge(
                 $model->row(),
                 [Definition::SOURCE => Definition::SOURCE_DATABASE]
             )
         );
 
-        $next = function () use ($workflow) {
+        $next = function () use ($workflow): void {
             $event = new CreateWorkflowEvent($workflow);
-            $this->eventDispatcher->dispatch($event::NAME, $event);
+            $this->eventDispatcher->dispatch($event, $event::NAME);
         };
 
         $this->typeRegistry->getType($model->type)->configure($workflow, $next);

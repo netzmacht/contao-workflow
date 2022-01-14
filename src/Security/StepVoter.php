@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
@@ -24,10 +13,14 @@ use Netzmacht\Workflow\Flow\Step;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 use function assert;
+use function count;
 
 /**
  * The step voter is a security voter to evaluate access to a step for a given workflow item.
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class StepVoter extends Voter
 {
@@ -48,16 +41,14 @@ final class StepVoter extends Voter
     /**
      * The provider configuration.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $providerConfiguration;
 
     /**
-     * StepVoter constructor.
-     *
-     * @param User                  $workflowUser          The workflow user.
-     * @param PropertyAccessManager $propertyAccessManager The property access manager.
-     * @param array                 $providerConfiguration The provider configuration.
+     * @param User                              $workflowUser          The workflow user.
+     * @param PropertyAccessManager             $propertyAccessManager The property access manager.
+     * @param array<string,array<string,mixed>> $providerConfiguration The provider configuration.
      */
     public function __construct(
         User $workflowUser,
@@ -72,28 +63,25 @@ final class StepVoter extends Voter
     /**
      * {@inheritDoc}
      */
-    protected function supports($attribute, $item): bool
+    protected function supports($attribute, $subject): bool
     {
-        if (! $item instanceof Item) {
+        if (! $subject instanceof Item) {
             return false;
         }
 
-        if (! $attribute instanceof Step) {
-            return false;
-        }
-
-        return true;
+        return $attribute instanceof Step;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function voteOnAttribute($step, $item, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        assert($item instanceof Item);
-        assert($step instanceof Step);
+        /** @psalm-suppress DocblockTypeContradiction - TODO: Do we need to fix the attribute type */
+        assert($attribute instanceof Step);
+        assert($subject instanceof Item);
 
-        $permission        = $step->getPermission();
+        $permission        = $attribute->getPermission();
         $permissionLimited = $permission !== null;
         $user              = $token->getUser();
         if (! $user instanceof UserInterface) {
@@ -105,12 +93,12 @@ final class StepVoter extends Voter
             return true;
         }
 
-        $providerName         = $item->getEntityId()->getProviderName();
+        $providerName         = $subject->getEntityId()->getProviderName();
         $assignUserProperties = ($this->providerConfiguration[$providerName]['assign_users'] ?? []);
 
         // If no users are assigned to, break here
         if (count($assignUserProperties) === 0) {
-            return !$permissionLimited;
+            return ! $permissionLimited;
         }
 
         // Only authenticated users can be assigned
@@ -120,24 +108,22 @@ final class StepVoter extends Voter
         }
 
         // Only entity which properties are accessible can be checked
-        $accessor = $this->provideAccess($item);
+        $accessor = $this->provideAccess($subject);
         if ($accessor === null) {
-            return !$permissionLimited;
+            return ! $permissionLimited;
         }
 
         if ($this->checkAssignableProperties($assignUserProperties, $accessor, $userId)) {
             return true;
         }
 
-        return !$permissionLimited;
+        return ! $permissionLimited;
     }
 
     /**
      * Get the user id for an authenticated contao user otherwise return null.
      *
      * @param TokenInterface $token The security token.
-     *
-     * @return EntityId|null
      */
     private function getUserId(TokenInterface $token): ?EntityId
     {
@@ -153,8 +139,6 @@ final class StepVoter extends Voter
      * Check if entity supports property access and create property accessor for it.
      *
      * @param Item $item The current item.
-     *
-     * @return PropertyAccessor|null
      */
     private function provideAccess(Item $item): ?PropertyAccessor
     {
@@ -169,11 +153,9 @@ final class StepVoter extends Voter
     /**
      * Check each assign user property until first match is found.
      *
-     * @param array            $assignUserProperties List of properties used to assign users.
+     * @param list<string>     $assignUserProperties List of properties used to assign users.
      * @param PropertyAccessor $accessor             The property accessor.
      * @param EntityId         $userId               The user id of the current user.
-     *
-     * @return bool
      */
     protected function checkAssignableProperties(
         array $assignUserProperties,

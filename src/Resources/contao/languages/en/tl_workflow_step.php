@@ -1,15 +1,6 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
+declare(strict_types=1);
 
 $GLOBALS['TL_LANG']['tl_workflow_step']['className']['0']       = 'CSS class';
 $GLOBALS['TL_LANG']['tl_workflow_step']['className']['1']       = 'CSS class name which may be used to style an item in the current state';
@@ -36,4 +27,3 @@ $GLOBALS['TL_LANG']['tl_workflow_step']['permission']['1']      = 'Permission wh
 $GLOBALS['TL_LANG']['tl_workflow_step']['permission_legend']    = 'Permission';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show']['0']            = 'Show step details';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show']['1']            = 'Step details';
-

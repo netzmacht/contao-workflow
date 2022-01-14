@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction;
@@ -25,10 +14,13 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
+
 use function assert;
 
 /**
- * Class builds the form for the update entity action which is based on an dca
+ * Class builds the form for the update entity action which is based on a dca
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
 {
@@ -40,8 +32,6 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
     private $propertyAccessManager;
 
     /**
-     * UpdateEntityActionFormBuilder constructor.
-     *
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      */
     public function __construct(PropertyAccessManager $propertyAccessManager)
@@ -49,17 +39,11 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(Action $action): bool
     {
         return $action instanceof UpdateEntityAction;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         assert($action instanceof UpdateEntityAction);

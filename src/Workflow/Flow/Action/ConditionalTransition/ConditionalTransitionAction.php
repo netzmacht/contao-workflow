@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ConditionalTransition;
@@ -22,9 +11,8 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
 
-/**
- * Class ConditionalTransitionAction
- */
+use function is_string;
+
 final class ConditionalTransitionAction implements Action
 {
     /**
@@ -37,7 +25,7 @@ final class ConditionalTransitionAction implements Action
     /**
      * A list of possible transitions.
      *
-     * @var string[]
+     * @var list<string>
      */
     private $transitionNames;
 
@@ -51,9 +39,9 @@ final class ConditionalTransitionAction implements Action
     /**
      * Construct.
      *
-     * @param string   $name            Unique action name.
-     * @param Workflow $workflow        The corresponding workflow.
-     * @param array    $transitionNames A list of possible transition names.
+     * @param string       $name            Unique action name.
+     * @param Workflow     $workflow        The corresponding workflow.
+     * @param list<string> $transitionNames A list of possible transition names.
      */
     public function __construct(string $name, Workflow $workflow, array $transitionNames)
     {
@@ -65,7 +53,7 @@ final class ConditionalTransitionAction implements Action
     /**
      * {@inheritDoc}
      */
-    public function getRequiredPayloadProperties(Item $item) : array
+    public function getRequiredPayloadProperties(Item $item): array
     {
         $transition = $this->determineMatchingTransition($item, new Context());
         if ($transition) {
@@ -75,13 +63,11 @@ final class ConditionalTransitionAction implements Action
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(Item $item, Context $context) : bool
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    public function validate(Item $item, Context $context): bool
     {
         $transition = $this->determineMatchingTransition($item, $context);
-        if (!$transition) {
+        if (! $transition) {
             $context->addError('transition.conditional.failed.no_matching_transition');
 
             return false;
@@ -96,11 +82,14 @@ final class ConditionalTransitionAction implements Action
      * {@inheritDoc}
      *
      * @throws ActionFailedException When no conditional transition is set in the properties.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
-    public function transit(Transition $transition, Item $item, Context $context) : void
+    public function transit(Transition $transition, Item $item, Context $context): void
     {
         $conditionalTransitionName = $context->getProperties()->get($this->name);
-        if (!is_string($conditionalTransitionName)) {
+        if (! is_string($conditionalTransitionName)) {
             throw ActionFailedException::action($this, $context->getErrorCollection());
         }
 
@@ -113,10 +102,8 @@ final class ConditionalTransitionAction implements Action
      *
      * @param Item    $item    Workflow item.
      * @param Context $context Transition context.
-     *
-     * @return Transition|null
      */
-    public function determineMatchingTransition(Item $item, Context $context) : ?Transition
+    public function determineMatchingTransition(Item $item, Context $context): ?Transition
     {
         foreach ($this->transitionNames as $transitionName) {
             $transition = $this->workflow->getTransition($transitionName);

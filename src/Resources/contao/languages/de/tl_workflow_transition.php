@@ -1,16 +1,6 @@
 <?php
-/**
- * Translations are managed using Transifex. To create a new translation
- * or to help to maintain an existing one, please register at transifex.com.
- *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/contao-workflow/language/de/
- *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2020-10-13T07:00:52+00:00
- */
 
+declare(strict_types=1);
 
 $GLOBALS['TL_LANG']['tl_workflow_transition']['actions']['0']                 = 'Aktionen';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['actions']['1']                 = 'Aktionen der Transition verwalten';
@@ -84,4 +74,3 @@ $GLOBALS['TL_LANG']['tl_workflow_transition']['types']['workflow']['0']       = 
 $GLOBALS['TL_LANG']['tl_workflow_transition']['types']['workflow']['1']       = 'Eine Transition vom Typ Workflow-Wechsel startet einen weiteren Workflow.';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['workflow']['0']                = 'Workflow';
 $GLOBALS['TL_LANG']['tl_workflow_transition']['workflow']['1']                = 'Workflow, der gestartet werden soll';
-

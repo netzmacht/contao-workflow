@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
@@ -24,11 +13,9 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Routing\RouterInterface as Router;
+
 use function sprintf;
 
-/**
- * Class SubmitButtonsListener
- */
 final class SubmitButtonsListener
 {
     /**
@@ -60,8 +47,6 @@ final class SubmitButtonsListener
     private $inputAdapter;
 
     /**
-     * SubmitButtonsListener constructor.
-     *
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param EntityManager   $entityManager   Entity manager.
      * @param Router          $router          Router.
@@ -82,14 +67,14 @@ final class SubmitButtonsListener
     /**
      * Add transitions as submit buttons listening to the buttons_callback.
      *
-     * @param array         $buttons       Current buttons.
-     * @param DataContainer $dataContainer Data container driver.
+     * @param array<string,string> $buttons       Current buttons.
+     * @param DataContainer        $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function addTransitionButtons(array $buttons, DataContainer $dataContainer): array
     {
-        if (!$dataContainer->activeRecord) {
+        if (! $dataContainer->activeRecord) {
             return $buttons;
         }
 
@@ -97,7 +82,7 @@ final class SubmitButtonsListener
         $repository = $this->entityManager->getRepository($dataContainer->table);
         $entity     = $repository->find($entityId->getIdentifier());
 
-        if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
+        if (! $this->workflowManager->hasWorkflow($entityId, $entity)) {
             return $buttons;
         }
 
@@ -121,14 +106,12 @@ final class SubmitButtonsListener
      *
      * @param DataContainer $dataContainer Data container driver.
      *
-     * @return void
-     *
      * @throws RedirectResponseException When a workflow exists and a transition was triggered.
      */
     public function redirectToTransition(DataContainer $dataContainer): void
     {
         $transition = Input::post('workflowTransition');
-        if (!$transition) {
+        if (! $transition) {
             return;
         }
 
@@ -136,7 +119,7 @@ final class SubmitButtonsListener
         $repository = $this->entityManager->getRepository($dataContainer->table);
         $entity     = $repository->find($entityId->getIdentifier());
 
-        if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
+        if (! $this->workflowManager->hasWorkflow($entityId, $entity)) {
             return;
         }
 
@@ -147,7 +130,8 @@ final class SubmitButtonsListener
                 'entityId'   => $entityId,
                 'transition' => $transition,
                 'module'     => $this->inputAdapter->get('do'),
-                'detach'     => $workflow->getName() !== $dataContainer->activeRecord->workflow ? '1' : '',
+                'detach'     => $dataContainer->activeRecord
+                    && $workflow->getName() !== $dataContainer->activeRecord->workflow ? '1' : '',
             ]
         );
 
@@ -159,8 +143,6 @@ final class SubmitButtonsListener
      *
      * @param string     $buttonName The button name used as css id.
      * @param Transition $transition The transition.
-     *
-     * @return string
      */
     private function generateTransitionButton(string $buttonName, Transition $transition): string
     {

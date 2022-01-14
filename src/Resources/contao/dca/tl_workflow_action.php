@@ -1,15 +1,8 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
+declare(strict_types=1);
+
+use Contao\Input;
 
 $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
@@ -62,9 +55,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                     'handleButtonCallback',
                 ],
                 'toolkit'         => [
-                    'state_button' => [
-                        'stateColumn' => 'active',
-                    ],
+                    'state_button' => ['stateColumn' => 'active'],
                 ],
             ],
             'show'   => [
@@ -113,23 +104,15 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 
     'fields' => [
-        'id'                       => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
-        ],
+        'id'                       => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
         'pid'                      => [
             'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
             'foreignKey' => 'tl_workflow_transition.label',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
-        'ptable'                   => [
-            'sql' => "varchar(64) NOT NULL default ''",
-        ],
-        'sorting'                  => [
-            'sql' => 'int(10) unsigned NOT NULL default 0',
-        ],
-        'tstamp'                   => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
+        'ptable'                   => ['sql' => "varchar(64) NOT NULL default ''"],
+        'sorting'                  => ['sql' => 'int(10) unsigned NOT NULL default 0'],
+        'tstamp'                   => ['sql' => "int(10) unsigned NOT NULL default '0'"],
         'label'                    => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['label'],
             'inputType' => 'text',
@@ -182,18 +165,14 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'label'            => &$GLOBALS['TL_LANG']['tl_workflow_action']['payload_name'],
             'inputType'        => 'text',
             'exclude'          => true,
-            'eval'             => [
-                'tl_class' => 'w50',
-            ],
+            'eval'             => ['tl_class' => 'w50'],
             'sql'              => "varchar(32) NOT NULL default ''",
         ],
         'form_formId'              => [
             'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['form_formId'],
             'inputType'  => 'select',
             'exclude'    => true,
-            'eval'       => [
-                'tl_class' => 'w50',
-            ],
+            'eval'       => ['tl_class' => 'w50'],
             'foreignKey' => 'tl_form.title',
             'sql'        => "int(10) unsigned NOT NULL default '0'",
         ],
@@ -319,18 +298,14 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'mandatory' => true,
             ],
             'foreignKey'       => 'tl_workflow_action.label',
-            'relation'         => [
-                'type' => 'hasOne',
-            ],
+            'relation'         => ['type' => 'hasOne'],
             'sql'              => "int(10) unsigned NOT NULL default '0'",
         ],
         'assign_user_current_user' => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow_action']['assign_current_user'],
             'inputType' => 'checkbox',
             'exclude'   => true,
-            'eval'      => [
-                'tl_class'       => 'w50',
-            ],
+            'eval'      => ['tl_class' => 'w50'],
             'sql'       => "char(1) NOT NULL default ''",
         ],
         'assign_user_property'     => [
@@ -362,6 +337,6 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     ],
 ];
 
-if (\Contao\Input::get('ptable') !== 'tl_workflow') {
+if (Input::get('ptable') !== 'tl_workflow') {
     $GLOBALS['TL_DCA']['tl_workflow_action']['config']['ptable'] = 'tl_workflow_transition';
 }

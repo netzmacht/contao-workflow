@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\FrontendModule;
@@ -46,11 +35,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Templating\EngineInterface as TemplateEngine;
 use Symfony\Component\Translation\TranslatorInterface as Translator;
+
+use function assert;
 use function in_array;
 use function sprintf;
 
 /**
  * Class TransitionModule processes a transition for an entity.
+ *
+ * @psalm-suppress DeprecatedInterface
  */
 final class TransitionModule extends AbstractModule
 {
@@ -120,12 +113,13 @@ final class TransitionModule extends AbstractModule
     /**
      * The generated view.
      *
-     * @var View;
+     * @var View|null
      */
     private $view;
 
+    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
     /**
-     * TransitionModule constructor.
+     * @psalm-suppress DeprecatedClass
      *
      * @param Model               $model               The module model.
      * @param TemplateEngine      $templateEngine      The template engine.
@@ -143,8 +137,9 @@ final class TransitionModule extends AbstractModule
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
+    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
     public function __construct(
-        $model,
+        Model $model,
         TemplateEngine $templateEngine,
         Translator $translator,
         WorkflowManager $workflowManager,
@@ -156,7 +151,7 @@ final class TransitionModule extends AbstractModule
         Adapter $inputAdapter,
         Adapter $configAdapter,
         RequestScopeMatcher $requestScopeMatcher,
-        $column = 'main'
+        string $column = 'main'
     ) {
         parent::__construct($model, $templateEngine, $translator, $column, $requestScopeMatcher);
 
@@ -170,9 +165,6 @@ final class TransitionModule extends AbstractModule
         $this->configAdapter     = $configAdapter;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function compile(): void
     {
         $entityId   = $this->getEntityId();
@@ -222,6 +214,8 @@ final class TransitionModule extends AbstractModule
      */
     protected function prepareTemplateData(array $data): array
     {
+        assert($this->view instanceof View);
+
         $data         = parent::prepareTemplateData($data);
         $data['view'] = $this->view->render()->getContent();
 
@@ -230,8 +224,6 @@ final class TransitionModule extends AbstractModule
 
     /**
      * Get the entity id from the request.
-     *
-     * @return EntityId
      *
      * @throws RuntimeException When an invalid entity is given or the data provider is not supported.
      */
@@ -244,11 +236,11 @@ final class TransitionModule extends AbstractModule
 
             $entityId = EntityId::fromString($entityId);
         } catch (AssertionFailed $exception) {
-            throw new RuntimeException('Invalid entity id given.', $exception->getCode(), $exception);
+            throw new RuntimeException('Invalid entity id given.', (int) $exception->getCode(), $exception);
         }
 
         $supportedProviders = StringUtil::deserialize($this->get('workflow_providers'), true);
-        if (!in_array($entityId->getProviderName(), $supportedProviders)) {
+        if (! in_array($entityId->getProviderName(), $supportedProviders)) {
             throw new RuntimeException(sprintf('Unsupported data provider "%s"', $entityId->getProviderName()));
         }
 
@@ -260,8 +252,6 @@ final class TransitionModule extends AbstractModule
      *
      * @param EntityId $entityId The entity id.
      *
-     * @return Item
-     *
      * @throws PageNotFoundException If entity is not found.
      */
     protected function createItem(EntityId $entityId): Item
@@ -270,7 +260,11 @@ final class TransitionModule extends AbstractModule
             $repository = $this->entityManager->getRepository($entityId->getProviderName());
             $entity     = $repository->find($entityId->getIdentifier());
         } catch (UnsupportedEntity $e) {
-            throw new PageNotFoundException(sprintf('Entity "%s" not found.', (string) $entityId), $e);
+            throw new PageNotFoundException(
+                sprintf('Entity "%s" not found.', (string) $entityId),
+                (int) $e->getCode(),
+                $e
+            );
         }
 
         return $this->workflowManager->createItem($entityId, $entity);
@@ -280,8 +274,6 @@ final class TransitionModule extends AbstractModule
      * Get workflow by the entity.
      *
      * @param Item $item The entity.
-     *
-     * @return Workflow
      *
      * @throws BadRequestHttpException When no workflow was found.
      */
@@ -305,8 +297,6 @@ final class TransitionModule extends AbstractModule
      * @param Item     $item       Workflow item.
      * @param Workflow $workflow   Workflow.
      *
-     * @return TransitionHandler
-     *
      * @throws RuntimeException When no handler could be found.
      */
     protected function createTransitionHandler(
@@ -326,17 +316,21 @@ final class TransitionModule extends AbstractModule
                 sprintf(
                     'Could not perform transition "%s" on entity "%s". Creating handler failed with message "%s".',
                     $transition,
-                    $entityId,
+                    (string) $entityId,
                     $e->getMessage()
                 ),
-                $e->getCode(),
+                (int) $e->getCode(),
                 $e
             );
         }
 
         if ($handler === null) {
             throw new RuntimeException(
-                sprintf('Could not perform transition "%s" on entity "%s". No handler created.', $transition, $entityId)
+                sprintf(
+                    'Could not perform transition "%s" on entity "%s". No handler created.',
+                    $transition,
+                    (string) $entityId
+                )
             );
         }
 
@@ -345,8 +339,6 @@ final class TransitionModule extends AbstractModule
 
     /**
      * Redirect to new location.
-     *
-     * @return void
      *
      * @throws RedirectResponseException To interrupt contao page rendering and do the redirect.
      */

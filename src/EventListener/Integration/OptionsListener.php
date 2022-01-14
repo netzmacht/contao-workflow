@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
@@ -22,8 +11,12 @@ use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+
 use function array_merge;
 use function asort;
+use function count;
+use function is_int;
+use function sprintf;
 
 /**
  * Class OptionsListener handles the options callback for the default workflow integration.
@@ -45,8 +38,6 @@ final class OptionsListener
     private $connection;
 
     /**
-     * OptionsListener constructor.
-     *
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param Connection      $connection      Database connection.
      */
@@ -61,9 +52,9 @@ final class OptionsListener
      *
      * @param DataContainer|null $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string,string>
      */
-    public function workflowOptions(DataContainer $dataContainer = null): array
+    public function workflowOptions(?DataContainer $dataContainer = null): array
     {
         $names = [];
 
@@ -84,16 +75,16 @@ final class OptionsListener
      *
      * @param DataContainer|null $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string,string>|array<int|string,array<string,string>>
      */
-    public function stepOptions(DataContainer $dataContainer = null): array
+    public function stepOptions(?DataContainer $dataContainer = null): array
     {
         $options = [];
 
         if ($dataContainer && $dataContainer->id) {
             try {
                 $selectedWorkflow = $this->getSelectedWorkflow($dataContainer);
-                if (!$selectedWorkflow) {
+                if (! $selectedWorkflow) {
                     return [];
                 }
 
@@ -121,7 +112,7 @@ final class OptionsListener
         }
 
         if ($dataContainer && count($options) > 0) {
-            $options = array_merge(... $options);
+            $options = array_merge(...$options);
             asort($options);
         }
 
@@ -133,17 +124,17 @@ final class OptionsListener
      *
      * @param DataContainer|null $dataContainer Data container driver.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function stepPermissionOptions(?DataContainer $dataContainer = null): array
     {
-        if (!$dataContainer || !$dataContainer->activeRecord || $dataContainer->activeRecord->workflowStep) {
+        if (! $dataContainer || ! $dataContainer->activeRecord || $dataContainer->activeRecord->workflowStep) {
             return [];
         }
 
         try {
             $selectedWorkflow = $this->getSelectedWorkflow($dataContainer);
-            if (!$selectedWorkflow) {
+            if (! $selectedWorkflow) {
                 return [];
             }
 
@@ -153,7 +144,7 @@ final class OptionsListener
         }
 
         $stepName = $dataContainer->activeRecord->workflowStep;
-        if (!$workflow->hasStep($stepName)) {
+        if (! $workflow->hasStep($stepName)) {
             return [];
         }
 
@@ -169,20 +160,23 @@ final class OptionsListener
      * Get the selected workflow.
      *
      * @param DataContainer $dataContainer Data container driver.
-     *
-     * @return string|null
      */
     private function getSelectedWorkflow(DataContainer $dataContainer): ?string
     {
-        return $this->connection
+        $statement = $this->connection
             ->createQueryBuilder()
             ->select('workflow')
             ->from($dataContainer->table)
             ->where('id=:id')
             ->setParameter('id', $dataContainer->id)
             ->setMaxResults(1)
-            ->execute()
-            ->fetchColumn() ?: null;
+            ->execute();
+
+        if (is_int($statement)) {
+            return null;
+        }
+
+        return (string) $statement->fetchOne();
     }
 
     /**
@@ -191,7 +185,7 @@ final class OptionsListener
      * @param Workflow $workflow Workflow.
      * @param string   $prefix   Add a prefix before the step options.
      *
-     * @return array
+     * @return array<string,string>
      */
     private function buildWorkflowStepOptions(Workflow $workflow, string $prefix = ''): array
     {
@@ -199,7 +193,7 @@ final class OptionsListener
 
         foreach ($workflow->getTransitions() as $transition) {
             $stepTo = $transition->getStepTo();
-            if (!$stepTo) {
+            if (! $stepTo) {
                 continue;
             }
 
@@ -214,17 +208,17 @@ final class OptionsListener
      *
      * @param Permission $permission The permission.
      * @param Workflow   $workflow   The related workflow.
-     *
-     * @return string
      */
     private function getPermissionLabel(Permission $permission, Workflow $workflow): string
     {
         $label       = $permission->getPermissionId();
         $permissions = StringUtil::deserialize($workflow->getConfigValue('permissions'), true);
         foreach ($permissions as $config) {
-            if ($config['name'] === $permission->getPermissionId() && $config['label']) {
-                $label = $config['label'];
+            if ($config['name'] !== $permission->getPermissionId() || ! $config['label']) {
+                continue;
             }
+
+            $label = $config['label'];
         }
 
         return $label;

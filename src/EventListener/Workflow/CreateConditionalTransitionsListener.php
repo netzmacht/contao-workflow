@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Workflow;
@@ -18,8 +7,9 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Workflow;
 use Doctrine\DBAL\Connection;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Event\CreateTransitionEvent;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ConditionalTransition\ConditionalTransitionAction;
-use PDO;
+
 use function array_map;
+use function sprintf;
 
 /**
  * Class creates the conditional transition action for transition of type conditional
@@ -34,8 +24,6 @@ class CreateConditionalTransitionsListener
     private $connection;
 
     /**
-     * CreateConditionalTransitionsListener constructor.
-     *
      * @param Connection $connection Database connection.
      */
     public function __construct(Connection $connection)
@@ -47,8 +35,6 @@ class CreateConditionalTransitionsListener
      * Handle the event.
      *
      * @param CreateTransitionEvent $event The event.
-     *
-     * @return void
      */
     public function onCreateTransition(CreateTransitionEvent $event): void
     {
@@ -76,11 +62,11 @@ class CreateConditionalTransitionsListener
      *
      * @return string[]
      */
-    private function getConditionalTransitionNames(int $transitionId) : array
+    private function getConditionalTransitionNames(int $transitionId): array
     {
         $sql       = 'SELECT tid FROM tl_workflow_transition_conditional_transition WHERE pid=:pid ORDER BY sorting';
         $statement = $this->connection->prepare($sql);
-        $statement->execute(['pid' => $transitionId]);
+        $result    = $statement->executeQuery(['pid' => $transitionId]);
 
         return array_map(
             // @codingStandardsIgnoreStart
@@ -88,7 +74,7 @@ class CreateConditionalTransitionsListener
                 return 'transition_' . $transitionId;
             },
             // @codingStandardsIgnoreEnd
-            $statement->fetchAll(PDO::FETCH_COLUMN)
+            $result->fetchFirstColumn()
         );
     }
 }
