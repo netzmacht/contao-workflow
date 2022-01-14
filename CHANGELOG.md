@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## Added
+
+ - Add backend module icon
+ - Enable duplicating of the whole workflow
+
+## Changed
+
+ - Use symfony contracts where possible
+ - Require at least Symfony 4.4 and Contao 4.9
+ - Support PHP 8
+
 ## [2.3.4] - 2021-03-01
 
 ### Fixed
