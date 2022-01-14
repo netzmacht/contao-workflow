@@ -10,12 +10,11 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class AssetListener
 {
-    /**
-     * Asset Manager.
-     */
-    private AssetsManager $assetsManager;
+    /** @var AssetsManager */
+    private $assetsManager;
 
-    private RequestScopeMatcher $scopeMatcher;
+    /** @var RequestScopeMatcher */
+    private $scopeMatcher;
 
     public function __construct(AssetsManager $assetsManager, RequestScopeMatcher $scopeMatcher)
     {
