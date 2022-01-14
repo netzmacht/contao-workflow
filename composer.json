@@ -48,7 +48,7 @@
     "symfony/http-kernel": "^4.4.13 || ^5.0",
     "symfony/options-resolver": "^4.4 || ^5.0",
     "symfony/routing": "^4.4 || ^5.0",
-    "symfony/security-core": "^4.1.12 || ^5.0",
+    "symfony/security-core": "^4.4.23 || ^5.2.8",
     "symfony/templating": "^4.4 || ^5.0",
     "symfony/translation": "^4.4 || ^5.0",
     "symfony/translation-contracts": "^1.1.2 || ^2",
