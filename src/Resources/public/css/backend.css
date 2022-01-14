@@ -1,5 +1,6 @@
 #tl_navigation .group-workflow {
-    background: url('../img/workflow-module.svg') 3px -1px no-repeat;
+    background: url('../img/workflow-module.svg') 3px 0 no-repeat;
+    background-size: 14px;
 }
 
 .icon_selector .selector_container img {
