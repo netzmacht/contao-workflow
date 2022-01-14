@@ -10,6 +10,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'tl_workflow_transition',
             'tl_workflow_action',
         ],
+        'markAsCopy'        => 'label',
         'sql'               => [
             'keys' => ['id' => 'primary'],
         ],
@@ -50,6 +51,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow']['actions'],
                 'href'  => 'table=tl_workflow_action&ptable=tl_workflow',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
+            ],
+            'copy'        => [
+                'href' => 'act=copy',
+                'icon' => 'copy.svg',
             ],
             'delete'      => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],
@@ -243,13 +248,17 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'eval'      => [
                 'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
+                'doNotCopy'      => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
         'autoAssign'   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'],
             'inputType' => 'checkbox',
-            'eval'      => ['tl_class' => 'w50'],
+            'eval'      => [
+                'tl_class'  => 'w50',
+                'doNotCopy' => true,
+            ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
     ],

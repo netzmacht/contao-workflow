@@ -129,3 +129,7 @@ services:
       - '@netzmacht.contao_toolkit.dca.manager'
     tags:
       - { name: kernel.event_listener, event: netzmacht.contao_workflow.build_notification_tokens, method: __invoke }
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\Dca\CopyWorkflowCallbackListener:
+    arguments:
+      - '@database_connection'
