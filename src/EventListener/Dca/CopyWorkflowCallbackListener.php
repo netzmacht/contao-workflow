@@ -8,9 +8,16 @@ use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ForwardCompatibility\DriverResultStatement;
+use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
+use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
+use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+use Netzmacht\Workflow\Flow\Security\Permission;
 
 use function array_keys;
+use function assert;
 use function current;
+use function is_int;
 use function next;
 use function serialize;
 
@@ -33,6 +40,7 @@ final class CopyWorkflowCallbackListener
 
         $this->fixProcess((int) $insertId, $transitionMapping, $stepMapping);
         $this->fixTargetSteps((int) $insertId, $stepMapping);
+        $this->fixPermissions((int) $insertId);
         $this->copyConditionalTransitions($transitionMapping);
     }
 
@@ -123,6 +131,56 @@ final class CopyWorkflowCallbackListener
                 ['stepTo' => $new],
                 ['pid' => $workflowId, 'stepTo' => $old]
             );
+        }
+    }
+
+    private function fixPermissions(int $newWorkflowId): void
+    {
+        $this->fixPermissionsForTable('tl_workflow_step', 'permission', $newWorkflowId);
+        $this->fixPermissionsForTable('tl_workflow_transition', 'permission', $newWorkflowId);
+
+        $query = <<<'SQL'
+SELECT a.id, a.assign_user_permission 
+  FROM tl_workflow_action a
+LEFT JOIN tl_workflow_transition t ON t.id = a.pid AND a.ptable = :transitionTable
+WHERE a.assign_user_permission != ''
+ AND ((a.ptable = :workflowTable AND a.pid = :workflowId) OR (t.id IS NOT NULL))
+SQL;
+
+        $result = $this->connection->executeQuery(
+            $query,
+            [
+                'workflowTable'   => WorkflowModel::getTable(),
+                'transitionTable' => TransitionModel::getTable(),
+                'workflowId'      => $newWorkflowId,
+            ]
+        );
+        $this->fixPermissionsForResult($result, 'tl_workflow_action', 'assign_user_permission', $newWorkflowId);
+    }
+
+    private function fixPermissionsForTable(string $table, string $column, int $newWorkflowId): void
+    {
+        $result = $this->connection->createQueryBuilder()
+            ->select('id,' . $column)
+            ->from($table)
+            ->where('pid = :workflow')
+            ->andWhere($column . ' != \'\'')
+            ->setParameter('workflow', $newWorkflowId)
+            ->execute();
+
+        assert(! is_int($result));
+
+        $this->fixPermissionsForResult($result, $table, $column, $newWorkflowId);
+    }
+
+    /** @param DriverStatement|DriverResultStatement $result */
+    private function fixPermissionsForResult($result, string $table, string $column, int $newWorkflowId): void
+    {
+        while ($row = $result->fetchAssociative()) {
+            $permission = Permission::fromString($row[$column]);
+            $permission = Permission::forWorkflowName('workflow_' . $newWorkflowId, $permission->getPermissionId());
+
+            $this->connection->update($table, [$column => (string) $permission], ['id' => $row['id']]);
         }
     }
 
