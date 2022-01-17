@@ -41,6 +41,7 @@ final class CopyWorkflowCallbackListener
         $this->fixProcess((int) $insertId, $transitionMapping, $stepMapping);
         $this->fixTargetSteps((int) $insertId, $stepMapping);
         $this->fixPermissions((int) $insertId);
+        $this->fixReferenceActions((int) $insertId, (int) $dataContainer->id);
         $this->copyConditionalTransitions($transitionMapping);
     }
 
@@ -200,5 +201,74 @@ SQL;
 
             $this->connection->insert('tl_workflow_transition_conditional_transition', $row);
         }
+    }
+
+    /**
+     * Requires https://github.com/contao/contao/pull/3939
+     */
+    private function fixReferenceActions(int $newWorkflowId, int $oldWorkflowId): void
+    {
+        $query = <<<'sql'
+    SELECT a.id, a.reference 
+      FROM tl_workflow_action a
+INNER JOIN tl_workflow_transition t ON t.id = a.pid AND a.ptable = :transitionTable
+WHERE a.type = :referenceType AND t.pid = :workflowId
+sql;
+
+        $mapping = $this->generateWorkflowActionsMapping($newWorkflowId, $oldWorkflowId);
+        $result  = $this->connection->executeQuery(
+            $query,
+            [
+                'transitionTable' => TransitionModel::getTable(),
+                'referenceType'   => 'reference',
+                'workflowId'      => $newWorkflowId,
+            ]
+        );
+
+        while ($row = $result->fetchAssociative()) {
+            $this->connection->update(
+                'tl_workflow_action',
+                [
+                    'reference' => $mapping[$row['reference']] ?? 0,
+                ],
+                [
+                    'id' => $row['id'],
+                ]
+            );
+        }
+    }
+
+    /** @return list<string> */
+    private function fetchWorkflowActionIds(int $workflowId): array
+    {
+        return $this->connection
+            ->executeQuery(
+                'SELECT id FROM tl_workflow_action WHERE ptable=:workflowTable AND pid = :workflowId ORDER BY sorting',
+                [
+                    'workflowTable' => WorkflowModel::getTable(),
+                    'workflowId'    => $workflowId,
+                ]
+            )
+            ->fetchFirstColumn();
+    }
+
+    /** @return array<string,string> */
+    private function generateWorkflowActionsMapping(int $newWorkflowId, int $oldWorkflowId): array
+    {
+        $oldActionIds = $this->fetchWorkflowActionIds($oldWorkflowId);
+        $newActionIds = $this->fetchWorkflowActionIds($newWorkflowId);
+        $mapping      = [];
+
+        foreach ($oldActionIds as $oldActionId) {
+            $current = current($newActionIds);
+            if ($current === false) {
+                break;
+            }
+
+            $mapping[$oldActionId] = $current;
+            next($newActionIds);
+        }
+
+        return $mapping;
     }
 }
