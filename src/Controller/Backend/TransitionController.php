@@ -164,11 +164,11 @@ final class TransitionController extends AbstractController
     protected function getRedirectUrl(EntityId $entityId, Request $request): string
     {
         if ($request->query->get('ref')) {
-            $url = '/' . urldecode($request->query->get('ref'));
+            $url = '/' . urldecode((string) $request->query->get('ref'));
         } else {
             $url = $this->router->generate(
                 'netzmacht.contao_workflow.backend.step',
-                ['entityId' => (string) $entityId, 'module' => $request->get('module')]
+                ['entityId' => (string) $entityId, 'module' => $request->query->get('module')]
             );
         }
 
