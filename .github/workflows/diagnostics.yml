@@ -19,16 +19,24 @@ jobs:
         include:
           - php: 7.4
             output: '-o github-action -o default'
+            composer_flags: ''
             phpcq_install: 'install'
+            phpcq_task: 'default'
           - php: 8.0
             output: '-o default'
             phpcq_install: 'update'
+            composer_flags: ''
+            phpcq_task: 'default'
           - php: 8.1
             output: '-o default'
+            composer_flags: '--ignore-platform-reqs'
             phpcq_install: 'update'
+            phpcq_task: 'phplatest'
           - php: 8.2
             output: '-o default'
+            composer_flags: '--ignore-platform-reqs'
             phpcq_install: 'update'
+            phpcq_task: 'phplatest'
 
     steps:
       - name: Pull source
@@ -68,7 +76,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Install composer dependencies
-        run: composer install
+        run: composer install ${{ matrix.composer_flags }}
 
       - name: Update phpcq
         run: ./vendor/bin/phpcq self-update
@@ -77,7 +85,7 @@ jobs:
         run: ./vendor/bin/phpcq ${{ matrix.phpcq_install }} -v
 
       - name: Run tests
-        run: ./vendor/bin/phpcq run -v ${{ matrix.output }}
+        run: ./vendor/bin/phpcq run ${{ matrix.phpcq_matrix }} -v ${{ matrix.output }}
 
       - name: Upload build directory to artifact
         uses: actions/upload-artifact@v2

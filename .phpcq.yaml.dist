@@ -71,6 +71,14 @@ tasks:
     - verify
     - analyze
 
+  phplatest:
+    - verify
+    - phploc
+    - phpcpd
+    - phpmd
+    - phpcs
+    - psalm
+
   phpcpd:
     config:
       exclude:
