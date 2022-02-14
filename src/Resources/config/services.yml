@@ -254,21 +254,21 @@ services:
       - '@database_connection'
       - '@contao.doctrine.schema_provider'
 
-  Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionModuleFactory:
+  Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionFrontendModuleController:
     arguments:
-      - '@templating'
+      - '@netzmacht.contao_toolkit.template_renderer'
+      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+      - '@netzmacht.contao_toolkit.response_tagger'
+      - '@router'
       - '@translator'
       - '@netzmacht.contao_workflow.manager'
       - '@netzmacht.contao_workflow.entity_manager'
       - '@netzmacht.contao_toolkit.repository_manager'
       - '@form.factory'
       - '@netzmacht.contao_workflow.view.factory'
-      - '@request_stack'
       - '@netzmacht.contao_toolkit.contao.input_adapter'
       - '@netzmacht.contao_toolkit.contao.config_adapter'
       - '@netzmacht.contao_toolkit.routing.scope_matcher'
-    tags:
-      - { name: 'netzmacht.contao_toolkit.component.frontend_module', alias: 'workflow_transition', category: 'workflow' }
 
   Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices:
     arguments:

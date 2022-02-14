@@ -8,14 +8,18 @@ use Contao\Config;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Framework\Adapter;
+use Contao\CoreBundle\ServiceAnnotation\FrontendModule;
 use Contao\Input;
 use Contao\Model;
+use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Assertion\AssertionFailed;
-use Netzmacht\Contao\Toolkit\Component\Module\AbstractModule;
+use Netzmacht\Contao\Toolkit\Controller\FrontendModule\AbstractFrontendModuleController;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Response\ResponseTagger;
 use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
+use Netzmacht\Contao\Toolkit\View\Template\TemplateRenderer;
 use Netzmacht\ContaoWorkflowBundle\Exception\RuntimeException;
 use Netzmacht\ContaoWorkflowBundle\Form\TransitionFormType;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
@@ -30,30 +34,20 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Templating\EngineInterface as TemplateEngine;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function assert;
 use function in_array;
 use function sprintf;
 
-/**
- * Class TransitionModule processes a transition for an entity.
- *
- * @psalm-suppress DeprecatedInterface
- */
-final class TransitionModule extends AbstractModule
+/** @FrontendModule("workflow_transition", category="workflow") */
+final class TransitionFrontendModuleController extends AbstractFrontendModuleController
 {
-    /**
-     * Name of the template.
-     *
-     * @var string
-     */
-    protected $templateName = 'mod_workflow_transition';
-
     /**
      * Workflow manager.
      *
@@ -97,88 +91,54 @@ final class TransitionModule extends AbstractModule
     private $inputAdapter;
 
     /**
-     * The request stack.
-     *
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
      * Repository manager.
      *
      * @var RepositoryManager
      */
     private $repositoryManager;
 
-    /**
-     * The generated view.
-     *
-     * @var View|null
-     */
-    private $view;
-
-    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
-    /**
-     * @psalm-suppress DeprecatedClass
-     *
-     * @param Model               $model               The module model.
-     * @param TemplateEngine      $templateEngine      The template engine.
-     * @param Translator          $translator          The translator.
-     * @param WorkflowManager     $workflowManager     The workflow manager.
-     * @param EntityManager       $entityManager       The entity manager.
-     * @param RepositoryManager   $repositoryManager   The repository manager.
-     * @param FormFactory         $formFactory         The form factory.
-     * @param ViewFactory         $viewFactory         The view factory.
-     * @param RequestStack        $requestStack        The request stack.
-     * @param Adapter             $inputAdapter        The input adapter.
-     * @param Adapter             $configAdapter       The config adapter.
-     * @param string              $column              The section or column name.
-     * @param RequestScopeMatcher $requestScopeMatcher The request scope matcher.
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
-     */
-    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup
+    /** @SuppressWarnings(PHPMD.ExcessiveParameterList) */
     public function __construct(
-        Model $model,
-        TemplateEngine $templateEngine,
-        Translator $translator,
+        TemplateRenderer $templateRenderer,
+        RequestScopeMatcher $scopeMatcher,
+        ResponseTagger $responseTagger,
+        RouterInterface $router,
+        TranslatorInterface $translator,
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
         RepositoryManager $repositoryManager,
         FormFactory $formFactory,
         ViewFactory $viewFactory,
-        RequestStack $requestStack,
         Adapter $inputAdapter,
-        Adapter $configAdapter,
-        RequestScopeMatcher $requestScopeMatcher,
-        string $column = 'main'
+        Adapter $configAdapter
     ) {
-        parent::__construct($model, $templateEngine, $translator, $column, $requestScopeMatcher);
+        parent::__construct($templateRenderer, $scopeMatcher, $responseTagger, $router, $translator);
 
         $this->workflowManager   = $workflowManager;
         $this->entityManager     = $entityManager;
         $this->repositoryManager = $repositoryManager;
         $this->formFactory       = $formFactory;
         $this->viewFactory       = $viewFactory;
-        $this->requestStack      = $requestStack;
         $this->inputAdapter      = $inputAdapter;
         $this->configAdapter     = $configAdapter;
     }
 
-    protected function compile(): void
+    /** {@inheritDoc} */
+    protected function preGenerate(Request $request, Model $model, string $section, ?array $classes = null): ?Response
     {
-        $entityId   = $this->getEntityId();
+        assert($model instanceof ModuleModel);
+
+        $entityId   = $this->getEntityId($model);
         $item       = $this->createItem($entityId);
         $workflow   = $this->getWorkflowByItem($item);
         $transition = (string) $this->inputAdapter->get('transition');
-        $handler    = $this->createTransitionHandler($entityId, $transition, $item, $workflow);
+        $handler    = $this->createTransitionHandler($model, $entityId, $transition, $item, $workflow);
         $payload    = [];
         $validForm  = true;
         $form       = null;
 
         if ($handler->getRequiredPayloadProperties()) {
-            $request = $this->requestStack->getCurrentRequest();
-            $form    = $this->formFactory->create(
+            $form = $this->formFactory->create(
                 TransitionFormType::class,
                 [],
                 ['handler' => $handler, 'item' => $item]
@@ -197,27 +157,27 @@ final class TransitionModule extends AbstractModule
             $state = $handler->transit();
 
             if ($state->isSuccessful()) {
-                $this->redirect();
+                return $this->createRedirectResponse($model, $request);
             }
         }
 
         $transition = $workflow->getTransition($transition);
-        $this->view = $this->viewFactory->create(
+        $view       = $this->viewFactory->create(
             $item,
             $transition,
             ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection()]
         );
+
+        $request->attributes->set(View::class, $view);
+
+        return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function prepareTemplateData(array $data): array
+    /** {@inheritDoc} */
+    protected function prepareTemplateData(array $data, Request $request, Model $model): array
     {
-        assert($this->view instanceof View);
-
-        $data         = parent::prepareTemplateData($data);
-        $data['view'] = $this->view->render()->getContent();
+        $data         = parent::prepareTemplateData($data, $request, $model);
+        $data['view'] = $request->attributes->get(View::class);
 
         return $data;
     }
@@ -227,7 +187,7 @@ final class TransitionModule extends AbstractModule
      *
      * @throws RuntimeException When an invalid entity is given or the data provider is not supported.
      */
-    private function getEntityId(): EntityId
+    private function getEntityId(ModuleModel $model): EntityId
     {
         try {
             $entityId = $this->configAdapter->get('useAutoItem')
@@ -239,7 +199,7 @@ final class TransitionModule extends AbstractModule
             throw new RuntimeException('Invalid entity id given.', (int) $exception->getCode(), $exception);
         }
 
-        $supportedProviders = StringUtil::deserialize($this->get('workflow_providers'), true);
+        $supportedProviders = StringUtil::deserialize($model->workflow_providers, true);
         if (! in_array($entityId->getProviderName(), $supportedProviders)) {
             throw new RuntimeException(sprintf('Unsupported data provider "%s"', $entityId->getProviderName()));
         }
@@ -300,6 +260,7 @@ final class TransitionModule extends AbstractModule
      * @throws RuntimeException When no handler could be found.
      */
     protected function createTransitionHandler(
+        ModuleModel $model,
         EntityId $entityId,
         string $transition,
         Item $item,
@@ -307,7 +268,7 @@ final class TransitionModule extends AbstractModule
     ): TransitionHandler {
         try {
             if ($item->getWorkflowName() !== $workflow->getName()) {
-                $handler = $this->workflowManager->handle($item, $transition, (bool) $this->get('workflow_detach'));
+                $handler = $this->workflowManager->handle($item, $transition, (bool) $model->workflow_detach);
             } else {
                 $handler = $this->workflowManager->handle($item, $transition);
             }
@@ -339,20 +300,15 @@ final class TransitionModule extends AbstractModule
 
     /**
      * Redirect to new location.
-     *
-     * @throws RedirectResponseException To interrupt contao page rendering and do the redirect.
      */
-    private function redirect(): void
+    private function createRedirectResponse(ModuleModel $model, Request $request): Response
     {
-        if ($this->get('jumpTo')) {
-            $page = $this->repositoryManager->getRepository(PageModel::class)->find((int) $this->get('jumpTo'));
+        if ($model->jumpTo) {
+            $page = $this->repositoryManager->getRepository(PageModel::class)->find((int) $model->jumpTo);
             if ($page instanceof PageModel) {
-                throw new RedirectResponseException($page->getAbsoluteUrl());
+                return new RedirectResponse($page->getAbsoluteUrl(), Response::HTTP_SEE_OTHER);
             }
         }
-
-        $request = $this->requestStack->getCurrentRequest();
-        assert($request instanceof Request);
 
         throw new RedirectResponseException($request->getRequestUri());
     }
