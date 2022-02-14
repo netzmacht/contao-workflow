@@ -81,7 +81,9 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
         $this->repository->save($entity);
 
         foreach ($this->changeTracker->release($entity) as $model) {
-            $repository = $this->repositoryManager->getRepository(get_class($model));
+            /** @psalm-var class-string<Model> $modelClass */
+            $modelClass = get_class($model);
+            $repository = $this->repositoryManager->getRepository($modelClass);
             $repository->save($model);
         }
     }

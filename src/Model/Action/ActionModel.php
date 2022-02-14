@@ -13,6 +13,7 @@ use Contao\Model;
  * @property int|string $pid
  * @property string     $type
  * @property string     $label
+ * @property string     $ptable
  */
 final class ActionModel extends Model
 {

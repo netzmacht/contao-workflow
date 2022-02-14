@@ -27,6 +27,7 @@ final class ActionFactory
      */
     public function __construct(iterable $factories)
     {
+        /** @psalm-suppress PossiblyInvalidArgument  */
         Assertion::allImplementsInterface($factories, ActionTypeFactory::class);
 
         $this->factories = $factories;

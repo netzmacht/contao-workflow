@@ -204,7 +204,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all actions.
      *
-     * @return array<string,string>
+     * @return array<string,string|array<string,string>>
      */
     public function getActions(): array
     {
@@ -214,7 +214,7 @@ final class TransitionCallbackListener extends AbstractListener
         }
 
         $repository = $this->repositoryManager->getRepository(ActionModel::class);
-        $collection = $repository->findBy(['.pid=?'], [$transition->pid], ['.label']);
+        $collection = $repository->findBy(['.pid=?'], [$transition->pid], ['order' => '.label']);
 
         return OptionsBuilder::fromCollection($collection, 'label')->getOptions();
     }
@@ -222,7 +222,7 @@ final class TransitionCallbackListener extends AbstractListener
     /**
      * Get all conditional transitions.
      *
-     * @return array<string,string>
+     * @return array<string,string|array<string,string>>
      */
     public function getConditionalTransitions(): array
     {
@@ -346,7 +346,7 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @param DataContainer $dataContainer Data container driver.
      *
-     * @return array<string,string>
+     * @return array<string,string|array<string,string>>
      */
     public function getWorkflows(DataContainer $dataContainer): array
     {

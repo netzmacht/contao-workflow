@@ -161,7 +161,7 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get all notifications as options.
      *
-     * @return array<string,string>
+     * @return array<string,string|array<string,string>>
      */
     public function notificationOptions(): array
     {

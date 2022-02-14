@@ -158,7 +158,9 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
             return null;
         }
 
-        $repository = $this->repositoryManager->getRepository(Model::getClassFromTable($userId->getProviderName()));
+        /** @psalm-var class-string<Model> */
+        $tableName  = Model::getClassFromTable($userId->getProviderName());
+        $repository = $this->repositoryManager->getRepository($tableName);
 
         /** @psalm-suppress LessSpecificReturnStatement */
         return $repository->find((int) $userId->getIdentifier());

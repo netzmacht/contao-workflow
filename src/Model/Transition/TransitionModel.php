@@ -11,6 +11,7 @@ use Contao\Model\Collection;
  * TransitionModel using Contao models.
  *
  * @property string|int  $id
+ * @property string|int  $pid
  * @property string      $name
  * @property string      $label
  * @property string|bool $final
