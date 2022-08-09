@@ -55,6 +55,8 @@ abstract class AbstractPermissionVoter extends Voter
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress MissingParamType
      */
     protected function voteOnAttribute($attribute, $subject, Token $token)
     {

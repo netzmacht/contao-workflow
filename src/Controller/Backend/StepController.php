@@ -86,7 +86,7 @@ final class StepController extends AbstractController
         }
 
         $currentStep = $workflow->getStep($stepName);
-        if (! $this->authorizationChecker->isGranted($currentStep, $item)) {
+        if (! $this->authorizationChecker->isGranted('step:' . $currentStep->getName(), $item)) {
             throw new AccessDeniedHttpException();
         }
 

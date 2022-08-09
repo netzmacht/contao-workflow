@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdateEntityAction;
 
-use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
 use Contao\StringUtil;
 use Netzmacht\ContaoFormBundle\Form\DcaFormType;
+use Netzmacht\ContaoFormBundle\Form\FieldsetType;
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\DataAwareActionFormBuilder;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\Workflow\Flow\Action;

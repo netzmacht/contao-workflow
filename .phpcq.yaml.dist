@@ -111,6 +111,11 @@ tasks:
       <<: *phpcs-config
       fix: true
 
+  composer-normalize:
+    config:
+      ignore_output:
+        - '#Root package is not of type "project", we will not installing Contao extensions\.#'
+
   composer-normalize-fix:
     plugin: composer-normalize
     config:

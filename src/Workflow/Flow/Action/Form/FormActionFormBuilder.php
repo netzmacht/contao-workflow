@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Form;
 
-use AdamQuaile\Bundle\FieldsetBundle\Form\FieldsetType;
+use Netzmacht\ContaoFormBundle\Form\FieldsetType;
 use Netzmacht\ContaoFormBundle\Form\FormGeneratorType;
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\ActionFormBuilder;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;

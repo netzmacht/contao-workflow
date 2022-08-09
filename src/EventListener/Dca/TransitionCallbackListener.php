@@ -11,7 +11,6 @@ use Contao\Input;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
@@ -252,8 +251,6 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @return list<string>
      *
-     * @throws DBALException If any dbal error occurs.
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function loadConditionalTransitions($value, DataContainer $dataContainer): array
@@ -274,8 +271,6 @@ final class TransitionCallbackListener extends AbstractListener
      * @param DataContainer $dataContainer The data container driver.
      *
      * @return null
-     *
-     * @throws DBALException When an database related error occurs.
      */
     public function saveConditionalTransitions($value, DataContainer $dataContainer)
     {

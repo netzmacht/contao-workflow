@@ -105,7 +105,7 @@ final class OperationListener
                 return '';
             }
 
-            if (! $this->authorizationChecker->isGranted($step, $item)) {
+            if (! $this->authorizationChecker->isGranted('step:' . $step->getName(), $item)) {
                 return '';
             }
         }

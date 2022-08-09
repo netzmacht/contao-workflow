@@ -21,19 +21,18 @@
     "source": "https://github.com/netzmacht/contao-workflow"
   },
   "require": {
-    "php": "^7.1 || ^8.0",
+    "php": "^7.2 || ^8.0",
     "ext-json": "*",
     "ext-pdo": "*",
-    "adamquaile/symfony-fieldset-bundle": "^1.1",
     "beberlei/assert": "^3.0",
     "contao-community-alliance/meta-palettes": "^2.0",
-    "contao/core-bundle": "^4.9",
+    "contao/core-bundle": "^4.9.25",
     "doctrine/dbal": "^2.13 || ^3.1",
     "friends-of-contao/contao-associategroups": "~1.3",
     "mathiasverraes/classfunctions": "~1.1",
     "menatwork/contao-multicolumnwizard-bundle": "^3.3.14",
-    "netzmacht/contao-form-bundle": "^1.4.0",
-    "netzmacht/contao-toolkit": "~3.0",
+    "netzmacht/contao-form-bundle": "^2.0",
+    "netzmacht/contao-toolkit": "^3.8",
     "netzmacht/workflow": "^2.1.0",
     "patchwork/utf8": "^1.2",
     "psr/log": "^1.1",
@@ -54,7 +53,7 @@
     "symfony/translation-contracts": "^1.1.2 || ^2",
     "symfony/validator": "^4.4 || ^5.0",
     "terminal42/notification_center": "^1.3.4",
-    "twig/twig": "^1.26 || ^2.0 || ^3.0"
+    "twig/twig": "^3.0"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.1",

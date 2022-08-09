@@ -8,14 +8,18 @@ use Contao\User as ContaoUser;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessor;
 use Netzmacht\Workflow\Data\EntityId;
+use Netzmacht\Workflow\Exception\WorkflowException;
+use Netzmacht\Workflow\Flow\Exception\FlowException;
 use Netzmacht\Workflow\Flow\Item;
-use Netzmacht\Workflow\Flow\Step;
+use Netzmacht\Workflow\Manager\WorkflowManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use function array_pad;
 use function assert;
 use function count;
+use function explode;
 
 /**
  * The step voter is a security voter to evaluate access to a step for a given workflow item.
@@ -45,6 +49,9 @@ final class StepVoter extends Voter
      */
     private $providerConfiguration;
 
+    /** @var WorkflowManager */
+    private $workflowManager;
+
     /**
      * @param User                              $workflowUser          The workflow user.
      * @param PropertyAccessManager             $propertyAccessManager The property access manager.
@@ -53,35 +60,53 @@ final class StepVoter extends Voter
     public function __construct(
         User $workflowUser,
         PropertyAccessManager $propertyAccessManager,
+        WorkflowManager $workflowManager,
         array $providerConfiguration
     ) {
         $this->workflowUser          = $workflowUser;
         $this->propertyAccessManager = $propertyAccessManager;
+        $this->workflowManager       = $workflowManager;
         $this->providerConfiguration = $providerConfiguration;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
-        if (! $subject instanceof Item) {
+        [$type, $step] = array_pad(explode(':', $attribute, 2), 2, null);
+
+        if ($type !== 'step' || $step === null) {
             return false;
         }
 
-        return $attribute instanceof Step;
+        return $subject instanceof Item;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-        /** @psalm-suppress DocblockTypeContradiction - TODO: Do we need to fix the attribute type */
-        assert($attribute instanceof Step);
         assert($subject instanceof Item);
 
-        $permission        = $attribute->getPermission();
+        [$type, $step] = array_pad(explode(':', $attribute, 2), 2, null);
+        if ($step === null) {
+            return false;
+        }
+
+        try {
+            $workflow = $this->workflowManager->getWorkflowByItem($subject);
+            $step     = $workflow->getStep($step);
+        } catch (WorkflowException | FlowException $exception) {
+            return false;
+        }
+
+        $permission        = $step->getPermission();
         $permissionLimited = $permission !== null;
         $user              = $token->getUser();
         if (! $user instanceof UserInterface) {

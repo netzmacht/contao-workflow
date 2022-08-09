@@ -78,7 +78,7 @@ final class StepPermissionCondition implements Condition
         }
 
         try {
-            if ($this->authorizationChecker->isGranted($transition, $item)) {
+            if ($this->authorizationChecker->isGranted('transition:' . $transition->getName(), $item)) {
                 return true;
             }
         } catch (AuthenticationCredentialsNotFoundException $exception) {
