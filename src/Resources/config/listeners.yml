@@ -133,3 +133,7 @@ services:
   Netzmacht\ContaoWorkflowBundle\EventListener\Dca\CopyWorkflowCallbackListener:
     arguments:
       - '@database_connection'
+
+  Netzmacht\ContaoWorkflowBundle\EventListener\Hook\LoadDataContainerListener:
+    arguments:
+      - '@netzmacht.contao_toolkit.contao.input_adapter'
