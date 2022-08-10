@@ -136,4 +136,5 @@ services:
 
   Netzmacht\ContaoWorkflowBundle\EventListener\Hook\LoadDataContainerListener:
     arguments:
+      - '@netzmacht.contao_toolkit.dca.manager'
       - '@netzmacht.contao_toolkit.contao.input_adapter'

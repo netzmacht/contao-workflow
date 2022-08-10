@@ -7,16 +7,21 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Hook;
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Input;
+use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 
 /** @Hook("loadDataContainer") */
 final class LoadDataContainerListener
 {
+    /** @var DcaManager */
+    private $dcaManager;
+
     /** @var Adapter<Input> */
     private $input;
 
-    public function __construct(Adapter $adapter)
+    public function __construct(DcaManager $dcaManager, Adapter $adapter)
     {
-        $this->input = $adapter;
+        $this->dcaManager = $dcaManager;
+        $this->input      = $adapter;
     }
 
     public function __invoke(string $name): void
@@ -25,8 +30,10 @@ final class LoadDataContainerListener
             return;
         }
 
-        if ($this->input->get('ptable') !== 'tl_workflow') {
-            $GLOBALS['TL_DCA']['tl_workflow_action']['config']['ptable'] = 'tl_workflow_transition';
+        if ($this->input->get('ptable') === 'tl_workflow') {
+            return;
         }
+
+        $this->dcaManager->getDefinition('tl_workflow_action')->set(['config', 'ptable'], 'tl_workflow_transition');
     }
 }
