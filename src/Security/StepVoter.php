@@ -11,7 +11,7 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\Exception\FlowException;
 use Netzmacht\Workflow\Flow\Item;
-use Netzmacht\Workflow\Manager\WorkflowManager;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
