@@ -13,6 +13,9 @@
  - Require at least Symfony 4.4 and Contao 4.9
  - Support PHP 8
 
+## Breaking
+ - Rewrite voters. Steps and transitions has to be passed as name with `step:` or `transition:` prefix
+
 ## [2.3.4] - 2021-03-01
 
 ### Fixed
