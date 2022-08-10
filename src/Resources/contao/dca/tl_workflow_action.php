@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm']
+                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '')
                     . '\'))return false;Backend.getScrollOffset()"',
             ],
             'toggle' => [
