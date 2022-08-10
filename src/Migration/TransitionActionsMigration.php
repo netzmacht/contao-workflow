@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Migration;
 
-use Contao\CoreBundle\Doctrine\Schema\DcaSchemaProvider;
+use Contao\CoreBundle\Doctrine\Schema\SchemaProvider;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -23,15 +23,15 @@ final class TransitionActionsMigration
     /**
      * Dca Schema provider.
      *
-     * @var DcaSchemaProvider
+     * @var SchemaProvider
      */
     private $schemaProvider;
 
     /**
      * @param Connection        $connection     Database connection.
-     * @param DcaSchemaProvider $schemaProvider Dca schema provider.
+     * @param SchemaProvider $schemaProvider Dca schema provider.
      */
-    public function __construct(Connection $connection, DcaSchemaProvider $schemaProvider)
+    public function __construct(Connection $connection, SchemaProvider $schemaProvider)
     {
         $this->connection     = $connection;
         $this->schemaProvider = $schemaProvider;
