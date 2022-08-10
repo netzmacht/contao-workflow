@@ -16,10 +16,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use function array_pad;
 use function assert;
 use function count;
-use function explode;
 
 /**
  * The step voter is a security voter to evaluate access to a step for a given workflow item.
@@ -74,9 +72,7 @@ final class StepVoter extends Voter
      */
     protected function supports(string $attribute, $subject): bool
     {
-        [$type, $step] = array_pad(explode(':', $attribute, 2), 2, null);
-
-        if ($type !== 'step' || $step === null) {
+        if (! WorkflowPermissions::isAccessStep($attribute)) {
             return false;
         }
 
@@ -94,10 +90,7 @@ final class StepVoter extends Voter
     {
         assert($subject instanceof Item);
 
-        [$type, $step] = array_pad(explode(':', $attribute, 2), 2, null);
-        if ($step === null) {
-            return false;
-        }
+        $step = WorkflowPermissions::extractStepName($attribute);
 
         try {
             $workflow = $this->workflowManager->getWorkflowByItem($subject);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
 
+use Netzmacht\ContaoWorkflowBundle\Security\WorkflowPermissions;
 use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
@@ -78,7 +79,7 @@ final class StepPermissionCondition implements Condition
         }
 
         try {
-            if ($this->authorizationChecker->isGranted('transition:' . $transition->getName(), $item)) {
+            if ($this->authorizationChecker->isGranted(WorkflowPermissions::transitTransition($transition), $item)) {
                 return true;
             }
         } catch (AuthenticationCredentialsNotFoundException $exception) {

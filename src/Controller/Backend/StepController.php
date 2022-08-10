@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
+use Netzmacht\ContaoWorkflowBundle\Security\WorkflowPermissions;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
@@ -86,7 +87,7 @@ final class StepController extends AbstractController
         }
 
         $currentStep = $workflow->getStep($stepName);
-        if (! $this->authorizationChecker->isGranted('step:' . $currentStep->getName(), $item)) {
+        if (! $this->authorizationChecker->isGranted(WorkflowPermissions::accessStep($currentStep), $item)) {
             throw new AccessDeniedHttpException();
         }
 

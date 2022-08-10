@@ -12,9 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use function array_pad;
 use function assert;
-use function explode;
 
 /**
  * The transition voter is a security voter to evaluate access to a step for a given workflow item.
@@ -44,9 +42,7 @@ final class TransitionVoter extends Voter
      */
     protected function supports(string $attribute, $subject): bool
     {
-        [$type, $transition] = array_pad(explode(':', $attribute, 2), 2, null);
-
-        if ($type !== 'transition' || $transition === null) {
+        if (! WorkflowPermissions::isTransitTransition($attribute)) {
             return false;
         }
 
@@ -62,10 +58,7 @@ final class TransitionVoter extends Voter
     {
         assert($subject instanceof Item);
 
-        [$type, $transition] = array_pad(explode(':', $attribute, 2), 2, null);
-        if ($transition === null) {
-            return false;
-        }
+        $transition = WorkflowPermissions::extractTransitionName($attribute);
 
         try {
             $workflow   = $this->workflowManager->getWorkflowByItem($subject);
