@@ -255,6 +255,8 @@ services:
     arguments:
       - '@database_connection'
       - '@contao.doctrine.schema_provider'
+    tags:
+      - 'contao.migration'
 
   Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionFrontendModuleController:
     arguments:
