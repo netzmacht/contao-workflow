@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [2.5.0] - 2022-08-17
+
+## Changed 
+
+ - Require netzmacht/contao-form-bundle ^2.0 
+ - Require contao/contao ^4.13
+
+## Breaking
+
+ - Rewrite voters. Steps and transitions has to be passed as name with `netzmacht_workflow.step.` or `netzmacht_workflow.transition:` prefix
+
 ## [2.4.0] - 2022-08-17
 
 ## Added
@@ -14,9 +25,6 @@
  - Use symfony contracts where possible
  - Require at least Symfony 4.4 and Contao 4.9
  - Support PHP 8
-
-## Breaking
- - Rewrite voters. Steps and transitions has to be passed as name with `step:` or `transition:` prefix
 
 ## [2.3.4] - 2021-03-01
 
