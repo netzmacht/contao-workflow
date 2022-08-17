@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
@@ -18,7 +7,6 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
-use Exception;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
@@ -31,6 +19,8 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWork
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 use NotificationCenter\Model\Notification;
+use Throwable;
+
 use function array_merge;
 use function assert;
 use function sprintf;
@@ -38,7 +28,7 @@ use function sprintf;
 /**
  * Class Action is used for tl_workflow_action callbacks.
  *
- * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class ActionCallbackListener extends AbstractListener
 {
@@ -75,18 +65,16 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Provider configuration.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $providerConfiguration;
 
     /**
-     * Action constructor.
-     *
-     * @param DcaManager                   $dcaManager            Data container manager.
-     * @param RepositoryManager            $repositoryManager     Repository manager.
-     * @param DatabaseDrivenWorkflowLoader $workflowLoader        Database driven workflow loader.
-     * @param ActionFactory                $actionFactory         The action factory.
-     * @param array                        $providerConfiguration Provider configuration.
+     * @param DcaManager                        $dcaManager            Data container manager.
+     * @param RepositoryManager                 $repositoryManager     Repository manager.
+     * @param DatabaseDrivenWorkflowLoader      $workflowLoader        Database driven workflow loader.
+     * @param ActionFactory                     $actionFactory         The action factory.
+     * @param array<string,array<string,mixed>> $providerConfiguration Provider configuration.
      */
     public function __construct(
         DcaManager $dcaManager,
@@ -106,9 +94,7 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Generate a row view.
      *
-     * @param array $row Current data row.
-     *
-     * @return string
+     * @param array<string,mixed> $row Current data row.
      */
     public function generateRow(array $row): string
     {
@@ -117,6 +103,7 @@ final class ActionCallbackListener extends AbstractListener
             if ($reference === null) {
                 return sprintf('<strong>ID %s</strong>', $row['id']);
             }
+
             $row = $reference->row();
         }
 
@@ -132,9 +119,9 @@ final class ActionCallbackListener extends AbstractListener
      *
      * @param DataContainer $dataContainer The data container.
      *
-     * @return array
+     * @return array<string,list<string>>|list<string>
      */
-    public function getTypes($dataContainer = null): array
+    public function getTypes(?DataContainer $dataContainer = null): array
     {
         if ($dataContainer === null || $dataContainer->activeRecord === null) {
             return $this->actionFactory->getTypeNames();
@@ -149,13 +136,17 @@ final class ActionCallbackListener extends AbstractListener
 
             $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
             $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
-            $workflow        = $this->workflowLoader->loadWorkflowById((int) $transitionModel->pid);
+            if ($transitionModel === null) {
+                return ['transitions' => ['reference']];
+            }
+
+            $workflow = $this->workflowLoader->loadWorkflowById((int) $transitionModel->pid);
 
             return array_merge(
                 ['transitions' => ['reference']],
                 $this->actionFactory->getSupportedTypeNamesCategorized($workflow)
             );
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
                 return $this->actionFactory->getTypeNames();
             }
@@ -170,7 +161,7 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get all notifications as options.
      *
-     * @return array
+     * @return array<string,string|array<string,string>>
      */
     public function notificationOptions(): array
     {
@@ -180,7 +171,7 @@ final class ActionCallbackListener extends AbstractListener
 
         return OptionsBuilder::fromCollection(
             $notifications,
-            function (array $row) {
+            static function (array $row) {
                 return sprintf('%s [ID %s]', $row['title'], $row['id']);
             }
         )->getOptions();
@@ -189,12 +180,12 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getEntityProperties(): array
     {
         $workflow = $this->getWorkflowModelByAction();
-        if (!$workflow instanceof WorkflowModel) {
+        if (! $workflow instanceof WorkflowModel) {
             return [];
         }
 
@@ -204,19 +195,19 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get entity properties.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getEditableEntityProperties(): array
     {
         $workflow = $this->getWorkflowModelByAction();
-        if (!$workflow instanceof WorkflowModel) {
+        if (! $workflow instanceof WorkflowModel) {
             return [];
         }
 
         $definition = $this->getDefinition($workflow->providerName);
         $options    = [];
         foreach ($definition->get('fields') as $name => $config) {
-            if (!isset($config['inputType'])) {
+            if (! isset($config['inputType'])) {
                 continue;
             }
 
@@ -235,12 +226,12 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get actions defined as global actions.
      *
-     * @return array
+     * @return array<string|int,string>
      */
     public function getWorkflowActions(): array
     {
         $workflow = $this->getWorkflowModelByAction();
-        if (!$workflow instanceof WorkflowModel) {
+        if (! $workflow instanceof WorkflowModel) {
             return [];
         }
 
@@ -249,6 +240,7 @@ final class ActionCallbackListener extends AbstractListener
         $collection = $repository->findByWorkflow((int) $workflow->id) ?: [];
         $options    = [];
         foreach ($collection as $model) {
+            assert($model instanceof ActionModel);
             $options[$model->id] = $model->label;
         }
 
@@ -257,13 +249,11 @@ final class ActionCallbackListener extends AbstractListener
 
     /**
      * Get the related workflow model by the action.
-     *
-     * @return WorkflowModel|null
      */
     private function getWorkflowModelByAction(): ?WorkflowModel
     {
         $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
-        if (!$action) {
+        if (! $action) {
             return null;
         }
 
@@ -278,6 +268,7 @@ final class ActionCallbackListener extends AbstractListener
                 if ($transitionModel === null) {
                     return null;
                 }
+
                 $workflowId = (int) $transitionModel->pid;
                 break;
 
@@ -298,7 +289,7 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get user assign properties.
      *
-     * @return array
+     * @return list<string>
      */
     public function getUserAssignProperties(): array
     {
@@ -307,13 +298,13 @@ final class ActionCallbackListener extends AbstractListener
             return [];
         }
 
-        return ($this->providerConfiguration[$workflow->providerName]['assign_users'] ?? []);
+        return $this->providerConfiguration[$workflow->providerName]['assign_users'] ?? [];
     }
 
     /**
      * Get workflow permissions.
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getWorkflowPermissions(): array
     {

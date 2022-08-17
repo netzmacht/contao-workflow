@@ -3,7 +3,7 @@ Workflow integration for Contao CMS
 ===================================
 
 
-[![Build Status](http://img.shields.io/travis/netzmacht/contao-workflow/master.svg?style=flat-square)](https://travis-ci.org/netzmacht/contao-workflow)
+[![Build Status](https://github.com/netzmacht/contao-workflow/actions/workflows/diagnostics.yml/badge.svg)](https://github.com/netzmacht/contao-workflow/actions)
 [![Version](http://img.shields.io/packagist/v/netzmacht/contao-workflow.svg?style=flat-square)](http://packagist.com/packages/netzmacht/contao-workflow)
 [![License](http://img.shields.io/packagist/l/netzmacht/contao-workflow.svg?style=flat-square)](http://packagist.org/packages/netzmacht/contao-workflow)
 [![Downloads](http://img.shields.io/packagist/dt/netzmacht/contao-workflow.svg?style=flat-square)](http://packagist.org/packages/netzmacht/contao-workflow)
@@ -17,9 +17,9 @@ provides a default workflow integration you probably need to create own actions 
 
 ## Requirements
 
- * Contao `^4.4`
- * PHP `>= 7.1`
- * Symfony `^3.4 || ^4.0`
+ * Contao `^4.9`
+ * PHP `^7.1 || ^8.0`
+ * Symfony `^4.4 || ^5.1`
  
 ## Documentation
 

@@ -1,16 +1,6 @@
 <?php
-/**
- * Translations are managed using Transifex. To create a new translation
- * or to help to maintain an existing one, please register at transifex.com.
- *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/contao-workflow/language/de/
- *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2020-10-13T07:00:51+00:00
- */
 
+declare(strict_types=1);
 
 $GLOBALS['TL_LANG']['tl_workflow_step']['className']['0']       = 'CSS-Klasse';
 $GLOBALS['TL_LANG']['tl_workflow_step']['className']['1']       = 'CSS-Klasse, die für die Darstellung des Items im aktuellen Zustand benutzt werden kann.';
@@ -37,4 +27,3 @@ $GLOBALS['TL_LANG']['tl_workflow_step']['permission']['1']      = 'Berechtigung,
 $GLOBALS['TL_LANG']['tl_workflow_step']['permission_legend']    = 'Berechtigung';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show']['0']            = 'Details des Schrittes anzeigen';
 $GLOBALS['TL_LANG']['tl_workflow_step']['show']['1']            = 'Schritt-Details';
-

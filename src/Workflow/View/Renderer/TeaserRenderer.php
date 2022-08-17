@@ -1,30 +1,21 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
+use Assert\AssertionFailedException;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
-/**
- * Class TransitionTeaserRenderer
- */
+use function assert;
+use function sprintf;
+
+/** @SuppressWarnings(PHPMD.LongVariable) */
 final class TeaserRenderer extends AbstractRenderer
 {
     /**
@@ -42,13 +33,11 @@ final class TeaserRenderer extends AbstractRenderer
     private $propertyAccessManager;
 
     /**
-     * AbstractRenderer constructor.
-     *
      * @param Translator            $translator            Translator.
-     * @param array                 $templates             Mapping between the content type and the default template.
+     * @param array<string,string>  $templates             Mapping between the content type and the default template.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      *
-     * @throws \Assert\AssertionFailedException If No section name is defined.
+     * @throws AssertionFailedException If No section name is defined.
      */
     public function __construct(
         Translator $translator,
@@ -60,14 +49,10 @@ final class TeaserRenderer extends AbstractRenderer
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(View $view): bool
     {
         return $view->getContext() instanceof Transition
-            || $view->getContext() instanceof Step
-            || $view->getContext() === null;
+            || $view->getContext() instanceof Step;
     }
 
     /**
@@ -75,8 +60,8 @@ final class TeaserRenderer extends AbstractRenderer
      */
     protected function renderParameters(View $view): array
     {
-        /** @var Transition|Step $context */
-        $context     = $view->getContext();
+        $context = $view->getContext();
+        assert($context instanceof Transition || $context instanceof Step);
         $workflow    = $view->getWorkflow();
         $stepName    = $view->getItem()->getCurrentStepName();
         $item        = $view->getItem();
@@ -87,8 +72,8 @@ final class TeaserRenderer extends AbstractRenderer
         }
 
         return [
-            'headline'    => $context ? $context->getLabel() : $workflow->getLabel(),
-            'description' => $context ? $context->getConfigValue('description') : null,
+            'headline'    => $context->getLabel(),
+            'description' => $context->getConfigValue('description'),
             'workflow'    => $view->getWorkflow(),
             'currentStep' => $currentStep,
             'item'        => $view->getItem(),
@@ -100,10 +85,8 @@ final class TeaserRenderer extends AbstractRenderer
      * Render the data record label.
      *
      * @param Item $item The current item.
-     *
-     * @return string|null
      */
-    private function renderEntityLabel(Item $item): ?string
+    private function renderEntityLabel(Item $item): string
     {
         $entity   = $item->getEntity();
         $entityId = $item->getEntityId();
@@ -115,7 +98,7 @@ final class TeaserRenderer extends AbstractRenderer
         $accessor = $this->propertyAccessManager->provideAccess($entity);
         $label    = null;
         foreach (['title', 'name', 'headline'] as $labelField) {
-            if (!$accessor->has($labelField)) {
+            if (! $accessor->has($labelField)) {
                 continue;
             }
 
@@ -125,7 +108,7 @@ final class TeaserRenderer extends AbstractRenderer
             }
         }
 
-        if (!$label) {
+        if (! $label) {
             $label = 'ID ' . $entityId->getIdentifier();
         } else {
             $label = sprintf('%s (ID %s)', $label, $entityId->getIdentifier());

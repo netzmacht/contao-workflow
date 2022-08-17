@@ -1,18 +1,10 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
+declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
+use Assert\AssertionFailedException;
 use Contao\Config;
 use Contao\CoreBundle\Framework\Adapter;
 use Contao\Model;
@@ -23,13 +15,12 @@ use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Manager\Manager;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
-/**
- * Class StateHistoryRenderer
- *
- * @package Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer
- */
+use function array_reverse;
+use function assert;
+use function is_array;
+
 final class StateHistoryRenderer extends AbstractStepRenderer
 {
     /**
@@ -61,15 +52,12 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     private $entityManager;
 
     /**
-     * Constructor.
+     * @param Translator           $translator    Translator.
+     * @param Config|Adapter       $configAdapter Config adapter.
+     * @param EntityManager        $entityManager Entity manager.
+     * @param array<string,string> $templates     Mapping between the content type and the default template.
      *
-     * @param Manager        $manager
-     * @param Translator     $translator    Translator.
-     * @param Config|Adapter $configAdapter Config adapter.
-     * @param EntityManager  $entityManager Entity manager.
-     * @param array          $templates     Mapping between the content type and the default template.
-     *
-     * @throws \Assert\AssertionFailedException If No section name is defined.
+     * @throws AssertionFailedException If No section name is defined.
      */
     public function __construct(
         Manager $manager,
@@ -103,7 +91,10 @@ final class StateHistoryRenderer extends AbstractStepRenderer
                 $row[$column] = $this->renderStateColumn($state, $column);
             }
 
-            $data[$state->getStateId()] = $row;
+            $stateId = $state->getStateId();
+            assert($stateId !== null);
+
+            $data[$stateId] = $row;
         }
 
         $data = array_reverse($data);
@@ -117,7 +108,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * @param State  $state  Workflow item state.
      * @param string $column State column.
      *
-     * @return string|array|null
+     * @return string|array<string,mixed>|null
      */
     public function renderStateColumn(State $state, string $column)
     {
@@ -139,7 +130,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
 
                 return [
                     'label' => $this->trans('MSC.' . $yesNo, [], 'contao_default'),
-                    'value' => $state->isSuccessful()
+                    'value' => $state->isSuccessful(),
                 ];
 
             case 'reachedAt':
@@ -158,8 +149,6 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * Render the workflow name.
      *
      * @param State $state Workflow item state.
-     *
-     * @return string
      */
     private function renderStartWorkflowName(State $state): string
     {
@@ -174,8 +163,6 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * Render the workflow name.
      *
      * @param State $state Workflow item state.
-     *
-     * @return string
      */
     private function renderTargetWorkflowName(State $state): string
     {
@@ -190,8 +177,6 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * Render the transition name.
      *
      * @param State $state Workflow item state.
-     *
-     * @return string
      */
     private function renderTransitionName(State $state): string
     {
@@ -209,8 +194,6 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * Render the step name.
      *
      * @param State $state Workflow item state.
-     *
-     * @return string
      */
     private function renderStepName(State $state): string
     {
@@ -230,13 +213,13 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      * @param State  $state  Workflow item state.
      * @param string $column The meta data column name.
      *
-     * @return array|string|null
+     * @return array<string,mixed>|string|null
      */
     private function renderMetaData(State $state, string $column)
     {
         $data = $state->getData();
 
-        if (!isset($data['metadata']) || !is_array($data['metadata'])) {
+        if (! isset($data['metadata']) || ! is_array($data['metadata'])) {
             return '-';
         }
 
@@ -255,13 +238,13 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     /**
      * Render the username.
      *
-     * @param array $metadata State metadata.
+     * @param array<string,mixed> $metadata State metadata.
      *
-     * @return array|null
+     * @return array<string,mixed>|null
      */
-    private function renderUserName(array $metadata)
+    private function renderUserName(array $metadata): ?array
     {
-        if (!isset($metadata['userId'])) {
+        if (! isset($metadata['userId'])) {
             return null;
         }
 
@@ -280,7 +263,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
 
             $userName = [
                 'name'    => $userName,
-                'username' => $user->username ?: $user->id
+                'username' => $user->username ?: $user->id,
             ];
 
             return $userName;
@@ -292,13 +275,11 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     /**
      * Render the scope.
      *
-     * @param array $metadata State metadata.
-     *
-     * @return string
+     * @param array<string,mixed> $metadata State metadata.
      */
     private function renderScope(array $metadata): string
     {
-        if (!isset($metadata['scope'])) {
+        if (! isset($metadata['scope'])) {
             return '-';
         }
 

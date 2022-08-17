@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
@@ -21,19 +10,19 @@ use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
 
+use function time;
+
 /**
  * Class SavePermissionsCallback stores the permission in the association group table.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Backend\Dca
  */
 final class SavePermissionsCallbackListener
 {
     /**
      * The loaded permissions.
      *
-     * @var array
+     * @var array<string,string>
      */
-    private $permissions = array();
+    private $permissions = [];
 
     /**
      * Repository manager.
@@ -60,7 +49,7 @@ final class SavePermissionsCallbackListener
      *
      * @return mixed
      */
-    public function onSaveCallback($permissions, $dataContainer)
+    public function onSaveCallback($permissions, DataContainer $dataContainer)
     {
         $permissions = StringUtil::deserialize($permissions, true);
 
@@ -76,18 +65,16 @@ final class SavePermissionsCallbackListener
      *
      * @param string $source The source of the permissions.
      * @param int    $rowId  The road id.
-     *
-     * @return void
      */
     private function loadPermissions(string $source, int $rowId): void
     {
-        $permissions = array();
+        $permissions = [];
         $query       = 'SELECT * FROM tl_workflow_permission WHERE source=:source AND source_id=:source_id';
         $statement   = $this->repositoryManager->getConnection()->prepare($query);
-        $statement->execute(['source' => $source, 'source_id' => $rowId]);
+        $results     = $statement->executeQuery(['source' => $source, 'source_id' => $rowId]);
 
-        while ($result = $statement->fetch(\PDO::FETCH_OBJ)) {
-            $permissions[$result->permission] = $result->id;
+        while ($result = $results->fetchAssociative()) {
+            $permissions[$result['permission']] = $result['id'];
         }
 
         $this->permissions = $permissions;
@@ -96,11 +83,9 @@ final class SavePermissionsCallbackListener
     /**
      * Delete permissions which where removed.
      *
-     * @param array  $values   List of active permissions.
-     * @param string $source   Source table.
-     * @param int    $sourceId Source id.
-     *
-     * @return void
+     * @param list<string> $values   List of active permissions.
+     * @param string       $source   Source table.
+     * @param int          $sourceId Source id.
      */
     private function deleteRemovedPermissions(array $values, string $source, int $sourceId): void
     {
@@ -122,10 +107,8 @@ final class SavePermissionsCallbackListener
     /**
      * Create new permissions.
      *
-     * @param array         $permissions   The permissions as string representations.
+     * @param list<string>  $permissions   The permissions as string representations.
      * @param DataContainer $dataContainer The data container.
-     *
-     * @return void
      */
     private function createNewPermissions(array $permissions, DataContainer $dataContainer): void
     {

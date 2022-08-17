@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
@@ -24,17 +13,19 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition\Transition
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 
+use function is_string;
+
 /**
  * Class ConditionBuilder builds the workflow conditions.
  *
- * @package Netzmacht\ContaoWorkflowBundle\Definition\Database
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class ConditionBuilder
 {
     /**
      * Comparator operations.
      *
-     * @var array
+     * @var array<string,string>
      */
     private static $operators = [
         'eq'  => '==',
@@ -67,8 +58,6 @@ final class ConditionBuilder
     private $propertyAccessManager;
 
     /**
-     * ConditionBuilder constructor.
-     *
      * @param ExpressionLanguage    $expressionLanguage    The expression language.
      * @param AuthorizationChecker  $authorizationChecker  Authorization checker.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -87,14 +76,12 @@ final class ConditionBuilder
      * Create property conditions.
      *
      * @param CreateTransitionEvent $event The subscribed event.
-     *
-     * @return void
      */
     public function createPropertyConditions(CreateTransitionEvent $event): void
     {
         $transition = $event->getTransition();
 
-        if (!$transition->getConfigValue('addPropertyConditions')) {
+        if (! $transition->getConfigValue('addPropertyConditions')) {
             return;
         }
 
@@ -103,14 +90,21 @@ final class ConditionBuilder
         foreach ($config as $row) {
             $condition = new PropertyCondition($this->propertyAccessManager);
 
-            if ($row['property']) {
-                $condition
-                    ->setProperty($row['property'])
-                    ->setOperator($this->parseOperator($row['operator']))
-                    ->setValue($row['value']);
-
-                $transition->addCondition($condition);
+            if (! $row['property'] || ! is_string($row['operator'])) {
+                continue;
             }
+
+            $operator = $this->parseOperator($row['operator']);
+            if ($operator === null) {
+                continue;
+            }
+
+            $condition
+                ->setProperty($row['property'])
+                ->setOperator($operator)
+                ->setValue($row['value']);
+
+            $transition->addCondition($condition);
         }
     }
 
@@ -118,24 +112,24 @@ final class ConditionBuilder
      * Add expression conditions.
      *
      * @param CreateTransitionEvent $event The subscribed event.
-     *
-     * @return void
      */
     public function createExpressionConditions(CreateTransitionEvent $event): void
     {
         $transition = $event->getTransition();
 
-        if ($transition->getConfigValue('addExpressionConditions')) {
-            $definition = StringUtil::deserialize($transition->getConfigValue('expressionConditions'), true);
+        if (! $transition->getConfigValue('addExpressionConditions')) {
+            return;
+        }
 
-            foreach ($definition as $config) {
-                $condition = new ExpressionCondition($this->expressionLanguage, $config['expression']);
+        $definition = StringUtil::deserialize($transition->getConfigValue('expressionConditions'), true);
 
-                if ($config['type'] === 'pre') {
-                    $transition->addPreCondition($condition);
-                } else {
-                    $transition->addCondition($condition);
-                }
+        foreach ($definition as $config) {
+            $condition = new ExpressionCondition($this->expressionLanguage, $config['expression']);
+
+            if ($config['type'] === 'pre') {
+                $transition->addPreCondition($condition);
+            } else {
+                $transition->addCondition($condition);
             }
         }
     }
@@ -144,8 +138,6 @@ final class ConditionBuilder
      * Add default transition conditions.
      *
      * @param CreateTransitionEvent $event The subscribed event.
-     *
-     * @return void
      */
     public function createTransitionPermissionCondition(CreateTransitionEvent $event): void
     {
@@ -159,11 +151,9 @@ final class ConditionBuilder
      * Parse database stored operator into string comparison operator.
      *
      * @param string $operator Database operator.
-     *
-     * @return string|null
      */
-    private function parseOperator($operator): ?string
+    private function parseOperator(string $operator): ?string
     {
-        return (static::$operators[$operator] ?? null);
+        return self::$operators[$operator] ?? null;
     }
 }

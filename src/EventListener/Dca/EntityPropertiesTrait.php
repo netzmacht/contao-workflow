@@ -1,28 +1,20 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
+
 use function array_merge;
+use function assert;
 use function count;
 use function end;
 use function explode;
 use function implode;
 use function in_array;
+use function is_string;
 use function sprintf;
 
 /**
@@ -34,20 +26,17 @@ trait EntityPropertiesTrait
      * Get the definition for a data container.
      *
      * @param string $dataContainerName The name of the data container.
-     *
-     * @return Definition
      */
-    abstract protected function getDefinition(string $dataContainerName = '') : Definition;
+    abstract protected function getDefinition(string $dataContainerName = ''): Definition;
 
     /**
      * Get the entity properties for a workflow.
      *
      * @param WorkflowModel $workflow The workflow.
      *
-     * @psalm-return array<string,string>
-     * @return       array
+     * @return array<string,array<string,string>>
      */
-    protected function getEntityPropertiesForWorkflow(WorkflowModel $workflow) : array
+    protected function getEntityPropertiesForWorkflow(WorkflowModel $workflow): array
     {
         $options = [];
 
@@ -86,13 +75,13 @@ trait EntityPropertiesTrait
      *  - current field
      *  - parent table if available
      *
-     * @param string $currentTable The current table.
-     * @param int    $depth        Limit the depth. Detph 1 means it checks the first related level.
-     * @param string $parentTable  The parent table.
-     * @param array  $prefix       The prefix path as array.
-     * @param array  $knownTables  Cache of known tables. Required to avoid recursion.
+     * @param string       $currentTable The current table.
+     * @param int          $depth        Limit the depth. Detph 1 means it checks the first related level.
+     * @param string       $parentTable  The parent table.
+     * @param list<string> $prefix       The prefix path as array.
+     * @param list<string> $knownTables  Cache of known tables. Required to avoid recursion.
      *
-     * @return iterable
+     * @return iterable<array{0:string,1:list<string>,2:string,3:string}>
      */
     private function getRelations(
         string $currentTable,
@@ -100,7 +89,7 @@ trait EntityPropertiesTrait
         string $parentTable = '',
         array $prefix = [],
         array &$knownTables = []
-    ) : iterable {
+    ): iterable {
         if (in_array($currentTable, $knownTables, true)) {
             return [];
         }
@@ -109,14 +98,17 @@ trait EntityPropertiesTrait
         $knownTables[] = $currentTable;
 
         foreach ($definition->get(['fields']) as $fieldName => $fieldConfiguration) {
+            assert(is_string($fieldName));
+
             if (! isset($fieldConfiguration['relation'])) {
                 yield [$currentTable, $prefix, $fieldName, $parentTable];
 
                 continue;
             }
 
-            if (!isset($fieldConfiguration['relation']['type'])
-                || !in_array($fieldConfiguration['relation']['type'], ['hasOne', 'belongsTo'])
+            if (
+                ! isset($fieldConfiguration['relation']['type'])
+                || ! in_array($fieldConfiguration['relation']['type'], ['hasOne', 'belongsTo'])
             ) {
                 // Skip field, as it has an 1:m relation which is not supported.
                 continue;

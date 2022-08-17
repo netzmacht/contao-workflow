@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
@@ -23,9 +12,7 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 
-/**
- * Class AssignedUserCondition
- */
+/** @SuppressWarnings(PHPMD.LongVariable) */
 final class AssignedUserCondition implements Condition
 {
     /**
@@ -50,8 +37,18 @@ final class AssignedUserCondition implements Condition
     private $property;
 
     /**
-     * {@inheritDoc}
+     * @param PropertyAccessManager $propertyAccessManager Property access manager
+     * @param User                  $user                  The workflow user.
+     * @param string                $property              The user property.
      */
+    public function __construct(PropertyAccessManager $propertyAccessManager, User $user, string $property)
+    {
+        $this->propertyAccessManager = $propertyAccessManager;
+        $this->user                  = $user;
+        $this->property              = $property;
+    }
+
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         $entity = $item->getEntity();
@@ -66,6 +63,9 @@ final class AssignedUserCondition implements Condition
         }
 
         $userId = $this->user->getUserId();
+        if ($userId === null) {
+            return false;
+        }
 
         return EntityId::fromString($assignedUser)->equals($userId);
     }

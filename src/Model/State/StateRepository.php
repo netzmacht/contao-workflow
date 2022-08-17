@@ -1,32 +1,27 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Model\State;
 
-use Contao\Model;
 use Contao\StringUtil;
 use Contao\Validator;
+use DateTime;
+use DateTimeImmutable;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository as WorkflowStateRepository;
 use Netzmacht\Workflow\Flow\State;
+use ReflectionObject;
+
+use function assert;
+use function is_array;
+use function json_decode;
+use function json_encode;
+use function time;
 
 /**
  * Class StateRepository manages workflow states.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Data
  */
 final class StateRepository implements WorkflowStateRepository
 {
@@ -38,8 +33,6 @@ final class StateRepository implements WorkflowStateRepository
     private $repositoryManager;
 
     /**
-     * StateRepository constructor.
-     *
      * @param RepositoryManager $repositoryManager Contao model repository manager.
      */
     public function __construct(RepositoryManager $repositoryManager)
@@ -63,12 +56,10 @@ final class StateRepository implements WorkflowStateRepository
             ['order' => 'tl_workflow_state.reachedAt']
         );
 
-        $states = array();
-
-        if ($collection) {
-            while ($collection->next()) {
-                $states[] = $this->createState($collection->current());
-            }
+        $states = [];
+        foreach ($collection ?: [] as $model) {
+            assert($model instanceof StateModel);
+            $states[] = $this->createState($model);
         }
 
         return $states;
@@ -78,8 +69,6 @@ final class StateRepository implements WorkflowStateRepository
      * Add a new state.
      *
      * @param State $state The new state.
-     *
-     * @return void
      */
     public function add(State $state): void
     {
@@ -92,7 +81,7 @@ final class StateRepository implements WorkflowStateRepository
         $this->repositoryManager->getRepository(StateModel::class)->save($model);
 
         // dynamically add state id.
-        $reflector = new \ReflectionObject($state);
+        $reflector = new ReflectionObject($state);
         $property  = $reflector->getProperty('stateId');
         $property->setAccessible(true);
         $property->setValue($state, $model->id);
@@ -102,10 +91,8 @@ final class StateRepository implements WorkflowStateRepository
      * Convert state object to model representation.
      *
      * @param State $state The state being persisted.
-     *
-     * @return StateModel
      */
-    private function convertStateToModel(State $state)
+    private function convertStateToModel(State $state): StateModel
     {
         $model = new StateModel();
 
@@ -126,17 +113,15 @@ final class StateRepository implements WorkflowStateRepository
     /**
      * Create the state object.
      *
-     * @param StateModel|Model $model The state model.
-     *
-     * @return State
+     * @param StateModel $model The state model.
      */
-    private function createState(StateModel $model)
+    private function createState(StateModel $model): State
     {
-        $reachedAt = new \DateTime();
+        $reachedAt = new DateTime();
         $reachedAt->setTimestamp((int) $model->reachedAt);
-        $reachedAt = \DateTimeImmutable::createFromMutable($reachedAt);
+        $reachedAt = DateTimeImmutable::createFromMutable($reachedAt);
 
-        $state = new State(
+        return new State(
             EntityId::fromString($model->entityId),
             $model->workflowName,
             $model->transitionName,
@@ -148,18 +133,14 @@ final class StateRepository implements WorkflowStateRepository
             (int) $model->id,
             $model->targetWorkflowName
         );
-
-        return $state;
     }
 
     /**
      * Serialize data.
      *
      * @param mixed $data The data being serialized.
-     *
-     * @return string
      */
-    private function serialize($data)
+    private function serialize($data): string
     {
         $data = $this->prepareSerialize($data);
 

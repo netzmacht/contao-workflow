@@ -1,20 +1,10 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace spec\Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
 
+use Contao\Database\Result;
 use Contao\Model;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
 use PhpSpec\ObjectBehavior;
@@ -47,12 +37,14 @@ final class ContaoModelRelatedModelChangeTrackerSpec extends ObjectBehavior
         $this->release($baseModel)->shouldReturn([]);
     }
 
+    /** @param array<string,mixed> $data */
     private function modelInstance(array $data = []): Model
     {
         $instance = new class extends Model {
+            /** @var string */
             protected static $strTable = 'tl_example';
 
-            public function __construct($objResult = null)
+            public function __construct(?Result $objResult = null)
             {
                 // Do not call parent constructor as it requires contao framework being initialized
             }

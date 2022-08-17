@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel;
@@ -22,11 +11,9 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\RepositoryFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
 
-/**
- * Class ContaoModelEntityRepositoryFactory
- *
- * @package Netzmacht\ContaoWorkflowBundle\Entity\ContaoModel
- */
+use function class_exists;
+use function is_a;
+
 final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
 {
     /**
@@ -51,8 +38,6 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
     private $changeTracker;
 
     /**
-     * ContaoModelEntityRepositoryFactory constructor.
-     *
      * @param RepositoryManager                    $repositoryManager Repository manager.
      * @param Adapter|Model                        $modelAdapter      Model adapter.
      * @param ContaoModelRelatedModelChangeTracker $changeTracker     Related model change tracker.
@@ -67,17 +52,11 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
         $this->changeTracker     = $changeTracker;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(string $providerName): bool
     {
         $modelClass = $this->modelAdapter->getClassFromTable($providerName);
-        if (!$modelClass || !class_exists($modelClass) || !is_a($modelClass, Model::class, true)) {
-            return false;
-        }
 
-        return true;
+        return $modelClass && class_exists($modelClass) && is_a($modelClass, Model::class, true);
     }
 
     /**
@@ -88,7 +67,7 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
     public function create(string $providerName): EntityRepository
     {
         $modelClass = $this->modelAdapter->getClassFromTable($providerName);
-        if (!$modelClass) {
+        if (! $modelClass) {
             throw UnsupportedEntity::withProviderName($providerName);
         }
 

@@ -1,15 +1,6 @@
 <?php
-/**
- * Translations are managed using Transifex. To create a new translation
- * or to help to maintain an existing one, please register at transifex.com.
- *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/contao-workflow/language/de/
- *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2020-10-13T07:00:59+00:00
- */
+
+declare(strict_types=1);
 
 $GLOBALS['TL_LANG']['tl_workflow_action']['active']['0']                           = 'Aktivieren';
 $GLOBALS['TL_LANG']['tl_workflow_action']['active']['1']                           = 'Aktive Aktionen werden während der Transition ausgeführt.';
@@ -79,4 +70,3 @@ $GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property']['0']      
 $GLOBALS['TL_LANG']['tl_workflow_action']['types']['update_property']['1']         = 'Den Eigenschaftswert einer Entität aktualisieren.';
 $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties']['0']         = 'Eigenschaften';
 $GLOBALS['TL_LANG']['tl_workflow_action']['update_entity_properties']['1']         = 'Bitte die Eigenschaften auswählen, die innerhalb dieser Aktion aktualisiert werden sollen.';
-

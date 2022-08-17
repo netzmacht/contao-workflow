@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\UpdatePropertyAction;
@@ -32,6 +21,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * Update a property action
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class UpdatePropertyAction extends AbstractPropertyAccessAction
 {
@@ -110,28 +101,21 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
     /**
      * {@inheritDoc}
      */
-    public function getRequiredPayloadProperties(Item $item) : array
+    public function getRequiredPayloadProperties(Item $item): array
     {
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(Item $item, Context $context) : bool
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    public function validate(Item $item, Context $context): bool
     {
         $entity = $item->getEntity();
-        if ($this->propertyAccessManager->supports($entity)) {
-            return true;
-        }
 
-        return false;
+        return $this->propertyAccessManager->supports($entity);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function transit(Transition $transition, Item $item, Context $context) : void
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    public function transit(Transition $transition, Item $item, Context $context): void
     {
         $entity           = $item->getEntity();
         $propertyAccessor = $this->propertyAccessManager->provideAccess($entity);
@@ -157,12 +141,16 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
                 'entity' => new ReadonlyPropertyAccessor($propertyAccessor),
                 'now'    => new DateTimeImmutable(),
                 'userId' => $this->user->getUserId(),
-                'user'   => $this->fetchUserModel()
+                'user'   => $this->fetchUserModel(),
             ]
         );
     }
 
-    /** @return UserModel|MemberModel|null */
+    /**
+     * @return UserModel|MemberModel|null
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function fetchUserModel(): ?Model
     {
         $userId = $this->user->getUserId();
@@ -170,8 +158,11 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
             return null;
         }
 
-        $repository = $this->repositoryManager->getRepository(Model::getClassFromTable($userId->getProviderName()));
+        /** @psalm-var class-string<Model> */
+        $tableName  = Model::getClassFromTable($userId->getProviderName());
+        $repository = $this->repositoryManager->getRepository($tableName);
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $repository->find((int) $userId->getIdentifier());
     }
 }

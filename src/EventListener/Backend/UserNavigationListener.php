@@ -1,26 +1,11 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Backend;
 
-use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Class UserNavigationListener
- */
 final class UserNavigationListener
 {
     /**
@@ -31,35 +16,24 @@ final class UserNavigationListener
     private $requestStack;
 
     /**
-     * Assets manager.
-     *
-     * @var AssetsManager
+     * @param RequestStack $requestStack Request stack.
      */
-    private $assetsManager;
-
-    /**
-     * UserNavigationListener constructor.
-     *
-     * @param RequestStack  $requestStack  Request stack.
-     * @param AssetsManager $assetsManager Assets manager.
-     */
-    public function __construct(RequestStack $requestStack, AssetsManager $assetsManager)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->requestStack  = $requestStack;
-        $this->assetsManager = $assetsManager;
+        $this->requestStack = $requestStack;
     }
 
     /**
      * Handle the getUserNavigation hook to determine if workflow module is used.
      *
-     * @param array $modules User navigation modules.
+     * @param array<string,array<string,array<string,mixed>>> $modules User navigation modules.
      *
-     * @return array
+     * @return array<string,array<string,array<string,mixed>>>
      */
-    public function onGetUserNavigation(array $modules)
+    public function onGetUserNavigation(array $modules): array
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (!$request) {
+        if (! $request) {
             return $modules;
         }
 
@@ -67,12 +41,12 @@ final class UserNavigationListener
 
         if ($request->attributes->get('_backend_module') === 'workflow') {
             foreach ($modules as $group => $groupModules) {
-                if (isset($groupModules['modules'][$module])) {
-                    $modules[$group]['modules'][$module]['isActive'] = true;
+                if (! isset($groupModules['modules'][$module])) {
+                    continue;
                 }
-            }
 
-            $this->assetsManager->addStylesheet('bundles/netzmachtcontaoworkflow/css/backend.css');
+                $modules[$group]['modules'][$module]['isActive'] = true;
+            }
         }
 
         return $modules;

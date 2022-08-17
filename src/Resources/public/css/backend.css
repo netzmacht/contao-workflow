@@ -1,3 +1,7 @@
+#tl_navigation .group-workflow {
+    background: url('../img/workflow-module.svg') 3px 0 no-repeat;
+    background-size: 14px;
+}
 
 .icon_selector .selector_container img {
     max-width: 20px;

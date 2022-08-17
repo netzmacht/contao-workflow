@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser;
@@ -24,6 +13,8 @@ use Netzmacht\Workflow\Flow\Transition;
 
 /**
  * Class AssignUserAction assigns a user to an entity property.
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class AssignUserAction extends AbstractPropertyAccessAction
 {
@@ -49,15 +40,13 @@ final class AssignUserAction extends AbstractPropertyAccessAction
     private $property;
 
     /**
-     * AssignUserAction constructor.
-     *
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param User                  $user                  Workflow user.
      * @param string                $name                  The action name.
      * @param bool                  $assignCurrentUser     If true the current user is assigned.
      * @param string                $property              The entity property storing the user information.
      * @param string                $label                 The action label.
-     * @param array                 $config                The action configuration.
+     * @param array<string,mixed>   $config                The action configuration.
      */
     public function __construct(
         PropertyAccessManager $propertyAccessManager,
@@ -87,25 +76,17 @@ final class AssignUserAction extends AbstractPropertyAccessAction
         return [$this->getName() . '_user'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function validate(Item $item, Context $context): bool
     {
         if ($this->assignCurrentUser) {
             return true;
         }
 
-        if ($context->getPayload()->has($this->getName() . '_user')) {
-            return true;
-        }
-
-        return false;
+        return $context->getPayload()->has($this->getName() . '_user');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $accessor = $this->propertyAccessManager->provideAccess($item->getEntity());
@@ -123,8 +104,6 @@ final class AssignUserAction extends AbstractPropertyAccessAction
 
     /**
      * Detect if current user is assigned or a user should be chosen.
-     *
-     * @return bool
      */
     public function isCurrentUserAssigned(): bool
     {

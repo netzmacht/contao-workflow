@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
@@ -24,6 +13,8 @@ use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Routing\RouterInterface as Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+use function sprintf;
 
 /**
  * Class OperationListener handles the workflow operation button
@@ -59,8 +50,6 @@ final class OperationListener
     private $authorizationChecker;
 
     /**
-     * OperationListener constructor.
-     *
      * @param WorkflowManager               $workflowManager      The workflow manager.
      * @param EntityManager                 $entityManager        Entity manager.
      * @param Router                        $router               The router.
@@ -81,30 +70,28 @@ final class OperationListener
     /**
      * Handle the workflow operation button callback.
      *
-     * @param array       $row        Current record.
-     * @param string      $href       The default href.
-     * @param string      $label      The button label.
-     * @param string      $title      The button title.
-     * @param string|null $icon       The button icon.
-     * @param string|null $attributes Additional button attributes.
-     * @param string      $table      The table name.
-     *
-     * @return string
+     * @param array<string,mixed> $row        Current record.
+     * @param string              $href       The default href.
+     * @param string              $label      The button label.
+     * @param string              $title      The button title.
+     * @param string              $icon       The button icon.
+     * @param string              $attributes Additional button attributes.
+     * @param string              $table      The table name.
      */
     public function workflowOperationButton(
         array $row,
         string $href,
         string $label,
         string $title,
-        ?string $icon,
-        ?string $attributes,
+        string $icon,
+        string $attributes,
         string $table
     ): string {
         $entityId   = EntityId::fromProviderNameAndId($table, $row['id']);
         $repository = $this->entityManager->getRepository($table);
         $entity     = $repository->find($entityId->getIdentifier());
 
-        if (!$this->workflowManager->hasWorkflow($entityId, $entity)) {
+        if (! $this->workflowManager->hasWorkflow($entityId, $entity)) {
             return '';
         }
 
@@ -113,12 +100,12 @@ final class OperationListener
         if ($stepName !== null) {
             try {
                 $workflow = $this->workflowManager->getWorkflow($entityId, $entity);
-                $step     = $workflow->getStep($item->getCurrentStepName());
+                $step     = $workflow->getStep($stepName);
             } catch (StepNotFoundException $exception) {
                 return '';
             }
 
-            if (!$this->authorizationChecker->isGranted($step, $item)) {
+            if (! $this->authorizationChecker->isGranted($step, $item)) {
                 return '';
             }
         }

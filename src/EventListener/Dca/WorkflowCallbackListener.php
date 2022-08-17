@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
@@ -18,6 +7,8 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
+use Exception;
+use InvalidArgumentException;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
@@ -27,13 +18,17 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
+
+use function array_filter;
+use function assert;
+use function count;
+use function in_array;
 use function sprintf;
 
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Contao\Dca
  */
 final class WorkflowCallbackListener
 {
@@ -66,8 +61,13 @@ final class WorkflowCallbackListener
     private $translator;
 
     /**
-     * Workflow constructor.
+     * The workflow manager.
      *
+     * @var WorkflowManager
+     */
+    private $workflowManager;
+
+    /**
      * @param WorkflowTypeRegistry         $typeRegistry      Workflow type registry.
      * @param RepositoryManager            $repositoryManager Repository manager.
      * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
@@ -92,15 +92,13 @@ final class WorkflowCallbackListener
      * Override the provider name if only one provider name is supported.
      *
      * @param DataContainer $dataContainer Data container driver.
-     *
-     * @return void
      */
-    public function saveProviderName($dataContainer): void
+    public function saveProviderName(DataContainer $dataContainer): void
     {
         try {
             $repository    = $this->repositoryManager->getRepository(WorkflowModel::class);
             $workflowModel = $repository->find((int) $dataContainer->id);
-            if (!$workflowModel instanceof WorkflowModel) {
+            if (! $workflowModel instanceof WorkflowModel) {
                 return;
             }
 
@@ -123,9 +121,7 @@ final class WorkflowCallbackListener
     /**
      * Generate a row view.
      *
-     * @param array $row Current data row.
-     *
-     * @return string
+     * @param array<string,mixed> $row Current data row.
      */
     public function generateRow(array $row): string
     {
@@ -137,7 +133,7 @@ final class WorkflowCallbackListener
 
         try {
             $this->workflowLoader->loadWorkflowById((int) $row['id']);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $label .= sprintf(
                 '<p class="workflow-definition-error">%s</p>',
                 $this->translator->trans('workflow.invalid-workflow-definition', [$e->getMessage()], 'contao_workflow')
@@ -150,7 +146,7 @@ final class WorkflowCallbackListener
     /**
      * Get names of workflow types.
      *
-     * @return array
+     * @return list<string>
      */
     public function getTypes(): array
     {
@@ -162,17 +158,17 @@ final class WorkflowCallbackListener
      *
      * @param DataContainer $dataContainer Data container driver.
      *
-     * @return array
+     * @return list<string>
      *
      * @throws WorkflowTypeNotFound If workflow type is not defined.
      */
-    public function getProviderNames($dataContainer): array
+    public function getProviderNames(DataContainer $dataContainer): array
     {
-        if (!$dataContainer->activeRecord || !$dataContainer->activeRecord->type) {
+        if (! $dataContainer->activeRecord || ! $dataContainer->activeRecord->type) {
             return [];
         }
 
-        if (!$this->typeRegistry->hasType($dataContainer->activeRecord->type)) {
+        if (! $this->typeRegistry->hasType($dataContainer->activeRecord->type)) {
             return [];
         }
 
@@ -182,7 +178,7 @@ final class WorkflowCallbackListener
     /**
      * Get all start steps.
      *
-     * @return array
+     * @return array<string,array<int|string,string>>
      */
     public function getStartSteps(): array
     {
@@ -197,17 +193,19 @@ final class WorkflowCallbackListener
      *
      * @param DataContainer $dataContainer The data container driver.
      *
-     * @return array
+     * @return array<string|int,string>
      */
-    public function getEndSteps($dataContainer): array
+    public function getEndSteps(DataContainer $dataContainer): array
     {
+        assert($dataContainer->activeRecord !== null);
+
         return $this->getSteps((int) $dataContainer->activeRecord->id);
     }
 
     /**
      * Get all transitions.
      *
-     * @return array
+     * @return array<string|int,string>
      */
     public function getTransitions(): array
     {
@@ -216,24 +214,29 @@ final class WorkflowCallbackListener
         $collection = $repository->findBy(['.pid=?'], [Input::get('id')]);
 
         if ($collection) {
-            while ($collection->next()) {
-                $stepTo = $collection->getRelated('stepTo');
-                $label  = sprintf('%s [ID %s]', $collection->label, $collection->id);
+            foreach ($collection as $model) {
+                assert($model instanceof TransitionModel);
+                $label = sprintf('%s [ID %s]', $model->label, $model->id);
 
-                switch ($collection->type) {
+                switch ($model->type) {
                     case 'actions':
-                        $label .= sprintf(' --> %s [ID %s]', $stepTo->label, $stepTo->id);
+                        $stepTo = $model->getRelated('stepTo');
+                        /** @psalm-suppress DocblockTypeContradiction - Error in Contao\Model type declaration */
+                        if ($stepTo instanceof StepModel) {
+                            $label .= sprintf(' --> %s [ID %s]', $stepTo->label, $stepTo->id);
+                        }
+
                         break;
 
                     case 'workflow':
                         try {
                             $workflowLabel = $this->workflowManager
-                                ->getWorkflowByName((string) $collection->workflow)
+                                ->getWorkflowByName($model->workflow)
                                 ->getLabel();
 
-                            $workflowLabel .= sprintf(' [%s]', $collection->workflow);
+                            $workflowLabel .= sprintf(' [%s]', $model->workflow);
                         } catch (WorkflowNotFound $exception) {
-                            $workflowLabel = $collection->workflow;
+                            $workflowLabel = $model->workflow;
                         }
 
                         $label = sprintf('%s -->  %s', $label, $workflowLabel);
@@ -243,7 +246,7 @@ final class WorkflowCallbackListener
                         // Do nothing
                 }
 
-                $options[$collection->id] = $label;
+                $options[$model->id] = $label;
             }
         }
 
@@ -255,16 +258,16 @@ final class WorkflowCallbackListener
      *
      * @param mixed $value Raw process vlaue.
      *
-     * @return array|mixed
+     * @return array<mixed,mixed>|mixed
      *
-     * @throws \Exception If Invalid data given.
+     * @throws Exception If Invalid data given.
      */
     public function validateProcess($value)
     {
         $value = StringUtil::deserialize($value, true);
         $value = array_filter(
             $value,
-            function ($item) {
+            static function (array $item): bool {
                 return $item['step'] && $item['transition'];
             }
         );
@@ -279,7 +282,7 @@ final class WorkflowCallbackListener
      *
      * @param mixed $value The raw permissions value.
      *
-     * @return array
+     * @return list<array<string,mixed>>
      */
     public function validatePermissions($value): array
     {
@@ -288,8 +291,8 @@ final class WorkflowCallbackListener
         $validated = [];
 
         foreach ($value as $row) {
-            if (!$row['name']) {
-                if (!$row['label']) {
+            if (! $row['name']) {
+                if (! $row['label']) {
                     continue;
                 }
 
@@ -311,7 +314,7 @@ final class WorkflowCallbackListener
      * @param int  $parentId    The parent id.
      * @param bool $filterFinal If true only steps which are not final are loaded.
      *
-     * @return array
+     * @return array<string|int,string>
      */
     private function getSteps(int $parentId, bool $filterFinal = false): array
     {
@@ -325,12 +328,16 @@ final class WorkflowCallbackListener
         }
 
         if ($collection) {
-            while ($collection->next()) {
-                $steps[$collection->id] = $collection->label;
+            foreach ($collection as $model) {
+                assert($model instanceof StepModel);
 
-                if ($collection->final) {
-                    $steps[$collection->id] .= ' [final]';
+                $steps[$model->id] = $model->label;
+
+                if (! $model->final) {
+                    continue;
                 }
+
+                $steps[$model->id] .= ' [final]';
             }
         }
 
@@ -340,55 +347,53 @@ final class WorkflowCallbackListener
     /**
      * Guard that start step is defined.
      *
-     * @param array $process Process information.
+     * @param list<array<string,mixed>> $process Process information.
      *
-     * @throws \Exception If no start step is given.
-     *
-     * @return void
+     * @throws Exception If no start step is given.
      */
     private function guardStartStepDefined(array $process): void
     {
-        if (!$process) {
+        if (! $process) {
             return;
         }
 
         $count = 0;
 
         foreach ($process as $definition) {
-            if ($definition['step'] === 'start') {
-                $count++;
+            if ($definition['step'] !== 'start') {
+                continue;
             }
+
+            $count++;
         }
 
-        if (!$count) {
-            throw new \Exception('Start transition is required.');
+        if (! $count) {
+            throw new Exception('Start transition is required.');
         }
 
         if ($count > 1) {
-            throw new \Exception('There must be exactly one start transition.');
+            throw new Exception('There must be exactly one start transition.');
         }
     }
 
     /**
      * Guard that a valid permission name is given.
      *
-     * @param array $row   Current permission definition row.
-     * @param array $names All permission names so far.
+     * @param array<string,mixed> $row   Current permission definition row.
+     * @param list<string>        $names All permission names so far.
      *
-     * @throws \InvalidArgumentException If a invalid permission name is given.
-     *
-     * @return void
+     * @throws InvalidArgumentException If a invalid permission name is given.
      */
     private function guardValidPermissionName(array $row, array $names): void
     {
         $reserved = ['contao-admin', 'contao-guest'];
 
         if (in_array($row['name'], $names, true)) {
-            throw new \InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));
+            throw new InvalidArgumentException(sprintf('Permission name "%s" is not unique.', $row['name']));
         }
 
         if (in_array($row['name'], $reserved, true)) {
-            throw new \InvalidArgumentException(sprintf('Permission name "%s" is reserved.', $row['name']));
+            throw new InvalidArgumentException(sprintf('Permission name "%s" is reserved.', $row['name']));
         }
     }
 }

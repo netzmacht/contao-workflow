@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity;
@@ -24,8 +13,6 @@ use Netzmacht\Workflow\Transaction\TransactionHandler;
  * Class EntityManager is the entity manager implementation for Contao.
  *
  * It creates the repositories and handles the transaction as well.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Data
  */
 final class EntityManager implements WorkflowEntityManager, TransactionHandler
 {
@@ -42,7 +29,7 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
      * @var RepositoryFactory
      */
     private $repositoryFactory;
-    
+
     /**
      * Database connection.
      *
@@ -62,9 +49,6 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
         $this->connection        = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRepository(string $providerName): EntityRepository
     {
         if (isset($this->repositories[$providerName])) {
@@ -76,25 +60,16 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
         return $this->repositories[$providerName];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function begin(): void
     {
         $this->connection->beginTransaction();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commit(): void
     {
         $this->connection->commit();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rollback(): void
     {
         $this->connection->rollBack();

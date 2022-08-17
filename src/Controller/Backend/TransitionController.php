@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
@@ -31,9 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface as Router;
 
-/**
- * Class TransitController
- */
+use function sprintf;
+use function urldecode;
+
 final class TransitionController extends AbstractController
 {
     /**
@@ -60,6 +49,7 @@ final class TransitionController extends AbstractController
         $this->formFactory = $formFactory;
     }
 
+    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     /**
      * Execute the transition.
      *
@@ -68,10 +58,10 @@ final class TransitionController extends AbstractController
      * @param string   $module     The module name.
      * @param Request  $request    The web request.
      *
-     * @return Response
-     *
+     * @psalm-suppress InvalidThrow - Needs to be fixed upstream
      * @throws WorkflowException When the workflow handling fails.
      */
+    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     public function __invoke(EntityId $entityId, string $transition, string $module, Request $request): Response
     {
         $item      = $this->createItem($entityId);
@@ -124,8 +114,6 @@ final class TransitionController extends AbstractController
      * @param Item     $item       Workflow item.
      * @param Workflow $workflow   Workflow.
      *
-     * @return \Netzmacht\Workflow\Handler\TransitionHandler
-     *
      * @throws RuntimeException When no handler could be found.
      */
     protected function createTransitionHandler(
@@ -146,17 +134,21 @@ final class TransitionController extends AbstractController
                 sprintf(
                     'Could not perform transition "%s" on entity "%s". Creating handler failed with message "%s".',
                     $transition,
-                    $entityId,
+                    (string) $entityId,
                     $e->getMessage()
                 ),
-                $e->getCode(),
+                (int) $e->getCode(),
                 $e
             );
         }
 
         if ($handler === null) {
             throw new RuntimeException(
-                sprintf('Could not perform transition "%s" on entity "%s". No handler created.', $transition, $entityId)
+                sprintf(
+                    'Could not perform transition "%s" on entity "%s". No handler created.',
+                    $transition,
+                    (string) $entityId
+                )
             );
         }
 
@@ -168,17 +160,15 @@ final class TransitionController extends AbstractController
      *
      * @param EntityId $entityId The entity id.
      * @param Request  $request  The request.
-     *
-     * @return string
      */
     protected function getRedirectUrl(EntityId $entityId, Request $request): string
     {
         if ($request->query->get('ref')) {
-            $url = '/' . urldecode($request->query->get('ref'));
+            $url = '/' . urldecode((string) $request->query->get('ref'));
         } else {
             $url = $this->router->generate(
                 'netzmacht.contao_workflow.backend.step',
-                ['entityId' => (string) $entityId, 'module' => $request->get('module')]
+                ['entityId' => (string) $entityId, 'module' => $request->attributes->get('module')]
             );
         }
 

@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
@@ -19,8 +8,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Exception\DataContainer\FieldAlreadyExists;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
-use function array_unshift;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 /**
  * Data container listener handles the integration in the configured data containers for the default workflow type
@@ -44,24 +32,22 @@ final class DataContainerListener
     /**
      * Configuration of the default workflow types.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $defaultConfiguration;
 
     /**
      * Data container provider names.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $dcaProviders;
 
     /**
-     * DefaultWorkflowTypeIntegrationListener constructor.
-     *
-     * @param DcaManager $dcaManager           Data container manager.
-     * @param Translator $translator           Translator.
-     * @param array      $dcaProviders         Data container provider names.
-     * @param array      $defaultConfiguration Configuration of the default workflow types.
+     * @param DcaManager                        $dcaManager           Data container manager.
+     * @param Translator                        $translator           Translator.
+     * @param array<string,array<string,mixed>> $dcaProviders         Data container provider names.
+     * @param array<string,array<string,mixed>> $defaultConfiguration Configuration of the default workflow types.
      */
     public function __construct(
         DcaManager $dcaManager,
@@ -79,12 +65,10 @@ final class DataContainerListener
      * Data container integration is triggered by the onLoadDataContainer hook.
      *
      * @param string $dataContainerName The data container name.
-     *
-     * @return void
      */
     public function onLoadDataContainer(string $dataContainerName): void
     {
-        if (!isset($this->dcaProviders[$dataContainerName])) {
+        if (! isset($this->dcaProviders[$dataContainerName])) {
             return;
         }
 
@@ -104,7 +88,7 @@ final class DataContainerListener
             $this->addWorkflowStepPermissionFieldToDefinition($definition);
         }
 
-        if (!isset($this->defaultConfiguration[$dataContainerName])) {
+        if (! isset($this->defaultConfiguration[$dataContainerName])) {
             return;
         }
 
@@ -117,8 +101,6 @@ final class DataContainerListener
      * Add the workflow field to the data container definition.
      *
      * @param Definition $definition The data container definition.
-     *
-     * @return void
      *
      * @throws FieldAlreadyExists When workflow is already configured in data container.
      */
@@ -156,8 +138,6 @@ final class DataContainerListener
      *
      * @param Definition $definition The data container definition.
      *
-     * @return void
-     *
      * @throws FieldAlreadyExists When workflowStep is already configured in data container.
      */
     private function addWorkflowStepFieldToDefinition(Definition $definition): void
@@ -193,8 +173,6 @@ final class DataContainerListener
      *
      * @param Definition $definition The data container definition.
      *
-     * @return void
-     *
      * @throws FieldAlreadyExists When workflowStepPermission is already configured in data container.
      */
     private function addWorkflowStepPermissionFieldToDefinition(Definition $definition): void
@@ -229,8 +207,6 @@ final class DataContainerListener
      * Adjust the palettes.
      *
      * @param Definition $definition The data container definition.
-     *
-     * @return void
      */
     private function adjustPalettes(Definition $definition): void
     {
@@ -255,8 +231,6 @@ final class DataContainerListener
      * Add the workflow operation button.
      *
      * @param Definition $definition The data container definition.
-     *
-     * @return void
      */
     private function addWorkflowOperation(Definition $definition): void
     {
@@ -279,7 +253,7 @@ final class DataContainerListener
         ];
 
         if ($position === 'first') {
-            $operations = (['workflow' => $configuration] + $definition->get(['list', 'operations'], []));
+            $operations = ['workflow' => $configuration] + $definition->get(['list', 'operations'], []);
             $definition->set(['list', 'operations'], $operations);
 
             return;
@@ -292,8 +266,6 @@ final class DataContainerListener
      * Add translations which could not be added to the element directly.
      *
      * @param string $providerName The provider name.
-     *
-     * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
@@ -310,8 +282,6 @@ final class DataContainerListener
      * Add the buttons callback to add the transitions to the edit buttons.
      *
      * @param Definition $definition Data container definition.
-     *
-     * @return void
      */
     private function addButtonsCallback(Definition $definition): void
     {

@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
@@ -21,11 +10,11 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Workflow;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\TranslatorInterface as Translator;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
-/**
- * Class ButtonRenderer
- */
+use function array_merge;
+use function assert;
+
 final class ButtonRenderer extends AbstractRenderer
 {
     /**
@@ -64,12 +53,9 @@ final class ButtonRenderer extends AbstractRenderer
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(View $view): bool
     {
-        return $view->getContext() instanceof Step || $view->getContext() === null;
+        return $view->getContext() instanceof Step;
     }
 
     /**
@@ -77,8 +63,8 @@ final class ButtonRenderer extends AbstractRenderer
      */
     protected function renderParameters(View $view): array
     {
-        /** @var Step $step */
-        $step     = $view->getContext();
+        $step = $view->getContext();
+        assert($step instanceof Step);
         $workflow = $view->getWorkflow();
         $params   = [];
         $request  = $this->requestStack->getCurrentRequest();
@@ -93,18 +79,18 @@ final class ButtonRenderer extends AbstractRenderer
         }
 
         return [
-            'actions' => $this->buildActions($step, $workflow, $view, $context, $params)
+            'actions' => $this->buildActions($step, $workflow, $view, $context, $params),
         ];
     }
 
     /**
      * Build the transition action.
      *
-     * @param View   $view           The current view.
-     * @param string $transitionName The transition name.
-     * @param array  $params         Default route params.
+     * @param View                $view           The current view.
+     * @param string              $transitionName The transition name.
+     * @param array<string,mixed> $params         Default route params.
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function buildAction(View $view, string $transitionName, array $params): array
     {
@@ -119,28 +105,28 @@ final class ButtonRenderer extends AbstractRenderer
                 [
                     'entityId'   => $view->getItem()->getEntityId(),
                     'transition' => $transitionName,
-                    'module'     => (string) $view->getOption('module')
+                    'module'     => (string) $view->getOption('module'),
                 ]
             ),
-            'icon'   => $transition->getConfigValue('icon')
+            'icon'   => $transition->getConfigValue('icon'),
         ];
     }
 
     /**
      * Build actions.
      *
-     * @param Step|null $step     The current step.
-     * @param Workflow  $workflow The workflow.
-     * @param View      $view     The view.
-     * @param Context   $context  The context.
-     * @param array     $params   The params.
+     * @param Step|null           $step     The current step.
+     * @param Workflow            $workflow The workflow.
+     * @param View                $view     The view.
+     * @param Context             $context  The context.
+     * @param array<string,mixed> $params   The params.
      *
-     * @return array
+     * @return list<array<string,mixed>>
      */
     protected function buildActions(?Step $step, Workflow $workflow, View $view, Context $context, array $params): array
     {
         $actions = [];
-        if (!$step) {
+        if (! $step) {
             $transition = $workflow->getStartTransition();
             if ($transition->isAllowed($view->getItem(), $context)) {
                 $actions[] = $this->buildAction($view, $transition->getName(), $params);
@@ -150,15 +136,17 @@ final class ButtonRenderer extends AbstractRenderer
         }
 
         foreach ($step->getAllowedTransitions() as $transitionName) {
-            if (!$workflow->hasTransition($transitionName)) {
+            if (! $workflow->hasTransition($transitionName)) {
                 continue;
             }
 
             $transition = $workflow->getTransition($transitionName);
 
-            if ($transition->isAllowed($view->getItem(), $context) && !$transition->getConfigValue('hide')) {
-                $actions[] = $this->buildAction($view, $transitionName, $params);
+            if (! $transition->isAllowed($view->getItem(), $context) || $transition->getConfigValue('hide')) {
+                continue;
             }
+
+            $actions[] = $this->buildAction($view, $transitionName, $params);
         }
 
         return $actions;

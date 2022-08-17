@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form\Choice;
@@ -18,7 +7,9 @@ namespace Netzmacht\ContaoWorkflowBundle\Form\Choice;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use function sprintf;
 
 /**
  * Class provides all user choices depending on a permission
@@ -87,8 +78,6 @@ SQL;
     private $translator;
 
     /**
-     * UserChoices constructor.
-     *
      * @param Connection          $connection Database connection.
      * @param TranslatorInterface $translator Translator.
      */
@@ -103,7 +92,7 @@ SQL;
      *
      * @param Permission $permission The required permission.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function fetchByPermission(Permission $permission): array
     {
@@ -119,7 +108,7 @@ SQL;
     /**
      * Fetch all users grouped by members and users.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function findAll(): array
     {
@@ -137,7 +126,7 @@ SQL;
      *
      * @param Permission $permission The required permission.
      *
-     * @return array
+     * @return array<string,string>
      */
     private function fetchUsersByPermissions(Permission $permission): array
     {
@@ -147,7 +136,7 @@ SQL;
         );
 
         $options = [];
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             $label           = sprintf('%s (%s)', $row['name'], $row['username']);
             $options[$label] = (string) EntityId::fromProviderNameAndId('tl_user', $row['id']);
         }
@@ -160,7 +149,7 @@ SQL;
      *
      * @param Permission $permission The required permission.
      *
-     * @return array
+     * @return array<string,string>
      */
     private function fetchMembersByPermissions(Permission $permission): array
     {
@@ -170,7 +159,7 @@ SQL;
         );
 
         $options = [];
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             $label           = sprintf('%s %s (%s)', $row['firstname'], $row['lastname'], $row['username']);
             $options[$label] = (string) EntityId::fromProviderNameAndId('tl_member', $row['id']);
         }
@@ -181,14 +170,14 @@ SQL;
     /**
      * Fetch all backend users grouped.
      *
-     * @return array
+     * @return array<string,string>
      */
     private function fetchAllUsers(): array
     {
         $statement = $this->connection->executeQuery(self::USERS_QUERY);
         $options   = [];
 
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             $label           = sprintf('%s (%s)', $row['name'], $row['username']);
             $options[$label] = (string) EntityId::fromProviderNameAndId('tl_user', $row['id']);
         }
@@ -199,14 +188,14 @@ SQL;
     /**
      * Fetch all frontend members.
      *
-     * @return array
+     * @return array<string,string>
      */
     private function fetchAllMembers(): array
     {
         $statement = $this->connection->executeQuery(self::MEMBERS_QUERY);
         $options   = [];
 
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             $label           = sprintf('%s %s (%s)', $row['firstname'], $row['lastname'], $row['username']);
             $options[$label] = (string) EntityId::fromProviderNameAndId('tl_member', $row['id']);
         }

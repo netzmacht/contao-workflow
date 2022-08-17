@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Form;
@@ -23,9 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class TransitionFormType
- */
+use function assert;
+
 final class TransitionFormType extends AbstractType
 {
     /**
@@ -36,8 +24,6 @@ final class TransitionFormType extends AbstractType
     private $formBuilder;
 
     /**
-     * TransitionFormType constructor.
-     *
      * @param TransitionFormBuilder $formBuilder The transition form builder.
      */
     public function __construct(TransitionFormBuilder $formBuilder)
@@ -45,9 +31,6 @@ final class TransitionFormType extends AbstractType
         $this->formBuilder = $formBuilder;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -60,19 +43,19 @@ final class TransitionFormType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $formBuilder, array $options): void
+    public function buildForm(FormBuilder $builder, array $options): void
     {
-        /** @var TransitionHandler $transitionHandler */
         $transitionHandler = $options['handler'];
-        $transition        = $transitionHandler->getTransition();
-        $item              = $transitionHandler->getItem();
-        $context           = $transitionHandler->getContext();
+        assert($transitionHandler instanceof TransitionHandler);
+        $transition = $transitionHandler->getTransition();
+        $item       = $transitionHandler->getItem();
+        $context    = $transitionHandler->getContext();
 
         if ($this->formBuilder->supports($transition)) {
-            $this->formBuilder->buildForm($transition, $item, $context, $formBuilder);
+            $this->formBuilder->buildForm($transition, $item, $context, $builder);
         }
 
-        $formBuilder->add(
+        $builder->add(
             'submit',
             SubmitType::class,
             [

@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
@@ -22,15 +11,12 @@ use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface as Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Class StepController
- *
  * The step controller handles the view of a step.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Backend\Controller
  */
 final class StepController extends AbstractController
 {
@@ -42,8 +28,6 @@ final class StepController extends AbstractController
     private $authorizationChecker;
 
     /**
-     * AbstractController constructor.
-     *
      * @param WorkflowManager               $workflowManager      Workflow manager.
      * @param EntityManager                 $entityManager        Entity manager.
      * @param ViewFactory                   $viewFactory          View factory.
@@ -68,8 +52,6 @@ final class StepController extends AbstractController
      * @param EntityId $entityId The entity id.
      * @param string   $module   Module name.
      *
-     * @return Response
-     *
      * @throws AccessDeniedHttpException When no access is granted.
      */
     public function __invoke(EntityId $entityId, string $module): Response
@@ -78,7 +60,7 @@ final class StepController extends AbstractController
         $workflow    = $this->workflowManager->getWorkflowByItem($item);
         $currentStep = null;
 
-        if (!$item->isWorkflowStarted()) {
+        if (! $item->isWorkflowStarted()) {
             $view = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
 
             return $view->render();
@@ -98,7 +80,12 @@ final class StepController extends AbstractController
             );
         }
 
-        $currentStep = $workflow->getStep($item->getCurrentStepName());
+        $stepName = $item->getCurrentStepName();
+        if ($stepName === null) {
+            throw new NotFoundHttpException();
+        }
+
+        $currentStep = $workflow->getStep($stepName);
         if (! $this->authorizationChecker->isGranted($currentStep, $item)) {
             throw new AccessDeniedHttpException();
         }

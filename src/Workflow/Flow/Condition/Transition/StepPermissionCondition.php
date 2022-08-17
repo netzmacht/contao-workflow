@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Transition;
@@ -22,11 +11,6 @@ use Netzmacht\Workflow\Flow\Transition;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-/**
- * Class PermissionCondition
- *
- * @package Netzmacht\ContaoWorkflowBundle\Condition\Transition
- */
 final class StepPermissionCondition implements Condition
 {
     /**
@@ -53,8 +37,6 @@ final class StepPermissionCondition implements Condition
     private $allowStartTransition;
 
     /**
-     * PermissionCondition constructor.
-     *
      * @param AuthorizationChecker $authorizationChecker Authorization checker.
      * @param bool                 $grantAccessByDefault Default access value if no permission is found.
      * @param bool                 $allowStartTransition Allow start transition.
@@ -69,13 +51,11 @@ final class StepPermissionCondition implements Condition
         $this->allowStartTransition = $allowStartTransition;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         // workflow is not started, so no start step exists
-        if (!$item->isWorkflowStarted()) {
+        if (! $item->isWorkflowStarted()) {
             if ($this->allowStartTransition) {
                 return true;
             }
@@ -85,11 +65,15 @@ final class StepPermissionCondition implements Condition
             return false;
         }
 
-        $stepName   = $item->getCurrentStepName();
+        $stepName = $item->getCurrentStepName();
+        if ($stepName === null) {
+            return false;
+        }
+
         $step       = $transition->getWorkflow()->getStep($stepName);
         $permission = $step->getPermission();
 
-        if (!$this->grantAccessByDefault && $permission === null) {
+        if (! $this->grantAccessByDefault && $permission === null) {
             return false;
         }
 

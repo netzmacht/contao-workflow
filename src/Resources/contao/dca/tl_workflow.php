@@ -1,15 +1,6 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2018 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
+declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow'] = [
     'config' => [
@@ -19,10 +10,9 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'tl_workflow_transition',
             'tl_workflow_action',
         ],
+        'markAsCopy'        => 'label',
         'sql'               => [
-            'keys' => [
-                'id' => 'primary',
-            ],
+            'keys' => ['id' => 'primary'],
         ],
         'onsubmit_callback' => [
             ['netzmacht.contao_workflow.listeners.dca.workflow', 'saveProviderName'],
@@ -62,6 +52,10 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                 'href'  => 'table=tl_workflow_action&ptable=tl_workflow',
                 'icon'  => 'bundles/netzmachtcontaoworkflow/img/action.png',
             ],
+            'copy'        => [
+                'href' => 'act=copy',
+                'icon' => 'copy.svg',
+            ],
             'delete'      => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow']['delete'],
                 'href'       => 'act=delete',
@@ -78,9 +72,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                     'handleButtonCallback',
                 ],
                 'toolkit'         => [
-                    'state_button' => [
-                        'stateColumn' => 'active',
-                    ],
+                    'state_button' => ['stateColumn' => 'active'],
                 ],
             ],
             'show'        => [
@@ -112,12 +104,8 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
     ],
 
     'fields' => [
-        'id'           => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
-        ],
-        'tstamp'       => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
+        'id'           => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
+        'tstamp'       => ['sql' => "int(10) unsigned NOT NULL default '0'"],
         'label'        => [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['label'],
             'inputType' => 'text',
@@ -166,9 +154,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['description'],
             'inputType' => 'text',
             'exclude'   => true,
-            'eval'      => [
-                'tl_class' => 'clr long',
-            ],
+            'eval'      => ['tl_class' => 'clr long'],
             'sql'       => "varchar(255) NOT NULL default ''",
         ],
         'process'      => [
@@ -231,9 +217,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'netzmacht.contao_workflow.listeners.dca.workflow',
                             'getStartSteps',
                         ],
-                        'eval'             => [
-                            'style' => 'width:100%',
-                        ],
+                        'eval'             => ['style' => 'width:100%'],
                     ],
                     'name'  => [
                         'label'            => &$GLOBALS['TL_LANG']['tl_workflow']['permission_name'],
@@ -242,23 +226,17 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
                             'netzmacht.contao_workflow.listeners.dca.workflow',
                             'getStartSteps',
                         ],
-                        'eval'             => [
-                            'style' => 'width:100%',
-                        ],
+                        'eval'             => ['style' => 'width:100%'],
                     ],
                     'guest' => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permission_guest'],
                         'inputType' => 'checkbox',
-                        'eval'      => [
-                            'style' => 'width:80px',
-                        ],
+                        'eval'      => ['style' => 'width:80px'],
                     ],
                     'admin' => [
                         'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['permission_admin'],
                         'inputType' => 'checkbox',
-                        'eval'      => [
-                            'style' => 'width:80px',
-                        ],
+                        'eval'      => ['style' => 'width:80px'],
                     ],
                 ],
             ],
@@ -270,6 +248,7 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'eval'      => [
                 'tl_class'       => 'm12 w50',
                 'submitOnChange' => true,
+                'doNotCopy'      => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],
@@ -277,7 +256,8 @@ $GLOBALS['TL_DCA']['tl_workflow'] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_workflow']['autoAssign'],
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class' => 'w50',
+                'tl_class'  => 'w50',
+                'doNotCopy' => true,
             ],
             'sql'       => "char(1) NOT NULL default ''",
         ],

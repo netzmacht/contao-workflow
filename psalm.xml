@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<psalm
+        errorLevel="7"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <file name="src/DependencyInjection/Configuration.php"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <InvalidCatch>
+            <errorLevel type="suppress">
+                <referencedClass name="Netzmacht\Workflow\Exception\WorkflowException"/>
+            </errorLevel>
+        </InvalidCatch>
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <referencedFunction name="array_insert"/>
+            </errorLevel>
+        </UndefinedFunction>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Contao\CoreBundle\Framework\Adapter::__call"/>
+            </errorLevel>
+        </InternalMethod>
+        <TooManyArguments>
+            <errorLevel type="suppress">
+                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch"/>
+            </errorLevel>
+        </TooManyArguments>
+    </issueHandlers>
+    <universalObjectCrates>
+        <!-- allow magic property access -->
+        <class name="Contao\BackendUser"/>
+        <class name="Contao\Model"/>
+        <class name="Contao\ModuleModel"/>
+    </universalObjectCrates>
+
+</psalm>

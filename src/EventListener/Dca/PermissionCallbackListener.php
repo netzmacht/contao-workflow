@@ -1,30 +1,20 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
+use Contao\Model\Collection;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 
+use function assert;
+
 /**
  * Class Permission initialize permission fields for the workflows for frontend and backend users.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Dca\Table
  */
 final class PermissionCallbackListener
 {
@@ -36,8 +26,6 @@ final class PermissionCallbackListener
     private $repositoryManager;
 
     /**
-     * Permission constructor.
-     *
      * @param RepositoryManager $repositoryManager Repository manager.
      */
     public function __construct(RepositoryManager $repositoryManager)
@@ -48,7 +36,7 @@ final class PermissionCallbackListener
     /**
      * Get all permissions.
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getAllPermissions(): array
     {
@@ -57,6 +45,8 @@ final class PermissionCallbackListener
         $collection = $repository->findAll();
 
         if ($collection) {
+            assert($collection instanceof Collection);
+
             foreach ($collection as $workflow) {
                 $permissions = StringUtil::deserialize($workflow->permissions, true);
 
@@ -79,12 +69,12 @@ final class PermissionCallbackListener
      *
      * @param DataContainer $dataContainer The data container driver.
      *
-     * @return array
+     * @return array<string,string>
      */
-    public function getWorkflowPermissions($dataContainer)
+    public function getWorkflowPermissions(DataContainer $dataContainer): array
     {
-        if (!$dataContainer->activeRecord || !$dataContainer->activeRecord->pid) {
-            return array();
+        if (! $dataContainer->activeRecord || ! $dataContainer->activeRecord->pid) {
+            return [];
         }
 
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);

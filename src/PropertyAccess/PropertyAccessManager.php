@@ -1,29 +1,16 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2019 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 
 use Assert\Assert;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
+
 use function array_key_exists;
 use function is_object;
 use function spl_object_hash;
 
-/**
- * Class PropertyAccessManager
- */
 final class PropertyAccessManager
 {
     /**
@@ -31,33 +18,31 @@ final class PropertyAccessManager
      *
      * @var PropertyAccessorFactory[]
      */
-    private $factories;
+    private $factories = [];
 
     /**
      * Cache of mapped property accessors.
      *
-     * @var iterable|PropertyAccessor[]
+     * @var array<string,PropertyAccessor>
      */
     private $mapping = [];
 
     /**
-     * PropertyAccessManager constructor.
-     *
-     * @param iterable|string[] $factories Property access factories.
+     * @param iterable<PropertyAccessorFactory> $factories Property access factories.
      */
     public function __construct(iterable $factories)
     {
         Assert::thatAll($factories)->subclassOf(PropertyAccessorFactory::class);
 
-        $this->factories = $factories;
+        foreach ($factories as $factory) {
+            $this->factories[] = $factory;
+        }
     }
 
     /**
      * Determine if property access is supported for given entity.
      *
      * @param mixed $data Given data structure.
-     *
-     * @return bool
      */
     public function supports($data): bool
     {
@@ -75,8 +60,6 @@ final class PropertyAccessManager
      *
      * @param mixed $data Data structure.
      *
-     * @return PropertyAccessor
-     *
      * @throws PropertyAccessFailed If no supported data structure is given.
      */
     public function provideAccess($data): PropertyAccessor
@@ -88,15 +71,17 @@ final class PropertyAccessManager
         }
 
         foreach ($this->factories as $factory) {
-            if ($factory->supports($data)) {
-                $accessor = $factory->create($data);
-
-                if ($hash) {
-                    $this->mapping[$hash] = $accessor;
-                }
-
-                return $accessor;
+            if (! $factory->supports($data)) {
+                continue;
             }
+
+            $accessor = $factory->create($data);
+
+            if ($hash) {
+                $this->mapping[$hash] = $accessor;
+            }
+
+            return $accessor;
         }
 
         throw new PropertyAccessFailed('Could not determine property accessor for given data.');

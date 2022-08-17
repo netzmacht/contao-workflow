@@ -1,23 +1,11 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2017 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Database;
 
 use Contao\FilesModel;
 use Contao\StringUtil;
-use Exception;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
@@ -36,14 +24,14 @@ use Netzmacht\Workflow\Flow\Security\Permission;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
+
 use function array_merge;
+use function assert;
 use function sprintf;
 
 /**
  * Class WorkflowBuilder builds an workflow.
- *
- * @package Netzmacht\ContaoWorkflowBundle\Definition\Builder
  */
 final class WorkflowBuilder
 {
@@ -52,14 +40,14 @@ final class WorkflowBuilder
      *
      * @var Step[]
      */
-    private $steps = array();
+    private $steps = [];
 
     /**
      * Workflow transitions.
      *
      * @var Transition[]
      */
-    private $transitions = array();
+    private $transitions = [];
 
     /**
      * Contao model repository manager.
@@ -78,16 +66,14 @@ final class WorkflowBuilder
     /**
      * Configuration of available transition types.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $transitionTypes;
 
     /**
-     * WorkflowBuilder constructor.
-     *
-     * @param RepositoryManager $repositoryManager Contao model repository manager.
-     * @param ActionFactory     $actionFactory     Action factory.
-     * @param array[]           $transitionTypes   Configuration of available transition types.
+     * @param RepositoryManager                 $repositoryManager Contao model repository manager.
+     * @param ActionFactory                     $actionFactory     Action factory.
+     * @param array<string,array<string,mixed>> $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
         RepositoryManager $repositoryManager,
@@ -105,8 +91,6 @@ final class WorkflowBuilder
      * @param CreateWorkflowEvent $event           The event being subscribed.
      * @param string              $eventName       The event name.
      * @param EventDispatcher     $eventDispatcher The event dispatcher.
-     *
-     * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -133,8 +117,6 @@ final class WorkflowBuilder
      * Create the provider name condition.
      *
      * @param Workflow $workflow Workflow.
-     *
-     * @return void
      */
     private function createProviderNameCondition(Workflow $workflow): void
     {
@@ -148,28 +130,26 @@ final class WorkflowBuilder
      *
      * @param Workflow        $workflow        The current workflow.
      * @param EventDispatcher $eventDispatcher The event dispatcher.
-     *
-     * @return void
      */
     private function createSteps(Workflow $workflow, EventDispatcher $eventDispatcher): void
     {
-        /** @var StepRepository $repository */
         $repository = $this->repositoryManager->getRepository(StepModel::class);
+        assert($repository instanceof StepRepository);
         $collection = $repository->findByWorkflow((int) $workflow->getConfigValue('id'));
 
-        if (!$collection) {
+        if (! $collection) {
             return;
         }
 
         while ($collection->next()) {
-            /** @var StepModel $model */
             $model = $collection->current();
-            $step  = new Step(
+            assert($model instanceof StepModel);
+            $step = new Step(
                 'step_' . $model->id,
                 $model->label,
                 array_merge(
-                    $collection->row(),
-                    array(Definition::SOURCE => Definition::SOURCE_DATABASE)
+                    $model->row(),
+                    [Definition::SOURCE => Definition::SOURCE_DATABASE]
                 ),
                 $workflow->getName()
             );
@@ -183,7 +163,7 @@ final class WorkflowBuilder
             $workflow->addStep($step);
 
             $event = new CreateStepEvent($workflow, $step);
-            $eventDispatcher->dispatch($event::NAME, $event);
+            $eventDispatcher->dispatch($event, $event::NAME);
 
             $this->steps[$model->id] = $step;
         }
@@ -196,16 +176,14 @@ final class WorkflowBuilder
      * @param EventDispatcher $eventDispatcher The event dispatcher.
      *
      * @throws DefinitionException If a target step is defined which does not exiss.
-     *
-     * @return void
      */
     private function createTransitions(Workflow $workflow, EventDispatcher $eventDispatcher): void
     {
-        /** @var TransitionRepository $repository */
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+        assert($repository instanceof TransitionRepository);
         $collection = $repository->findActiveByTransition((int) $workflow->getConfigValue('id'));
 
-        if (!$collection) {
+        if (! $collection) {
             return;
         }
 
@@ -218,30 +196,29 @@ final class WorkflowBuilder
      * Load actions for all loaded transitions.
      *
      * @param Transition $transition The workflow transition.
-     *
-     * @return void
      */
     private function createActions(Transition $transition): void
     {
-        /** @var ActionRepository $repository */
         $repository = $this->repositoryManager->getRepository(ActionModel::class);
+        assert($repository instanceof ActionRepository);
         $collection = $repository->findActiveByTransition((int) $transition->getConfigValue('id'));
 
-        if (!$collection) {
+        if (! $collection) {
             return;
         }
 
         foreach ($collection as $model) {
-            $type = (string) $model->type;
+            $type = $model->type;
             if ($type === 'reference') {
                 $model = $model->getRelated('reference');
                 if (! $model instanceof ActionModel) {
                     continue;
                 }
-                $type = (string) $model->type;
+
+                $type = $model->type;
             }
 
-            $action = $this->actionFactory->create((string) $model->type, $model->row(), $transition);
+            $action = $this->actionFactory->create($model->type, $model->row(), $transition);
 
             if ($this->actionFactory->isPostAction($type)) {
                 $transition->addPostAction($action);
@@ -258,29 +235,26 @@ final class WorkflowBuilder
      * @param TransitionModel $model           The transition model.
      * @param EventDispatcher $eventDispatcher The event dispatcher.
      *
-     * @return Transition
-     *
      * @throws DefinitionException When invalid configuration exists.
      */
     private function createTransition(
         Workflow $workflow,
         TransitionModel $model,
         EventDispatcher $eventDispatcher
-    ) : Transition {
+    ): Transition {
         // Unknown transition type, skip it.
-        if (!isset($this->transitionTypes[$model->type])) {
+        if (! isset($this->transitionTypes[$model->type])) {
             throw new DefinitionException(sprintf('Unsupported transition type "%s"', $model->type));
         }
 
         $this->guardTargetStepExists($model);
         $data = $this->getDataFromModel($model);
 
-        /** @var TransitionModel $model */
         $transition = new Transition(
             'transition_' . $model->id,
             $workflow,
-            $this->steps[$model->stepTo] ?: null,
-            (string) $model->label,
+            $this->steps[$model->stepTo] ?? null,
+            $model->label,
             array_merge(
                 $data,
                 [Definition::SOURCE => Definition::SOURCE_DATABASE]
@@ -298,7 +272,7 @@ final class WorkflowBuilder
         }
 
         $event = new CreateTransitionEvent($transition);
-        $eventDispatcher->dispatch($event::NAME, $event);
+        $eventDispatcher->dispatch($event, $event::NAME);
 
         return $transition;
     }
@@ -307,8 +281,6 @@ final class WorkflowBuilder
      * Create Workflow process.
      *
      * @param Workflow $workflow The current workflow.
-     *
-     * @return void
      */
     private function createProcess(Workflow $workflow): void
     {
@@ -316,7 +288,7 @@ final class WorkflowBuilder
 
         foreach ($process as $definition) {
             // pass not created transitions. useful to avoid errors when a transition got disabled
-            if (!isset($this->transitions[$definition['transition']])) {
+            if (! isset($this->transitions[$definition['transition']])) {
                 continue;
             }
 
@@ -333,13 +305,11 @@ final class WorkflowBuilder
 
     /**
      * Reset the builder cache.
-     *
-     * @return void
      */
     private function resetBuilder(): void
     {
-        $this->transitions = array();
-        $this->steps       = array();
+        $this->transitions = [];
+        $this->steps       = [];
     }
 
     /**
@@ -347,13 +317,11 @@ final class WorkflowBuilder
      *
      * @param TransitionModel $model The transition model.
      *
-     * @return void
-     *
      * @throws DefinitionException When a target step is required but it does not exist.
      */
-    private function guardTargetStepExists(TransitionModel $model) : void
+    private function guardTargetStepExists(TransitionModel $model): void
     {
-        if ($this->transitionTypes[$model->type]['step'] && !isset($this->steps[$model->stepTo])) {
+        if ($this->transitionTypes[$model->type]['step'] && ! isset($this->steps[$model->stepTo])) {
             throw new DefinitionException(
                 sprintf(
                     'Transition ID "%s" refers to step "%s" which does not exists.',
@@ -369,13 +337,14 @@ final class WorkflowBuilder
      *
      * @param TransitionModel $model The transition model.
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    private function getDataFromModel(TransitionModel $model) : array
+    private function getDataFromModel(TransitionModel $model): array
     {
         $data = $model->row();
 
         if ($data['icon']) {
+            /** @psalm-suppress UndefinedInterfaceMethod */
             $file         = $this->repositoryManager->getRepository(FilesModel::class)->findByUuid($data['icon']);
             $data['icon'] = $file ? $file->path : null;
         }

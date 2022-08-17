@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
@@ -25,6 +14,7 @@ use Netzmacht\Workflow\Flow\Security\Permission;
 use PDO;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 use function array_flip;
 use function array_key_exists;
 use function array_keys;
@@ -32,6 +22,7 @@ use function array_map;
 use function array_merge;
 use function array_unique;
 use function array_values;
+use function assert;
 use function get_class;
 
 /**
@@ -57,8 +48,6 @@ final class WorkflowUser implements User
     private $connection;
 
     /**
-     * WorkflowUser constructor.
-     *
      * @param Security   $security   Security framework.
      * @param Connection $connection Database connection.
      */
@@ -68,15 +57,13 @@ final class WorkflowUser implements User
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUserId(?UserInterface $user = null): ?EntityId
     {
         $user = $user ?: $this->security->getUser();
         if ($user instanceof FrontendUser) {
             return EntityId::fromProviderNameAndId('tl_member', $user->id);
         }
+
         if ($user instanceof BackendUser) {
             return EntityId::fromProviderNameAndId('tl_user', $user->id);
         }
@@ -84,9 +71,6 @@ final class WorkflowUser implements User
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function hasPermission(Permission $permission, ?UserInterface $user = null): bool
     {
         return array_key_exists($permission->__toString(), $this->getUserPermissions($user));
@@ -112,7 +96,7 @@ final class WorkflowUser implements User
      *
      * @param UserInterface|null $user The user to check. If empty the user the current security user is used.
      *
-     * @return array
+     * @return array<string,int>
      */
     private function getUserPermissions(?UserInterface $user = null): array
     {
@@ -131,10 +115,12 @@ final class WorkflowUser implements User
                 break;
 
             case FrontendUser::class:
+                assert($user instanceof FrontendUser);
                 $permissions = $this->loadFrontendUserPermissions($user);
                 break;
 
             case BackendUser::class:
+                assert($user instanceof BackendUser);
                 $permissions = $this->loadBackendUserPermissions($user);
                 break;
 
@@ -150,14 +136,14 @@ final class WorkflowUser implements User
      *
      * @param string $key The filter key. Valid values are guest or admin.
      *
-     * @return array
+     * @return list<string>
      */
     private function loadPermissionsFilteredBy(string $key): array
     {
         $permissions = [];
         $statement   = $this->connection->executeQuery('SELECT id, permissions FROM tl_workflow');
 
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $statement->fetchAssociative()) {
             foreach (StringUtil::deserialize($row['permissions'], true) as $permission) {
                 if (! $permission[$key]) {
                     continue;
@@ -175,7 +161,7 @@ final class WorkflowUser implements User
      *
      * @param FrontendUser $user The authenticated frontend user.
      *
-     * @return array
+     * @return list<string>
      */
     private function loadFrontendUserPermissions(FrontendUser $user): array
     {
@@ -186,13 +172,13 @@ SELECT DISTINCT permission
             AND source_id IN (:sourceIds)
 SQL;
 
-        $statement = $this->connection->executeQuery(
+        $result = $this->connection->executeQuery(
             $sql,
             ['source' => 'tl_member_group', 'sourceIds' => $user->groups],
             ['source' => PDO::PARAM_STR, 'sourceIds' => Connection::PARAM_STR_ARRAY]
         );
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $result->fetchFirstColumn();
     }
 
     /**
@@ -200,7 +186,7 @@ SQL;
      *
      * @param BackendUser $user The authenticated backend user.
      *
-     * @return array
+     * @return list<string>
      */
     private function loadBackendUserPermissions(BackendUser $user): array
     {
@@ -219,7 +205,7 @@ SQL;
 
         return array_values(
             array_unique(
-                array_merge($statement->fetchAll(PDO::FETCH_COLUMN), $this->loadPermissionsFilteredBy('admin'))
+                array_merge($statement->fetchFirstColumn(), $this->loadPermissionsFilteredBy('admin'))
             )
         );
     }

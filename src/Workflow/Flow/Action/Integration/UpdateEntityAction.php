@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0-or-later
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Integration;
@@ -25,6 +14,8 @@ use Netzmacht\Workflow\Manager\Manager;
 
 /**
  * Class UpdateEntityAction updates the entity of a default workflow item
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class UpdateEntityAction extends AbstractPropertyAccessAction
 {
@@ -69,9 +60,7 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     public function validate(Item $item, Context $context): bool
     {
         return true;
@@ -81,11 +70,13 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
      * {@inheritDoc}
      *
      * @throws ActionFailedException When no property access is given.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $entity = $item->getEntity();
-        if (!$this->propertyAccessManager->supports($entity)) {
+        if (! $this->propertyAccessManager->supports($entity)) {
             throw new ActionFailedException('No property access to entity');
         }
 
@@ -93,10 +84,22 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
         $accessor->set('workflow', $item->getWorkflowName());
         $accessor->set('workflowStep', $item->getCurrentStepName());
 
-        if ($this->storePermission) {
-            $workflow   = $this->workflowManager->getWorkflowByName($item->getWorkflowName());
-            $permission = $workflow->getStep($item->getCurrentStepName())->getPermission();
-            $accessor->set('workflowStepPermission', $permission ? $permission->__toString() : null);
+        if (! $this->storePermission) {
+            return;
         }
+
+        $workflowName = $item->getWorkflowName();
+        if ($workflowName === null) {
+            return;
+        }
+
+        $workflow = $this->workflowManager->getWorkflowByName($workflowName);
+        $stepName = $item->getCurrentStepName();
+        if ($stepName === null) {
+            return;
+        }
+
+        $permission = $workflow->getStep($stepName)->getPermission();
+        $accessor->set('workflowStepPermission', $permission ? $permission->__toString() : null);
     }
 }

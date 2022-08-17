@@ -1,16 +1,5 @@
 <?php
 
-/**
- * This Contao-Workflow extension allows the definition of workflow process for entities from different providers. This
- * extension is a workflow framework which can be used from other extensions to provide their custom workflow handling.
- *
- * @package    workflow
- * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2014-2020 netzmacht David Molineus
- * @license    LGPL 3.0
- * @filesource
- */
-
 declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AssignUser;
@@ -26,6 +15,8 @@ use Netzmacht\Workflow\Flow\Workflow;
  * Class AssignUserActionFactory creates an AssignUserAction
  *
  * The provider has to configured assignable user fields to support this action.
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class AssignUserActionFactory implements ActionTypeFactory
 {
@@ -46,16 +37,14 @@ class AssignUserActionFactory implements ActionTypeFactory
     /**
      * Provider configuration.
      *
-     * @var array
+     * @var array<string,array<string,mixed>>
      */
     private $providerConfiguration;
 
     /**
-     * AssignUserActionFactory constructor.
-     *
-     * @param PropertyAccessManager $propertyAccessManager The property access manager.
-     * @param User                  $user                  The workflow user.
-     * @param array                 $providerConfiguration The provider configuration.
+     * @param PropertyAccessManager             $propertyAccessManager The property access manager.
+     * @param User                              $user                  The workflow user.
+     * @param array<string,array<string,mixed>> $providerConfiguration The provider configuration.
      */
     public function __construct(PropertyAccessManager $propertyAccessManager, User $user, array $providerConfiguration)
     {
@@ -64,33 +53,21 @@ class AssignUserActionFactory implements ActionTypeFactory
         $this->providerConfiguration = $providerConfiguration;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getCategory(): string
     {
         return 'default';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'assign_user';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isPostAction(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports(Workflow $workflow): bool
     {
         return $this->providerConfiguration[$workflow->getProviderName()]['assign_users'] !== [];
