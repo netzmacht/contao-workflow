@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.4.0] - 2022-08-17
+
 ## Added
 
  - Add backend module icon
