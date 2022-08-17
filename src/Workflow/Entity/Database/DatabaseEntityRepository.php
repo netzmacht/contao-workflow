@@ -14,6 +14,7 @@ use RuntimeException;
 
 use function is_array;
 use function is_int;
+use function is_string;
 use function sprintf;
 
 final class DatabaseEntityRepository implements EntityRepository
@@ -52,7 +53,7 @@ final class DatabaseEntityRepository implements EntityRepository
             ->setParameter('id', $entityId)
             ->execute();
 
-        if (is_int($statement)) {
+        if (is_int($statement) || is_string($statement)) {
             throw new InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
         }
 

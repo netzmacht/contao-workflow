@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Security;
 
+use Netzmacht\Workflow\Exception\WorkflowException;
+use Netzmacht\Workflow\Flow\Exception\FlowException;
 use Netzmacht\Workflow\Flow\Item;
-use Netzmacht\Workflow\Flow\Transition;
+use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,21 +28,21 @@ final class TransitionVoter extends Voter
      */
     private $user;
 
-    /**
-     * @param User $user Workflow user.
-     */
-    public function __construct(User $user)
+    /** @var WorkflowManager */
+    private $workflowManager;
+
+    public function __construct(User $user, WorkflowManager $workflowManager)
     {
-        $this->user = $user;
+        $this->user            = $user;
+        $this->workflowManager = $workflowManager;
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute, $subject): bool
     {
-        /** @psalm-suppress RedundantConditionGivenDocblockType - TODO: Do we need to fix the attribute type */
-        if (! $attribute instanceof Transition) {
+        if (! WorkflowPermissions::isTransitTransition($attribute)) {
             return false;
         }
 
@@ -49,14 +51,23 @@ final class TransitionVoter extends Voter
 
     /**
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
     {
-        /** @psalm-suppress DocblockTypeContradiction - TODO: Do we need to fix the attribute type */
-        assert($attribute instanceof Transition);
         assert($subject instanceof Item);
 
-        $permission = $attribute->getPermission();
+        $transition = WorkflowPermissions::extractTransitionName($attribute);
+
+        try {
+            $workflow   = $this->workflowManager->getWorkflowByItem($subject);
+            $transition = $workflow->getTransition($transition);
+        } catch (WorkflowException | FlowException $exception) {
+            return false;
+        }
+
+        $permission = $transition->getPermission();
         if ($permission === null) {
             return true;
         }

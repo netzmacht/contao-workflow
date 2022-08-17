@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - develop
 
 jobs:
   build:
@@ -19,28 +18,14 @@ jobs:
         include:
           - php: 7.4
             output: '-o github-action -o default'
-            composer_flags: ''
             phpcq_install: 'install'
-            phpcq_task: 'default'
           - php: 8.0
             output: '-o default'
             phpcq_install: 'update'
-            composer_flags: ''
-            phpcq_task: 'default'
-          - php: 8.1
-            output: '-o default'
-            composer_flags: '--ignore-platform-reqs'
-            phpcq_install: 'update'
-            phpcq_task: 'phplatest'
-          - php: 8.2
-            output: '-o default'
-            composer_flags: '--ignore-platform-reqs'
-            phpcq_install: 'update'
-            phpcq_task: 'phplatest'
 
     steps:
       - name: Pull source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
@@ -48,47 +33,44 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Cache composer cache directory
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         env:
-          cache-name: composer-cache-dir-${{ matrix.php }}
+          cache-name: composer-cache-dir
         with:
           path: ~/.cache/composer
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-
-      - name: Cache phpcq directory
-        uses: actions/cache@v1
-        env:
-          cache-name: phpcq-${{ matrix.php }}
-        with:
-          path: .phpcq
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/.phpcq.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      - name: Cache vendor directory
-        uses: actions/cache@v1
-        env:
-          cache-name: vendor-${{ matrix.php }}
-        with:
-          path: vendor
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+          key: ${{ runner.os }}-${{ matrix.php }}-build-${{ env.cache-name }}
 
       - name: Install composer dependencies
-        run: composer install ${{ matrix.composer_flags }}
+        run: composer install
 
-      - name: Update phpcq
-        run: ./vendor/bin/phpcq self-update
+      - name: Cache vendor directory
+        uses: actions/cache@v3
+        env:
+          cache-name: vendor
+        with:
+          path: vendor
+          key: ${{ runner.os }}-${{ matrix.php }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.php }}-build-${{ env.cache-name }}-
 
       - name: Install phpcq toolchain
         run: ./vendor/bin/phpcq ${{ matrix.phpcq_install }} -v
 
+      - name: Cache phpcq directory
+        uses: actions/cache@v3
+        env:
+          cache-name: phpcq
+        with:
+          path: .phpcq
+          key: ${{ runner.os }}-${{ matrix.php }}-build-${{ env.cache-name }}-${{ hashFiles('**/.phpcq.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.php }}-build-${{ env.cache-name }}-
+
       - name: Run tests
-        run: ./vendor/bin/phpcq run ${{ matrix.phpcq_matrix }} -v ${{ matrix.output }}
+        run: ./vendor/bin/phpcq run -v ${{ matrix.output }}
 
       - name: Upload build directory to artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ success() }} || ${{ failure() }}
         with:
           name: phpcq-builds-php-${{ matrix.php }}

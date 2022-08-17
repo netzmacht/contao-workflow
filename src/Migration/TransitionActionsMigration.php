@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Migration;
 
-use Contao\CoreBundle\Doctrine\Schema\DcaSchemaProvider;
+use Contao\CoreBundle\Doctrine\Schema\SchemaProvider;
+use Contao\CoreBundle\Migration\AbstractMigration;
+use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Migrates action relations to reference actions
  */
-final class TransitionActionsMigration
+final class TransitionActionsMigration extends AbstractMigration
 {
     /**
      * Database connection.
@@ -23,30 +25,29 @@ final class TransitionActionsMigration
     /**
      * Dca Schema provider.
      *
-     * @var DcaSchemaProvider
+     * @var SchemaProvider
      */
     private $schemaProvider;
 
     /**
-     * @param Connection        $connection     Database connection.
-     * @param DcaSchemaProvider $schemaProvider Dca schema provider.
+     * @param Connection     $connection     Database connection.
+     * @param SchemaProvider $schemaProvider Dca schema provider.
      */
-    public function __construct(Connection $connection, DcaSchemaProvider $schemaProvider)
+    public function __construct(Connection $connection, SchemaProvider $schemaProvider)
     {
         $this->connection     = $connection;
         $this->schemaProvider = $schemaProvider;
     }
 
-    /**
-     * Invoke the migration.
-     */
-    public function __invoke(): void
+    public function shouldRun(): bool
     {
-        $schemaManager = $this->connection->getSchemaManager();
-        if (! $schemaManager->tablesExist(['tl_workflow_action', 'tl_workflow_transition_action'])) {
-            return;
-        }
+        return $this->connection
+            ->getSchemaManager()
+            ->tablesExist(['tl_workflow_action', 'tl_workflow_transition_action']);
+    }
 
+    public function run(): MigrationResult
+    {
         $schemaManager = $this->connection->getSchemaManager();
         $fromTable     = $schemaManager->createSchema()->getTable('tl_workflow_action');
         /** @psalm-suppress DeprecatedMethod - Deprecated in Contao 4.11 */
@@ -73,6 +74,8 @@ SQL;
         $this->connection->update('tl_workflow_action', ['ptable' => 'tl_workflow'], ['ptable' => '']);
 
         $schemaManager->dropTable('tl_workflow_transition_action');
+
+        return $this->$this->createResult(true);
     }
 
     /**

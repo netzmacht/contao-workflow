@@ -34,6 +34,18 @@
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch"/>
             </errorLevel>
         </TooManyArguments>
+        <DeprecatedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Doctrine\DBAL\Connection::getSchemaManager"/>
+                <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::execute"/>
+                <referencedMethod name="Doctrine\DBAL\Schema\Schema::getMigrateToSql"/>
+            </errorLevel>
+        </DeprecatedMethod>
+        <UndefinedDocblockClass>
+            <errorLevel type="suppress">
+                <referencedClass name="UnitEnum"/>
+            </errorLevel>
+        </UndefinedDocblockClass>
     </issueHandlers>
     <universalObjectCrates>
         <!-- allow magic property access -->

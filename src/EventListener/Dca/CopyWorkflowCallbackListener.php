@@ -8,8 +8,7 @@ use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ForwardCompatibility\DriverResultStatement;
-use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
+use Doctrine\DBAL\Result;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Flow\Security\Permission;
@@ -18,6 +17,7 @@ use function array_keys;
 use function assert;
 use function current;
 use function is_int;
+use function is_string;
 use function next;
 use function serialize;
 
@@ -169,12 +169,12 @@ SQL;
             ->setParameter('workflow', $newWorkflowId)
             ->execute();
 
-        assert(! is_int($result));
+        assert(! is_int($result) && ! is_string($result));
 
         $this->fixPermissionsForResult($result, $table, $column, $newWorkflowId);
     }
 
-    /** @param DriverStatement|DriverResultStatement $result */
+    /** @param Result $result */
     private function fixPermissionsForResult($result, string $table, string $column, int $newWorkflowId): void
     {
         while ($row = $result->fetchAssociative()) {
@@ -203,9 +203,6 @@ SQL;
         }
     }
 
-    /**
-     * Requires https://github.com/contao/contao/pull/3939
-     */
     private function fixReferenceActions(int $newWorkflowId, int $oldWorkflowId): void
     {
         $query = <<<'sql'

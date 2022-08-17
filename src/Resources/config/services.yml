@@ -94,6 +94,7 @@ services:
     arguments:
       - '@netzmacht.contao_workflow.security.user'
       - '@netzmacht.contao_workflow.property_access_manager'
+      - '@netzmacht.contao_workflow.manager'
       - '%netzmacht.contao_workflow.dca_providers%'
     tags:
       - { name: 'security.voter' }
@@ -101,6 +102,7 @@ services:
   Netzmacht\ContaoWorkflowBundle\Security\TransitionVoter:
     arguments:
       - '@netzmacht.contao_workflow.security.user'
+      - '@netzmacht.contao_workflow.manager'
     tags:
       - { name: 'security.voter' }
 
@@ -253,6 +255,8 @@ services:
     arguments:
       - '@database_connection'
       - '@contao.doctrine.schema_provider'
+    tags:
+      - 'contao.migration'
 
   Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionFrontendModuleController:
     arguments:

@@ -41,7 +41,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function in_array;
 use function sprintf;
 
@@ -126,8 +125,6 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
     /** {@inheritDoc} */
     protected function preGenerate(Request $request, Model $model, string $section, ?array $classes = null): ?Response
     {
-        assert($model instanceof ModuleModel);
-
         $entityId   = $this->getEntityId($model);
         $item       = $this->createItem($entityId);
         $workflow   = $this->getWorkflowByItem($item);

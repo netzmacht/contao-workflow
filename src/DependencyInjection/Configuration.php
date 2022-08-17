@@ -11,8 +11,8 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('netzmacht_contao_workflow');
+        $treeBuilder = new TreeBuilder('netzmacht_contao_workflow');
+        $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode
             ->addDefaultsIfNotSet()

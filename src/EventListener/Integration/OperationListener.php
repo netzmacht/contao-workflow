@@ -7,6 +7,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
+use Netzmacht\ContaoWorkflowBundle\Security\WorkflowPermissions;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Flow\Exception\StepNotFoundException;
@@ -105,7 +106,7 @@ final class OperationListener
                 return '';
             }
 
-            if (! $this->authorizationChecker->isGranted($step, $item)) {
+            if (! $this->authorizationChecker->isGranted(WorkflowPermissions::accessStep($step), $item)) {
                 return '';
             }
         }

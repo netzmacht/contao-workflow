@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [2.5.0] - 2022-08-17
+
+## Changed 
+
+ - Require netzmacht/contao-form-bundle ^2.0 
+ - Require contao/contao ^4.13
+
+## Breaking
+
+ - Rewrite voters. Steps and transitions has to be passed as name with `netzmacht_workflow.step.` or `netzmacht_workflow.transition:` prefix
+
 ## [2.4.0] - 2022-08-17
 
 ## Added

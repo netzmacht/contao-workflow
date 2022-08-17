@@ -16,6 +16,7 @@ use function array_merge;
 use function asort;
 use function count;
 use function is_int;
+use function is_string;
 use function sprintf;
 
 /**
@@ -172,7 +173,7 @@ final class OptionsListener
             ->setMaxResults(1)
             ->execute();
 
-        if (is_int($statement)) {
+        if (is_int($statement) || is_string($statement)) {
             return null;
         }
 
