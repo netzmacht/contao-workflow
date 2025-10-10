@@ -1,0 +1,35 @@
+{
+  "receipts": [
+    "projects/contao-bundle/5.3"
+  ],
+  "config": {
+    "phpConstraint": "^8.3"
+  },
+  "tools": {
+    "composer": {
+      "namespace": "Netzmacht\\ContaoWorkflowBundle"
+    },
+    "phpcq": {
+      "plugins": {
+        "phpunit": false,
+        "rector": false
+      },
+      "presets": {
+        "composer-require-checker": {
+          "tasks": {
+            "composer-require-checker": {
+              "config":{
+                "config_file": ".composer-require-checker.json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "psalm": {
+      "configuration": {
+        "errorLevel": "3"
+      }
+    }
+  }
+}
