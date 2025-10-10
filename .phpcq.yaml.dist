@@ -1,8 +1,10 @@
 phpcq:
   repositories:
     - 'https://phpcq.github.io/repository/repository.json'
+    - vendor/netzmacht/phpspec-phpcq-plugin/repository.json
   directories:
     - src
+    - spec
   artifact: .phpcq/build
   plugins:
     doctrine-coding-standard:
@@ -32,6 +34,9 @@ phpcq:
     phpcs:
       version: ^1.0
       signed: false
+    phpspec:
+      version: ^1.0
+      signed: false
   trusted-keys:
     - C00543248C87FB13
     - 033E5F8D801A2F8D
@@ -57,6 +62,7 @@ tasks:
     - phpmd
     - psalm
     - phpcs
+    - phpspec
   default:
     - verify
     - analyze

@@ -3,7 +3,10 @@
     "projects/contao-bundle/5.3"
   ],
   "config": {
-    "phpConstraint": "^8.3"
+    "phpConstraint": "^8.3",
+    "directories": [
+      "spec"
+    ]
   },
   "tools": {
     "composer": {
@@ -12,7 +15,13 @@
     "phpcq": {
       "plugins": {
         "phpunit": false,
-        "rector": false
+        "rector": false,
+        "phpspec": true
+      },
+      "defaults": {
+        "repositories": [
+          "vendor/netzmacht/phpspec-phpcq-plugin/repository.json"
+        ]
       },
       "presets": {
         "composer-require-checker": {

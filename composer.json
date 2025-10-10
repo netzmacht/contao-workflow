@@ -59,7 +59,8 @@
     "contao/manager-plugin": "^2.1",
     "friends-of-phpspec/phpspec-expect": "^4.0",
     "phpcq/runner-bootstrap": "@dev",
-    "phpspec/phpspec": "^7.1"
+    "phpspec/phpspec": "^7.1",
+    "netzmacht/phpspec-phpcq-plugin": "@dev"
   },
   "autoload": {
     "psr-4": {
