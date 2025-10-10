@@ -21,12 +21,12 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
      * @param int            $code     The error code.
      * @param Throwable|null $previous A previous exception.
      */
-    public static function withType(string $type, int $code = 0, ?Throwable $previous = null): UnsupportedAction
+    public static function withType(string $type, int $code = 0, Throwable|null $previous = null): UnsupportedAction
     {
         return new static(
             sprintf('Action "%s" not found.', $type),
             $code,
-            $previous
+            $previous,
         );
     }
 
@@ -42,12 +42,12 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
         Action $action,
         string $expectedClass,
         int $code = 0,
-        ?Throwable $previous = null
+        Throwable|null $previous = null,
     ): UnsupportedAction {
         return new static(
             sprintf('Unexpected action "%s". "%s" expected', get_class($action), $expectedClass),
             $code,
-            $previous
+            $previous,
         );
     }
 }

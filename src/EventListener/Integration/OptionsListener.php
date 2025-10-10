@@ -26,17 +26,13 @@ final class OptionsListener
 {
     /**
      * Workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
@@ -55,7 +51,7 @@ final class OptionsListener
      *
      * @return array<string,string>
      */
-    public function workflowOptions(?DataContainer $dataContainer = null): array
+    public function workflowOptions(DataContainer|null $dataContainer = null): array
     {
         $names = [];
 
@@ -78,7 +74,7 @@ final class OptionsListener
      *
      * @return array<string,string>|array<int|string,array<string,string>>
      */
-    public function stepOptions(?DataContainer $dataContainer = null): array
+    public function stepOptions(DataContainer|null $dataContainer = null): array
     {
         $options = [];
 
@@ -90,7 +86,7 @@ final class OptionsListener
                 }
 
                 $workflow = $this->workflowManager->getWorkflowByName($selectedWorkflow);
-            } catch (WorkflowNotFound $exception) {
+            } catch (WorkflowNotFound) {
                 return [];
             }
 
@@ -105,7 +101,7 @@ final class OptionsListener
                 $workflowName = sprintf(
                     '%s [%s]',
                     $workflow->getLabel(),
-                    $workflow->getName()
+                    $workflow->getName(),
                 );
 
                 $options[$workflowName] = $this->buildWorkflowStepOptions($workflow);
@@ -127,7 +123,7 @@ final class OptionsListener
      *
      * @return array<string,string>
      */
-    public function stepPermissionOptions(?DataContainer $dataContainer = null): array
+    public function stepPermissionOptions(DataContainer|null $dataContainer = null): array
     {
         if (! $dataContainer || ! $dataContainer->activeRecord || $dataContainer->activeRecord->workflowStep) {
             return [];
@@ -140,7 +136,7 @@ final class OptionsListener
             }
 
             $workflow = $this->workflowManager->getWorkflowByName($selectedWorkflow);
-        } catch (WorkflowNotFound $exception) {
+        } catch (WorkflowNotFound) {
             return [];
         }
 
@@ -162,7 +158,7 @@ final class OptionsListener
      *
      * @param DataContainer $dataContainer Data container driver.
      */
-    private function getSelectedWorkflow(DataContainer $dataContainer): ?string
+    private function getSelectedWorkflow(DataContainer $dataContainer): string|null
     {
         $statement = $this->connection
             ->createQueryBuilder()

@@ -16,14 +16,10 @@ final class ContaoModelPropertyAccessorFactory implements PropertyAccessorFactor
 {
     /**
      * Related changes registry.
-     *
-     * @var ContaoModelRelatedModelChangeTracker
      */
-    private $changesRegistry;
+    private ContaoModelRelatedModelChangeTracker $changesRegistry;
 
-    /**
-     * @param ContaoModelRelatedModelChangeTracker $changesRegistry Related changes registry.
-     */
+    /** @param ContaoModelRelatedModelChangeTracker $changesRegistry Related changes registry. */
     public function __construct(ContaoModelRelatedModelChangeTracker $changesRegistry)
     {
         $this->changesRegistry = $changesRegistry;

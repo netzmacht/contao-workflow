@@ -24,12 +24,8 @@ use function serialize;
 /** @Callback(table="tl_workflow", target="config.oncopy") */
 final class CopyWorkflowCallbackListener
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /** @param int|string $insertId */
@@ -81,7 +77,7 @@ final class CopyWorkflowCallbackListener
         return $this->connection
             ->executeQuery(
                 'SELECT id FROM tl_workflow_transition WHERE pid = :workflow ORDER BY sorting',
-                ['workflow' => $workflowId]
+                ['workflow' => $workflowId],
             )
             ->fetchFirstColumn();
     }
@@ -92,7 +88,7 @@ final class CopyWorkflowCallbackListener
         return $this->connection
             ->executeQuery(
                 'SELECT id FROM tl_workflow_step WHERE pid = :workflow ORDER BY id',
-                ['workflow' => $workflowId]
+                ['workflow' => $workflowId],
             )
             ->fetchFirstColumn();
     }
@@ -106,7 +102,7 @@ final class CopyWorkflowCallbackListener
         $process = $this->connection
             ->executeQuery(
                 'SELECT process FROM tl_workflow WHERE id = :workflow',
-                ['workflow' => $workflowId]
+                ['workflow' => $workflowId],
             )
             ->fetchOne();
 
@@ -130,7 +126,7 @@ final class CopyWorkflowCallbackListener
             $this->connection->update(
                 'tl_workflow_transition',
                 ['stepTo' => $new],
-                ['pid' => $workflowId, 'stepTo' => $old]
+                ['pid' => $workflowId, 'stepTo' => $old],
             );
         }
     }
@@ -154,7 +150,7 @@ SQL;
                 'workflowTable'   => WorkflowModel::getTable(),
                 'transitionTable' => TransitionModel::getTable(),
                 'workflowId'      => $newWorkflowId,
-            ]
+            ],
         );
         $this->fixPermissionsForResult($result, 'tl_workflow_action', 'assign_user_permission', $newWorkflowId);
     }
@@ -191,7 +187,7 @@ SQL;
         $result = $this->connection->executeQuery(
             'SELECT * FROM tl_workflow_transition_conditional_transition WHERE pid IN (:transitions)',
             ['transitions' => array_keys($transitionMapping)],
-            ['transitions' => Connection::PARAM_STR_ARRAY]
+            ['transitions' => Connection::PARAM_STR_ARRAY],
         );
 
         while ($row = $result->fetchAssociative()) {
@@ -219,7 +215,7 @@ sql;
                 'transitionTable' => TransitionModel::getTable(),
                 'referenceType'   => 'reference',
                 'workflowId'      => $newWorkflowId,
-            ]
+            ],
         );
 
         while ($row = $result->fetchAssociative()) {
@@ -230,7 +226,7 @@ sql;
                 ],
                 [
                     'id' => $row['id'],
-                ]
+                ],
             );
         }
     }
@@ -244,7 +240,7 @@ sql;
                 [
                     'workflowTable' => WorkflowModel::getTable(),
                     'workflowId'    => $workflowId,
-                ]
+                ],
             )
             ->fetchFirstColumn();
     }

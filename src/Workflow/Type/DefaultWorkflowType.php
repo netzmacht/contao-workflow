@@ -18,24 +18,20 @@ final class DefaultWorkflowType extends AbstractWorkflowType
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * Workflow manager.
-     *
-     * @var Manager
      */
-    private $workflowManager;
+    private Manager $workflowManager;
 
     /**
      * Default workflow type configuration.
      *
      * @var array<string,mixed>
      */
-    private $defaultWorkflowTypes;
+    private array $defaultWorkflowTypes;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -45,7 +41,7 @@ final class DefaultWorkflowType extends AbstractWorkflowType
     public function __construct(
         PropertyAccessManager $propertyAccessManager,
         Manager $workflowManager,
-        array $configuration = []
+        array $configuration = [],
     ) {
         parent::__construct('default_type', array_keys($configuration));
 
@@ -64,7 +60,7 @@ final class DefaultWorkflowType extends AbstractWorkflowType
                 [
                     $condition,
                     new PropertyCondition($this->propertyAccessManager, 'workflow', ''),
-                ]
+                ],
             );
         }
 

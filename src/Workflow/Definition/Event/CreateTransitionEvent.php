@@ -12,14 +12,12 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class CreateTransitionEvent extends Event
 {
-    public const NAME = 'netzmacht.contao_workflow.create_transition';
+    public const string NAME = 'netzmacht.contao_workflow.create_transition';
 
     /**
      * The created transition.
-     *
-     * @var Transition
      */
-    private $transition;
+    private Transition $transition;
 
     /**
      * Construct.

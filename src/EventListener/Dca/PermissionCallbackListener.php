@@ -20,14 +20,10 @@ final class PermissionCallbackListener
 {
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
-    /**
-     * @param RepositoryManager $repositoryManager Repository manager.
-     */
+    /** @param RepositoryManager $repositoryManager Repository manager. */
     public function __construct(RepositoryManager $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
@@ -87,7 +83,7 @@ final class PermissionCallbackListener
             foreach ($permissions as $config) {
                 $permission = WorkflowPermission::forWorkflowName(
                     'workflow_' . $workflow->id,
-                    (string) $config['name']
+                    (string) $config['name'],
                 );
 
                 $options[(string) $permission] = $config['label'] ?: $config['name'];

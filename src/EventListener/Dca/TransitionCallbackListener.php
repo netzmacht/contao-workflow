@@ -42,45 +42,35 @@ final class TransitionCallbackListener extends AbstractListener
 
     /**
      * Table name.
-     *
-     * @var string
      */
-    protected static $name = 'tl_workflow_transition';
+    protected static string $name = 'tl_workflow_transition';
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Configuration of available transition types.
      *
      * @var array<array<string,mixed>>
      */
-    private $transitionTypes;
+    private array $transitionTypes;
 
     /**
      * Workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * Translator.
-     *
-     * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * Assets manager.
-     *
-     * @var AssetsManager
      */
-    private $assetsManager;
+    private AssetsManager $assetsManager;
 
     /**
      * @param DcaManager                 $dcaManager        Data container manager.
@@ -96,7 +86,7 @@ final class TransitionCallbackListener extends AbstractListener
         WorkflowManager $workflowManager,
         TranslatorInterface $translator,
         AssetsManager $assetsManager,
-        array $transitionTypes
+        array $transitionTypes,
     ) {
         parent::__construct($dcaManager);
 
@@ -142,7 +132,7 @@ final class TransitionCallbackListener extends AbstractListener
         return sprintf(
             '%s <span class="tl_gray">[%s]</span>',
             $row['label'],
-            (string) $this->getFormatter()->formatValue('type', $row['type'])
+            (string) $this->getFormatter()->formatValue('type', $row['type']),
         );
     }
 
@@ -234,7 +224,7 @@ final class TransitionCallbackListener extends AbstractListener
             $collection = $repository->findBy(
                 ['.pid=?', '.id != ?'],
                 [$transition->pid, $transition->id],
-                ['order' => '.label']
+                ['order' => '.label'],
             );
         }
 
@@ -269,16 +259,14 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @param mixed         $value         The value.
      * @param DataContainer $dataContainer The data container driver.
-     *
-     * @return null
      */
-    public function saveConditionalTransitions($value, DataContainer $dataContainer)
+    public function saveConditionalTransitions($value, DataContainer $dataContainer): null
     {
         $connection = $this->repositoryManager->getConnection();
         $new        = array_filter(StringUtil::deserialize($value, true));
         $values     = [];
         $statement  = $connection->prepare(
-            'SELECT * FROM tl_workflow_transition_conditional_transition WHERE pid=:pid order BY sorting'
+            'SELECT * FROM tl_workflow_transition_conditional_transition WHERE pid=:pid order BY sorting',
         );
 
         $statement->bindValue('pid', $dataContainer->id);
@@ -309,7 +297,7 @@ final class TransitionCallbackListener extends AbstractListener
                     $connection->update(
                         'tl_workflow_transition_conditional_transition',
                         ['tstamp' => time(), 'sorting' => $sorting],
-                        ['id' => $values[$conditionalTransitionId]['id']]
+                        ['id' => $values[$conditionalTransitionId]['id']],
                     );
                 }
 
@@ -322,14 +310,14 @@ final class TransitionCallbackListener extends AbstractListener
             static function (array $item): string {
                 return $item['id'];
             },
-            $values
+            $values,
         );
 
         if ($ids) {
             $connection->executeStatement(
                 'DELETE FROM tl_workflow_transition_conditional_transition WHERE id IN(?)',
                 [$ids],
-                [Connection::PARAM_INT_ARRAY]
+                [Connection::PARAM_INT_ARRAY],
             );
         }
 
@@ -385,7 +373,7 @@ final class TransitionCallbackListener extends AbstractListener
     {
         return sprintf(
             '<a href="javascript:void(0);" class="edit_transition">%s</a>',
-            Image::getHtml('edit.svg')
+            Image::getHtml('edit.svg'),
         );
     }
 
@@ -414,7 +402,7 @@ html;
             $template,
             Backend::addToUrl('table=tl_workflow_transition&act=&id=' . $dataContainer->activeRecord->pid),
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
-            $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition')
+            $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
         );
     }
 
@@ -434,7 +422,7 @@ html;
         string $label,
         string $title,
         string $icon,
-        string $attributes
+        string $attributes,
     ): string {
         $supported = ($this->transitionTypes[$row['type']]['actions'] ?? false);
         if ($supported) {
@@ -443,7 +431,7 @@ html;
                 Backend::addToUrl($href . '&id=' . $row['id']),
                 StringUtil::specialchars($label),
                 $attributes,
-                Image::getHtml($icon, $title)
+                Image::getHtml($icon, $title),
             );
         }
 

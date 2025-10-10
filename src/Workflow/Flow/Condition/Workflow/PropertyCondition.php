@@ -19,31 +19,23 @@ final class PropertyCondition implements Condition
 {
     /**
      * Name of the property.
-     *
-     * @var string
      */
-    private $property;
+    private string $property;
 
     /**
      * Value to compare with.
-     *
-     * @var mixed
      */
-    private $value;
+    private mixed $value;
 
     /**
      * Comparison operator.
-     *
-     * @var string
      */
-    private $operator;
+    private string $operator;
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -55,7 +47,7 @@ final class PropertyCondition implements Condition
         PropertyAccessManager $propertyAccessManager,
         string $property,
         $value,
-        string $operator = Comparison::EQUALS
+        string $operator = Comparison::EQUALS,
     ) {
         $this->property              = $property;
         $this->value                 = $value;
@@ -64,7 +56,7 @@ final class PropertyCondition implements Condition
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {

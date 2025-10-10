@@ -37,7 +37,7 @@ final class FormActionFormBuilder implements ActionFormBuilder
                 [
                     'formId' => $action->getConfigValue('form_formId'),
                     'ignore' => ['submit'],
-                ]
+                ],
             );
 
             return;
@@ -58,7 +58,7 @@ final class FormActionFormBuilder implements ActionFormBuilder
                         ],
                     ],
                 ],
-            ]
+            ],
         );
     }
 }

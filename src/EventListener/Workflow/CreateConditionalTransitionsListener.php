@@ -18,14 +18,10 @@ class CreateConditionalTransitionsListener
 {
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @param Connection $connection Database connection.
-     */
+    /** @param Connection $connection Database connection. */
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -49,7 +45,7 @@ class CreateConditionalTransitionsListener
         $action = new ConditionalTransitionAction(
             sprintf('%s_%s_conditional_action', $workflow->getName(), $transition->getName()),
             $workflow,
-            $transitions
+            $transitions,
         );
 
         $transition->addPostAction($action);
@@ -74,7 +70,7 @@ class CreateConditionalTransitionsListener
                 return 'transition_' . $transitionId;
             },
             // @codingStandardsIgnoreEnd
-            $result->fetchFirstColumn()
+            $result->fetchFirstColumn(),
         );
     }
 }

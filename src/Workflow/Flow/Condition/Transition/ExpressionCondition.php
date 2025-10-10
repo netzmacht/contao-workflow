@@ -17,17 +17,13 @@ final class ExpressionCondition implements Condition
 {
     /**
      * The expression language. The language is injected by dependency so that features can be added.
-     *
-     * @var ExpressionLanguage
      */
-    private $expressionLanguage;
+    private ExpressionLanguage $expressionLanguage;
 
     /**
      * Plain expression.
-     *
-     * @var string
      */
-    private $expression;
+    private string $expression;
 
     /**
      * Construct.
@@ -50,7 +46,7 @@ final class ExpressionCondition implements Condition
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @SuppressWarnings(PHPMD.EvalExpression)

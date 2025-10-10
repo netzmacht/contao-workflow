@@ -18,7 +18,7 @@ interface User
      *
      * @param UserInterface|null $user The user to check. If empty the user the current security user is used.
      */
-    public function getUserId(?UserInterface $user = null): ?EntityId;
+    public function getUserId(UserInterface|null $user = null): EntityId|null;
 
     /**
      * Check if user as a given permission.
@@ -26,7 +26,7 @@ interface User
      * @param Permission         $permission The permission to check.
      * @param UserInterface|null $user       The user to check. If empty the user the current security user is used.
      */
-    public function hasPermission(Permission $permission, ?UserInterface $user = null): bool;
+    public function hasPermission(Permission $permission, UserInterface|null $user = null): bool;
 
     /**
      * Get list of all permissions granted to the current user.
@@ -35,5 +35,5 @@ interface User
      *
      * @return Permission[]
      */
-    public function getPermissions(?UserInterface $user = null): array;
+    public function getPermissions(UserInterface|null $user = null): array;
 }

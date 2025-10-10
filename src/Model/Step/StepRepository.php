@@ -26,12 +26,12 @@ final class StepRepository extends ContaoRepository
      * @return Collection|StepModel[]|null
      * @psalm-return Collection|null
      */
-    public function findByWorkflow(int $workflowId, array $options = ['order' => 'label'])
+    public function findByWorkflow(int $workflowId, array $options = ['order' => 'label']): Collection|array|null
     {
         return $this->findBy(
             ['.pid=?'],
             [$workflowId],
-            $options
+            $options,
         );
     }
 }

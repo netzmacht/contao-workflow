@@ -20,8 +20,6 @@ final class StepModel extends Model
 {
     /**
      * Table name.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow_step';
+    protected static string $strTable = 'tl_workflow_step';
 }

@@ -18,18 +18,16 @@ final class PropertyAccessManager
      *
      * @var PropertyAccessorFactory[]
      */
-    private $factories = [];
+    private array $factories = [];
 
     /**
      * Cache of mapped property accessors.
      *
      * @var array<string,PropertyAccessor>
      */
-    private $mapping = [];
+    private array $mapping = [];
 
-    /**
-     * @param iterable<PropertyAccessorFactory> $factories Property access factories.
-     */
+    /** @param iterable<PropertyAccessorFactory> $factories Property access factories. */
     public function __construct(iterable $factories)
     {
         Assert::thatAll($factories)->subclassOf(PropertyAccessorFactory::class);

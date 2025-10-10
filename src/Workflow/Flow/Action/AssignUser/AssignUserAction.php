@@ -20,24 +20,18 @@ final class AssignUserAction extends AbstractPropertyAccessAction
 {
     /**
      * If true the current user is assigned.
-     *
-     * @var bool
      */
-    private $assignCurrentUser;
+    private bool $assignCurrentUser;
 
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * The property name of an entity property which is used for the user assignment.
-     *
-     * @var string
      */
-    private $property;
+    private string $property;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -55,7 +49,7 @@ final class AssignUserAction extends AbstractPropertyAccessAction
         bool $assignCurrentUser,
         string $property,
         string $label = '',
-        array $config = []
+        array $config = [],
     ) {
         parent::__construct($propertyAccessManager, $name, $label, $config);
 

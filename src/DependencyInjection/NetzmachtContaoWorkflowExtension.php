@@ -22,7 +22,7 @@ final class NetzmachtContaoWorkflowExtension extends Extension
     {
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(dirname(__DIR__) . '/Resources/config')
+            new FileLocator(dirname(__DIR__) . '/Resources/config'),
         );
 
         // Common config, services and listeners
@@ -53,7 +53,7 @@ final class NetzmachtContaoWorkflowExtension extends Extension
         /** @psalm-suppress PossiblyInvalidArgument */
         $container->setParameter(
             'netzmacht.contao_workflow.transition_types',
-            array_merge($config['transitions'], $container->getParameter('netzmacht.contao_workflow.transition_types'))
+            array_merge($config['transitions'], $container->getParameter('netzmacht.contao_workflow.transition_types')),
         );
     }
 }

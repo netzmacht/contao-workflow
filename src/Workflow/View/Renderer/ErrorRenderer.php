@@ -11,10 +11,8 @@ final class ErrorRenderer extends AbstractRenderer
 {
     /**
      * Section name.
-     *
-     * @var string
      */
-    protected static $section = 'errors';
+    protected static string $section = 'errors';
 
     /**
      * {@inheritDoc}

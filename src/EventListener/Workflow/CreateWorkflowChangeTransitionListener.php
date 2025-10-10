@@ -15,14 +15,10 @@ final class CreateWorkflowChangeTransitionListener
 {
     /**
      * Workflow Manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
-    /**
-     * @param WorkflowManager $workflowManager The workflow manager.
-     */
+    /** @param WorkflowManager $workflowManager The workflow manager. */
     public function __construct(WorkflowManager $workflowManager)
     {
         $this->workflowManager = $workflowManager;
@@ -47,7 +43,7 @@ final class CreateWorkflowChangeTransitionListener
         }
 
         $transition->addPostAction(
-            new WorkflowChangeAction($this->workflowManager, $transition->getConfigValue('workflow'))
+            new WorkflowChangeAction($this->workflowManager, $transition->getConfigValue('workflow')),
         );
     }
 }

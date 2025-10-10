@@ -23,11 +23,9 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
      *
      * @var ActionFormBuilder[]
      */
-    private $builders = [];
+    private array $builders = [];
 
-    /**
-     * @param iterable|ActionFormBuilder[] $builders The action form builders.
-     */
+    /** @param iterable|ActionFormBuilder[] $builders The action form builders. */
     public function __construct(iterable $builders)
     {
         foreach ($builders as $builder) {
@@ -88,7 +86,7 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
         Context $context,
         Item $item,
         FormBuilder $formBuilder,
-        array $data
+        array $data,
     ): array {
         foreach ($this->builders as $builder) {
             if (! $builder->supports($action)) {

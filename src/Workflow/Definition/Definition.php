@@ -9,9 +9,9 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Definition;
  */
 final class Definition
 {
-    public const SOURCE = '__source__';
+    public const string SOURCE = '__source__';
 
-    public const SOURCE_DATABASE = 'database';
+    public const string SOURCE_DATABASE = 'database';
 
-    public const SOURCE_CONFIG = 'config';
+    public const string SOURCE_CONFIG = 'config';
 }

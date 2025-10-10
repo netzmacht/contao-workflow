@@ -49,52 +49,42 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
 {
     /**
      * Workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * The entity manager.
-     *
-     * @var EntityManager
      */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     /**
      * View factory.
-     *
-     * @var ViewFactory
      */
-    private $viewFactory;
+    private ViewFactory $viewFactory;
 
     /**
      * The form factory.
-     *
-     * @var FormFactory
      */
-    private $formFactory;
+    private FormFactory $formFactory;
 
     /**
      * The config adapter.
      *
      * @var Adapter<Config>
      */
-    private $configAdapter;
+    private Adapter $configAdapter;
 
     /**
      * The input adapter.
      *
      * @var Adapter<Input>
      */
-    private $inputAdapter;
+    private Adapter $inputAdapter;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /** @SuppressWarnings(PHPMD.ExcessiveParameterList) */
     public function __construct(
@@ -109,7 +99,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         FormFactory $formFactory,
         ViewFactory $viewFactory,
         Adapter $inputAdapter,
-        Adapter $configAdapter
+        Adapter $configAdapter,
     ) {
         parent::__construct($templateRenderer, $scopeMatcher, $responseTagger, $router, $translator);
 
@@ -123,7 +113,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
     }
 
     /** {@inheritDoc} */
-    protected function preGenerate(Request $request, Model $model, string $section, ?array $classes = null): ?Response
+    protected function preGenerate(Request $request, Model $model, string $section, array|null $classes = null): Response|null
     {
         $entityId   = $this->getEntityId($model);
         $item       = $this->createItem($entityId);
@@ -138,7 +128,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
             $form = $this->formFactory->create(
                 TransitionFormType::class,
                 [],
-                ['handler' => $handler, 'item' => $item]
+                ['handler' => $handler, 'item' => $item],
             );
 
             $form->handleRequest($request);
@@ -162,7 +152,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         $view       = $this->viewFactory->create(
             $item,
             $transition,
-            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection()]
+            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection()],
         );
 
         $request->attributes->set(View::class, $view);
@@ -220,7 +210,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
             throw new PageNotFoundException(
                 sprintf('Entity "%s" not found.', (string) $entityId),
                 (int) $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -241,7 +231,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         } catch (WorkflowNotFound $exception) {
             throw new BadRequestHttpException(
                 sprintf('No workflow found for entity "%s"', (string) $item->getEntityId()),
-                $exception
+                $exception,
             );
         }
     }
@@ -261,7 +251,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         EntityId $entityId,
         string $transition,
         Item $item,
-        Workflow $workflow
+        Workflow $workflow,
     ): TransitionHandler {
         try {
             if ($item->getWorkflowName() !== $workflow->getName()) {
@@ -275,10 +265,10 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
                     'Could not perform transition "%s" on entity "%s". Creating handler failed with message "%s".',
                     $transition,
                     (string) $entityId,
-                    $e->getMessage()
+                    $e->getMessage(),
                 ),
                 (int) $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -287,8 +277,8 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
                 sprintf(
                     'Could not perform transition "%s" on entity "%s". No handler created.',
                     $transition,
-                    (string) $entityId
-                )
+                    (string) $entityId,
+                ),
             );
         }
 

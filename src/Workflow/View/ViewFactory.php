@@ -21,7 +21,7 @@ interface ViewFactory
         Item $item,
         $context,
         array $options = [],
-        ?string $template = null,
-        string $contentType = View::CONTENT_TYPE_HTML
+        string|null $template = null,
+        string $contentType = View::CONTENT_TYPE_HTML,
     ): View;
 }

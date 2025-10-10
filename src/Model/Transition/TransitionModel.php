@@ -25,10 +25,8 @@ final class TransitionModel extends Model
 {
     /**
      * Table name.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow_transition';
+    protected static string $strTable = 'tl_workflow_transition';
 
     /**
      * Find transition by workflow id.
@@ -40,12 +38,12 @@ final class TransitionModel extends Model
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress InvalidReturnType
      */
-    public static function findByWorkflow(int $workflowId)
+    public static function findByWorkflow(int $workflowId): array|Collection|null
     {
         return self::findBy(
             [self::$strTable . '.active=1', self::$strTable . '.pid=?'],
             $workflowId,
-            ['order' => self::$strTable . '.sorting']
+            ['order' => self::$strTable . '.sorting'],
         );
     }
 }

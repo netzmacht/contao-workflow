@@ -35,7 +35,7 @@ final class PropertyAccessManagerSpec extends ObjectBehavior
 
     public function it_asks_factories_for_support(
         PropertyAccessorFactory $unsupportedFactory,
-        PropertyAccessorFactory $factory
+        PropertyAccessorFactory $factory,
     ): void {
         $unsupportedFactory->supports(Argument::any())->shouldBeCalledOnce();
         $factory->supports(Argument::any())->shouldBeCalledOnce();
@@ -45,14 +45,14 @@ final class PropertyAccessManagerSpec extends ObjectBehavior
 
     public function it_provides_access_using_supported_factory(
         PropertyAccessorFactory $factory,
-        PropertyAccessor $accessor
+        PropertyAccessor $accessor,
     ): void {
         $factory->create([])->willReturn($accessor);
         $this->provideAccess([])->shouldReturn($accessor);
     }
 
     public function it_throws_property_access_failed_for_unsupported_data(
-        PropertyAccessorFactory $unsupportedFactory
+        PropertyAccessorFactory $unsupportedFactory,
     ): void {
         $this->beConstructedWith([$unsupportedFactory]);
         $this->shouldThrow(PropertyAccessFailed::class)->during('provideAccess', [[]]);

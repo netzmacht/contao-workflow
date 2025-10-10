@@ -13,10 +13,8 @@ abstract class AbstractPropertyAccessAction extends Base implements Action
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    protected $propertyAccessManager;
+    protected PropertyAccessManager $propertyAccessManager;
 
     /**
      * Construct.
@@ -30,7 +28,7 @@ abstract class AbstractPropertyAccessAction extends Base implements Action
         PropertyAccessManager $propertyAccessManager,
         string $name,
         string $label = '',
-        array $config = []
+        array $config = [],
     ) {
         parent::__construct($name, $label, $config);
 

@@ -61,7 +61,7 @@ final class NoteActionFormBuilder implements ActionFormBuilder
                         ],
                     ],
                 ],
-            ]
+            ],
         );
     }
 }

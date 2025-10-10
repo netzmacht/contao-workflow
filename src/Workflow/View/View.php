@@ -13,15 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface View
 {
-    public const CONTENT_TYPE_HTML = 'text/html';
-    public const CONTENT_TYPE_JSON = 'application/json';
+    public const string CONTENT_TYPE_HTML = 'text/html';
+    public const string CONTENT_TYPE_JSON = 'application/json';
 
     /**
      * Get workflow context.
-     *
-     * @return Transition|Step|State
      */
-    public function getContext();
+    public function getContext(): Transition|Step|State;
 
     /**
      * Get the workflow item.
@@ -43,10 +41,8 @@ interface View
      *
      * @param string $name    The option name.
      * @param null   $default Default option value.
-     *
-     * @return mixed
      */
-    public function getOption(string $name, $default = null);
+    public function getOption(string $name, $default = null): mixed;
 
     /**
      * Add a section.
@@ -55,7 +51,7 @@ interface View
      * @param array<string,mixed> $parameters      The section parameters.
      * @param string|null         $defaultTemplate The default template.
      */
-    public function addSection(string $name, array $parameters, ?string $defaultTemplate = null): View;
+    public function addSection(string $name, array $parameters, string|null $defaultTemplate = null): View;
 
     /**
      * Check is section exists.

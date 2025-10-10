@@ -23,30 +23,22 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * Symfony expression language.
-     *
-     * @var ExpressionLanguage
      */
-    private $expressionLanguage;
+    private ExpressionLanguage $expressionLanguage;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
-     */    private $repositoryManager;
+     */    private RepositoryManager $repositoryManager;
 
     /**
      * Workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -58,7 +50,7 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
         PropertyAccessManager $propertyAccessManager,
         ExpressionLanguage $expressionLanguage,
         RepositoryManager $repositoryManager,
-        User $user
+        User $user,
     ) {
         $this->propertyAccessManager = $propertyAccessManager;
         $this->expressionLanguage    = $expressionLanguage;
@@ -103,7 +95,7 @@ final class UpdatePropertyActionFactory implements ActionTypeFactory
             $this->propertyAccessManager,
             $this->expressionLanguage,
             $this->repositoryManager,
-            $this->user
+            $this->user,
         );
     }
 }

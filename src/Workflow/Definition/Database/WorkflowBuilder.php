@@ -40,35 +40,31 @@ final class WorkflowBuilder
      *
      * @var Step[]
      */
-    private $steps = [];
+    private array $steps = [];
 
     /**
      * Workflow transitions.
      *
      * @var Transition[]
      */
-    private $transitions = [];
+    private array $transitions = [];
 
     /**
      * Contao model repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Action factory.
-     *
-     * @var ActionFactory
      */
-    private $actionFactory;
+    private ActionFactory $actionFactory;
 
     /**
      * Configuration of available transition types.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $transitionTypes;
+    private array $transitionTypes;
 
     /**
      * @param RepositoryManager                 $repositoryManager Contao model repository manager.
@@ -78,7 +74,7 @@ final class WorkflowBuilder
     public function __construct(
         RepositoryManager $repositoryManager,
         ActionFactory $actionFactory,
-        array $transitionTypes
+        array $transitionTypes,
     ) {
         $this->repositoryManager = $repositoryManager;
         $this->actionFactory     = $actionFactory;
@@ -97,7 +93,7 @@ final class WorkflowBuilder
     public function createWorkflow(
         CreateWorkflowEvent $event,
         string $eventName,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
     ): void {
         $workflow = $event->getWorkflow();
 
@@ -121,7 +117,7 @@ final class WorkflowBuilder
     private function createProviderNameCondition(Workflow $workflow): void
     {
         $workflow->addCondition(
-            new ProviderNameCondition($workflow->getProviderName())
+            new ProviderNameCondition($workflow->getProviderName()),
         );
     }
 
@@ -149,9 +145,9 @@ final class WorkflowBuilder
                 $model->label,
                 array_merge(
                     $model->row(),
-                    [Definition::SOURCE => Definition::SOURCE_DATABASE]
+                    [Definition::SOURCE => Definition::SOURCE_DATABASE],
                 ),
-                $workflow->getName()
+                $workflow->getName(),
             );
 
             $step->setFinal((bool) $model->final);
@@ -240,7 +236,7 @@ final class WorkflowBuilder
     private function createTransition(
         Workflow $workflow,
         TransitionModel $model,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
     ): Transition {
         // Unknown transition type, skip it.
         if (! isset($this->transitionTypes[$model->type])) {
@@ -257,8 +253,8 @@ final class WorkflowBuilder
             $model->label,
             array_merge(
                 $data,
-                [Definition::SOURCE => Definition::SOURCE_DATABASE]
-            )
+                [Definition::SOURCE => Definition::SOURCE_DATABASE],
+            ),
         );
 
         if ($model->limitPermission && $model->permission !== '') {
@@ -326,8 +322,8 @@ final class WorkflowBuilder
                 sprintf(
                     'Transition ID "%s" refers to step "%s" which does not exists.',
                     $model->id,
-                    $model->stepTo
-                )
+                    $model->stepTo,
+                ),
             );
         }
     }

@@ -21,21 +21,17 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
      *
      * @var EntityRepository[]|array
      */
-    private $repositories = [];
+    private array $repositories = [];
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryFactory
      */
-    private $repositoryFactory;
+    private RepositoryFactory $repositoryFactory;
 
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * The database connection.

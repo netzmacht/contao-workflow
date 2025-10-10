@@ -25,31 +25,23 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
 {
     /**
      * Contao model repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Event dispatcher.
-     *
-     * @var EventDispatcher
      */
-    private $eventDispatcher;
+    private EventDispatcher $eventDispatcher;
 
     /**
      * Workflow type registry.
-     *
-     * @var WorkflowTypeRegistry
      */
-    private $typeRegistry;
+    private WorkflowTypeRegistry $typeRegistry;
 
     /**
      * Logger.
-     *
-     * @var LoggerInterface
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
      * @param RepositoryManager    $repositoryManager Contao model repository manager.
@@ -61,7 +53,7 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
         RepositoryManager $repositoryManager,
         WorkflowTypeRegistry $typeRegistry,
         EventDispatcher $eventDispatcher,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->repositoryManager = $repositoryManager;
         $this->eventDispatcher   = $eventDispatcher;
@@ -88,16 +80,16 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
                         sprintf(
                             'Creating workflow for model "%s" failed with message: %s',
                             $model->id,
-                            $exception->getMessage()
-                        )
+                            $exception->getMessage(),
+                        ),
                     );
                 } catch (DefinitionException $exception) {
                     $this->logger->error(
                         sprintf(
                             'Creating workflow for model "%s" failed with message: %s',
                             $model->id,
-                            $exception->getMessage()
-                        )
+                            $exception->getMessage(),
+                        ),
                     );
                 }
             }
@@ -141,8 +133,8 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
             $model->label,
             array_merge(
                 $model->row(),
-                [Definition::SOURCE => Definition::SOURCE_DATABASE]
-            )
+                [Definition::SOURCE => Definition::SOURCE_DATABASE],
+            ),
         );
 
         $next = function () use ($workflow): void {

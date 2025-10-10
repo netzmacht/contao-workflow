@@ -23,8 +23,6 @@ final class StateModel extends Model
 {
     /**
      * The workflow state table.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow_state';
+    protected static string $strTable = 'tl_workflow_state';
 }

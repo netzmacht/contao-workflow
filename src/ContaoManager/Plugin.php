@@ -31,14 +31,14 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
                         ContaoCoreBundle::class,
                         SensioFrameworkExtraBundle::class,
                         NetzmachtContaoToolkitBundle::class,
-                    ]
+                    ],
                 )
                 ->setReplace(['workflow']),
         ];
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
-    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): RouteCollection|null
     {
         $loader = $resolver->resolve(__DIR__ . '/../Resources/config/routing.yml');
         if ($loader === false) {

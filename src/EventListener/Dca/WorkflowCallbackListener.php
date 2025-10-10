@@ -34,38 +34,28 @@ final class WorkflowCallbackListener
 {
     /**
      * Workflow type registry.
-     *
-     * @var WorkflowTypeRegistry
      */
-    private $typeRegistry;
+    private WorkflowTypeRegistry $typeRegistry;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Database driven workflow loader.
-     *
-     * @var DatabaseDrivenWorkflowLoader
      */
-    private $workflowLoader;
+    private DatabaseDrivenWorkflowLoader $workflowLoader;
 
     /**
      * Translator.
-     *
-     * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * The workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * @param WorkflowTypeRegistry         $typeRegistry      Workflow type registry.
@@ -79,7 +69,7 @@ final class WorkflowCallbackListener
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
         WorkflowManager $workflowManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->typeRegistry      = $typeRegistry;
         $this->repositoryManager = $repositoryManager;
@@ -128,7 +118,7 @@ final class WorkflowCallbackListener
         $label = sprintf(
             '<strong>%s</strong><br><span class="tl_gray">%s</span>',
             $row['label'],
-            $row['description']
+            $row['description'],
         );
 
         try {
@@ -136,7 +126,7 @@ final class WorkflowCallbackListener
         } catch (Throwable $e) {
             $label .= sprintf(
                 '<p class="workflow-definition-error">%s</p>',
-                $this->translator->trans('workflow.invalid-workflow-definition', [$e->getMessage()], 'contao_workflow')
+                $this->translator->trans('workflow.invalid-workflow-definition', [$e->getMessage()], 'contao_workflow'),
             );
         }
 
@@ -235,7 +225,7 @@ final class WorkflowCallbackListener
                                 ->getLabel();
 
                             $workflowLabel .= sprintf(' [%s]', $model->workflow);
-                        } catch (WorkflowNotFound $exception) {
+                        } catch (WorkflowNotFound) {
                             $workflowLabel = $model->workflow;
                         }
 
@@ -258,18 +248,16 @@ final class WorkflowCallbackListener
      *
      * @param mixed $value Raw process vlaue.
      *
-     * @return array<mixed,mixed>|mixed
-     *
      * @throws Exception If Invalid data given.
      */
-    public function validateProcess($value)
+    public function validateProcess($value): mixed
     {
         $value = StringUtil::deserialize($value, true);
         $value = array_filter(
             $value,
             static function (array $item): bool {
                 return $item['step'] && $item['transition'];
-            }
+            },
         );
 
         $this->guardStartStepDefined($value);

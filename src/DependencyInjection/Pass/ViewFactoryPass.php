@@ -34,8 +34,8 @@ final class ViewFactoryPass implements CompilerPassInterface
                     throw new InvalidConfigurationException(
                         sprintf(
                             'Service "%s" is tagged as workflow view factory but content_type attribute is missing',
-                            $serviceId
-                        )
+                            $serviceId,
+                        ),
                     );
                 }
 

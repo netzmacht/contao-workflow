@@ -16,66 +16,54 @@ final class HtmlView implements View
 {
     /**
      * Workflow item.
-     *
-     * @var Item
      */
-    private $item;
+    private Item $item;
 
     /**
      * Workflow definition.
-     *
-     * @var Workflow
      */
-    private $workflow;
+    private Workflow $workflow;
 
     /**
      * Twig template engine.
-     *
-     * @var Twig
      */
-    private $twig;
+    private Twig $twig;
 
     /**
      * Template name.
-     *
-     * @var string
      */
-    private $template = '@NetzmachtContaoWorkflow/backend/default.html.twig';
+    private string $template = '@NetzmachtContaoWorkflow/backend/default.html.twig';
 
     /**
      * Template sections.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $sections = [];
+    private array $sections = [];
 
     /**
      * Default section templates.
      *
      * @var array<string,string|null>
      */
-    private $sectionTemplates = [];
+    private array $sectionTemplates = [];
 
     /**
      * Workflow context.
-     *
-     * @var Transition|Step|State
      */
-    private $context;
+    private Transition|Step|State $context;
 
     /**
      * Options.
      *
      * @var array<string,mixed>
      */
-    private $options;
+    private array $options;
 
     /**
      * View renderer.
-     *
-     * @var Renderer
      */
-    private $renderer;
+    private Renderer $renderer;
 
     /**
      * @param Item                  $item     The workflow item.
@@ -92,8 +80,8 @@ final class HtmlView implements View
         $context,
         Renderer $renderer,
         Twig $twig,
-        ?string $template = null,
-        array $options = []
+        string|null $template = null,
+        array $options = [],
     ) {
         $this->item     = $item;
         $this->workflow = $workflow;
@@ -110,7 +98,7 @@ final class HtmlView implements View
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getContext()
     {
@@ -133,7 +121,7 @@ final class HtmlView implements View
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getOption(string $name, $default = null)
     {
@@ -145,9 +133,9 @@ final class HtmlView implements View
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function addSection(string $name, array $parameters, ?string $defaultTemplate = null): View
+    public function addSection(string $name, array $parameters, string|null $defaultTemplate = null): View
     {
         $this->sections[$name]         = $parameters;
         $this->sectionTemplates[$name] = $defaultTemplate;
@@ -172,7 +160,7 @@ final class HtmlView implements View
                 'item'      => $this->item,
                 'workflow'  => $this->workflow,
                 'sections'  => new Sections($this->sections, $this->sectionTemplates),
-            ]
+            ],
         );
 
         $response = new Response($buffer);

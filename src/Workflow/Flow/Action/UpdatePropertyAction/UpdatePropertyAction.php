@@ -28,45 +28,33 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
 {
     /**
      * The name of the property.
-     *
-     * @var string
      */
-    private $property;
+    private string $property;
 
     /**
      * The new value. Might be an an symfony expression.
-     *
-     * @var mixed
      */
-    private $value;
+    private mixed $value;
 
     /**
      * Symfony expression language.
-     *
-     * @var ExpressionLanguage
      */
-    private $expressionLanguage;
+    private ExpressionLanguage $expressionLanguage;
 
     /**
      * Value is an expression which has to be evaluated.
-     *
-     * @var bool
      */
-    private $isExpression;
+    private bool $isExpression;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * Construct.
@@ -86,7 +74,7 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
         PropertyAccessManager $propertyAccessManager,
         ExpressionLanguage $expressionLanguage,
         RepositoryManager $repositoryManager,
-        User $user
+        User $user,
     ) {
         parent::__construct($propertyAccessManager, 'Update property action');
 
@@ -126,10 +114,8 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
      * Evaluate given expression.
      *
      * @param PropertyAccessor $propertyAccessor The property accessor.
-     *
-     * @return mixed
      */
-    private function evaluateValue(PropertyAccessor $propertyAccessor)
+    private function evaluateValue(PropertyAccessor $propertyAccessor): mixed
     {
         if (! $this->isExpression) {
             return $this->value;
@@ -142,7 +128,7 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
                 'now'    => new DateTimeImmutable(),
                 'userId' => $this->user->getUserId(),
                 'user'   => $this->fetchUserModel(),
-            ]
+            ],
         );
     }
 
@@ -151,7 +137,7 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
      *
      * @psalm-suppress MoreSpecificReturnType
      */
-    private function fetchUserModel(): ?Model
+    private function fetchUserModel(): Model|null
     {
         $userId = $this->user->getUserId();
         if ($userId === null) {

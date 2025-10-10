@@ -14,17 +14,15 @@ abstract class AbstractWorkflowType implements WorkflowType
 {
     /**
      * Workflow type name.
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * List of supported providers.
      *
      * @var string[]|array
      */
-    private $supportedProviders;
+    private array $supportedProviders;
 
     /**
      * @param string         $name               The workflow type name.

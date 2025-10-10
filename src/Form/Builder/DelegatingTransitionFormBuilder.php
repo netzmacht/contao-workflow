@@ -17,11 +17,9 @@ final class DelegatingTransitionFormBuilder implements TransitionFormBuilder
      *
      * @var TransitionFormBuilder[]
      */
-    private $formBuilders = [];
+    private array $formBuilders = [];
 
-    /**
-     * @param TransitionFormBuilder[] $formBuilders Transition form builders
-     */
+    /** @param TransitionFormBuilder[] $formBuilders Transition form builders */
     public function __construct(iterable $formBuilders = [])
     {
         foreach ($formBuilders as $formBuilder) {

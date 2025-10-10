@@ -15,14 +15,10 @@ final class CreateMetaDataActionListener
 {
     /**
      * The action.
-     *
-     * @var Action
      */
-    private $metadataAction;
+    private Action $metadataAction;
 
-    /**
-     * @param Action $action The metadata action.
-     */
+    /** @param Action $action The metadata action. */
     public function __construct(Action $action)
     {
         $this->metadataAction = $action;

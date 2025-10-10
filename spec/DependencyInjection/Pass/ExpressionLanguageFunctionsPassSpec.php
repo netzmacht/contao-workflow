@@ -23,7 +23,7 @@ final class ExpressionLanguageFunctionsPassSpec extends ObjectBehavior
         ParameterBagInterface $parameterBag,
         Definition $definition,
         Definition $barDefinition,
-        Definition $bazDefinition
+        Definition $bazDefinition,
     ): void {
         $container->hasDefinition('netzmacht.contao_workflow.expression_language')
             ->shouldBeCalledOnce()
@@ -61,7 +61,7 @@ final class ExpressionLanguageFunctionsPassSpec extends ObjectBehavior
                     'foo.baz' => [
                         ['name' => 'netzmacht.contao_workflow.expression_language.function_provider'],
                     ],
-                ]
+                ],
             );
 
         $definition->setArgument(1, $references)

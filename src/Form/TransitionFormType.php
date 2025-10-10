@@ -18,14 +18,10 @@ final class TransitionFormType extends AbstractType
 {
     /**
      * The transition form builder.
-     *
-     * @var TransitionFormBuilder
      */
-    private $formBuilder;
+    private TransitionFormBuilder $formBuilder;
 
-    /**
-     * @param TransitionFormBuilder $formBuilder The transition form builder.
-     */
+    /** @param TransitionFormBuilder $formBuilder The transition form builder. */
     public function __construct(TransitionFormBuilder $formBuilder)
     {
         $this->formBuilder = $formBuilder;
@@ -60,7 +56,7 @@ final class TransitionFormType extends AbstractType
             SubmitType::class,
             [
                 'label' => $transition->getLabel(),
-            ]
+            ],
         );
     }
 }

@@ -19,8 +19,6 @@ final class ActionModel extends Model
 {
     /**
      * Action model table name.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow_action';
+    protected static string $strTable = 'tl_workflow_action';
 }

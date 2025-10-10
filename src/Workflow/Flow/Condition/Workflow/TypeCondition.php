@@ -16,14 +16,10 @@ final class TypeCondition implements Condition
 {
     /**
      * Expected workflow type.
-     *
-     * @var WorkflowType
      */
-    private $type;
+    private WorkflowType $type;
 
-    /**
-     * @param WorkflowType $type Expected workflow type.
-     */
+    /** @param WorkflowType $type Expected workflow type. */
     public function __construct(WorkflowType $type)
     {
         $this->type = $type;

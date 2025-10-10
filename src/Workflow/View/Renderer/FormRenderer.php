@@ -14,10 +14,8 @@ final class FormRenderer extends AbstractRenderer
 {
     /**
      * Section name.
-     *
-     * @var string
      */
-    protected static $section = 'form';
+    protected static string $section = 'form';
 
     public function supports(View $view): bool
     {

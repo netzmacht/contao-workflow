@@ -29,9 +29,9 @@ final class ExpressionFunctionProvider implements ExpressionFunctionProviderInte
                 },
                 static function (): void {
                     throw new InvalidArgumentException(
-                        'Cannot use the constant() function in the expression for security reasons.'
+                        'Cannot use the constant() function in the expression for security reasons.',
                     );
-                }
+                },
             ),
         ];
         // phpcs:enable Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed

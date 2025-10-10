@@ -21,17 +21,13 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
 {
     /**
      * Workflow manager.
-     *
-     * @var Manager
      */
-    private $workflowManager;
+    private Manager $workflowManager;
 
     /**
      * Flag to store current step permission.
-     *
-     * @var bool
      */
-    private $storePermission;
+    private bool $storePermission;
 
     /**
      * Construct.
@@ -43,7 +39,7 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
     public function __construct(
         PropertyAccessManager $propertyAccessManager,
         Manager $workflowManager,
-        bool $storePermission
+        bool $storePermission,
     ) {
         parent::__construct($propertyAccessManager, 'Update entity action');
 

@@ -16,11 +16,9 @@ final class DelegatingRenderer implements Renderer
      *
      * @var Renderer[]
      */
-    private $renderer = [];
+    private array $renderer = [];
 
-    /**
-     * @param iterable|Renderer[] $renderer View renderer.
-     */
+    /** @param iterable|Renderer[] $renderer View renderer. */
     public function __construct(iterable $renderer)
     {
         foreach ($renderer as $rendererInstance) {

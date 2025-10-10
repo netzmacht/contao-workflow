@@ -23,10 +23,8 @@ final class StepController extends AbstractController
 {
     /**
      * Authorization checker.
-     *
-     * @var AuthorizationCheckerInterface
      */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @param WorkflowManager               $workflowManager      Workflow manager.
@@ -40,7 +38,7 @@ final class StepController extends AbstractController
         EntityManager $entityManager,
         ViewFactory $viewFactory,
         Router $router,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
     ) {
         parent::__construct($workflowManager, $entityManager, $viewFactory, $router);
 
@@ -76,8 +74,8 @@ final class StepController extends AbstractController
                         'entityId'   => (string) $entityId,
                         'transition' => $workflow->getStartTransition()->getName(),
                         'detach'     => true,
-                    ]
-                )
+                    ],
+                ),
             );
         }
 

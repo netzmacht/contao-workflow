@@ -17,24 +17,18 @@ final class AssignedUserCondition implements Condition
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * User assignment property.
-     *
-     * @var string
      */
-    private $property;
+    private string $property;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager

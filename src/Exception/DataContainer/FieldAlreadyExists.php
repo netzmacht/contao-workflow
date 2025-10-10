@@ -21,7 +21,7 @@ final class FieldAlreadyExists extends RuntimeException
     public static function namedInDataContainer(string $field, string $dataContainer): self
     {
         return new self(
-            sprintf('Field "%s" already exists in data container "%s" configuration.', $field, $dataContainer)
+            sprintf('Field "%s" already exists in data container "%s" configuration.', $field, $dataContainer),
         );
     }
 }

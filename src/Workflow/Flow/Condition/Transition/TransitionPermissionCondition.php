@@ -16,19 +16,15 @@ final class TransitionPermissionCondition implements Condition
 {
     /**
      * Authorization checker.
-     *
-     * @var AuthorizationChecker
      */
-    private $authorizationChecker;
+    private AuthorizationChecker $authorizationChecker;
 
     /**
      * Default value.
      *
      * Default value is used if no permission is given.
-     *
-     * @var bool
      */
-    protected $grantAccessByDefault;
+    protected bool $grantAccessByDefault;
 
     /**
      * @param AuthorizationChecker $authorizationChecker Authorization checker.
@@ -52,7 +48,7 @@ final class TransitionPermissionCondition implements Condition
             if ($this->authorizationChecker->isGranted(WorkflowPermissions::transitTransition($transition), $item)) {
                 return true;
             }
-        } catch (AuthenticationCredentialsNotFoundException $exception) {
+        } catch (AuthenticationCredentialsNotFoundException) {
             if ($this->grantAccessByDefault) {
                 return true;
             }
@@ -63,7 +59,7 @@ final class TransitionPermissionCondition implements Condition
             [
                 'transition' => $transition->getLabel(),
                 'permission' => (string) $permission,
-            ]
+            ],
         );
 
         return false;

@@ -22,24 +22,20 @@ class AssignUserActionFactory implements ActionTypeFactory
 {
     /**
      * The property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * Provider configuration.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $providerConfiguration;
+    private array $providerConfiguration;
 
     /**
      * @param PropertyAccessManager             $propertyAccessManager The property access manager.
@@ -85,7 +81,7 @@ class AssignUserActionFactory implements ActionTypeFactory
             (bool) $config['assign_user_current_user'],
             (string) $config['assign_user_property'],
             $config['label'],
-            $config
+            $config,
         );
     }
 }

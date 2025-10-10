@@ -20,10 +20,8 @@ interface PropertyAccessor extends IteratorAggregate
      * Get the value of the property. If property not exists null is returned.
      *
      * @param string $name Name of the property.
-     *
-     * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): mixed;
 
     /**
      * Check if property exists for the object.

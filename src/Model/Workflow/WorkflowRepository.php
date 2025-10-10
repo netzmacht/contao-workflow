@@ -26,12 +26,12 @@ final class WorkflowRepository extends ContaoRepository
      *
      * @return Collection|WorkflowModel[]|null
      */
-    public function findByProviderAndType(string $providerName, string $workflowType, array $options = [])
+    public function findByProviderAndType(string $providerName, string $workflowType, array $options = []): Collection|array|null
     {
         return $this->findBy(
             ['.providerName=?', '.type=?'],
             [$providerName, $workflowType],
-            $options
+            $options,
         );
     }
 
@@ -43,7 +43,7 @@ final class WorkflowRepository extends ContaoRepository
      *
      * @return Collection|WorkflowModel[]|null
      */
-    public function findByProvider(string $providerName, array $options = [])
+    public function findByProvider(string $providerName, array $options = []): Collection|array|null
     {
         return $this->findBy(['.providerName=?'], [$providerName], $options);
     }
@@ -55,7 +55,7 @@ final class WorkflowRepository extends ContaoRepository
      *
      * @return Collection|WorkflowModel[]|null
      */
-    public function findActive(array $options = [])
+    public function findActive(array $options = []): Collection|array|null
     {
         return $this->findBy(['.active=?'], ['1'], $options);
     }

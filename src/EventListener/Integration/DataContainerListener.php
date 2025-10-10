@@ -17,31 +17,27 @@ final class DataContainerListener
 {
     /**
      * Data container manager.
-     *
-     * @var DcaManager
      */
-    private $dcaManager;
+    private DcaManager $dcaManager;
 
     /**
      * Translator.
-     *
-     * @var Translator
      */
-    private $translator;
+    private Translator $translator;
 
     /**
      * Configuration of the default workflow types.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $defaultConfiguration;
+    private array $defaultConfiguration;
 
     /**
      * Data container provider names.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $dcaProviders;
+    private array $dcaProviders;
 
     /**
      * @param DcaManager                        $dcaManager           Data container manager.
@@ -53,7 +49,7 @@ final class DataContainerListener
         DcaManager $dcaManager,
         Translator $translator,
         array $dcaProviders,
-        array $defaultConfiguration
+        array $defaultConfiguration,
     ) {
         $this->dcaManager           = $dcaManager;
         $this->defaultConfiguration = $defaultConfiguration;
@@ -129,7 +125,7 @@ final class DataContainerListener
                 ],
                 'options_callback' => [OptionsListener::class, 'workflowOptions'],
                 'sql'              => 'varchar(64) NOT NULL default \'\'',
-            ]
+            ],
         );
     }
 
@@ -164,7 +160,7 @@ final class DataContainerListener
                 ],
                 'options_callback' => [OptionsListener::class, 'stepOptions'],
                 'sql'              => 'varchar(64) NOT NULL default \'\'',
-            ]
+            ],
         );
     }
 
@@ -199,7 +195,7 @@ final class DataContainerListener
                 ],
                 'options_callback' => [OptionsListener::class, 'stepPermissionOptions'],
                 'sql'              => 'varchar(64) NULL default NULL',
-            ]
+            ],
         );
     }
 
@@ -218,7 +214,7 @@ final class DataContainerListener
                 ->addField(
                     ['workflow'],
                     'workflow_legend',
-                    PaletteManipulator::POSITION_APPEND
+                    PaletteManipulator::POSITION_APPEND,
                 )
                 ->applyToPalette($palette, $definition->getName());
         }
@@ -274,7 +270,7 @@ final class DataContainerListener
         $GLOBALS['TL_LANG'][$providerName]['workflow_legend'] = $this->translator->trans(
             'integration.legend',
             [],
-            'netzmacht_workflow'
+            'netzmacht_workflow',
         );
     }
 

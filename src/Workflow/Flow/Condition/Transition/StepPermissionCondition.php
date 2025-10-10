@@ -16,26 +16,20 @@ final class StepPermissionCondition implements Condition
 {
     /**
      * Authorization checker.
-     *
-     * @var AuthorizationChecker
      */
-    private $authorizationChecker;
+    private AuthorizationChecker $authorizationChecker;
 
     /**
      * Default value.
      *
      * Default value is used if no permission is given.
-     *
-     * @var bool
      */
-    protected $grantAccessByDefault;
+    protected bool $grantAccessByDefault;
 
     /**
      * If a workflow is not started it does not have a current step. So you can decide if it should be allowed.
-     *
-     * @var bool
      */
-    private $allowStartTransition;
+    private bool $allowStartTransition;
 
     /**
      * @param AuthorizationChecker $authorizationChecker Authorization checker.
@@ -45,7 +39,7 @@ final class StepPermissionCondition implements Condition
     public function __construct(
         AuthorizationChecker $authorizationChecker,
         bool $grantAccessByDefault = false,
-        bool $allowStartTransition = true
+        bool $allowStartTransition = true,
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->grantAccessByDefault = $grantAccessByDefault;
@@ -82,7 +76,7 @@ final class StepPermissionCondition implements Condition
             if ($this->authorizationChecker->isGranted(WorkflowPermissions::transitTransition($transition), $item)) {
                 return true;
             }
-        } catch (AuthenticationCredentialsNotFoundException $exception) {
+        } catch (AuthenticationCredentialsNotFoundException) {
             if ($this->grantAccessByDefault) {
                 return true;
             }
@@ -93,7 +87,7 @@ final class StepPermissionCondition implements Condition
             [
                 '%step%'       => $item->getCurrentStepName(),
                 '%permission%' => $permission ? ((string) $permission) : '-',
-            ]
+            ],
         );
 
         return false;

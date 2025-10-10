@@ -22,14 +22,12 @@ final class SavePermissionsCallbackListener
      *
      * @var array<string,string>
      */
-    private $permissions = [];
+    private array $permissions = [];
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Construct.
@@ -46,10 +44,8 @@ final class SavePermissionsCallbackListener
      *
      * @param mixed         $permissions   The value.
      * @param DataContainer $dataContainer The data container driver.
-     *
-     * @return mixed
      */
-    public function onSaveCallback($permissions, DataContainer $dataContainer)
+    public function onSaveCallback($permissions, DataContainer $dataContainer): mixed
     {
         $permissions = StringUtil::deserialize($permissions, true);
 

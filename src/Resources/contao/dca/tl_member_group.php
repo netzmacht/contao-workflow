@@ -13,7 +13,7 @@ foreach (array_keys($GLOBALS['TL_DCA']['tl_member_group']['palettes']) as $palet
         'tl_member_group',
         $palette,
         'account',
-        ['workflow' => ['workflow']]
+        ['workflow' => ['workflow']],
     );
 }
 

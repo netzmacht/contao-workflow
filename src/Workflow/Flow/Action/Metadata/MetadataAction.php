@@ -15,17 +15,13 @@ final class MetadataAction implements Action
 {
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * The request stack.
-     *
-     * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @param User         $user         The workflow user.

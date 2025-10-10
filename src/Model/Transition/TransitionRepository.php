@@ -25,12 +25,12 @@ final class TransitionRepository extends ContaoRepository
      *
      * @return Collection|TransitionModel[]|null
      */
-    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting'])
+    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting']): Collection|array|null
     {
         return $this->findBy(
             ['.pid=?'],
             [$workflowId],
-            $options
+            $options,
         );
     }
 
@@ -42,12 +42,12 @@ final class TransitionRepository extends ContaoRepository
      *
      * @return Collection|TransitionModel[]|null
      */
-    public function findActiveByTransition(int $workflowId, array $options = ['order' => '.sorting'])
+    public function findActiveByTransition(int $workflowId, array $options = ['order' => '.sorting']): Collection|array|null
     {
         return $this->findBy(
             ['.active=1', '.pid=?'],
             [$workflowId],
-            $options
+            $options,
         );
     }
 }

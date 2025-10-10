@@ -19,7 +19,7 @@ final class UserChoices
     // @codingStandardsIgnoreStart
     // FIXME: Ignore disabled users
     // @codingStandardsIgnoreEnd
-    private const MEMBERS_BY_PERMISSION = <<<'SQL'
+    private const string MEMBERS_BY_PERMISSION = <<<'SQL'
 SELECT DISTINCT m.id, m.username, m.firstname, m.lastname
            FROM tl_member m 
       LEFT JOIN tl_member_to_group t ON t.member_id = m.id
@@ -32,7 +32,7 @@ SQL;
     // @codingStandardsIgnoreStart
     // FIXME: Ignore disabled users
     // @codingStandardsIgnoreEnd
-    private const MEMBERS_QUERY = <<<'SQL'
+    private const string MEMBERS_QUERY = <<<'SQL'
 SELECT DISTINCT m.id, m.username, m.firstname, m.lastname
            FROM tl_member m
        ORDER BY m.firstname, m.lastname
@@ -41,7 +41,7 @@ SQL;
     // @codingStandardsIgnoreStart
     // FIXME: Ignore disabled users
     // @codingStandardsIgnoreEnd
-    private const USERS_BY_PERMISSION_QUERY = <<<'SQL'
+    private const string USERS_BY_PERMISSION_QUERY = <<<'SQL'
 SELECT DISTINCT u.id, u.username, u.name
            FROM tl_user u 
       LEFT JOIN tl_workflow_permission up ON up.source='tl_user' AND up.source_id=u.id
@@ -57,7 +57,7 @@ SQL;
     // @codingStandardsIgnoreStart
     // FIXME: Ignore disabled users
     // @codingStandardsIgnoreEnd
-    private const USERS_QUERY = <<<'SQL'
+    private const string USERS_QUERY = <<<'SQL'
 SELECT DISTINCT u.id, u.username, u.name
            FROM tl_user u 
        ORDER BY u.name
@@ -65,17 +65,13 @@ SQL;
 
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Translator.
-     *
-     * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @param Connection          $connection Database connection.
@@ -132,7 +128,7 @@ SQL;
     {
         $statement = $this->connection->executeQuery(
             self::USERS_BY_PERMISSION_QUERY,
-            ['permission' => (string) $permission]
+            ['permission' => (string) $permission],
         );
 
         $options = [];
@@ -155,7 +151,7 @@ SQL;
     {
         $statement = $this->connection->executeQuery(
             self::MEMBERS_BY_PERMISSION,
-            ['permission' => (string) $permission]
+            ['permission' => (string) $permission],
         );
 
         $options = [];

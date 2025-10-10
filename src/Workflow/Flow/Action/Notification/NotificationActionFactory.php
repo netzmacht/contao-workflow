@@ -21,31 +21,23 @@ final class NotificationActionFactory implements ActionTypeFactory
 {
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * The event dispatcher.
-     *
-     * @var EventDispatcher
      */
-    private $eventDispatcher;
+    private EventDispatcher $eventDispatcher;
 
     /**
      * Translator.
-     *
-     * @var Translator
      */
-    private $translator;
+    private Translator $translator;
 
     /**
      * @param RepositoryManager     $repositoryManager     Repository manager.
@@ -57,7 +49,7 @@ final class NotificationActionFactory implements ActionTypeFactory
         RepositoryManager $repositoryManager,
         PropertyAccessManager $propertyAccessManager,
         Translator $translator,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
     ) {
         $this->repositoryManager     = $repositoryManager;
         $this->propertyAccessManager = $propertyAccessManager;
@@ -98,7 +90,7 @@ final class NotificationActionFactory implements ActionTypeFactory
             'action_' . $config['id'],
             $config['label'],
             (int) $config['notification_id'],
-            $this->determineSuccessStates($config['notification_states'])
+            $this->determineSuccessStates($config['notification_states']),
         );
     }
 

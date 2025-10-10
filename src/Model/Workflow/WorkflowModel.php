@@ -20,8 +20,6 @@ final class WorkflowModel extends Model
 {
     /**
      * Table name.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow';
+    protected static string $strTable = 'tl_workflow';
 }

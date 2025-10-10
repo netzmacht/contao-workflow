@@ -20,35 +20,25 @@ final class PropertyCondition implements Condition
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * Name of the property.
-     *
-     * @var string|null
      */
-    private $property;
+    private string|null $property = null;
 
     /**
      * Comparison operator.
-     *
-     * @var string
      */
-    private $operator = Comparison::EQUALS;
+    private string $operator = Comparison::EQUALS;
 
     /**
      * Value to compare with.
-     *
-     * @var mixed
      */
-    private $value;
+    private mixed $value;
 
-    /**
-     * @param PropertyAccessManager $propertyAccessManager Property access manager.
-     */
+    /** @param PropertyAccessManager $propertyAccessManager Property access manager. */
     public function __construct(PropertyAccessManager $propertyAccessManager)
     {
         $this->propertyAccessManager = $propertyAccessManager;
@@ -79,7 +69,7 @@ final class PropertyCondition implements Condition
     /**
      * Get Property name.
      */
-    public function getProperty(): ?string
+    public function getProperty(): string|null
     {
         return $this->property;
     }
@@ -100,10 +90,8 @@ final class PropertyCondition implements Condition
 
     /**
      * Get value to compare against.
-     *
-     * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -152,7 +140,7 @@ final class PropertyCondition implements Condition
                 '%value%'          => $value,
                 '%operator%'       => $this->operator,
                 '%expected_value%' => $this->value,
-            ]
+            ],
         );
 
         return false;

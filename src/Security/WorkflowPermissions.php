@@ -14,8 +14,8 @@ use function substr;
 
 final class WorkflowPermissions
 {
-    private const ACCESS_STEP_PREFIX        = 'netzmacht_workflow.step.';
-    private const TRANSIT_TRANSITION_PREFIX = 'netzmacht_workflow.transition.';
+    private const string ACCESS_STEP_PREFIX        = 'netzmacht_workflow.step.';
+    private const string TRANSIT_TRANSITION_PREFIX = 'netzmacht_workflow.transition.';
 
     public static function transitTransition(Transition $transition): string
     {

@@ -20,31 +20,23 @@ final class SubmitButtonsListener
 {
     /**
      * Workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * Entity manager.
-     *
-     * @var EntityManager
      */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     /**
      * Router.
-     *
-     * @var Router
      */
-    private $router;
+    private Router $router;
 
     /**
      * Input adapter.
-     *
-     * @var Adapter|Input
      */
-    private $inputAdapter;
+    private Adapter|Input $inputAdapter;
 
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
@@ -56,7 +48,7 @@ final class SubmitButtonsListener
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
         Router $router,
-        $inputAdapter
+        $inputAdapter,
     ) {
         $this->workflowManager = $workflowManager;
         $this->entityManager   = $entityManager;
@@ -132,7 +124,7 @@ final class SubmitButtonsListener
                 'module'     => $this->inputAdapter->get('do'),
                 'detach'     => $dataContainer->activeRecord
                     && $workflow->getName() !== $dataContainer->activeRecord->workflow ? '1' : '',
-            ]
+            ],
         );
 
         throw new RedirectResponseException($route, 307);
@@ -150,7 +142,7 @@ final class SubmitButtonsListener
             '<button type="submit" name="workflowTransition" id="%s" value="%s" class="tl_submit">%s</button>',
             $buttonName,
             $transition->getName(),
-            $transition->getLabel()
+            $transition->getLabel(),
         );
     }
 }

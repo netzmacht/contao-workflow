@@ -17,14 +17,14 @@ final class Sections implements IteratorAggregate
      *
      * @var array<string,array<string,string>>
      */
-    private $sections;
+    private array $sections;
 
     /**
      * The section templates.
      *
      * @var array<string,string|null>
      */
-    private $templates;
+    private array $templates;
 
     /**
      * @param array<string,array<string,string>> $sections  The generated sections.
@@ -61,7 +61,7 @@ final class Sections implements IteratorAggregate
      *
      * @param string $name The section name.
      */
-    public function getTemplate(string $name): ?string
+    public function getTemplate(string $name): string|null
     {
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
@@ -75,10 +75,8 @@ final class Sections implements IteratorAggregate
         return array_key_exists($offset, $this->sections);
     }
 
-    /**
-     * @return array<string,string>|null
-     */
-    public function offsetGet(string $offset): ?array
+    /** @return array<string,string>|null */
+    public function offsetGet(string $offset): array|null
     {
         return $this->sections[$offset] ?? null;
     }

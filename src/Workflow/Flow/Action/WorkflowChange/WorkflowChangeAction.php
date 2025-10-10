@@ -17,17 +17,13 @@ final class WorkflowChangeAction implements Action
 {
     /**
      * The workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * The workflow name.
-     *
-     * @var string
      */
-    private $workflowName;
+    private string $workflowName;
 
     /**
      * @param WorkflowManager $workflowManager The workflow manager containing all workflow information.

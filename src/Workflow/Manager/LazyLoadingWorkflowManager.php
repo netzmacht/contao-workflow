@@ -15,17 +15,13 @@ final class LazyLoadingWorkflowManager implements Manager
 {
     /**
      * Workflow manager.
-     *
-     * @var Manager
      */
-    private $inner;
+    private Manager $inner;
 
     /**
      * The workflow definition loader.
-     *
-     * @var WorkflowLoader
      */
-    private $workflowLoader;
+    private WorkflowLoader $workflowLoader;
 
     /**
      * @param Manager        $inner          Decorated workflow manager.
@@ -37,7 +33,7 @@ final class LazyLoadingWorkflowManager implements Manager
         $this->workflowLoader = $workflowLoader;
     }
 
-    public function handle(Item $item, ?string $transitionName = null, bool $changeWorkflow = false): ?TransitionHandler
+    public function handle(Item $item, string|null $transitionName = null, bool $changeWorkflow = false): TransitionHandler|null
     {
         $this->loadWorkflowDefinitions();
 

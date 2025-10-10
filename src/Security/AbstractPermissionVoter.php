@@ -9,21 +9,15 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface as Token
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Throwable;
 
-/**
- * @deprecated Deprecated since version 2.3.0 and will be removed in version 3.0.0.
- */
+/** @deprecated Deprecated since version 2.3.0 and will be removed in version 3.0.0. */
 abstract class AbstractPermissionVoter extends Voter
 {
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
-    /**
-     * @param User $user The workflow user.
-     */
+    /** @param User $user The workflow user. */
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -45,7 +39,7 @@ abstract class AbstractPermissionVoter extends Voter
         } else {
             try {
                 $permission = Permission::fromString($attribute);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 return false;
             }
         }

@@ -36,38 +36,30 @@ final class ActionCallbackListener extends AbstractListener
 
     /**
      * The data container name.
-     *
-     * @var string
      */
-    protected static $name = 'tl_workflow_action';
+    protected static string $name = 'tl_workflow_action';
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Workflow definition loader.
-     *
-     * @var DatabaseDrivenWorkflowLoader
      */
-    private $workflowLoader;
+    private DatabaseDrivenWorkflowLoader $workflowLoader;
 
     /**
      * The action factory.
-     *
-     * @var ActionFactory
      */
-    private $actionFactory;
+    private ActionFactory $actionFactory;
 
     /**
      * Provider configuration.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $providerConfiguration;
+    private array $providerConfiguration;
 
     /**
      * @param DcaManager                        $dcaManager            Data container manager.
@@ -81,7 +73,7 @@ final class ActionCallbackListener extends AbstractListener
         RepositoryManager $repositoryManager,
         DatabaseDrivenWorkflowLoader $workflowLoader,
         ActionFactory $actionFactory,
-        array $providerConfiguration
+        array $providerConfiguration,
     ) {
         parent::__construct($dcaManager);
 
@@ -110,7 +102,7 @@ final class ActionCallbackListener extends AbstractListener
         return sprintf(
             '<strong>%s</strong><br>%s',
             $row['label'],
-            $row['description']
+            $row['description'],
         );
     }
 
@@ -121,9 +113,9 @@ final class ActionCallbackListener extends AbstractListener
      *
      * @return array<string,list<string>>|list<string>
      */
-    public function getTypes(?DataContainer $dataContainer = null): array
+    public function getTypes(DataContainer|null $dataContainer = null): array
     {
-        if ($dataContainer === null || $dataContainer->activeRecord === null) {
+        if ($dataContainer?->activeRecord === null) {
             return $this->actionFactory->getTypeNames();
         }
 
@@ -144,16 +136,16 @@ final class ActionCallbackListener extends AbstractListener
 
             return array_merge(
                 ['transitions' => ['reference']],
-                $this->actionFactory->getSupportedTypeNamesCategorized($workflow)
+                $this->actionFactory->getSupportedTypeNamesCategorized($workflow),
             );
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
                 return $this->actionFactory->getTypeNames();
             }
 
             return array_merge(
                 ['reference'],
-                $this->actionFactory->getTypeNames()
+                $this->actionFactory->getTypeNames(),
             );
         }
     }
@@ -173,7 +165,7 @@ final class ActionCallbackListener extends AbstractListener
             $notifications,
             static function (array $row) {
                 return sprintf('%s [ID %s]', $row['title'], $row['id']);
-            }
+            },
         )->getOptions();
     }
 
@@ -215,7 +207,7 @@ final class ActionCallbackListener extends AbstractListener
                 ? sprintf(
                     '%s <span style="display:inline-block;" class="tl_gray">[%s]</span>',
                     $config['label'][0],
-                    $name
+                    $name,
                 )
                 : $name;
         }
@@ -250,7 +242,7 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get the related workflow model by the action.
      */
-    private function getWorkflowModelByAction(): ?WorkflowModel
+    private function getWorkflowModelByAction(): WorkflowModel|null
     {
         $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
         if (! $action) {
@@ -317,7 +309,7 @@ final class ActionCallbackListener extends AbstractListener
             foreach ($permissions as $config) {
                 $permission = WorkflowPermission::forWorkflowName(
                     'workflow_' . $workflow->id,
-                    (string) $config['name']
+                    (string) $config['name'],
                 );
 
                 $options[(string) $permission] = $config['label'] ?: $config['name'];

@@ -24,14 +24,12 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @var Connection $connection Database connection.
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Table name.
-     *
-     * @var string
      */
-    private $providerName;
+    private string $providerName;
 
     public function __construct(Connection $connection, string $providerName)
     {

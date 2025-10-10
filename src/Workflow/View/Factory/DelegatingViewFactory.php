@@ -16,18 +16,16 @@ final class DelegatingViewFactory implements ViewFactory
      *
      * @var array|ViewFactory[]
      */
-    private $factories;
+    private array $factories;
 
-    /**
-     * @param ViewFactory[]|array $factories View factories for a content type.
-     */
+    /** @param ViewFactory[]|array $factories View factories for a content type. */
     public function __construct(array $factories)
     {
         $this->factories = $factories;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws UnsupportedViewContentType When no factory is registered for the content type.
      */
@@ -35,8 +33,8 @@ final class DelegatingViewFactory implements ViewFactory
         Item $item,
         $context,
         array $options = [],
-        ?string $template = null,
-        string $contentType = View::CONTENT_TYPE_HTML
+        string|null $template = null,
+        string $contentType = View::CONTENT_TYPE_HTML,
     ): View {
         if (! isset($this->factories[$contentType])) {
             throw new UnsupportedViewContentType();

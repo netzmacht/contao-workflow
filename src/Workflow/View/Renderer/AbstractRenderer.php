@@ -17,24 +17,20 @@ abstract class AbstractRenderer implements Renderer
 {
     /**
      * Translator.
-     *
-     * @var Translator
      */
-    private $translator;
+    private Translator $translator;
 
     /**
      * The section name to which the renderer renders it's content.
-     *
-     * @var string
      */
-    protected static $section;
+    protected static string $section;
 
     /**
      * Mapping between the content type and the default template.
      *
      * @var array<string,string>
      */
-    protected $templates = [];
+    protected array $templates = [];
 
     /**
      * @param Translator           $translator Translator.
@@ -57,7 +53,7 @@ abstract class AbstractRenderer implements Renderer
      * @param array<string,mixed> $parameters Optional parameters which has to be replaced.
      * @param string|null         $domain     The language domain.
      */
-    public function trans(string $key, array $parameters = [], ?string $domain = null): string
+    public function trans(string $key, array $parameters = [], string|null $domain = null): string
     {
         return $this->translator->trans($key, $parameters, $domain);
     }
@@ -70,7 +66,7 @@ abstract class AbstractRenderer implements Renderer
      * @param array<string,mixed> $parameters Optional parameters which has to be replaced.
      * @param string|null         $domain     The language domain.
      */
-    public function transChoice(string $key, int $number, array $parameters = [], ?string $domain = null): string
+    public function transChoice(string $key, int $number, array $parameters = [], string|null $domain = null): string
     {
         $parameters['%count%'] = $number;
 
@@ -88,7 +84,7 @@ abstract class AbstractRenderer implements Renderer
         $view->addSection(
             $section,
             $this->renderParameters($view),
-            $this->getDefaultTemplate($view)
+            $this->getDefaultTemplate($view),
         );
     }
 
@@ -118,7 +114,7 @@ abstract class AbstractRenderer implements Renderer
      *
      * @param View $view The workflow item view.
      */
-    protected function getDefaultTemplate(View $view): ?string
+    protected function getDefaultTemplate(View $view): string|null
     {
         $contentType = $view->getContentType();
 

@@ -17,8 +17,6 @@ final class PermissionModel extends Model
 {
     /**
      * The database table.
-     *
-     * @var string
      */
-    protected static $strTable = 'tl_workflow_permission';
+    protected static string $strTable = 'tl_workflow_permission';
 }

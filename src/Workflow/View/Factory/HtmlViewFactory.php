@@ -22,38 +22,30 @@ final class HtmlViewFactory implements ViewFactory
 {
     /**
      * Workflow manager.
-     *
-     * @var Manager
      */
-    private $manager;
+    private Manager $manager;
 
     /**
      * Twig template engine.
-     *
-     * @var Twig
      */
-    private $twig;
+    private Twig $twig;
 
     /**
      * Map of context and template.
      *
      * @var array<string,string|array<string,string|null>|null>
      */
-    private $templates;
+    private array $templates;
 
     /**
      * View renderer.
-     *
-     * @var Renderer
      */
-    private $renderer;
+    private Renderer $renderer;
 
     /**
      * Request scope matcher.
-     *
-     * @var RequestScopeMatcher
      */
-    private $scopeMatcher;
+    private RequestScopeMatcher $scopeMatcher;
 
     /**
      * @param Manager                                             $manager      Workflow manager.
@@ -67,7 +59,7 @@ final class HtmlViewFactory implements ViewFactory
         Twig $twig,
         Renderer $renderer,
         RequestScopeMatcher $scopeMatcher,
-        array $templates = []
+        array $templates = [],
     ) {
         $this->manager      = $manager;
         $this->twig         = $twig;
@@ -83,8 +75,8 @@ final class HtmlViewFactory implements ViewFactory
         Item $item,
         $context,
         array $options = [],
-        ?string $template = null,
-        string $contentType = View::CONTENT_TYPE_HTML
+        string|null $template = null,
+        string $contentType = View::CONTENT_TYPE_HTML,
     ): View {
         $workflowName = $item->getWorkflowName();
         if ($workflowName) {
@@ -100,7 +92,7 @@ final class HtmlViewFactory implements ViewFactory
             $this->renderer,
             $this->twig,
             $template ?: $this->getTemplate($context),
-            $options
+            $options,
         );
     }
 
@@ -109,7 +101,7 @@ final class HtmlViewFactory implements ViewFactory
      *
      * @param mixed $context Given context.
      */
-    private function getTemplate($context): ?string
+    private function getTemplate($context): string|null
     {
         if (is_object($context)) {
             $type = strtolower(ClassFunctions::short($context));

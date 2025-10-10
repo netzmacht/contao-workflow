@@ -32,6 +32,6 @@ interface DataAwareActionFormBuilder extends ActionFormBuilder
         Transition $transition,
         Context $context,
         Item $item,
-        array $data
+        array $data,
     ): array;
 }

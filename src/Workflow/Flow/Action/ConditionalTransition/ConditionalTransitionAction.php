@@ -17,24 +17,20 @@ final class ConditionalTransitionAction implements Action
 {
     /**
      * Unique action name.
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * A list of possible transitions.
      *
      * @var list<string>
      */
-    private $transitionNames;
+    private array $transitionNames;
 
     /**
      * The corresponding workflow.
-     *
-     * @var Workflow
      */
-    private $workflow;
+    private Workflow $workflow;
 
     /**
      * Construct.
@@ -103,7 +99,7 @@ final class ConditionalTransitionAction implements Action
      * @param Item    $item    Workflow item.
      * @param Context $context Transition context.
      */
-    public function determineMatchingTransition(Item $item, Context $context): ?Transition
+    public function determineMatchingTransition(Item $item, Context $context): Transition|null
     {
         foreach ($this->transitionNames as $transitionName) {
             $transition = $this->workflow->getTransition($transitionName);

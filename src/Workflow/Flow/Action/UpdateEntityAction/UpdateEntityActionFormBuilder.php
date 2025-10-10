@@ -26,14 +26,10 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
-    /**
-     * @param PropertyAccessManager $propertyAccessManager Property access manager.
-     */
+    /** @param PropertyAccessManager $propertyAccessManager Property access manager. */
     public function __construct(PropertyAccessManager $propertyAccessManager)
     {
         $this->propertyAccessManager = $propertyAccessManager;
@@ -60,12 +56,12 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
                         'attr' => [
                             'dataContainer' => $transition->getWorkflow()->getProviderName(),
                             'fields'        => StringUtil::deserialize(
-                                $action->getConfigValue('update_entity_properties', true)
+                                $action->getConfigValue('update_entity_properties', true),
                             ),
                         ],
                     ],
                 ],
-            ]
+            ],
         );
     }
 
@@ -77,7 +73,7 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
         Transition $transition,
         Context $context,
         Item $item,
-        array $data
+        array $data,
     ): array {
         assert($action instanceof UpdateEntityAction);
 

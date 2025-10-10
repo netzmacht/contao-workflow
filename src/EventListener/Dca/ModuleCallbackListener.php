@@ -16,14 +16,10 @@ final class ModuleCallbackListener
 {
     /**
      * The workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
-    /**
-     * @param WorkflowManager $workflowManager The workflow manager.
-     */
+    /** @param WorkflowManager $workflowManager The workflow manager. */
     public function __construct(WorkflowManager $workflowManager)
     {
         $this->workflowManager = $workflowManager;

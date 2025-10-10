@@ -18,24 +18,18 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
 {
     /**
      * Contao model repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Model adapter.
-     *
-     * @var Adapter|Model
      */
-    private $modelAdapter;
+    private Adapter|Model $modelAdapter;
 
     /**
      * Related changes.
-     *
-     * @var ContaoModelRelatedModelChangeTracker
      */
-    private $changeTracker;
+    private ContaoModelRelatedModelChangeTracker $changeTracker;
 
     /**
      * @param RepositoryManager                    $repositoryManager Repository manager.
@@ -45,7 +39,7 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
     public function __construct(
         RepositoryManager $repositoryManager,
         $modelAdapter,
-        ContaoModelRelatedModelChangeTracker $changeTracker
+        ContaoModelRelatedModelChangeTracker $changeTracker,
     ) {
         $this->repositoryManager = $repositoryManager;
         $this->modelAdapter      = $modelAdapter;

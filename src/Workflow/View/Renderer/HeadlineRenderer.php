@@ -15,10 +15,8 @@ final class HeadlineRenderer extends AbstractRenderer
 {
     /**
      * The section name.
-     *
-     * @var string
      */
-    protected static $section = 'headline';
+    protected static string $section = 'headline';
 
     public function supports(View $view): bool
     {
@@ -26,7 +24,7 @@ final class HeadlineRenderer extends AbstractRenderer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function renderParameters(View $view): array
     {

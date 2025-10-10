@@ -24,31 +24,23 @@ final class OperationListener
 {
     /**
      * The workflow manager.
-     *
-     * @var WorkflowManager
      */
-    private $workflowManager;
+    private WorkflowManager $workflowManager;
 
     /**
      * Entity manager.
-     *
-     * @var EntityManager
      */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     /**
      * The router.
-     *
-     * @var Router
      */
-    private $router;
+    private Router $router;
 
     /**
      * Authorization checker.
-     *
-     * @var AuthorizationCheckerInterface
      */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @param WorkflowManager               $workflowManager      The workflow manager.
@@ -60,7 +52,7 @@ final class OperationListener
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
         Router $router,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
     ) {
         $this->workflowManager      = $workflowManager;
         $this->entityManager        = $entityManager;
@@ -86,7 +78,7 @@ final class OperationListener
         string $title,
         string $icon,
         string $attributes,
-        string $table
+        string $table,
     ): string {
         $entityId   = EntityId::fromProviderNameAndId($table, $row['id']);
         $repository = $this->entityManager->getRepository($table);
@@ -102,7 +94,7 @@ final class OperationListener
             try {
                 $workflow = $this->workflowManager->getWorkflow($entityId, $entity);
                 $step     = $workflow->getStep($stepName);
-            } catch (StepNotFoundException $exception) {
+            } catch (StepNotFoundException) {
                 return '';
             }
 
@@ -113,7 +105,7 @@ final class OperationListener
 
         $href = $this->router->generate(
             'netzmacht.contao_workflow.backend.step',
-            ['module' => Input::get('do'), 'entityId' => (string) $entityId]
+            ['module' => Input::get('do'), 'entityId' => (string) $entityId],
         );
 
         return sprintf(
@@ -121,7 +113,7 @@ final class OperationListener
             $href,
             StringUtil::specialchars($title),
             $attributes,
-            Image::getHtml($icon, $label)
+            Image::getHtml($icon, $label),
         );
     }
 }

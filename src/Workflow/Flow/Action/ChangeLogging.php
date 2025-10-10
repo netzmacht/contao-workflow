@@ -14,10 +14,8 @@ trait ChangeLogging
 {
     /**
      * Log changed values as workflow data.
-     *
-     * @var bool
      */
-    private $logChanges = true;
+    private bool $logChanges = true;
 
     /**
      * Consider if changes are logged.

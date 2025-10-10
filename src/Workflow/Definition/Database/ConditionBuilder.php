@@ -27,7 +27,7 @@ final class ConditionBuilder
      *
      * @var array<string,string>
      */
-    private static $operators = [
+    private static array $operators = [
         'eq'  => '==',
         'neq' => '!=',
         'lt'  => '<',
@@ -38,24 +38,18 @@ final class ConditionBuilder
 
     /**
      * The expression language.
-     *
-     * @var ExpressionLanguage
      */
-    private $expressionLanguage;
+    private ExpressionLanguage $expressionLanguage;
 
     /**
      * Authorization checker.
-     *
-     * @var AuthorizationChecker
      */
-    private $authorizationChecker;
+    private AuthorizationChecker $authorizationChecker;
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * @param ExpressionLanguage    $expressionLanguage    The expression language.
@@ -65,7 +59,7 @@ final class ConditionBuilder
     public function __construct(
         ExpressionLanguage $expressionLanguage,
         AuthorizationChecker $authorizationChecker,
-        PropertyAccessManager $propertyAccessManager
+        PropertyAccessManager $propertyAccessManager,
     ) {
         $this->expressionLanguage    = $expressionLanguage;
         $this->authorizationChecker  = $authorizationChecker;
@@ -143,7 +137,7 @@ final class ConditionBuilder
     {
         $transition = $event->getTransition();
         $transition->addPreCondition(
-            new TransitionPermissionCondition($this->authorizationChecker, true)
+            new TransitionPermissionCondition($this->authorizationChecker, true),
         );
     }
 
@@ -152,7 +146,7 @@ final class ConditionBuilder
      *
      * @param string $operator Database operator.
      */
-    private function parseOperator(string $operator): ?string
+    private function parseOperator(string $operator): string|null
     {
         return self::$operators[$operator] ?? null;
     }

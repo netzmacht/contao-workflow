@@ -12,16 +12,12 @@ use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 /** @Hook("loadDataContainer") */
 final class LoadDataContainerListener
 {
-    /** @var DcaManager */
-    private $dcaManager;
-
     /** @var Adapter<Input> */
-    private $input;
+    private Adapter $input;
 
-    public function __construct(DcaManager $dcaManager, Adapter $adapter)
+    public function __construct(private DcaManager $dcaManager, Adapter $adapter)
     {
-        $this->dcaManager = $dcaManager;
-        $this->input      = $adapter;
+        $this->input = $adapter;
     }
 
     public function __invoke(string $name): void

@@ -13,14 +13,10 @@ final class ReadonlyPropertyAccessor
 {
     /**
      * Property accessor.
-     *
-     * @var PropertyAccessor
      */
-    private $propertyAccessor;
+    private PropertyAccessor $propertyAccessor;
 
-    /**
-     * @param PropertyAccessor $propertyAccessor Property accessor.
-     */
+    /** @param PropertyAccessor $propertyAccessor Property accessor. */
     public function __construct(PropertyAccessor $propertyAccessor)
     {
         $this->propertyAccessor = $propertyAccessor;
@@ -40,10 +36,8 @@ final class ReadonlyPropertyAccessor
      * Get the deserialized value of the property. If property not exists null is returned.
      *
      * @param string $name Name of the property.
-     *
-     * @return mixed
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         return StringUtil::deserialize($this->propertyAccessor->get($name));
     }
@@ -52,10 +46,8 @@ final class ReadonlyPropertyAccessor
      * Get the raw value of the property. If property not exists null is returned.
      *
      * @param string $name Name of the property.
-     *
-     * @return mixed
      */
-    public function raw(string $name)
+    public function raw(string $name): mixed
     {
         return $this->propertyAccessor->get($name);
     }

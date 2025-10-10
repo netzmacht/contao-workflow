@@ -22,14 +22,10 @@ final class AssignUserActionFormBuilder implements ActionFormBuilder
 {
     /**
      * The user choices.
-     *
-     * @var UserChoices
      */
-    private $userChoices;
+    private UserChoices $userChoices;
 
-    /**
-     * @param UserChoices $userChoices The user choices.
-     */
+    /** @param UserChoices $userChoices The user choices. */
     public function __construct(UserChoices $userChoices)
     {
         $this->userChoices = $userChoices;
@@ -66,7 +62,7 @@ final class AssignUserActionFormBuilder implements ActionFormBuilder
                         ],
                     ],
                 ],
-            ]
+            ],
         );
     }
 }

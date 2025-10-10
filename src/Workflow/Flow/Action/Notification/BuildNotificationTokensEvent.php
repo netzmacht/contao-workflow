@@ -13,31 +13,25 @@ final class BuildNotificationTokensEvent extends Event
 {
     /**
      * Current workflow transition being processed.
-     *
-     * @var Transition
      */
-    private $transition;
+    private Transition $transition;
 
     /**
      * The workflow item.
-     *
-     * @var Item
      */
-    private $item;
+    private Item $item;
 
     /**
      * The transition context.
-     *
-     * @var Context
      */
-    private $context;
+    private Context $context;
 
     /**
      * The generated tokens.
      *
      * @var array<string,mixed>
      */
-    private $tokens;
+    private array $tokens;
 
     /**
      * @param Transition          $transition Current workflow transition being processed.

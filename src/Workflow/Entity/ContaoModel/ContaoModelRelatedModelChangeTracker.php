@@ -19,7 +19,7 @@ final class ContaoModelRelatedModelChangeTracker
      * @var       Model[][][]
      * @psalm-var array<string,array<int,array<int,Model>>>
      */
-    private $changes = [];
+    private array $changes = [];
 
     /**
      * Track a change of a related model.

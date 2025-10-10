@@ -19,31 +19,23 @@ abstract class AbstractController
 {
     /**
      * Workflow manager.
-     *
-     * @var WorkflowManager
      */
-    protected $workflowManager;
+    protected WorkflowManager $workflowManager;
 
     /**
      * The entity manager.
-     *
-     * @var EntityManager
      */
-    protected $entityManager;
+    protected EntityManager $entityManager;
 
     /**
      * The router.
-     *
-     * @var Router
      */
-    protected $router;
+    protected Router $router;
 
     /**
      * View factory.
-     *
-     * @var ViewFactory
      */
-    protected $viewFactory;
+    protected ViewFactory $viewFactory;
 
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
@@ -55,7 +47,7 @@ abstract class AbstractController
         WorkflowManager $workflowManager,
         EntityManager $entityManager,
         ViewFactory $viewFactory,
-        Router $router
+        Router $router,
     ) {
         $this->workflowManager = $workflowManager;
         $this->entityManager   = $entityManager;

@@ -13,22 +13,17 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class CreateStepEvent extends Event
 {
-    public const NAME = 'netzmacht.contao_workflow.create_step';
+    public const string NAME = 'netzmacht.contao_workflow.create_step';
 
     /**
      * The workflow this step belongs to.
-     *
-     * @var Workflow
      */
-    private $workflow;
-
+    private Workflow $workflow;
 
     /**
      * The workflow step.
-     *
-     * @var Step
      */
-    private $step;
+    private Step $step;
 
     /**
      * Construct.

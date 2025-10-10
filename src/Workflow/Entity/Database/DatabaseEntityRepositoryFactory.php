@@ -13,14 +13,10 @@ final class DatabaseEntityRepositoryFactory implements RepositoryFactory
 {
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @param Connection $connection Database connection.
-     */
+    /** @param Connection $connection Database connection. */
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;

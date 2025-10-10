@@ -23,18 +23,12 @@ final class TransitionVoter extends Voter
 {
     /**
      * Workflow user.
-     *
-     * @var User
      */
-    private $user;
+    private User $user;
 
-    /** @var WorkflowManager */
-    private $workflowManager;
-
-    public function __construct(User $user, WorkflowManager $workflowManager)
+    public function __construct(User $user, private WorkflowManager $workflowManager)
     {
-        $this->user            = $user;
-        $this->workflowManager = $workflowManager;
+        $this->user = $user;
     }
 
     /**
@@ -63,7 +57,7 @@ final class TransitionVoter extends Voter
         try {
             $workflow   = $this->workflowManager->getWorkflowByItem($subject);
             $transition = $workflow->getTransition($transition);
-        } catch (WorkflowException | FlowException $exception) {
+        } catch (WorkflowException | FlowException) {
             return false;
         }
 

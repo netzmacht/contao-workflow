@@ -21,51 +21,39 @@ use Symfony\Contracts\Translation\TranslatorInterface as Translator;
  */
 final class NotificationAction extends AbstractAction
 {
-    public const STATE_ALL     = 3;
-    public const STATE_SUCCESS = 1;
-    public const STATE_FAILED  = 2;
+    public const int STATE_ALL     = 3;
+    public const int STATE_SUCCESS = 1;
+    public const int STATE_FAILED  = 2;
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccess;
+    private PropertyAccessManager $propertyAccess;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Translator.
-     *
-     * @var Translator
      */
-    private $translator;
+    private Translator $translator;
 
     /**
      * The event dispatcher.
-     *
-     * @var EventDispatcher
      */
-    private $eventDispatcher;
+    private EventDispatcher $eventDispatcher;
 
     /**
      * Success states.
-     *
-     * @var int
      */
-    private $successStates;
+    private int $successStates;
 
     /**
      * Notification ids.
-     *
-     * @var int
      */
-    private $notificationId;
+    private int $notificationId;
 
     /**
      * Construct.
@@ -89,7 +77,7 @@ final class NotificationAction extends AbstractAction
         string $label,
         int $notificationId,
         int $successStates = self::STATE_ALL,
-        array $config = []
+        array $config = [],
     ) {
         parent::__construct($name, $label, $config);
 

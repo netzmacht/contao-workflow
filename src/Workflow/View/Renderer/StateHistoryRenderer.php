@@ -25,31 +25,23 @@ final class StateHistoryRenderer extends AbstractStepRenderer
 {
     /**
      * The section name.
-     *
-     * @var string
      */
-    protected static $section = 'history';
+    protected static string $section = 'history';
 
     /**
      * The workflow manager.
-     *
-     * @var Manager
      */
-    private $manager;
+    private Manager $manager;
 
     /**
      * Config adapter.
-     *
-     * @var Adapter|Config
      */
-    private $configAdapter;
+    private Adapter|Config $configAdapter;
 
     /**
      * Entity manager.
-     *
-     * @var EntityManager
      */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     /**
      * @param Translator           $translator    Translator.
@@ -64,7 +56,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
         Translator $translator,
         $configAdapter,
         EntityManager $entityManager,
-        array $templates = []
+        array $templates = [],
     ) {
         parent::__construct($translator, $templates);
 
@@ -74,7 +66,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function renderParameters(View $view): array
     {
@@ -110,7 +102,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      *
      * @return string|array<string,mixed>|null
      */
-    public function renderStateColumn(State $state, string $column)
+    public function renderStateColumn(State $state, string $column): string|array|null
     {
         switch ($column) {
             case 'start':
@@ -154,7 +146,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     {
         try {
             return $this->manager->getWorkflowByName($state->getStartWorkflowName())->getLabel();
-        } catch (WorkflowException $e) {
+        } catch (WorkflowException) {
             return $state->getStartWorkflowName() ?: '-';
         }
     }
@@ -168,7 +160,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     {
         try {
             return $this->manager->getWorkflowByName($state->getTargetWorkflowName())->getLabel();
-        } catch (WorkflowException $e) {
+        } catch (WorkflowException) {
             return $state->getTargetWorkflowName() ?: '-';
         }
     }
@@ -185,7 +177,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
                 ->getWorkflowByName($state->getWorkflowName())
                 ->getTransition($state->getTransitionName())
                 ->getLabel();
-        } catch (WorkflowException $e) {
+        } catch (WorkflowException) {
             return $state->getTransitionName() ?: '-';
         }
     }
@@ -202,7 +194,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
                 ->getWorkflowByName($state->getWorkflowName())
                 ->getStep($state->getStepName())
                 ->getLabel();
-        } catch (WorkflowException $e) {
+        } catch (WorkflowException) {
             return $state->getStepName() ?: '-';
         }
     }
@@ -215,7 +207,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      *
      * @return array<string,mixed>|string|null
      */
-    private function renderMetaData(State $state, string $column)
+    private function renderMetaData(State $state, string $column): array|string|null
     {
         $data = $state->getData();
 
@@ -242,7 +234,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
      *
      * @return array<string,mixed>|null
      */
-    private function renderUserName(array $metadata): ?array
+    private function renderUserName(array $metadata): array|null
     {
         if (! isset($metadata['userId'])) {
             return null;

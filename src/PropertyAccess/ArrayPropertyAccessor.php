@@ -21,11 +21,9 @@ final class ArrayPropertyAccessor implements PropertyAccessor
      *
      * @var array<mixed,mixed>|ArrayAccess<mixed,mixed>
      */
-    private $array;
+    private array|ArrayAccess $array;
 
-    /**
-     * @param array<mixed,mixed>|ArrayAccess<mixed,mixed> $array Data array.
-     */
+    /** @param array<mixed,mixed>|ArrayAccess<mixed,mixed> $array Data array. */
     public function __construct($array)
     {
         $this->array = $array;

@@ -28,27 +28,20 @@ final class StepVoter extends Voter
 {
     /**
      * The workflow user.
-     *
-     * @var User
      */
-    private $workflowUser;
+    private User $workflowUser;
 
     /**
      * The property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * The provider configuration.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $providerConfiguration;
-
-    /** @var WorkflowManager */
-    private $workflowManager;
+    private array $providerConfiguration;
 
     /**
      * @param User                              $workflowUser          The workflow user.
@@ -58,12 +51,11 @@ final class StepVoter extends Voter
     public function __construct(
         User $workflowUser,
         PropertyAccessManager $propertyAccessManager,
-        WorkflowManager $workflowManager,
-        array $providerConfiguration
+        private WorkflowManager $workflowManager,
+        array $providerConfiguration,
     ) {
         $this->workflowUser          = $workflowUser;
         $this->propertyAccessManager = $propertyAccessManager;
-        $this->workflowManager       = $workflowManager;
         $this->providerConfiguration = $providerConfiguration;
     }
 
@@ -95,7 +87,7 @@ final class StepVoter extends Voter
         try {
             $workflow = $this->workflowManager->getWorkflowByItem($subject);
             $step     = $workflow->getStep($step);
-        } catch (WorkflowException | FlowException $exception) {
+        } catch (WorkflowException | FlowException) {
             return false;
         }
 
@@ -143,7 +135,7 @@ final class StepVoter extends Voter
      *
      * @param TokenInterface $token The security token.
      */
-    private function getUserId(TokenInterface $token): ?EntityId
+    private function getUserId(TokenInterface $token): EntityId|null
     {
         $user = $token->getUser();
         if (! $user instanceof ContaoUser) {
@@ -158,7 +150,7 @@ final class StepVoter extends Voter
      *
      * @param Item $item The current item.
      */
-    private function provideAccess(Item $item): ?PropertyAccessor
+    private function provideAccess(Item $item): PropertyAccessor|null
     {
         $entity = $item->getEntity();
         if (! $this->propertyAccessManager->supports($entity)) {
@@ -178,7 +170,7 @@ final class StepVoter extends Voter
     protected function checkAssignableProperties(
         array $assignUserProperties,
         PropertyAccessor $accessor,
-        EntityId $userId
+        EntityId $userId,
     ): bool {
         foreach ($assignUserProperties as $property) {
             $value = $accessor->get($property);

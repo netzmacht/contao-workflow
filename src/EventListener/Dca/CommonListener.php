@@ -21,7 +21,7 @@ final class CommonListener
         return sprintf(
             '<strong>%s</strong><br>%s',
             $row['label'],
-            $row['description']
+            $row['description'],
         );
     }
 }

@@ -20,23 +20,19 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
 {
     /**
      * Wrapped model.
-     *
-     * @var Model
      */
-    private $model;
+    private Model $model;
 
     /**
      * Related model changes registry.
-     *
-     * @var ContaoModelRelatedModelChangeTracker|null
      */
-    private $changesRegistry;
+    private ContaoModelRelatedModelChangeTracker|null $changesRegistry = null;
 
     /**
      * @param Model                                     $model           Contao model.
      * @param ContaoModelRelatedModelChangeTracker|null $changesRegistry Related model changes registry.
      */
-    public function __construct(Model $model, ?ContaoModelRelatedModelChangeTracker $changesRegistry = null)
+    public function __construct(Model $model, ContaoModelRelatedModelChangeTracker|null $changesRegistry = null)
     {
         $this->model           = $model;
         $this->changesRegistry = $changesRegistry;
@@ -132,7 +128,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
      *
      * @throws Exception When property is not relational.
      */
-    private function determineModel(array $path): ?Model
+    private function determineModel(array $path): Model|null
     {
         if (count($path) === 0) {
             return $this->model;

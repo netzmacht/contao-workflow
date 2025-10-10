@@ -18,11 +18,9 @@ use function sprintf;
 
 final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
 {
-    /** @var ContaoModelRelatedModelChangeTracker */
-    private $changeTracker;
+    private ContaoModelRelatedModelChangeTracker $changeTracker;
 
-    /** @var Model */
-    private $model;
+    private Model $model;
 
     public function let(): void
     {
@@ -84,10 +82,9 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
     private function modelInstance(array $data = []): Model
     {
         $model = new class extends Model {
-            /** @var string */
-            protected static $strTable = 'tl_example';
+            protected static string $strTable = 'tl_example';
 
-            public function __construct(?Result $objResult = null)
+            public function __construct(Result|null $objResult = null)
             {
                 // Do not call parent constructor as it requires contao framework being initialized
             }
@@ -95,19 +92,16 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
             /**
              * @param string|mixed        $strKey
              * @param array<string,mixed> $arrOptions
-             *
-             * @return Model|Collection|null
              */
-            public function getRelated($strKey, array $arrOptions = [])
+            public function getRelated($strKey, array $arrOptions = []): Model|Collection|null
             {
                 static $instance;
                 if ($strKey === 'parent') {
                     if ($instance === null) {
                         $instance = new class extends Model {
-                            /** @var string */
-                            protected static $strTable = 'tl_example_parent';
+                            protected static string $strTable = 'tl_example_parent';
 
-                            public function __construct(?Result $objResult = null)
+                            public function __construct(Result|null $objResult = null)
                             {
                                 // Do not call parent constructor as it requires contao framework being initialized
                             }

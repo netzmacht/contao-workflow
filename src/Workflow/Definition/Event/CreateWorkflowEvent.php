@@ -12,14 +12,12 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class CreateWorkflowEvent extends Event
 {
-    public const NAME = 'netzmacht.contao_workflow.create_workflow';
+    public const string NAME = 'netzmacht.contao_workflow.create_workflow';
 
     /**
      * The workflow being created.
-     *
-     * @var Workflow
      */
-    private $workflow;
+    private Workflow $workflow;
 
     /**
      * Construct.

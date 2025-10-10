@@ -17,17 +17,13 @@ final class TransitionActionsMigration extends AbstractMigration
 {
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Dca Schema provider.
-     *
-     * @var SchemaProvider
      */
-    private $schemaProvider;
+    private SchemaProvider $schemaProvider;
 
     /**
      * @param Connection     $connection     Database connection.
@@ -95,7 +91,7 @@ SQL;
                 'sorting'   => $row['sorting'],
                 'reference' => $row['aid'],
                 'active'    => $row['active'],
-            ]
+            ],
         );
     }
 }

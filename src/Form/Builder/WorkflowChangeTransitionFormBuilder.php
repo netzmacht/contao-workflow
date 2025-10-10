@@ -15,14 +15,10 @@ class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
 {
     /**
      * Transition form builder.
-     *
-     * @var TransitionFormBuilder
      */
-    private $transitionFormBuilder;
+    private TransitionFormBuilder $transitionFormBuilder;
 
-    /**
-     * @param TransitionFormBuilder $transitionFormBuilder Transition form builder.
-     */
+    /** @param TransitionFormBuilder $transitionFormBuilder Transition form builder. */
     public function __construct(TransitionFormBuilder $transitionFormBuilder)
     {
         $this->transitionFormBuilder = $transitionFormBuilder;

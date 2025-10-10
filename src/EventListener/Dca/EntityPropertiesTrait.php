@@ -48,7 +48,7 @@ trait EntityPropertiesTrait
                     '%s: %s [%s]',
                     $this->getFormatter($related[3])->formatFieldLabel($lastColumn),
                     $related[0],
-                    implode('.', $related[1])
+                    implode('.', $related[1]),
                 );
             } else {
                 $value = $related[2];
@@ -59,7 +59,7 @@ trait EntityPropertiesTrait
                 '%s [%s.%s]',
                 $this->getFormatter($related[0])->formatFieldLabel($related[2]),
                 $related[0],
-                $related[2]
+                $related[2],
             );
         }
 
@@ -88,7 +88,7 @@ trait EntityPropertiesTrait
         int $depth = 1,
         string $parentTable = '',
         array $prefix = [],
-        array &$knownTables = []
+        array &$knownTables = [],
     ): iterable {
         if (in_array($currentTable, $knownTables, true)) {
             return [];
@@ -132,7 +132,7 @@ trait EntityPropertiesTrait
                 $depth,
                 $currentTable,
                 array_merge($prefix, [$fieldName]),
-                $knownTables
+                $knownTables,
             );
         }
     }

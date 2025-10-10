@@ -27,10 +27,8 @@ final class TransitionController extends AbstractController
 {
     /**
      * The form factory.
-     *
-     * @var FormFactory
      */
-    private $formFactory;
+    private FormFactory $formFactory;
 
     /**
      * {@inheritDoc}
@@ -42,7 +40,7 @@ final class TransitionController extends AbstractController
         EntityManager $entityManager,
         ViewFactory $viewFactory,
         Router $router,
-        FormFactory $formFactory
+        FormFactory $formFactory,
     ) {
         parent::__construct($workflowManager, $entityManager, $viewFactory, $router);
 
@@ -75,7 +73,7 @@ final class TransitionController extends AbstractController
             $form = $this->formFactory->create(
                 TransitionFormType::class,
                 [],
-                ['handler' => $handler, 'item' => $item]
+                ['handler' => $handler, 'item' => $item],
             );
 
             $form->handleRequest($request);
@@ -99,7 +97,7 @@ final class TransitionController extends AbstractController
         $view       = $this->viewFactory->create(
             $item,
             $transition,
-            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection(), 'module' => $module]
+            ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection(), 'module' => $module],
         );
 
         return $view->render();
@@ -121,7 +119,7 @@ final class TransitionController extends AbstractController
         string $transition,
         Request $request,
         Item $item,
-        Workflow $workflow
+        Workflow $workflow,
     ): TransitionHandler {
         try {
             if ($item->getWorkflowName() !== $workflow->getName()) {
@@ -135,10 +133,10 @@ final class TransitionController extends AbstractController
                     'Could not perform transition "%s" on entity "%s". Creating handler failed with message "%s".',
                     $transition,
                     (string) $entityId,
-                    $e->getMessage()
+                    $e->getMessage(),
                 ),
                 (int) $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -147,8 +145,8 @@ final class TransitionController extends AbstractController
                 sprintf(
                     'Could not perform transition "%s" on entity "%s". No handler created.',
                     $transition,
-                    (string) $entityId
-                )
+                    (string) $entityId,
+                ),
             );
         }
 
@@ -168,7 +166,7 @@ final class TransitionController extends AbstractController
         } else {
             $url = $this->router->generate(
                 'netzmacht.contao_workflow.backend.step',
-                ['entityId' => (string) $entityId, 'module' => $request->attributes->get('module')]
+                ['entityId' => (string) $entityId, 'module' => $request->attributes->get('module')],
             );
         }
 

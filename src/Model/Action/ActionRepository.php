@@ -14,10 +14,8 @@ final class ActionRepository extends ContaoRepository
 {
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Construct.
@@ -39,7 +37,7 @@ final class ActionRepository extends ContaoRepository
      *
      * @return ActionModel[]|Collection|null
      */
-    public function findByTransition(int $transitionId, array $options = ['order' => '.sorting'])
+    public function findByTransition(int $transitionId, array $options = ['order' => '.sorting']): array|Collection|null
     {
         return $this->findBy(['.ptable=?', '.pid=?'], [TransitionModel::getTable(), $transitionId], $options);
     }
@@ -56,12 +54,12 @@ final class ActionRepository extends ContaoRepository
     public function findActiveByTransition(
         int $transitionId,
         string $orderField = '.sorting',
-        string $direction = 'ASC'
-    ) {
+        string $direction = 'ASC',
+    ): array|Collection|null {
         return $this->findBy(
             ['.ptable=?', '.pid=?', '.active=?'],
             [TransitionModel::getTable(), $transitionId, '1'],
-            ['order' => $orderField . ' ' . $direction]
+            ['order' => $orderField . ' ' . $direction],
         );
     }
 
@@ -73,7 +71,7 @@ final class ActionRepository extends ContaoRepository
      *
      * @return ActionModel[]|Collection|null
      */
-    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting'])
+    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting']): array|Collection|null
     {
         return $this->findBy(['.ptable=?', '.pid=?'], [WorkflowModel::getTable(), $workflowId], $options);
     }

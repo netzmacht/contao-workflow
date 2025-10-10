@@ -14,17 +14,13 @@ final class NoteAction extends AbstractAction
 {
     /**
      * Flag to determine if note is required.
-     *
-     * @var bool
      */
-    private $required;
+    private bool $required;
 
     /**
      * Min number of characters which are required if note is given.
-     *
-     * @var int
      */
-    private $minLength;
+    private int $minLength;
 
     /**
      * Construct.
@@ -94,7 +90,7 @@ final class NoteAction extends AbstractAction
 
         $context->addError(
             'action.note.validate.minlength',
-            [$this->getLabel(), $this->minLength, $length]
+            [$this->getLabel(), $this->minLength, $length],
         );
 
         return false;

@@ -21,7 +21,7 @@ final class ExpressionLanguageFunctionsPass implements CompilerPassInterface
         $definition     = $container->getDefinition('netzmacht.contao_workflow.expression_language');
         $taggedServices = $this->findAndSortTaggedServices(
             'netzmacht.contao_workflow.expression_language.function_provider',
-            $container
+            $container,
         );
 
         $definition->setArgument(1, $taggedServices);

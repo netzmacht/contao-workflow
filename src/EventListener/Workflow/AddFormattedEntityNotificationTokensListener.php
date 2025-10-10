@@ -24,17 +24,13 @@ final class AddFormattedEntityNotificationTokensListener
 {
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * Data container manager.
-     *
-     * @var DcaManager
      */
-    private $dcaManager;
+    private DcaManager $dcaManager;
 
     /**
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
@@ -60,7 +56,7 @@ final class AddFormattedEntityNotificationTokensListener
 
         try {
             $formatter = $this->dcaManager->getFormatter($event->getItem()->getEntityId()->getProviderName());
-        } catch (AssertionFailed $exception) {
+        } catch (AssertionFailed) {
             return;
         }
 
@@ -76,7 +72,7 @@ final class AddFormattedEntityNotificationTokensListener
         foreach ($accessor as $key => $value) {
             try {
                 $event->addToken('formatted_' . $key, $formatter->formatValue($key, $value, $context));
-            } catch (Throwable $exception) {
+            } catch (Throwable) {
                 // Skip if any error occurs
             }
         }

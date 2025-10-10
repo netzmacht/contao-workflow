@@ -35,17 +35,13 @@ final class WorkflowUser implements User
 {
     /**
      * Symfony security component.
-     *
-     * @var Security
      */
-    private $security;
+    private Security $security;
 
     /**
      * Database connection.
-     *
-     * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * @param Security   $security   Security framework.
@@ -57,7 +53,7 @@ final class WorkflowUser implements User
         $this->connection = $connection;
     }
 
-    public function getUserId(?UserInterface $user = null): ?EntityId
+    public function getUserId(UserInterface|null $user = null): EntityId|null
     {
         $user = $user ?: $this->security->getUser();
         if ($user instanceof FrontendUser) {
@@ -71,7 +67,7 @@ final class WorkflowUser implements User
         return null;
     }
 
-    public function hasPermission(Permission $permission, ?UserInterface $user = null): bool
+    public function hasPermission(Permission $permission, UserInterface|null $user = null): bool
     {
         return array_key_exists($permission->__toString(), $this->getUserPermissions($user));
     }
@@ -79,7 +75,7 @@ final class WorkflowUser implements User
     /**
      * {@inheritDoc}
      */
-    public function getPermissions(?UserInterface $user = null): array
+    public function getPermissions(UserInterface|null $user = null): array
     {
         return array_map(
         // @codingStandardsIgnoreStart
@@ -87,7 +83,7 @@ final class WorkflowUser implements User
                 return Permission::fromString($permission);
             },
             // @codingStandardsIgnoreEnd
-            array_keys($this->getUserPermissions($user))
+            array_keys($this->getUserPermissions($user)),
         );
     }
 
@@ -98,7 +94,7 @@ final class WorkflowUser implements User
      *
      * @return array<string,int>
      */
-    private function getUserPermissions(?UserInterface $user = null): array
+    private function getUserPermissions(UserInterface|null $user = null): array
     {
         $user = $user ?: $this->security->getUser();
         $key  = '__GUEST__';
@@ -175,7 +171,7 @@ SQL;
         $result = $this->connection->executeQuery(
             $sql,
             ['source' => 'tl_member_group', 'sourceIds' => $user->groups],
-            ['source' => PDO::PARAM_STR, 'sourceIds' => Connection::PARAM_STR_ARRAY]
+            ['source' => PDO::PARAM_STR, 'sourceIds' => Connection::PARAM_STR_ARRAY],
         );
 
         return $result->fetchFirstColumn();
@@ -205,8 +201,8 @@ SQL;
 
         return array_values(
             array_unique(
-                array_merge($statement->fetchFirstColumn(), $this->loadPermissionsFilteredBy('admin'))
-            )
+                array_merge($statement->fetchFirstColumn(), $this->loadPermissionsFilteredBy('admin')),
+            ),
         );
     }
 }

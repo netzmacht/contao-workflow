@@ -27,14 +27,10 @@ final class StateRepository implements WorkflowStateRepository
 {
     /**
      * Contao model repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
-    /**
-     * @param RepositoryManager $repositoryManager Contao model repository manager.
-     */
+    /** @param RepositoryManager $repositoryManager Contao model repository manager. */
     public function __construct(RepositoryManager $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
@@ -53,7 +49,7 @@ final class StateRepository implements WorkflowStateRepository
         $collection = $repository->findBy(
             ['.entityId=?'],
             [(string) $entityId],
-            ['order' => 'tl_workflow_state.reachedAt']
+            ['order' => 'tl_workflow_state.reachedAt'],
         );
 
         $states = [];
@@ -131,7 +127,7 @@ final class StateRepository implements WorkflowStateRepository
             $reachedAt,
             (array) json_decode($model->errors, true),
             (int) $model->id,
-            $model->targetWorkflowName
+            $model->targetWorkflowName,
         );
     }
 
@@ -151,10 +147,8 @@ final class StateRepository implements WorkflowStateRepository
      * Prepare serializsation.
      *
      * @param mixed $data The data being serialized.
-     *
-     * @return mixed
      */
-    private function prepareSerialize($data)
+    private function prepareSerialize($data): mixed
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {

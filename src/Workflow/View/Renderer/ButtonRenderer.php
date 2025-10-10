@@ -19,24 +19,18 @@ final class ButtonRenderer extends AbstractRenderer
 {
     /**
      * The section name.
-     *
-     * @var string
      */
-    protected static $section = 'buttons';
+    protected static string $section = 'buttons';
 
     /**
      * Request scope matcher.
-     *
-     * @var RequestScopeMatcher
      */
-    private $scopeMatcher;
+    private RequestScopeMatcher $scopeMatcher;
 
     /**
      * Current web request.
-     *
-     * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * {@inheritDoc}
@@ -45,7 +39,7 @@ final class ButtonRenderer extends AbstractRenderer
         Translator $translator,
         RequestScopeMatcher $scopeMatcher,
         RequestStack $requestStack,
-        array $templates = []
+        array $templates = [],
     ) {
         parent::__construct($translator, $templates);
 
@@ -106,7 +100,7 @@ final class ButtonRenderer extends AbstractRenderer
                     'entityId'   => $view->getItem()->getEntityId(),
                     'transition' => $transitionName,
                     'module'     => (string) $view->getOption('module'),
-                ]
+                ],
             ),
             'icon'   => $transition->getConfigValue('icon'),
         ];
@@ -123,7 +117,7 @@ final class ButtonRenderer extends AbstractRenderer
      *
      * @return list<array<string,mixed>>
      */
-    protected function buildActions(?Step $step, Workflow $workflow, View $view, Context $context, array $params): array
+    protected function buildActions(Step|null $step, Workflow $workflow, View $view, Context $context, array $params): array
     {
         $actions = [];
         if (! $step) {

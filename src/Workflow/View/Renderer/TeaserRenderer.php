@@ -20,17 +20,13 @@ final class TeaserRenderer extends AbstractRenderer
 {
     /**
      * Section name.
-     *
-     * @var string
      */
-    protected static $section = 'teaser';
+    protected static string $section = 'teaser';
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
     /**
      * @param Translator            $translator            Translator.
@@ -42,7 +38,7 @@ final class TeaserRenderer extends AbstractRenderer
     public function __construct(
         Translator $translator,
         PropertyAccessManager $propertyAccessManager,
-        array $templates = []
+        array $templates = [],
     ) {
         parent::__construct($translator, $templates);
 

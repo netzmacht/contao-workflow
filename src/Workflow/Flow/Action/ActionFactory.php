@@ -20,11 +20,9 @@ final class ActionFactory
      *
      * @var iterable|ActionTypeFactory[]
      */
-    private $factories;
+    private iterable $factories;
 
-    /**
-     * @param iterable|ActionTypeFactory[] $factories Action factories.
-     */
+    /** @param iterable|ActionTypeFactory[] $factories Action factories. */
     public function __construct(iterable $factories)
     {
         /** @psalm-suppress PossiblyInvalidArgument  */
@@ -62,7 +60,7 @@ final class ActionFactory
             static function (ActionTypeFactory $factory) {
                 return $factory->getName();
             },
-            $this->getSupportedTypes($workflow)
+            $this->getSupportedTypes($workflow),
         );
     }
 

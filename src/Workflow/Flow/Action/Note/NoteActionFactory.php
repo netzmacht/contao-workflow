@@ -41,7 +41,7 @@ final class NoteActionFactory implements ActionTypeFactory
             $config['label'],
             (bool) $config['note_required'],
             (int) $config['note_minlength'],
-            $config
+            $config,
         );
     }
 }

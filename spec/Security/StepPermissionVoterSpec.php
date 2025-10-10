@@ -44,7 +44,7 @@ final class StepPermissionVoterSpec extends ObjectBehavior
     public function it_abstains_access_for_granted_non_step_permission(
         Step $step,
         TokenInterface $token,
-        User $user
+        User $user,
     ): void {
         $permission = Permission::forWorkflowName('test', 'permission');
 
@@ -64,7 +64,7 @@ final class StepPermissionVoterSpec extends ObjectBehavior
     public function it_denies_access_for_non_granted_step_permission(
         Step $step,
         TokenInterface $token,
-        User $user
+        User $user,
     ): void {
         $permission = Permission::forWorkflowName('test', 'permission');
 

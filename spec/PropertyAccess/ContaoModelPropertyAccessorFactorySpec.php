@@ -39,10 +39,9 @@ final class ContaoModelPropertyAccessorFactorySpec extends ObjectBehavior
     private function modelInstance(): Model
     {
         return new class extends Model {
-            /** @var string */
-            protected static $strTable = 'tl_example';
+            protected static string $strTable = 'tl_example';
 
-            public function __construct(?Result $objResult = null)
+            public function __construct(Result|null $objResult = null)
             {
                 // Do not call parent constructor as it requires contao framework being initialized
             }

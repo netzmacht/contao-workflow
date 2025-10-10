@@ -21,21 +21,15 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
 {
     /**
      * Data container definition manager.
-     *
-     * @var DcaManager
      */
-    private $dcaManager;
+    private DcaManager $dcaManager;
 
     /**
      * Property access manager.
-     *
-     * @var PropertyAccessManager
      */
-    private $propertyAccessManager;
+    private PropertyAccessManager $propertyAccessManager;
 
-    /**
-     * @param DcaManager $dcaManager Data container definition manager.
-     */
+    /** @param DcaManager $dcaManager Data container definition manager. */
     public function __construct(DcaManager $dcaManager, PropertyAccessManager $propertyAccessManager)
     {
         $this->dcaManager            = $dcaManager;
@@ -63,7 +57,7 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
             $definition = $this->dcaManager->getDefinition($workflow->getProviderName());
 
             return (bool) $definition->get(['config', 'useRawRequestData']);
-        } catch (AssertionFailed $exception) {
+        } catch (AssertionFailed) {
             return false;
         }
     }
@@ -77,7 +71,7 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
             $this->propertyAccessManager,
             'action_' . $config['id'],
             $config['label'],
-            $config
+            $config,
         );
     }
 }

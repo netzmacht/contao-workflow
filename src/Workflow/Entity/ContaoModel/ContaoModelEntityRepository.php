@@ -27,24 +27,18 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
 {
     /**
      * Contao model repository.
-     *
-     * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     /**
      * Related model change tracker.
-     *
-     * @var ContaoModelRelatedModelChangeTracker
      */
-    private $changeTracker;
+    private ContaoModelRelatedModelChangeTracker $changeTracker;
 
     /**
      * Repository manager.
-     *
-     * @var RepositoryManager
      */
-    private $repositoryManager;
+    private RepositoryManager $repositoryManager;
 
     /**
      * Construct.
@@ -56,7 +50,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     public function __construct(
         Repository $repository,
         ContaoModelRelatedModelChangeTracker $changeTracker,
-        RepositoryManager $repositoryManager
+        RepositoryManager $repositoryManager,
     ) {
         $this->repository        = $repository;
         $this->changeTracker     = $changeTracker;
@@ -75,7 +69,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
         Assertion::isInstanceOf(
             $entity,
             Model::class,
-            'Entity repository requires an instance of the ContaoModelEntity'
+            'Entity repository requires an instance of the ContaoModelEntity',
         );
 
         $this->repository->save($entity);
@@ -150,7 +144,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     /**
      * Remove an entity.
      *
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws AssertionFailedException If an invalid entity type is given.
      */
@@ -159,7 +153,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
         Assertion::isInstanceOf(
             $entity,
             Model::class,
-            'Entity repository requires an instance of the ContaoModelEntity'
+            'Entity repository requires an instance of the ContaoModelEntity',
         );
 
         $this->repository->delete($entity);

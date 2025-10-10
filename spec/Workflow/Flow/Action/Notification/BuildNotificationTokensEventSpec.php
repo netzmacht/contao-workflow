@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 final class BuildNotificationTokensEventSpec extends ObjectBehavior
 {
     /** @var string[] */
-    private static $tokens = ['foo' => 'bar'];
+    private static array $tokens = ['foo' => 'bar'];
 
     public function let(Transition $transition, Item $item, Context $context): void
     {
@@ -66,7 +66,7 @@ final class BuildNotificationTokensEventSpec extends ObjectBehavior
             [
                 'example' => 1,
                 'baz'     => 2,
-            ]
+            ],
         );
 
         $this->getTokens()->shouldHaveKeyWithValue('example', 1);
