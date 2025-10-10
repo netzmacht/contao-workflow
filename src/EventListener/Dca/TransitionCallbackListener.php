@@ -12,6 +12,7 @@ use Contao\Model\Collection;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
+use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
@@ -39,11 +40,6 @@ use function time;
 final class TransitionCallbackListener extends AbstractListener
 {
     use EntityPropertiesTrait;
-
-    /**
-     * Table name.
-     */
-    protected static string $name = 'tl_workflow_transition';
 
     /**
      * Repository manager.
@@ -87,7 +83,8 @@ final class TransitionCallbackListener extends AbstractListener
         TranslatorInterface $translator,
         AssetsManager $assetsManager,
         array $transitionTypes,
-    ) {
+    )
+    {
         parent::__construct($dcaManager);
 
         $this->repositoryManager = $repositoryManager;
@@ -95,6 +92,11 @@ final class TransitionCallbackListener extends AbstractListener
         $this->workflowManager   = $workflowManager;
         $this->translator        = $translator;
         $this->assetsManager     = $assetsManager;
+    }
+
+    public static function getName(): string
+    {
+        return 'tl_workflow_transition';
     }
 
     /**

@@ -35,11 +35,6 @@ final class ActionCallbackListener extends AbstractListener
     use EntityPropertiesTrait;
 
     /**
-     * The data container name.
-     */
-    protected static string $name = 'tl_workflow_action';
-
-    /**
      * Repository manager.
      */
     private RepositoryManager $repositoryManager;
@@ -81,6 +76,11 @@ final class ActionCallbackListener extends AbstractListener
         $this->workflowLoader        = $workflowLoader;
         $this->actionFactory         = $actionFactory;
         $this->providerConfiguration = $providerConfiguration;
+    }
+
+    public static function getName(): string
+    {
+        return 'tl_workflow_action';
     }
 
     /**
