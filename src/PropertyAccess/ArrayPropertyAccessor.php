@@ -9,6 +9,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Netzmacht\ContaoWorkflowBundle\Exception\RuntimeException;
+use Override;
 use Traversable;
 
 use function array_key_exists;
@@ -59,6 +60,7 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function set(string $name, $value): void
     {
         $this->array[$name] = $value;
@@ -67,11 +69,13 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function get(string $name)
     {
         return $this->array[$name] ?? null;
     }
 
+    #[Override]
     public function has(string $name): bool
     {
         if ($this->array instanceof ArrayAccess) {
@@ -82,6 +86,7 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     }
 
     /** @return Traversable<mixed,mixed> */
+    #[Override]
     public function getIterator(): Traversable
     {
         if (is_array($this->array)) {

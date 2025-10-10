@@ -9,6 +9,7 @@ use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -47,6 +48,7 @@ final class StepPermissionCondition implements Condition
     }
 
     /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
+    #[Override]
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         // workflow is not started, so no start step exists

@@ -9,6 +9,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
@@ -47,6 +48,7 @@ final class ButtonRenderer extends AbstractRenderer
         $this->requestStack = $requestStack;
     }
 
+    #[Override]
     public function supports(View $view): bool
     {
         return $view->getContext() instanceof Step;
@@ -55,6 +57,7 @@ final class ButtonRenderer extends AbstractRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         $step = $view->getContext();

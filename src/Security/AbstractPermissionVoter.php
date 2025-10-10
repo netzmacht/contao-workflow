@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Security;
 
 use Netzmacht\Workflow\Flow\Security\Permission;
+use Override;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface as Token;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Throwable;
@@ -26,6 +27,7 @@ abstract class AbstractPermissionVoter extends Voter
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function supports($attribute, $subject): bool
     {
         $subjectClass = $this->getSubjectClass();
@@ -52,6 +54,7 @@ abstract class AbstractPermissionVoter extends Voter
      *
      * @psalm-suppress MissingParamType
      */
+    #[Override]
     protected function voteOnAttribute($attribute, $subject, Token $token)
     {
         /** @psalm-suppress RedundantConditionGivenDocblockType - TODO: Do we need to fix the attribute type */

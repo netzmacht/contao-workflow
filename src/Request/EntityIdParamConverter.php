@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Request;
 
 use Netzmacht\Workflow\Data\EntityId;
+use Override;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class EntityIdParamConverter implements ParamConverterInterface
 {
+    #[Override]
     public function apply(Request $request, ParamConverter $configuration): bool
     {
         $attribute = $configuration->getName();
@@ -28,6 +30,7 @@ final class EntityIdParamConverter implements ParamConverterInterface
         return true;
     }
 
+    #[Override]
     public function supports(ParamConverter $configuration): bool
     {
         return $configuration->getClass() === EntityId::class;

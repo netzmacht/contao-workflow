@@ -11,6 +11,7 @@ use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager;
+use Override;
 
 /**
  * Class UpdateEntityAction updates the entity of a default workflow item
@@ -51,12 +52,14 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return [];
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         return true;
@@ -69,6 +72,7 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $entity = $item->getEntity();

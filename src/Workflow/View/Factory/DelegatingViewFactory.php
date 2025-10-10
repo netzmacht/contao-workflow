@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedViewContentType
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Flow\Item;
+use Override;
 
 final class DelegatingViewFactory implements ViewFactory
 {
@@ -29,6 +30,7 @@ final class DelegatingViewFactory implements ViewFactory
      *
      * @throws UnsupportedViewContentType When no factory is registered for the content type.
      */
+    #[Override]
     public function create(
         Item $item,
         $context,

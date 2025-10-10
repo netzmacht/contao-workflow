@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Patchwork\Utf8;
 
 final class NoteAction extends AbstractAction
@@ -42,6 +43,7 @@ final class NoteAction extends AbstractAction
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return [$this->payloadName()];
@@ -68,6 +70,7 @@ final class NoteAction extends AbstractAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         $name = $this->payloadName();
@@ -97,6 +100,7 @@ final class NoteAction extends AbstractAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $name = $this->payloadName();

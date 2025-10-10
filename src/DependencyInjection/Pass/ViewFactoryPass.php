@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass;
 
+use Override;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,7 @@ final class ViewFactoryPass implements CompilerPassInterface
      *
      * @throws InvalidConfigurationException If content_type attribute is missing.
      */
+    #[Override]
     public function process(ContainerBuilder $container): void
     {
         if (! $container->hasDefinition('netzmacht.contao_workflow.view.factory')) {

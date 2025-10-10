@@ -11,6 +11,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
@@ -57,21 +58,25 @@ final class NotificationActionFactory implements ActionTypeFactory
         $this->eventDispatcher       = $eventDispatcher;
     }
 
+    #[Override]
     public function getCategory(): string
     {
         return 'default';
     }
 
+    #[Override]
     public function getName(): string
     {
         return 'notification';
     }
 
+    #[Override]
     public function isPostAction(): bool
     {
         return true;
     }
 
+    #[Override]
     public function supports(Workflow $workflow): bool
     {
         return true;
@@ -80,6 +85,7 @@ final class NotificationActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function create(array $config, Transition $transition): Action
     {
         return new NotificationAction(

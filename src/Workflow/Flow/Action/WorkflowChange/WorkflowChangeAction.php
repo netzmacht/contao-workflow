@@ -9,6 +9,7 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Override;
 
 /**
  * Class WorkflowChangeAction executes the start transition of another workflow.
@@ -38,11 +39,13 @@ final class WorkflowChangeAction implements Action
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return $this->getStartTransition()->getRequiredPayloadProperties($item);
     }
 
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         $startTransition = $this->getStartTransition();
@@ -55,6 +58,7 @@ final class WorkflowChangeAction implements Action
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $this->getStartTransition()->execute($item, $context);

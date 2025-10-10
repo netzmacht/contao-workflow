@@ -14,6 +14,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeNotFound;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry;
 use Netzmacht\Workflow\Exception\WorkflowNotFound;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 
@@ -64,6 +65,7 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function load(): array
     {
         $workflowRepository = $this->repositoryManager->getRepository(WorkflowModel::class);

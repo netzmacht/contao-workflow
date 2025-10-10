@@ -7,6 +7,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Form;
 use Netzmacht\ContaoWorkflowBundle\Form\Builder\TransitionFormBuilder;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Handler\TransitionHandler;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
@@ -27,6 +28,7 @@ final class TransitionFormType extends AbstractType
         $this->formBuilder = $formBuilder;
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -39,6 +41,7 @@ final class TransitionFormType extends AbstractType
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function buildForm(FormBuilder $builder, array $options): void
     {
         $transitionHandler = $options['handler'];

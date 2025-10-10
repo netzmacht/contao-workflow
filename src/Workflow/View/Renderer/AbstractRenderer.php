@@ -8,6 +8,7 @@ use Assert\AssertionFailedException;
 use Netzmacht\Contao\Toolkit\Assertion\Assertion;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
+use Override;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 /**
@@ -73,6 +74,7 @@ abstract class AbstractRenderer implements Renderer
         return $this->translator->trans($key, $parameters, $domain);
     }
 
+    #[Override]
     public function render(View $view): void
     {
         $section = $this->getSectionName($view);

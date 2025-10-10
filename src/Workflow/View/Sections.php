@@ -6,6 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Override;
 use RuntimeException;
 
 use function array_key_exists;
@@ -101,6 +102,7 @@ final class Sections implements IteratorAggregate
     /**
      * Allow iterating over the sections.
      */
+    #[Override]
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->sections);

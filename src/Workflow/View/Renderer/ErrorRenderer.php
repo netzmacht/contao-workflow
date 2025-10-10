@@ -6,6 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Context\ErrorCollection;
+use Override;
 
 final class ErrorRenderer extends AbstractRenderer
 {
@@ -17,6 +18,7 @@ final class ErrorRenderer extends AbstractRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         return [
@@ -24,6 +26,7 @@ final class ErrorRenderer extends AbstractRenderer
         ];
     }
 
+    #[Override]
     public function supports(View $view): bool
     {
         $errors = $view->getOption('errors');

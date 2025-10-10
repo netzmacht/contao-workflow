@@ -11,6 +11,7 @@ use Contao\User as ContaoUser;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
+use Override;
 use PDO;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,6 +54,7 @@ final class WorkflowUser implements User
         $this->connection = $connection;
     }
 
+    #[Override]
     public function getUserId(UserInterface|null $user = null): EntityId|null
     {
         $user = $user ?: $this->security->getUser();
@@ -67,6 +69,7 @@ final class WorkflowUser implements User
         return null;
     }
 
+    #[Override]
     public function hasPermission(Permission $permission, UserInterface|null $user = null): bool
     {
         return array_key_exists($permission->__toString(), $this->getUserPermissions($user));
@@ -75,6 +78,7 @@ final class WorkflowUser implements User
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getPermissions(UserInterface|null $user = null): array
     {
         return array_map(

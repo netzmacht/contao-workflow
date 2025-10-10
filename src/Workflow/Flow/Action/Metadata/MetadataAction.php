@@ -9,6 +9,7 @@ use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MetadataAction implements Action
@@ -36,18 +37,21 @@ final class MetadataAction implements Action
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return [];
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         return true;
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $userId   = $this->user->getUserId();

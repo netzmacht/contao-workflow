@@ -10,6 +10,7 @@ use Contao\Model\Collection;
 use Exception;
 use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
+use Override;
 use Traversable;
 
 use function array_pop;
@@ -68,6 +69,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function set(string $name, $value): void
     {
         $path     = explode('.', $name);
@@ -89,6 +91,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function get(string $name)
     {
         $path     = explode('.', $name);
@@ -102,6 +105,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         return $model->$property;
     }
 
+    #[Override]
     public function has(string $name): bool
     {
         $path     = explode('.', $name);
@@ -116,6 +120,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
     }
 
     /** @return ArrayIterator<string,mixed> */
+    #[Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->model->row());

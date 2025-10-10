@@ -10,6 +10,7 @@ use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Util\Comparison;
+use Override;
 
 /**
  * Class PropertyCondition compares an entity property against a defined value.
@@ -111,6 +112,7 @@ final class PropertyCondition implements Condition
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         $entity = $item->getEntity();

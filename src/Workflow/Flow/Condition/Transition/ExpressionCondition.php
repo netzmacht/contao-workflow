@@ -8,6 +8,7 @@ use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
@@ -51,6 +52,7 @@ final class ExpressionCondition implements Condition
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @SuppressWarnings(PHPMD.EvalExpression)
      */
+    #[Override]
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         $values = [

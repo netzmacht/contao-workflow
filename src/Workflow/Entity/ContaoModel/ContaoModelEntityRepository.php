@@ -13,6 +13,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\Repository;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityRepository as WorkflowEntityRepository;
 use Netzmacht\Workflow\Data\Specification;
+use Override;
 
 use function array_filter;
 use function assert;
@@ -64,6 +65,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @throws AssertionFailedException If an invalid entity type is given.
      */
+    #[Override]
     public function add($entity): void
     {
         Assertion::isInstanceOf(
@@ -89,6 +91,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @throws InvalidArgumentException If no entity were found.
      */
+    #[Override]
     public function find($entityId): Model
     {
         $model = $this->repository->find((int) $entityId);
@@ -109,6 +112,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @return Model[]|iterable
      */
+    #[Override]
     public function findBySpecification(Specification $specification): iterable
     {
         if ($specification instanceof ContaoModelSpecificationAwareSpecification) {
@@ -148,6 +152,7 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
      *
      * @throws AssertionFailedException If an invalid entity type is given.
      */
+    #[Override]
     public function remove($entity): void
     {
         Assertion::isInstanceOf(

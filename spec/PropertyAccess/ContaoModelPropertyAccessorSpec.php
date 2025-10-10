@@ -11,6 +11,7 @@ use Exception;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\ContaoModelPropertyAccessor;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessor;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
+use Override;
 use PhpSpec\ObjectBehavior;
 
 use function expect;
@@ -93,6 +94,7 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
              * @param string|mixed        $strKey
              * @param array<string,mixed> $arrOptions
              */
+            #[Override]
             public function getRelated($strKey, array $arrOptions = []): Model|Collection|null
             {
                 static $instance;

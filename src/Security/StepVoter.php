@@ -12,6 +12,7 @@ use Netzmacht\Workflow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\Exception\FlowException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Override;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -62,6 +63,7 @@ final class StepVoter extends Voter
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function supports(string $attribute, $subject): bool
     {
         if (! WorkflowPermissions::isAccessStep($attribute)) {
@@ -78,6 +80,7 @@ final class StepVoter extends Voter
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[Override]
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         assert($subject instanceof Item);

@@ -9,6 +9,7 @@ use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Condition\Workflow\Condition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Util\Comparison;
+use Override;
 
 /**
  * Property condition compares an entity property with an expected value
@@ -58,6 +59,7 @@ final class PropertyCondition implements Condition
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {
         if (! $this->propertyAccessManager->supports($entity)) {

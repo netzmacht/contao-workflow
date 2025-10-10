@@ -8,6 +8,7 @@ use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 use function count;
@@ -33,6 +34,7 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
         }
     }
 
+    #[Override]
     public function supports(Transition $transition): bool
     {
         if (count($this->builders) === 0) {
@@ -48,6 +50,7 @@ final class TransitionActionsFormBuilder implements TransitionFormBuilder
         return count($transition->getPostActions()) > 0;
     }
 
+    #[Override]
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
         $formData = $formBuilder->getData();

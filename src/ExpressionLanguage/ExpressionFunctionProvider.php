@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\ExpressionLanguage;
 
 use InvalidArgumentException;
+use Override;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
@@ -16,6 +17,7 @@ final class ExpressionFunctionProvider implements ExpressionFunctionProviderInte
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getFunctions(): array
     {
         // phpcs:disable Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed

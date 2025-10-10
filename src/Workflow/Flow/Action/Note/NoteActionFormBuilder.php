@@ -9,6 +9,7 @@ use Netzmacht\ContaoWorkflowBundle\Form\Builder\ActionFormBuilder;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 use Symfony\Component\Validator\Constraints\Length;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class NoteActionFormBuilder implements ActionFormBuilder
 {
+    #[Override]
     public function supports(Action $action): bool
     {
         return $action instanceof NoteAction;
@@ -26,6 +28,7 @@ final class NoteActionFormBuilder implements ActionFormBuilder
      *
      * @throws UnsupportedAction When invalid action is given.
      */
+    #[Override]
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         if (! $action instanceof NoteAction) {

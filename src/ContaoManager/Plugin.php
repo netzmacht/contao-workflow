@@ -11,6 +11,7 @@ use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Netzmacht\Contao\Toolkit\Bundle\NetzmachtContaoToolkitBundle;
 use Netzmacht\ContaoWorkflowBundle\NetzmachtContaoWorkflowBundle;
+use Override;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,6 +22,7 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getBundles(ParserInterface $parser): array
     {
         return [
@@ -38,6 +40,7 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): RouteCollection|null
     {
         $loader = $resolver->resolve(__DIR__ . '/../Resources/config/routing.yml');

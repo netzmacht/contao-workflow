@@ -10,6 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 use function assert;
@@ -45,6 +46,7 @@ final class TeaserRenderer extends AbstractRenderer
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
+    #[Override]
     public function supports(View $view): bool
     {
         return $view->getContext() instanceof Transition
@@ -54,6 +56,7 @@ final class TeaserRenderer extends AbstractRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         $context = $view->getContext();

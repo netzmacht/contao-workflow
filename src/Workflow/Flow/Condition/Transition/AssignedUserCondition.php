@@ -11,6 +11,7 @@ use Netzmacht\Workflow\Flow\Condition\Transition\Condition;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 
 /** @SuppressWarnings(PHPMD.LongVariable) */
 final class AssignedUserCondition implements Condition
@@ -43,6 +44,7 @@ final class AssignedUserCondition implements Condition
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function match(Transition $transition, Item $item, Context $context): bool
     {
         $entity = $item->getEntity();

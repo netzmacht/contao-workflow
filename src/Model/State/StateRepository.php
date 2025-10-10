@@ -12,6 +12,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Data\StateRepository as WorkflowStateRepository;
 use Netzmacht\Workflow\Flow\State;
+use Override;
 use ReflectionObject;
 
 use function assert;
@@ -43,6 +44,7 @@ final class StateRepository implements WorkflowStateRepository
      *
      * @return State[]|iterable
      */
+    #[Override]
     public function find(EntityId $entityId): iterable
     {
         $repository = $this->repositoryManager->getRepository(StateModel::class);
@@ -66,6 +68,7 @@ final class StateRepository implements WorkflowStateRepository
      *
      * @param State $state The new state.
      */
+    #[Override]
     public function add(State $state): void
     {
         // state is immutable. only store new states.

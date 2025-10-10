@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAc
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 
 use function assert;
 use function is_array;
@@ -20,12 +21,14 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return [$this->getName()];
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         $payload = $context->getPayload();
@@ -37,6 +40,7 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $payload = $context->getPayload();

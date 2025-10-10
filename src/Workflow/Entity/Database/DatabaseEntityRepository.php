@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Data\Specification;
+use Override;
 use RuntimeException;
 
 use function is_array;
@@ -42,6 +43,7 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @throws InvalidArgumentException When an entity could not be found.
      */
+    #[Override]
     public function find($entityId): ArrayObject
     {
         $statement = $this->connection->createQueryBuilder()
@@ -68,6 +70,7 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @throws RuntimeException Not implemented yet.
      */
+    #[Override]
     public function findBySpecification(Specification $specification): iterable
     {
         throw new RuntimeException('Not supported.');
@@ -78,6 +81,7 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @throws UnsupportedEntity When an entity could not be found.
      */
+    #[Override]
     public function add($entity): void
     {
         if (! $entity instanceof ArrayObject) {
@@ -96,6 +100,7 @@ final class DatabaseEntityRepository implements EntityRepository
      *
      * @throws UnsupportedEntity When an entity could not be found.
      */
+    #[Override]
     public function remove($entity): void
     {
         if (! $entity instanceof ArrayObject) {

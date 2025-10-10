@@ -10,6 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
@@ -31,11 +32,13 @@ final class AssignUserActionFormBuilder implements ActionFormBuilder
         $this->userChoices = $userChoices;
     }
 
+    #[Override]
     public function supports(Action $action): bool
     {
         return $action instanceof AssignUserAction && ! $action->isCurrentUserAssigned();
     }
 
+    #[Override]
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         assert($action instanceof AssignUserAction);

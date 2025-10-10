@@ -33,6 +33,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Override;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,6 +114,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
     }
 
     /** {@inheritDoc} */
+    #[Override]
     protected function preGenerate(Request $request, Model $model, string $section, array|null $classes = null): Response|null
     {
         $entityId   = $this->getEntityId($model);
@@ -161,6 +163,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
     }
 
     /** {@inheritDoc} */
+    #[Override]
     protected function prepareTemplateData(array $data, Request $request, Model $model): array
     {
         $data         = parent::prepareTemplateData($data, $request, $model);

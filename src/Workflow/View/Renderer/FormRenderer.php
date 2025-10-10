@@ -6,6 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\View\Renderer;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormInterface as Form;
 
 use function assert;
@@ -17,6 +18,7 @@ final class FormRenderer extends AbstractRenderer
      */
     protected static string $section = 'form';
 
+    #[Override]
     public function supports(View $view): bool
     {
         return $view->getContext() instanceof Transition && $view->getOption('form') instanceof Form;
@@ -25,6 +27,7 @@ final class FormRenderer extends AbstractRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         $form = $view->getOption('form');

@@ -9,6 +9,7 @@ use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment as Twig;
 
@@ -100,21 +101,25 @@ final class HtmlView implements View
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getContext()
     {
         return $this->context;
     }
 
+    #[Override]
     public function getItem(): Item
     {
         return $this->item;
     }
 
+    #[Override]
     public function getWorkflow(): Workflow
     {
         return $this->workflow;
     }
 
+    #[Override]
     public function getContentType(): string
     {
         return self::CONTENT_TYPE_HTML;
@@ -123,6 +128,7 @@ final class HtmlView implements View
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getOption(string $name, $default = null)
     {
         if (isset($this->options[$name])) {
@@ -135,6 +141,7 @@ final class HtmlView implements View
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function addSection(string $name, array $parameters, string|null $defaultTemplate = null): View
     {
         $this->sections[$name]         = $parameters;
@@ -143,11 +150,13 @@ final class HtmlView implements View
         return $this;
     }
 
+    #[Override]
     public function hasSection(string $name): bool
     {
         return isset($this->sections[$name]);
     }
 
+    #[Override]
     public function render(): Response
     {
         if ($this->renderer->supports($this)) {

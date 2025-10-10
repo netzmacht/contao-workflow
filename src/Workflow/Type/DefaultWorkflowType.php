@@ -10,6 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Condition\Workflow\PropertyCond
 use Netzmacht\Workflow\Flow\Condition\Workflow\OrCondition;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager;
+use Override;
 
 use function array_keys;
 
@@ -50,6 +51,7 @@ final class DefaultWorkflowType extends AbstractWorkflowType
         $this->defaultWorkflowTypes  = $configuration;
     }
 
+    #[Override]
     public function configure(Workflow $workflow, callable $next): void
     {
         parent::configure($workflow, $next);

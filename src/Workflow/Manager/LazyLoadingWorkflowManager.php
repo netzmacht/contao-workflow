@@ -10,6 +10,7 @@ use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Handler\TransitionHandler;
 use Netzmacht\Workflow\Manager\Manager;
+use Override;
 
 final class LazyLoadingWorkflowManager implements Manager
 {
@@ -33,6 +34,7 @@ final class LazyLoadingWorkflowManager implements Manager
         $this->workflowLoader = $workflowLoader;
     }
 
+    #[Override]
     public function handle(Item $item, string|null $transitionName = null, bool $changeWorkflow = false): TransitionHandler|null
     {
         $this->loadWorkflowDefinitions();
@@ -40,6 +42,7 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->handle($item, $transitionName, $changeWorkflow);
     }
 
+    #[Override]
     public function addWorkflow(Workflow $workflow): Manager
     {
         $this->inner->addWorkflow($workflow);
@@ -50,6 +53,7 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getWorkflow(EntityId $entityId, $entity): Workflow
     {
         $this->loadWorkflowDefinitions();
@@ -57,6 +61,7 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->getWorkflow($entityId, $entity);
     }
 
+    #[Override]
     public function getWorkflowByName(string $name): Workflow
     {
         $this->loadWorkflowDefinitions();
@@ -64,6 +69,7 @@ final class LazyLoadingWorkflowManager implements Manager
         return $this->inner->getWorkflowByName($name);
     }
 
+    #[Override]
     public function getWorkflowByItem(Item $item): Workflow
     {
         $this->loadWorkflowDefinitions();
@@ -74,6 +80,7 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function hasWorkflow(EntityId $entityId, $entity): bool
     {
         $this->loadWorkflowDefinitions();
@@ -84,6 +91,7 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getWorkflows(): iterable
     {
         $this->loadWorkflowDefinitions();
@@ -94,6 +102,7 @@ final class LazyLoadingWorkflowManager implements Manager
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function createItem(EntityId $entityId, $entity): Item
     {
         return $this->inner->createItem($entityId, $entity);

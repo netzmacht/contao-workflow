@@ -10,6 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAc
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 
 /**
  * Class AssignUserAction assigns a user to an entity property.
@@ -61,6 +62,7 @@ final class AssignUserAction extends AbstractPropertyAccessAction
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         if ($this->assignCurrentUser) {
@@ -71,6 +73,7 @@ final class AssignUserAction extends AbstractPropertyAccessAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         if ($this->assignCurrentUser) {
@@ -81,6 +84,7 @@ final class AssignUserAction extends AbstractPropertyAccessAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $accessor = $this->propertyAccessManager->provideAccess($item->getEntity());

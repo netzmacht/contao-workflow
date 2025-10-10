@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\WorkflowChange\WorkflowC
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /** @SuppressWarnings(PHPMD.LongVariable) */
@@ -24,11 +25,13 @@ class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
         $this->transitionFormBuilder = $transitionFormBuilder;
     }
 
+    #[Override]
     public function supports(Transition $transition): bool
     {
         return $transition->getConfigValue('type') === 'workflow';
     }
 
+    #[Override]
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
         foreach ($transition->getPostActions() as $action) {

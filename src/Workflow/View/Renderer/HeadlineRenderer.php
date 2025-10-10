@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Step;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 
 use function get_class;
 
@@ -18,6 +19,7 @@ final class HeadlineRenderer extends AbstractRenderer
      */
     protected static string $section = 'headline';
 
+    #[Override]
     public function supports(View $view): bool
     {
         return true;
@@ -26,6 +28,7 @@ final class HeadlineRenderer extends AbstractRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         $context = $view->getContext();

@@ -10,10 +10,12 @@ use Netzmacht\ContaoWorkflowBundle\Form\Builder\ActionFormBuilder;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedAction;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 final class FormActionFormBuilder implements ActionFormBuilder
 {
+    #[Override]
     public function supports(Action $action): bool
     {
         return $action instanceof FormAction;
@@ -24,6 +26,7 @@ final class FormActionFormBuilder implements ActionFormBuilder
      *
      * @throws UnsupportedAction When invalid action is passed.
      */
+    #[Override]
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         if (! $action instanceof FormAction) {

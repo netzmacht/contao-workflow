@@ -7,6 +7,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Form\Builder;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /** @SuppressWarnings(PHPMD.LongVariable) */
@@ -39,11 +40,13 @@ final class DelegatingTransitionFormBuilder implements TransitionFormBuilder
         $this->formBuilders[] = $transitionFormBuilder;
     }
 
+    #[Override]
     public function supports(Transition $transition): bool
     {
         return true;
     }
 
+    #[Override]
     public function buildForm(Transition $transition, Item $item, Context $context, FormBuilder $formBuilder): void
     {
         foreach ($this->formBuilders as $transitionFormBuilder) {

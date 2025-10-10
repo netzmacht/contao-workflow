@@ -6,6 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\Workflow\Entity;
 
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
+use Override;
 
 final class DelegatingRepositoryFactory implements RepositoryFactory
 {
@@ -22,6 +23,7 @@ final class DelegatingRepositoryFactory implements RepositoryFactory
         $this->factories = $factories;
     }
 
+    #[Override]
     public function supports(string $providerName): bool
     {
         foreach ($this->factories as $factory) {
@@ -38,6 +40,7 @@ final class DelegatingRepositoryFactory implements RepositoryFactory
      *
      * @throws UnsupportedEntity When Entity type is not supported.
      */
+    #[Override]
     public function create(string $providerName): EntityRepository
     {
         foreach ($this->factories as $factory) {

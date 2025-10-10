@@ -10,6 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 
 /**
  * Class AssignUserActionFactory creates an AssignUserAction
@@ -49,21 +50,25 @@ class AssignUserActionFactory implements ActionTypeFactory
         $this->providerConfiguration = $providerConfiguration;
     }
 
+    #[Override]
     public function getCategory(): string
     {
         return 'default';
     }
 
+    #[Override]
     public function getName(): string
     {
         return 'assign_user';
     }
 
+    #[Override]
     public function isPostAction(): bool
     {
         return false;
     }
 
+    #[Override]
     public function supports(Workflow $workflow): bool
     {
         return $this->providerConfiguration[$workflow->getProviderName()]['assign_users'] !== [];
@@ -72,6 +77,7 @@ class AssignUserActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function create(array $config, Transition $transition): Action
     {
         return new AssignUserAction(

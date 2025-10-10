@@ -10,6 +10,7 @@ use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\RepositoryFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
+use Override;
 
 use function class_exists;
 use function is_a;
@@ -46,6 +47,7 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
         $this->changeTracker     = $changeTracker;
     }
 
+    #[Override]
     public function supports(string $providerName): bool
     {
         $modelClass = $this->modelAdapter->getClassFromTable($providerName);
@@ -58,6 +60,7 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
      *
      * @throws UnsupportedEntity When Entity type is not supported.
      */
+    #[Override]
     public function create(string $providerName): EntityRepository
     {
         $modelClass = $this->modelAdapter->getClassFromTable($providerName);

@@ -13,6 +13,7 @@ use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 use function assert;
@@ -35,11 +36,13 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
+    #[Override]
     public function supports(Action $action): bool
     {
         return $action instanceof UpdateEntityAction;
     }
 
+    #[Override]
     public function buildForm(Action $action, Transition $transition, FormBuilder $formBuilder): void
     {
         assert($action instanceof UpdateEntityAction);
@@ -68,6 +71,7 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function buildFormData(
         Action $action,
         Transition $transition,

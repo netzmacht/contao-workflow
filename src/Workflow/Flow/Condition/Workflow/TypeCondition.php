@@ -8,6 +8,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowType;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Condition\Workflow\Condition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 
 /**
  * Class TypeCondition helps to decide if workflow type matches.
@@ -28,6 +29,7 @@ final class TypeCondition implements Condition
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {
         return $this->type->match((string) $workflow->getConfigValue('type'));

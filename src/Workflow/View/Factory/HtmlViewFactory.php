@@ -11,6 +11,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\View\View;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Manager\Manager;
+use Override;
 use Twig\Environment as Twig;
 use Verraes\ClassFunctions\ClassFunctions;
 
@@ -71,6 +72,7 @@ final class HtmlViewFactory implements ViewFactory
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function create(
         Item $item,
         $context,

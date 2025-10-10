@@ -15,6 +15,7 @@ use Netzmacht\Workflow\Data\EntityManager;
 use Netzmacht\Workflow\Exception\WorkflowException;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Manager\Manager;
+use Override;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 use function array_reverse;
@@ -68,6 +69,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     /**
      * {@inheritDoc}
      */
+    #[Override]
     protected function renderParameters(View $view): array
     {
         $workflow     = $view->getWorkflow();

@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Data\EntityManager as WorkflowEntityManager;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Netzmacht\Workflow\Transaction\TransactionHandler;
+use Override;
 
 /**
  * Class EntityManager is the entity manager implementation for Contao.
@@ -45,6 +46,7 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
         $this->connection        = $connection;
     }
 
+    #[Override]
     public function getRepository(string $providerName): EntityRepository
     {
         if (isset($this->repositories[$providerName])) {
@@ -56,16 +58,19 @@ final class EntityManager implements WorkflowEntityManager, TransactionHandler
         return $this->repositories[$providerName];
     }
 
+    #[Override]
     public function begin(): void
     {
         $this->connection->beginTransaction();
     }
 
+    #[Override]
     public function commit(): void
     {
         $this->connection->commit();
     }
 
+    #[Override]
     public function rollback(): void
     {
         $this->connection->rollBack();

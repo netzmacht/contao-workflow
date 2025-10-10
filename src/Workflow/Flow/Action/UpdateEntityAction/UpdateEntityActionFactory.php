@@ -11,6 +11,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionTypeFactory;
 use Netzmacht\Workflow\Flow\Action;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 
 /**
  * Factory creates update entity action
@@ -36,21 +37,25 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
+    #[Override]
     public function getCategory(): string
     {
         return 'default';
     }
 
+    #[Override]
     public function getName(): string
     {
         return 'update_entity';
     }
 
+    #[Override]
     public function isPostAction(): bool
     {
         return false;
     }
 
+    #[Override]
     public function supports(Workflow $workflow): bool
     {
         try {
@@ -65,6 +70,7 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function create(array $config, Transition $transition): Action
     {
         return new UpdateEntityAction(

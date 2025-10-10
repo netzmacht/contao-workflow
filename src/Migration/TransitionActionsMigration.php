@@ -9,6 +9,7 @@ use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
+use Override;
 
 /**
  * Migrates action relations to reference actions
@@ -35,6 +36,7 @@ final class TransitionActionsMigration extends AbstractMigration
         $this->schemaProvider = $schemaProvider;
     }
 
+    #[Override]
     public function shouldRun(): bool
     {
         return $this->connection
@@ -42,6 +44,7 @@ final class TransitionActionsMigration extends AbstractMigration
             ->tablesExist(['tl_workflow_action', 'tl_workflow_transition_action']);
     }
 
+    #[Override]
     public function run(): MigrationResult
     {
         $schemaManager = $this->connection->getSchemaManager();

@@ -17,6 +17,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractPropertyAccessAc
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
+use Override;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
@@ -89,12 +90,14 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         return [];
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         $entity = $item->getEntity();
@@ -103,6 +106,7 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $entity           = $item->getEntity();

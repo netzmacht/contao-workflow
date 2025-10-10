@@ -10,6 +10,7 @@ use Netzmacht\Workflow\Flow\Exception\ActionFailedException;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\Transition;
 use Netzmacht\Workflow\Flow\Workflow;
+use Override;
 
 use function is_string;
 
@@ -49,6 +50,7 @@ final class ConditionalTransitionAction implements Action
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
         $transition = $this->determineMatchingTransition($item, new Context());
@@ -60,6 +62,7 @@ final class ConditionalTransitionAction implements Action
     }
 
     /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    #[Override]
     public function validate(Item $item, Context $context): bool
     {
         $transition = $this->determineMatchingTransition($item, $context);
@@ -82,6 +85,7 @@ final class ConditionalTransitionAction implements Action
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @SuppressWarnings(PHPMD.LongVariable)
      */
+    #[Override]
     public function transit(Transition $transition, Item $item, Context $context): void
     {
         $conditionalTransitionName = $context->getProperties()->get($this->name);

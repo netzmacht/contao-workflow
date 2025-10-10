@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\DependencyInjection\Pass;
 
+use Override;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,6 +13,7 @@ final class ExpressionLanguageFunctionsPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
+    #[Override]
     public function process(ContainerBuilder $container): void
     {
         if (! $container->hasDefinition('netzmacht.contao_workflow.expression_language')) {

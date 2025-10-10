@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\RepositoryFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
+use Override;
 
 final class DatabaseEntityRepositoryFactory implements RepositoryFactory
 {
@@ -22,6 +23,7 @@ final class DatabaseEntityRepositoryFactory implements RepositoryFactory
         $this->connection = $connection;
     }
 
+    #[Override]
     public function supports(string $providerName): bool
     {
         return $this->connection->getSchemaManager()->tablesExist([$providerName]);
@@ -32,6 +34,7 @@ final class DatabaseEntityRepositoryFactory implements RepositoryFactory
      *
      * @throws UnsupportedEntity When Entity type is not supported.
      */
+    #[Override]
     public function create(string $providerName): EntityRepository
     {
         if (! $this->supports($providerName)) {
