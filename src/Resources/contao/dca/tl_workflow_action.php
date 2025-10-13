@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Contao\DC_Table;
+
 $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
