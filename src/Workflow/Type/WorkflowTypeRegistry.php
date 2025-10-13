@@ -9,11 +9,11 @@ final class WorkflowTypeRegistry
     /**
      * Workflow types.
      *
-     * @var WorkflowType[]|array
+     * @var iterable<WorkflowType>
      */
-    private array $types;
+    private iterable $types;
 
-    /** @param array|WorkflowType[] $types Workflow types. */
+    /** @param iterable<WorkflowType> $types Workflow types. */
     public function __construct(iterable $types)
     {
         $this->types = $types;
