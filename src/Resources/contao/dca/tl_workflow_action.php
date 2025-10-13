@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow_action'] = [
     'config' => [
-        'dataContainer' => 'Table',
+        'dataContainer' => DC_Table::class,
         'ptable'        => 'tl_workflow',
         'dynamicPtable' => true,
         'sql'           => [

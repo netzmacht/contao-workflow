@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow_transition_conditional_transition'] = [
     'config' => [
-        'dataContainer' => 'Table',
+        'dataContainer' => DC_Table::class,
         'sql'           => [
             'keys' => [
                 'id'      => 'primary',

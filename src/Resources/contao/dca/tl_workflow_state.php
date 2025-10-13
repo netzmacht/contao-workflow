@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $GLOBALS['TL_DCA']['tl_workflow_state'] = [
     'config' => [
-        'dataContainer'   => 'Table',
+        'dataContainer'   => DC_Table::class,
         'closed'          => true,
         'sql'             => [
             'keys' => [
