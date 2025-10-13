@@ -7,7 +7,6 @@ namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
-use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Netzmacht\ContaoWorkflowBundle\Exception\RuntimeException;
 use Override;
 use Traversable;
@@ -20,27 +19,6 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     /** @param ArrayAccess<mixed,mixed>|array<mixed,mixed> $array Data array. */
     public function __construct(private array|ArrayAccess $array)
     {
-    }
-
-    /** @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead. */
-    public static function supports(mixed $object): bool
-    {
-        return is_array($object) || $object instanceof ArrayAccess;
-    }
-
-    /**
-     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
-     *
-     * @throws PropertyAccessFailed When data structure is not supported.
-     */
-    public static function create(mixed $object): PropertyAccessor
-    {
-        /** @psalm-suppress DeprecatedMethod */
-        if (self::supports($object)) {
-            return new self($object);
-        }
-
-        throw new PropertyAccessFailed('Unsupported data structure.');
     }
 
      /** {@inheritDoc} */

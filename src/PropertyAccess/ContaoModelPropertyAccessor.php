@@ -8,7 +8,6 @@ use ArrayIterator;
 use Contao\Model;
 use Contao\Model\Collection;
 use Exception;
-use Netzmacht\ContaoWorkflowBundle\Exception\PropertyAccessFailed;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\ContaoModel\ContaoModelRelatedModelChangeTracker;
 use Override;
 use Traversable;
@@ -39,33 +38,6 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         $this->changesRegistry = $changesRegistry;
     }
 
-    /**
-     * @deprecated Will be removed in the next major release. use PropertyAccessorFactory instead.
-     *
-     * @param mixed $object
-     */
-    public static function supports($object): bool
-    {
-        return $object instanceof Model;
-    }
-
-    /**
-     * @deprecated Will be removed in the next major release. use PropertyAccessorFactory instead.
-     *
-     * @param mixed $object
-     *
-     * @throws PropertyAccessFailed When data structure is not supported.
-     */
-    public static function create($object): PropertyAccessor
-    {
-        /** @psalm-suppress DeprecatedMethod */
-        if (self::supports($object)) {
-            return new self($object);
-        }
-
-        throw new PropertyAccessFailed('Unsupported data structure.');
-    }
-
      /** {@inheritDoc} */
     #[Override]
     public function set(string $name, mixed $value): void
@@ -88,7 +60,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
 
      /** {@inheritDoc} */
     #[Override]
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         $path     = explode('.', $name);
         $property = array_pop($path);
