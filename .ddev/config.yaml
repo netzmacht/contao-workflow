@@ -1,0 +1,22 @@
+name: contao-workflow
+type: php
+docroot: ".ddev/contao/public"
+php_version: "8.3"
+webserver_type: apache-fpm
+router_http_port: "80"
+router_https_port: "443"
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns: []
+database:
+  type: mariadb
+  version: "10.4"
+use_dns_when_possible: true
+composer_root: ".ddev/contao"
+composer_version: "2"
+web_environment: []
+nodejs_version: "16"
+timezone: Europe/Berlin
+working_dir: {
+  web: "/var/www/html/.ddev/contao"
+}
