@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
                     'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
-                    'handleButtonCallback',
+                    'onButtonCallback',
                 ],
                 'toolkit'         => [
                     'state_button' => ['stateColumn' => 'active'],
