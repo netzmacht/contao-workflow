@@ -69,9 +69,7 @@ final class HtmlViewFactory implements ViewFactory
         $this->scopeMatcher = $scopeMatcher;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function create(
         Item $item,
@@ -81,7 +79,7 @@ final class HtmlViewFactory implements ViewFactory
         string $contentType = View::CONTENT_TYPE_HTML,
     ): View {
         $workflowName = $item->getWorkflowName();
-        if ($workflowName) {
+        if ($workflowName !== null) {
             $workflow = $this->manager->getWorkflowByName($workflowName);
         } else {
             $workflow = $this->manager->getWorkflowByItem($item);
@@ -93,7 +91,7 @@ final class HtmlViewFactory implements ViewFactory
             $context,
             $this->renderer,
             $this->twig,
-            $template ?: $this->getTemplate($context),
+            $template ?? $this->getTemplate($context),
             $options,
         );
     }
@@ -103,7 +101,7 @@ final class HtmlViewFactory implements ViewFactory
      *
      * @param mixed $context Given context.
      */
-    private function getTemplate($context): string|null
+    private function getTemplate(mixed $context): string|null
     {
         if (is_object($context)) {
             $type = strtolower(ClassFunctions::short($context));

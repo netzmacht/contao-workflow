@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Contao\ArrayUtil;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\State\StateModel;
@@ -9,7 +10,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 
-array_insert(
+ArrayUtil::arrayInsert(
     $GLOBALS['BE_MOD'],
     1,
     [

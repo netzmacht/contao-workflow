@@ -10,9 +10,8 @@ use Contao\Image;
 use Contao\Input;
 use Contao\Model\Collection;
 use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
-use Netzmacht\Contao\Toolkit\Dca\Definition;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
@@ -22,6 +21,7 @@ use Netzmacht\ContaoWorkflowBundle\Model\Step\StepModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
+use Override;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_filter;
@@ -42,33 +42,6 @@ final class TransitionCallbackListener extends AbstractListener
     use EntityPropertiesTrait;
 
     /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Configuration of available transition types.
-     *
-     * @var array<array<string,mixed>>
-     */
-    private array $transitionTypes;
-
-    /**
-     * Workflow manager.
-     */
-    private WorkflowManager $workflowManager;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * Assets manager.
-     */
-    private AssetsManager $assetsManager;
-
-    /**
      * @param DcaManager                 $dcaManager        Data container manager.
      * @param RepositoryManager          $repositoryManager Repository manager.
      * @param WorkflowManager            $workflowManager   Workflow manager.
@@ -78,22 +51,16 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function __construct(
         DcaManager $dcaManager,
-        RepositoryManager $repositoryManager,
-        WorkflowManager $workflowManager,
-        TranslatorInterface $translator,
-        AssetsManager $assetsManager,
-        array $transitionTypes,
-    )
-    {
+        private readonly RepositoryManager $repositoryManager,
+        private readonly WorkflowManager $workflowManager,
+        private readonly TranslatorInterface $translator,
+        private readonly AssetsManager $assetsManager,
+        private readonly array $transitionTypes,
+    ) {
         parent::__construct($dcaManager);
-
-        $this->repositoryManager = $repositoryManager;
-        $this->transitionTypes   = $transitionTypes;
-        $this->workflowManager   = $workflowManager;
-        $this->translator        = $translator;
-        $this->assetsManager     = $assetsManager;
     }
 
+    #[Override]
     public static function getName(): string
     {
         return 'tl_workflow_transition';
@@ -147,18 +114,18 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getStepsTo(DataContainer $dataContainer): array
     {
-        assert($dataContainer->activeRecord !== null);
+        $currentRecord = $dataContainer->getCurrentRecord();
+        assert($currentRecord !== null);
 
         $steps      = [];
         $repository = $this->repositoryManager->getRepository(StepModel::class);
-        $collection = $repository->findBy(['.pid=?'], [$dataContainer->activeRecord->pid], ['order' => '.label']);
+        $collection = $repository->findBy(['.pid=?'], [$currentRecord['pid']], ['order' => '.label']);
 
         if ($collection) {
             foreach ($collection as $model) {
-                assert($model instanceof StepModel);
-
                 $steps[$model->id] = $model->label;
 
+                /** @psalm-suppress RiskyTruthyFalsyComparison */
                 if (! $model->final) {
                     continue;
                 }
@@ -177,6 +144,7 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getEntityProperties(): array
     {
+        /** @psalm-suppress RiskyCast */
         $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
         if (! $transition) {
             return [];
@@ -199,6 +167,7 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getActions(): array
     {
+        /** @psalm-suppress RiskyCast */
         $transition = $this->repositoryManager->getRepository(TransitionModel::class)->find((int) Input::get('id'));
         if (! $transition) {
             return [];
@@ -218,6 +187,7 @@ final class TransitionCallbackListener extends AbstractListener
     public function getConditionalTransitions(): array
     {
         $repository = $this->repositoryManager->getRepository(TransitionModel::class);
+        /** @psalm-suppress RiskyCast */
         $transition = $repository->find((int) Input::get('id'));
 
         if (! $transition) {
@@ -245,7 +215,7 @@ final class TransitionCallbackListener extends AbstractListener
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function loadConditionalTransitions($value, DataContainer $dataContainer): array
+    public function loadConditionalTransitions(mixed $value, DataContainer $dataContainer): array
     {
         $statement = $this->repositoryManager
             ->getConnection()
@@ -319,7 +289,7 @@ final class TransitionCallbackListener extends AbstractListener
             $connection->executeStatement(
                 'DELETE FROM tl_workflow_transition_conditional_transition WHERE id IN(?)',
                 [$ids],
-                [Connection::PARAM_INT_ARRAY],
+                [ArrayParameterType::INTEGER],
             );
         }
 
@@ -335,13 +305,14 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function getWorkflows(DataContainer $dataContainer): array
     {
-        if (! $dataContainer->activeRecord) {
+        $currentRecord = $dataContainer->getCurrentRecord();
+        if ($currentRecord === null) {
             $workflows = $this->workflowManager->getWorkflows();
         } else {
             $workflows     = [];
             $workflowModel = $this->repositoryManager
                 ->getRepository(WorkflowModel::class)
-                ->find((int) $dataContainer->activeRecord->pid);
+                ->find((int) $currentRecord['pid']);
 
             if ($workflowModel) {
                 foreach ($this->workflowManager->getWorkflows() as $workflow) {
@@ -386,23 +357,23 @@ final class TransitionCallbackListener extends AbstractListener
      */
     public function editAllTransitionsButton(DataContainer $dataContainer): string
     {
-        assert($dataContainer->activeRecord !== null);
+        $currentRecord = $dataContainer->getCurrentRecord();
+        assert($currentRecord !== null);
 
-        // @codingStandardsIgnoreStart
         $template = <<<'html'
 <div class="widget edit-all-transitions">
     <div>
         <p>
-        <a href="%s" onclick="Backend.openModalIframe({url:this.href, title:'%s'}); return false;" class="tl_submit" id="edit_all_transitions">%s</a>
+        <a href="%s" onclick="Backend.openModalIframe({url:this.href, title:'%s'}); return false;" 
+           class="tl_submit" id="edit_all_transitions">%s</a>
         </p>
     </div>
 </div>
 html;
-        // @codingStandardsIgnoreEnd
 
         return sprintf(
             $template,
-            Backend::addToUrl('table=tl_workflow_transition&act=&id=' . $dataContainer->activeRecord->pid),
+            Backend::addToUrl('table=tl_workflow_transition&act=&id=' . $currentRecord['pid']),
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
             $this->translator->trans('tl_workflow_transition.editAllTransitions', [], 'contao_tl_workflow_transition'),
         );
@@ -427,6 +398,8 @@ html;
         string $attributes,
     ): string {
         $supported = ($this->transitionTypes[$row['type']]['actions'] ?? false);
+
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         if ($supported) {
             return sprintf(
                 '<a href="%s" title="%s" %s>%s</a> ',

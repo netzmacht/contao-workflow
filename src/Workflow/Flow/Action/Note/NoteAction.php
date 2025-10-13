@@ -40,9 +40,7 @@ final class NoteAction extends AbstractAction
         $this->minLength = $minLength;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

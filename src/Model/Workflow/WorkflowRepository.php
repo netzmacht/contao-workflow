@@ -7,11 +7,10 @@ namespace Netzmacht\ContaoWorkflowBundle\Model\Workflow;
 use Contao\Model\Collection;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 
+/** @extends ContaoRepository<WorkflowModel> */
 final class WorkflowRepository extends ContaoRepository
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     public function __construct()
     {
         parent::__construct(WorkflowModel::class);
@@ -24,10 +23,13 @@ final class WorkflowRepository extends ContaoRepository
      * @param string              $workflowType The workflow type.
      * @param array<string,mixed> $options      Query options.
      *
-     * @return Collection|WorkflowModel[]|null
+     * @return Collection<WorkflowModel>|null
      */
-    public function findByProviderAndType(string $providerName, string $workflowType, array $options = []): Collection|array|null
-    {
+    public function findByProviderAndType(
+        string $providerName,
+        string $workflowType,
+        array $options = [],
+    ): Collection|null {
         return $this->findBy(
             ['.providerName=?', '.type=?'],
             [$providerName, $workflowType],
@@ -41,9 +43,9 @@ final class WorkflowRepository extends ContaoRepository
      * @param string              $providerName The provider name.
      * @param array<string,mixed> $options      Query options.
      *
-     * @return Collection|WorkflowModel[]|null
+     * @return Collection<WorkflowModel>|null
      */
-    public function findByProvider(string $providerName, array $options = []): Collection|array|null
+    public function findByProvider(string $providerName, array $options = []): Collection|null
     {
         return $this->findBy(['.providerName=?'], [$providerName], $options);
     }
@@ -53,9 +55,9 @@ final class WorkflowRepository extends ContaoRepository
      *
      * @param array<string,mixed> $options Query options.
      *
-     * @return Collection|WorkflowModel[]|null
+     * @return Collection<WorkflowModel>|null
      */
-    public function findActive(array $options = []): Collection|array|null
+    public function findActive(array $options = []): Collection|null
     {
         return $this->findBy(['.active=?'], ['1'], $options);
     }

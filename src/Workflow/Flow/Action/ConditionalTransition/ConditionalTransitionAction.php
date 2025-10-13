@@ -47,9 +47,7 @@ final class ConditionalTransitionAction implements Action
         $this->workflow        = $workflow;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

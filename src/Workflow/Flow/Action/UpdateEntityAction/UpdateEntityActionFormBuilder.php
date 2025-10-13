@@ -68,9 +68,7 @@ final class UpdateEntityActionFormBuilder implements DataAwareActionFormBuilder
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function buildFormData(
         Action $action,

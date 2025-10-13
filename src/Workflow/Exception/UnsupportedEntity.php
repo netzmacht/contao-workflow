@@ -14,15 +14,18 @@ use function sprintf;
 final class UnsupportedEntity extends RuntimeException implements WorkflowException
 {
     /**
-     * Create exception for an entity.
+     * Create an exception for an entity.
      *
      * @param EntityId       $entityId The entity id.
      * @param int            $code     The error code.
      * @param Throwable|null $previous Previous exception.
      */
-    public static function forEntity(EntityId $entityId, int $code = 0, Throwable|null $previous = null): UnsupportedEntity
-    {
-        return new static(
+    public static function forEntity(
+        EntityId $entityId,
+        int $code = 0,
+        Throwable|null $previous = null,
+    ): UnsupportedEntity {
+        return new self(
             sprintf('Could not create entity for given data of entity "%s" not found.', (string) $entityId),
             $code,
             $previous,
@@ -30,7 +33,7 @@ final class UnsupportedEntity extends RuntimeException implements WorkflowExcept
     }
 
     /**
-     * Create exception for an entity.
+     * Create an exception for an entity.
      *
      * @param string         $providerName The provider name.
      * @param int            $code         The error code.
@@ -41,7 +44,7 @@ final class UnsupportedEntity extends RuntimeException implements WorkflowExcept
         int $code = 0,
         Throwable|null $previous = null,
     ): UnsupportedEntity {
-        return new static(
+        return new self(
             sprintf('Entity of type "%s" is not supported.', $providerName),
             $code,
             $previous,

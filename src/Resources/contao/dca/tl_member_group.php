@@ -5,6 +5,7 @@ declare(strict_types=1);
 use ContaoCommunityAlliance\MetaPalettes\MetaPalettes;
 
 foreach (array_keys($GLOBALS['TL_DCA']['tl_member_group']['palettes']) as $palette) {
+    /** @psalm-suppress TypeDoesNotContainType */
     if ($palette === '__selector__') {
         continue;
     }

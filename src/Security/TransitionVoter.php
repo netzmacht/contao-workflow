@@ -13,28 +13,20 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use function assert;
-
 /**
  * The transition voter is a security voter to evaluate access to a step for a given workflow item.
  *
  * It expects the transition passed as the attribute and the subject as the workflow item.
+ *
+ * @extends Voter<string, Item>
  */
 final class TransitionVoter extends Voter
 {
-    /**
-     * Workflow user.
-     */
-    private User $user;
-
-    public function __construct(User $user, private WorkflowManager $workflowManager)
+    public function __construct(private readonly User $user, private readonly WorkflowManager $workflowManager)
     {
-        $this->user = $user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function supports(string $attribute, $subject): bool
     {
@@ -51,10 +43,8 @@ final class TransitionVoter extends Voter
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     #[Override]
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-        assert($subject instanceof Item);
-
         $transition = WorkflowPermissions::extractTransitionName($attribute);
 
         try {

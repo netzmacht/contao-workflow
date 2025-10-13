@@ -18,9 +18,7 @@ use function is_array;
  */
 final class UpdateEntityAction extends AbstractPropertyAccessAction
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

@@ -12,7 +12,7 @@ use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /** @SuppressWarnings(PHPMD.LongVariable) */
-class ConditionalTransitionFormBuilder implements TransitionFormBuilder
+final class ConditionalTransitionFormBuilder implements TransitionFormBuilder
 {
     /**
      * Transition form builder.

@@ -67,9 +67,7 @@ final class UpdateEntityActionFactory implements ActionTypeFactory
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function create(array $config, Transition $transition): Action
     {

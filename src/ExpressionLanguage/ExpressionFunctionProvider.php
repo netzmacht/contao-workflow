@@ -14,9 +14,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
  */
 final class ExpressionFunctionProvider implements ExpressionFunctionProviderInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getFunctions(): array
     {

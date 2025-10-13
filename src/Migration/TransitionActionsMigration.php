@@ -17,44 +17,36 @@ use Override;
 final class TransitionActionsMigration extends AbstractMigration
 {
     /**
-     * Database connection.
-     */
-    private Connection $connection;
-
-    /**
-     * Dca Schema provider.
-     */
-    private SchemaProvider $schemaProvider;
-
-    /**
      * @param Connection     $connection     Database connection.
      * @param SchemaProvider $schemaProvider Dca schema provider.
      */
-    public function __construct(Connection $connection, SchemaProvider $schemaProvider)
-    {
-        $this->connection     = $connection;
-        $this->schemaProvider = $schemaProvider;
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly SchemaProvider $schemaProvider,
+    ) {
     }
 
     #[Override]
     public function shouldRun(): bool
     {
         return $this->connection
-            ->getSchemaManager()
+            ->createSchemaManager()
             ->tablesExist(['tl_workflow_action', 'tl_workflow_transition_action']);
     }
 
     #[Override]
     public function run(): MigrationResult
     {
-        $schemaManager = $this->connection->getSchemaManager();
-        $fromTable     = $schemaManager->createSchema()->getTable('tl_workflow_action');
+        $schemaManager = $this->connection->createSchemaManager();
+        $fromTable     = $schemaManager->introspectSchema()->getTable('tl_workflow_action');
         /** @psalm-suppress DeprecatedMethod - Deprecated in Contao 4.11 */
         $toTable    = $this->schemaProvider->createSchema()->getTable('tl_workflow_action');
         $fromSchema = new Schema([$fromTable]);
         $toSchema   = new Schema([$toTable]);
+        $diff       = $schemaManager->createComparator()->compareSchemas($fromSchema, $toSchema);
+        $statements = $this->connection->getDatabasePlatform()->getAlterSchemaSQL($diff);
 
-        foreach ($fromSchema->getMigrateToSql($toSchema, $this->connection->getDatabasePlatform()) as $sql) {
+        foreach ($statements as $sql) {
             $this->connection->executeStatement($sql);
         }
 

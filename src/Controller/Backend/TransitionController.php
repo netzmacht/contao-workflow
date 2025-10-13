@@ -135,7 +135,7 @@ final class TransitionController extends AbstractController
                     (string) $entityId,
                     $e->getMessage(),
                 ),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e,
             );
         }
@@ -161,6 +161,7 @@ final class TransitionController extends AbstractController
      */
     protected function getRedirectUrl(EntityId $entityId, Request $request): string
     {
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         if ($request->query->get('ref')) {
             $url = '/' . urldecode((string) $request->query->get('ref'));
         } else {

@@ -32,12 +32,27 @@
               }
             }
           }
+        },
+        "phpcpd": {
+          "tasks": {
+            "phpcpd": {
+              "config": {
+                "exclude": [
+                  "spec/PropertyAccess/ArrayPropertyAccessorSpec.php",
+                  "spec/PropertyAccess/ContaoModelPropertyAccessorSpec.php"
+                ]
+              }
+            }
+          }
         }
       }
     },
     "psalm": {
       "configuration": {
         "errorLevel": "3"
+      },
+      "project-files": {
+        "directories": ["src"]
       }
     }
   }

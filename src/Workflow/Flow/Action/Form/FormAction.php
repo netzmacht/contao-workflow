@@ -12,9 +12,7 @@ use Override;
 
 final class FormAction extends AbstractAction
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

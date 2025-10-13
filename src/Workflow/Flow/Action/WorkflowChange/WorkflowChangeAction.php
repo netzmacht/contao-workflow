@@ -36,9 +36,7 @@ final class WorkflowChangeAction implements Action
         $this->workflowName    = $workflowName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

@@ -15,39 +15,22 @@ use Override;
 /**
  * Class AssignUserActionFactory creates an AssignUserAction
  *
- * The provider has to configured assignable user fields to support this action.
+ * The provider has to configure assignable user fields to support this action.
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AssignUserActionFactory implements ActionTypeFactory
+final class AssignUserActionFactory implements ActionTypeFactory
 {
-    /**
-     * The property access manager.
-     */
-    private PropertyAccessManager $propertyAccessManager;
-
-    /**
-     * The workflow user.
-     */
-    private User $user;
-
-    /**
-     * Provider configuration.
-     *
-     * @var array<string,array<string,mixed>>
-     */
-    private array $providerConfiguration;
-
     /**
      * @param PropertyAccessManager             $propertyAccessManager The property access manager.
      * @param User                              $user                  The workflow user.
      * @param array<string,array<string,mixed>> $providerConfiguration The provider configuration.
      */
-    public function __construct(PropertyAccessManager $propertyAccessManager, User $user, array $providerConfiguration)
-    {
-        $this->propertyAccessManager = $propertyAccessManager;
-        $this->user                  = $user;
-        $this->providerConfiguration = $providerConfiguration;
+    public function __construct(
+        private PropertyAccessManager $propertyAccessManager,
+        private User $user,
+        private array $providerConfiguration,
+    ) {
     }
 
     #[Override]
@@ -74,9 +57,7 @@ class AssignUserActionFactory implements ActionTypeFactory
         return $this->providerConfiguration[$workflow->getProviderName()]['assign_users'] !== [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function create(array $config, Transition $transition): Action
     {

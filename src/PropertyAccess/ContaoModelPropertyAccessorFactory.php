@@ -26,20 +26,16 @@ final class ContaoModelPropertyAccessorFactory implements PropertyAccessorFactor
         $this->changesRegistry = $changesRegistry;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function supports($object): bool
+    public function supports(mixed $object): bool
     {
         return $object instanceof Model;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function create($object): PropertyAccessor
+    public function create(mixed $object): PropertyAccessor
     {
         assert($object instanceof Model);
 

@@ -79,11 +79,17 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
         expect($this->changeTracker->release($this->model))->shouldHaveCount(1);
     }
 
-    /** @param array<string,mixed> $data */
+    /**
+     * @param array<string,mixed> $data
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     private function modelInstance(array $data = []): Model
     {
         $model = new class extends Model {
-            protected static string $strTable = 'tl_example';
+            /** @var string  */
+            // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+            protected static $strTable = 'tl_example';
 
             public function __construct(Result|null $objResult = null)
             {
@@ -101,7 +107,9 @@ final class ContaoModelPropertyAccessorSpec extends ObjectBehavior
                 if ($strKey === 'parent') {
                     if ($instance === null) {
                         $instance = new class extends Model {
-                            protected static string $strTable = 'tl_example_parent';
+                            /** @var string  */
+                            // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+                            protected static $strTable = 'tl_example_parent';
 
                             public function __construct(Result|null $objResult = null)
                             {

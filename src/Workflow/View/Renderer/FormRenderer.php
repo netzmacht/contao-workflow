@@ -24,9 +24,7 @@ final class FormRenderer extends AbstractRenderer
         return $view->getContext() instanceof Transition && $view->getOption('form') instanceof Form;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {

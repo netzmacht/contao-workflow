@@ -38,9 +38,7 @@ final class TransitionFormType extends AbstractType
             ->setAllowedTypes('item', Item::class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function buildForm(FormBuilder $builder, array $options): void
     {

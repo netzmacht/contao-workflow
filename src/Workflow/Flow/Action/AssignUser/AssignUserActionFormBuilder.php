@@ -19,17 +19,11 @@ use function assert;
 /**
  * Class AssignUserActionFormBuilder creates the form for the assign user action.
  */
-final class AssignUserActionFormBuilder implements ActionFormBuilder
+final readonly class AssignUserActionFormBuilder implements ActionFormBuilder
 {
-    /**
-     * The user choices.
-     */
-    private UserChoices $userChoices;
-
     /** @param UserChoices $userChoices The user choices. */
-    public function __construct(UserChoices $userChoices)
+    public function __construct(private UserChoices $userChoices)
     {
-        $this->userChoices = $userChoices;
     }
 
     #[Override]

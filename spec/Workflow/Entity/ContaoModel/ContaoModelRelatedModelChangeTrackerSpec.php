@@ -37,11 +37,17 @@ final class ContaoModelRelatedModelChangeTrackerSpec extends ObjectBehavior
         $this->release($baseModel)->shouldReturn([]);
     }
 
-    /** @param array<string,mixed> $data */
+    /**
+     * @param array<string,mixed> $data
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     private function modelInstance(array $data = []): Model
     {
         $instance = new class extends Model {
-            protected static string $strTable = 'tl_example';
+            /** @var string  */
+            // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+            protected static $strTable = 'tl_example';
 
             public function __construct(Result|null $objResult = null)
             {

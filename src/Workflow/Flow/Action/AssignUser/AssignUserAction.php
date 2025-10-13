@@ -59,9 +59,7 @@ final class AssignUserAction extends AbstractPropertyAccessAction
         $this->property          = $property;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

@@ -25,7 +25,7 @@ interface WorkflowType
      *
      * @param Workflow $workflow The workflow.
      * @param callable $next     Callable which triggers the next workflow configuration handler. Should be called by
-     *                           bye implementation to make sure what the default behaviour is applied.
+     *                           bye implementation to make sure what the default behavior is applied.
      */
     public function configure(Workflow $workflow, callable $next): void;
 

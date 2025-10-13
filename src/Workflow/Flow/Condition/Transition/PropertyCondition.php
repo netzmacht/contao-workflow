@@ -104,7 +104,7 @@ final class PropertyCondition implements Condition
      *
      * @return $this
      */
-    public function setValue($value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 
@@ -117,7 +117,7 @@ final class PropertyCondition implements Condition
     {
         $entity = $item->getEntity();
 
-        if (! $this->property) {
+        if ($this->property === null) {
             $context->addError('transition.condition.property.invalid_property');
 
             return false;

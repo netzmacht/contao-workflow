@@ -25,9 +25,7 @@ final class HeadlineRenderer extends AbstractRenderer
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {
@@ -43,9 +41,7 @@ final class HeadlineRenderer extends AbstractRenderer
                 break;
 
             case State::class:
-                // @codingStandardsIgnoreStart
                 // TODO: Implement state headline
-                // @codingStandardsIgnoreEnd
                 // No break
             default:
                 return [];
@@ -83,11 +79,13 @@ final class HeadlineRenderer extends AbstractRenderer
         $headline = [$workflow->getLabel()];
         $stepName = $view->getItem()->getCurrentStepName();
 
-        if ($stepName && $workflow->hasStep($stepName)) {
-            $currentStep = $workflow->getStep($stepName);
-            $headline[]  = $currentStep->getLabel();
-        } elseif ($stepName) {
-            $headline[] = $stepName;
+        if ($stepName !== null) {
+            if ($workflow->hasStep($stepName)) {
+                $currentStep = $workflow->getStep($stepName);
+                $headline[]  = $currentStep->getLabel();
+            } else {
+                $headline[] = $stepName;
+            }
         }
 
         $headline[] = $transition->getLabel();

@@ -16,7 +16,7 @@ final class PropertyAccessManager
     /**
      * Property access factories.
      *
-     * @var PropertyAccessorFactory[]
+     * @var list<PropertyAccessorFactory>
      */
     private array $factories = [];
 
@@ -60,11 +60,11 @@ final class PropertyAccessManager
      *
      * @throws PropertyAccessFailed If no supported data structure is given.
      */
-    public function provideAccess($data): PropertyAccessor
+    public function provideAccess(mixed $data): PropertyAccessor
     {
         $hash = is_object($data) ? spl_object_hash($data) : null;
 
-        if ($hash && array_key_exists($hash, $this->mapping)) {
+        if ($hash !== null && array_key_exists($hash, $this->mapping)) {
             return $this->mapping[$hash];
         }
 
@@ -75,7 +75,7 @@ final class PropertyAccessManager
 
             $accessor = $factory->create($data);
 
-            if ($hash) {
+            if ($hash !== null) {
                 $this->mapping[$hash] = $accessor;
             }
 

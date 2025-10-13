@@ -8,12 +8,13 @@ use Contao\BackendUser;
 use Contao\FrontendUser;
 use Contao\StringUtil;
 use Contao\User as ContaoUser;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Netzmacht\Workflow\Data\EntityId;
 use Netzmacht\Workflow\Flow\Security\Permission;
 use Override;
 use PDO;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function array_flip;
@@ -75,9 +76,7 @@ final class WorkflowUser implements User
         return array_key_exists($permission->__toString(), $this->getUserPermissions($user));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getPermissions(UserInterface|null $user = null): array
     {
@@ -175,7 +174,7 @@ SQL;
         $result = $this->connection->executeQuery(
             $sql,
             ['source' => 'tl_member_group', 'sourceIds' => $user->groups],
-            ['source' => PDO::PARAM_STR, 'sourceIds' => Connection::PARAM_STR_ARRAY],
+            ['source' => PDO::PARAM_STR, 'sourceIds' => ArrayParameterType::STRING],
         );
 
         return $result->fetchFirstColumn();

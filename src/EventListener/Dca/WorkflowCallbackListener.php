@@ -22,7 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 use function array_filter;
-use function assert;
 use function count;
 use function in_array;
 use function sprintf;
@@ -30,52 +29,22 @@ use function sprintf;
 /**
  * Class Workflow stores callback being used by the tl_workflow table.
  */
-final class WorkflowCallbackListener
+final readonly class WorkflowCallbackListener
 {
-    /**
-     * Workflow type registry.
-     */
-    private WorkflowTypeRegistry $typeRegistry;
-
-    /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Database driven workflow loader.
-     */
-    private DatabaseDrivenWorkflowLoader $workflowLoader;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * The workflow manager.
-     */
-    private WorkflowManager $workflowManager;
-
     /**
      * @param WorkflowTypeRegistry         $typeRegistry      Workflow type registry.
      * @param RepositoryManager            $repositoryManager Repository manager.
-     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database driven workflow loader.
+     * @param DatabaseDrivenWorkflowLoader $workflowLoader    Database-driven workflow loader.
      * @param WorkflowManager              $workflowManager   The workflow manager.
      * @param TranslatorInterface          $translator        Translator.
      */
     public function __construct(
-        WorkflowTypeRegistry $typeRegistry,
-        RepositoryManager $repositoryManager,
-        DatabaseDrivenWorkflowLoader $workflowLoader,
-        WorkflowManager $workflowManager,
-        TranslatorInterface $translator,
+        private WorkflowTypeRegistry $typeRegistry,
+        private RepositoryManager $repositoryManager,
+        private DatabaseDrivenWorkflowLoader $workflowLoader,
+        private WorkflowManager $workflowManager,
+        private TranslatorInterface $translator,
     ) {
-        $this->typeRegistry      = $typeRegistry;
-        $this->repositoryManager = $repositoryManager;
-        $this->workflowLoader    = $workflowLoader;
-        $this->workflowManager   = $workflowManager;
-        $this->translator        = $translator;
     }
 
     /**
@@ -154,15 +123,16 @@ final class WorkflowCallbackListener
      */
     public function getProviderNames(DataContainer $dataContainer): array
     {
-        if (! $dataContainer->activeRecord || ! $dataContainer->activeRecord->type) {
+        $currenRecord = $dataContainer->getCurrentRecord();
+        if ($currenRecord === null || $currenRecord['type'] === '') {
             return [];
         }
 
-        if (! $this->typeRegistry->hasType($dataContainer->activeRecord->type)) {
+        if (! $this->typeRegistry->hasType($currenRecord['type'])) {
             return [];
         }
 
-        return $this->typeRegistry->getType($dataContainer->activeRecord->type)->getProviderNames();
+        return $this->typeRegistry->getType($currenRecord['type'])->getProviderNames();
     }
 
     /**
@@ -172,6 +142,7 @@ final class WorkflowCallbackListener
      */
     public function getStartSteps(): array
     {
+        /** @psalm-suppress RiskyCast */
         return [
             'process' => ['start'],
             'steps'   => $this->getSteps((int) Input::get('id'), true),
@@ -187,9 +158,7 @@ final class WorkflowCallbackListener
      */
     public function getEndSteps(DataContainer $dataContainer): array
     {
-        assert($dataContainer->activeRecord !== null);
-
-        return $this->getSteps((int) $dataContainer->activeRecord->id);
+        return $this->getSteps((int) $dataContainer->id);
     }
 
     /**
@@ -205,7 +174,6 @@ final class WorkflowCallbackListener
 
         if ($collection) {
             foreach ($collection as $model) {
-                assert($model instanceof TransitionModel);
                 $label = sprintf('%s [ID %s]', $model->label, $model->id);
 
                 switch ($model->type) {
@@ -246,11 +214,11 @@ final class WorkflowCallbackListener
     /**
      * Validate given process data.
      *
-     * @param mixed $value Raw process vlaue.
+     * @param mixed $value Raw process value.
      *
      * @throws Exception If Invalid data given.
      */
-    public function validateProcess($value): mixed
+    public function validateProcess(mixed $value): mixed
     {
         $value = StringUtil::deserialize($value, true);
         $value = array_filter(
@@ -260,6 +228,7 @@ final class WorkflowCallbackListener
             },
         );
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         $this->guardStartStepDefined($value);
 
         return $value;
@@ -272,7 +241,7 @@ final class WorkflowCallbackListener
      *
      * @return list<array<string,mixed>>
      */
-    public function validatePermissions($value): array
+    public function validatePermissions(mixed $value): array
     {
         $value     = StringUtil::deserialize($value, true);
         $names     = [];
@@ -300,7 +269,7 @@ final class WorkflowCallbackListener
      * Get steps form database.
      *
      * @param int  $parentId    The parent id.
-     * @param bool $filterFinal If true only steps which are not final are loaded.
+     * @param bool $filterFinal If true, only steps which are not final are loaded.
      *
      * @return array<string|int,string>
      */
@@ -317,10 +286,9 @@ final class WorkflowCallbackListener
 
         if ($collection) {
             foreach ($collection as $model) {
-                assert($model instanceof StepModel);
-
                 $steps[$model->id] = $model->label;
 
+                /** @psalm-suppress RiskyTruthyFalsyComparison */
                 if (! $model->final) {
                     continue;
                 }

@@ -14,25 +14,11 @@ use Override;
 abstract class AbstractWorkflowType implements WorkflowType
 {
     /**
-     * Workflow type name.
+     * @param string       $name               The workflow type name.
+     * @param list<string> $supportedProviders Supported providers.
      */
-    private string $name;
-
-    /**
-     * List of supported providers.
-     *
-     * @var string[]|array
-     */
-    private array $supportedProviders;
-
-    /**
-     * @param string         $name               The workflow type name.
-     * @param array|string[] $supportedProviders Supported providers.
-     */
-    public function __construct(string $name, array $supportedProviders)
+    public function __construct(private string $name, private array $supportedProviders)
     {
-        $this->name               = $name;
-        $this->supportedProviders = $supportedProviders;
     }
 
     #[Override]
@@ -55,9 +41,7 @@ abstract class AbstractWorkflowType implements WorkflowType
         $next();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getProviderNames(): array
     {

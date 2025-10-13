@@ -16,9 +16,7 @@ use function dirname;
 
 final class NetzmachtContaoWorkflowExtension extends Extension
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function load(array $configs, ContainerBuilder $container): void
     {

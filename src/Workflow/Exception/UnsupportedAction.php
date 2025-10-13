@@ -15,7 +15,7 @@ use function sprintf;
 final class UnsupportedAction extends RuntimeException implements WorkflowException
 {
     /**
-     * Create exception for an action type.
+     * Create an exception for an action type.
      *
      * @param string         $type     The action type.
      * @param int            $code     The error code.
@@ -23,7 +23,7 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
      */
     public static function withType(string $type, int $code = 0, Throwable|null $previous = null): UnsupportedAction
     {
-        return new static(
+        return new self(
             sprintf('Action "%s" not found.', $type),
             $code,
             $previous,
@@ -31,7 +31,7 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
     }
 
     /**
-     * Create exception for an action type.
+     * Create an exception for an action type.
      *
      * @param Action         $action        The given action.
      * @param string         $expectedClass The expected action.
@@ -44,7 +44,7 @@ final class UnsupportedAction extends RuntimeException implements WorkflowExcept
         int $code = 0,
         Throwable|null $previous = null,
     ): UnsupportedAction {
-        return new static(
+        return new self(
             sprintf('Unexpected action "%s". "%s" expected', get_class($action), $expectedClass),
             $code,
             $previous,

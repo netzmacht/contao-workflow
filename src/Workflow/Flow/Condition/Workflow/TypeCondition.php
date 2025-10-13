@@ -26,9 +26,7 @@ final class TypeCondition implements Condition
         $this->type = $type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {

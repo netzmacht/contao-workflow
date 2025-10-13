@@ -19,6 +19,7 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWork
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 use NotificationCenter\Model\Notification;
+use Override;
 use Throwable;
 
 use function array_merge;
@@ -35,28 +36,6 @@ final class ActionCallbackListener extends AbstractListener
     use EntityPropertiesTrait;
 
     /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Workflow definition loader.
-     */
-    private DatabaseDrivenWorkflowLoader $workflowLoader;
-
-    /**
-     * The action factory.
-     */
-    private ActionFactory $actionFactory;
-
-    /**
-     * Provider configuration.
-     *
-     * @var array<string,array<string,mixed>>
-     */
-    private array $providerConfiguration;
-
-    /**
      * @param DcaManager                        $dcaManager            Data container manager.
      * @param RepositoryManager                 $repositoryManager     Repository manager.
      * @param DatabaseDrivenWorkflowLoader      $workflowLoader        Database driven workflow loader.
@@ -65,19 +44,15 @@ final class ActionCallbackListener extends AbstractListener
      */
     public function __construct(
         DcaManager $dcaManager,
-        RepositoryManager $repositoryManager,
-        DatabaseDrivenWorkflowLoader $workflowLoader,
-        ActionFactory $actionFactory,
-        array $providerConfiguration,
+        private readonly RepositoryManager $repositoryManager,
+        private readonly DatabaseDrivenWorkflowLoader $workflowLoader,
+        private readonly ActionFactory $actionFactory,
+        private readonly array $providerConfiguration,
     ) {
         parent::__construct($dcaManager);
-
-        $this->repositoryManager     = $repositoryManager;
-        $this->workflowLoader        = $workflowLoader;
-        $this->actionFactory         = $actionFactory;
-        $this->providerConfiguration = $providerConfiguration;
     }
 
+    #[Override]
     public static function getName(): string
     {
         return 'tl_workflow_action';
@@ -115,19 +90,20 @@ final class ActionCallbackListener extends AbstractListener
      */
     public function getTypes(DataContainer|null $dataContainer = null): array
     {
-        if ($dataContainer?->activeRecord === null) {
+        $currentRecord = $dataContainer?->getCurrentRecord();
+        if ($currentRecord === null) {
             return $this->actionFactory->getTypeNames();
         }
 
         try {
-            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
-                $workflow = $this->workflowLoader->loadWorkflowById((int) $dataContainer->activeRecord->pid);
+            if ($currentRecord['ptable'] === 'tl_workflow') {
+                $workflow = $this->workflowLoader->loadWorkflowById((int) $currentRecord['pid']);
 
                 return $this->actionFactory->getSupportedTypeNamesCategorized($workflow);
             }
 
             $repository      = $this->repositoryManager->getRepository(TransitionModel::class);
-            $transitionModel = $repository->find((int) $dataContainer->activeRecord->pid);
+            $transitionModel = $repository->find((int) $currentRecord['pid']);
             if ($transitionModel === null) {
                 return ['transitions' => ['reference']];
             }
@@ -139,7 +115,7 @@ final class ActionCallbackListener extends AbstractListener
                 $this->actionFactory->getSupportedTypeNamesCategorized($workflow),
             );
         } catch (Throwable) {
-            if ($dataContainer->activeRecord->ptable === 'tl_workflow') {
+            if ($currentRecord['ptable'] === 'tl_workflow') {
                 return $this->actionFactory->getTypeNames();
             }
 
@@ -232,7 +208,6 @@ final class ActionCallbackListener extends AbstractListener
         $collection = $repository->findByWorkflow((int) $workflow->id) ?: [];
         $options    = [];
         foreach ($collection as $model) {
-            assert($model instanceof ActionModel);
             $options[$model->id] = $model->label;
         }
 
@@ -244,6 +219,7 @@ final class ActionCallbackListener extends AbstractListener
      */
     private function getWorkflowModelByAction(): WorkflowModel|null
     {
+        /** @psalm-suppress RiskyCast */
         $action = $this->repositoryManager->getRepository(ActionModel::class)->find((int) Input::get('id'));
         if (! $action) {
             return null;

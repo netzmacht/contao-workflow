@@ -33,9 +33,7 @@ final class ButtonRenderer extends AbstractRenderer
      */
     private RequestStack $requestStack;
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     public function __construct(
         Translator $translator,
         RequestScopeMatcher $scopeMatcher,
@@ -54,9 +52,7 @@ final class ButtonRenderer extends AbstractRenderer
         return $view->getContext() instanceof Step;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {
@@ -120,8 +116,13 @@ final class ButtonRenderer extends AbstractRenderer
      *
      * @return list<array<string,mixed>>
      */
-    protected function buildActions(Step|null $step, Workflow $workflow, View $view, Context $context, array $params): array
-    {
+    protected function buildActions(
+        Step|null $step,
+        Workflow $workflow,
+        View $view,
+        Context $context,
+        array $params,
+    ): array {
         $actions = [];
         if (! $step) {
             $transition = $workflow->getStartTransition();

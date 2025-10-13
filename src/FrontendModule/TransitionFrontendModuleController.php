@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\FrontendModule;
 
 use Contao\Config;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Framework\Adapter;
-use Contao\CoreBundle\ServiceAnnotation\FrontendModule;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Input;
 use Contao\Model;
 use Contao\ModuleModel;
@@ -39,87 +40,53 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function in_array;
 use function sprintf;
 
-/** @FrontendModule("workflow_transition", category="workflow") */
+#[AsFrontendModule('workflow_transition', category: 'workflow', template: 'mod_workflow_transition')]
 final class TransitionFrontendModuleController extends AbstractFrontendModuleController
 {
     /**
-     * Workflow manager.
-     */
-    private WorkflowManager $workflowManager;
-
-    /**
-     * The entity manager.
-     */
-    private EntityManager $entityManager;
-
-    /**
-     * View factory.
-     */
-    private ViewFactory $viewFactory;
-
-    /**
-     * The form factory.
-     */
-    private FormFactory $formFactory;
-
-    /**
-     * The config adapter.
+     * @param Adapter<Input>  $inputAdapter
+     * @param Adapter<Config> $configAdapter
      *
-     * @var Adapter<Config>
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
-    private Adapter $configAdapter;
-
-    /**
-     * The input adapter.
-     *
-     * @var Adapter<Input>
-     */
-    private Adapter $inputAdapter;
-
-    /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /** @SuppressWarnings(PHPMD.ExcessiveParameterList) */
     public function __construct(
         TemplateRenderer $templateRenderer,
         RequestScopeMatcher $scopeMatcher,
         ResponseTagger $responseTagger,
         RouterInterface $router,
         TranslatorInterface $translator,
-        WorkflowManager $workflowManager,
-        EntityManager $entityManager,
-        RepositoryManager $repositoryManager,
-        FormFactory $formFactory,
-        ViewFactory $viewFactory,
-        Adapter $inputAdapter,
-        Adapter $configAdapter,
+        private readonly WorkflowManager $workflowManager,
+        private readonly EntityManager $entityManager,
+        private readonly RepositoryManager $repositoryManager,
+        private readonly FormFactory $formFactory,
+        private readonly ViewFactory $viewFactory,
+        private readonly Adapter $inputAdapter,
+        private readonly Adapter $configAdapter,
+        private readonly ContentUrlGenerator $contentUrlGenerator,
     ) {
         parent::__construct($templateRenderer, $scopeMatcher, $responseTagger, $router, $translator);
-
-        $this->workflowManager   = $workflowManager;
-        $this->entityManager     = $entityManager;
-        $this->repositoryManager = $repositoryManager;
-        $this->formFactory       = $formFactory;
-        $this->viewFactory       = $viewFactory;
-        $this->inputAdapter      = $inputAdapter;
-        $this->configAdapter     = $configAdapter;
     }
 
     /** {@inheritDoc} */
     #[Override]
-    protected function preGenerate(Request $request, Model $model, string $section, array|null $classes = null): Response|null
-    {
-        $entityId   = $this->getEntityId($model);
-        $item       = $this->createItem($entityId);
-        $workflow   = $this->getWorkflowByItem($item);
+    protected function preGenerate(
+        Request $request,
+        Model $model,
+        string $section,
+        array|null $classes = null,
+    ): Response|null {
+        $entityId = $this->getEntityId($model);
+        $item     = $this->createItem($entityId);
+        $workflow = $this->getWorkflowByItem($item);
+
+        /** @psalm-suppress PossiblyInvalidCast */
         $transition = (string) $this->inputAdapter->get('transition');
         $handler    = $this->createTransitionHandler($model, $entityId, $transition, $item, $workflow);
         $payload    = [];
@@ -184,9 +151,10 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
                 ? $this->inputAdapter->get('auto_item')
                 : $this->inputAdapter->get('entityId');
 
-            $entityId = EntityId::fromString($entityId);
+            /** @psalm-suppress PossiblyInvalidCast */
+            $entityId = EntityId::fromString((string) $entityId);
         } catch (AssertionFailed $exception) {
-            throw new RuntimeException('Invalid entity id given.', (int) $exception->getCode(), $exception);
+            throw new RuntimeException('Invalid entity id given.', $exception->getCode(), $exception);
         }
 
         $supportedProviders = StringUtil::deserialize($model->workflow_providers, true);
@@ -212,7 +180,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         } catch (UnsupportedEntity $e) {
             throw new PageNotFoundException(
                 sprintf('Entity "%s" not found.', (string) $entityId),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e,
             );
         }
@@ -270,7 +238,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
                     (string) $entityId,
                     $e->getMessage(),
                 ),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e,
             );
         }
@@ -296,7 +264,10 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
         if ($model->jumpTo) {
             $page = $this->repositoryManager->getRepository(PageModel::class)->find((int) $model->jumpTo);
             if ($page instanceof PageModel) {
-                return new RedirectResponse($page->getAbsoluteUrl(), Response::HTTP_SEE_OTHER);
+                return new RedirectResponse(
+                    $this->contentUrlGenerator->generate($page, referenceType: UrlGeneratorInterface::ABSOLUTE_URL),
+                    Response::HTTP_SEE_OTHER,
+                );
             }
         }
 

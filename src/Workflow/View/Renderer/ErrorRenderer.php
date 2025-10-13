@@ -15,9 +15,7 @@ final class ErrorRenderer extends AbstractRenderer
      */
     protected static string $section = 'errors';
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {

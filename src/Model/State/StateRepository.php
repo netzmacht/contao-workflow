@@ -15,7 +15,6 @@ use Netzmacht\Workflow\Flow\State;
 use Override;
 use ReflectionObject;
 
-use function assert;
 use function is_array;
 use function json_decode;
 use function json_encode;
@@ -38,7 +37,7 @@ final class StateRepository implements WorkflowStateRepository
     }
 
     /**
-     * Find last workflow state of an entity.
+     * Find the last workflow state of an entity.
      *
      * @param EntityId $entityId The entity id.
      *
@@ -56,7 +55,6 @@ final class StateRepository implements WorkflowStateRepository
 
         $states = [];
         foreach ($collection ?: [] as $model) {
-            assert($model instanceof StateModel);
             $states[] = $this->createState($model);
         }
 
@@ -72,7 +70,7 @@ final class StateRepository implements WorkflowStateRepository
     public function add(State $state): void
     {
         // state is immutable. only store new states.
-        if ($state->getStateId()) {
+        if ($state->getStateId() === null) {
             return;
         }
 
@@ -82,12 +80,11 @@ final class StateRepository implements WorkflowStateRepository
         // dynamically add state id.
         $reflector = new ReflectionObject($state);
         $property  = $reflector->getProperty('stateId');
-        $property->setAccessible(true);
         $property->setValue($state, $model->id);
     }
 
     /**
-     * Convert state object to model representation.
+     * Convert a state object to model representation.
      *
      * @param State $state The state being persisted.
      */
@@ -120,6 +117,7 @@ final class StateRepository implements WorkflowStateRepository
         $reachedAt->setTimestamp((int) $model->reachedAt);
         $reachedAt = DateTimeImmutable::createFromMutable($reachedAt);
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         return new State(
             EntityId::fromString($model->entityId),
             $model->workflowName,
@@ -139,19 +137,19 @@ final class StateRepository implements WorkflowStateRepository
      *
      * @param mixed $data The data being serialized.
      */
-    private function serialize($data): string
+    private function serialize(mixed $data): string
     {
         $data = $this->prepareSerialize($data);
 
-        return json_encode($data);
+        return (string) json_encode($data);
     }
 
     /**
-     * Prepare serializsation.
+     * Prepare serialization.
      *
      * @param mixed $data The data being serialized.
      */
-    private function prepareSerialize($data): mixed
+    private function prepareSerialize(mixed $data): mixed
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {

@@ -36,10 +36,13 @@ final class ContaoModelPropertyAccessorFactorySpec extends ObjectBehavior
         $instance->shouldBeAnInstanceOf(ContaoModelPropertyAccessor::class);
     }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
     private function modelInstance(): Model
     {
         return new class extends Model {
-            protected static string $strTable = 'tl_example';
+            /** @var string  */
+            // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+            protected static $strTable = 'tl_example';
 
             public function __construct(Result|null $objResult = null)
             {

@@ -31,7 +31,7 @@ use function assert;
 use function sprintf;
 
 /**
- * Class WorkflowBuilder builds an workflow.
+ * Class WorkflowBuilder builds a workflow.
  */
 final class WorkflowBuilder
 {
@@ -50,35 +50,15 @@ final class WorkflowBuilder
     private array $transitions = [];
 
     /**
-     * Contao model repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Action factory.
-     */
-    private ActionFactory $actionFactory;
-
-    /**
-     * Configuration of available transition types.
-     *
-     * @var array<string,array<string,mixed>>
-     */
-    private array $transitionTypes;
-
-    /**
      * @param RepositoryManager                 $repositoryManager Contao model repository manager.
      * @param ActionFactory                     $actionFactory     Action factory.
      * @param array<string,array<string,mixed>> $transitionTypes   Configuration of available transition types.
      */
     public function __construct(
-        RepositoryManager $repositoryManager,
-        ActionFactory $actionFactory,
-        array $transitionTypes,
+        private readonly RepositoryManager $repositoryManager,
+        private readonly ActionFactory $actionFactory,
+        private readonly array $transitionTypes,
     ) {
-        $this->repositoryManager = $repositoryManager;
-        $this->actionFactory     = $actionFactory;
-        $this->transitionTypes   = $transitionTypes;
     }
 
     /**
@@ -137,9 +117,7 @@ final class WorkflowBuilder
             return;
         }
 
-        while ($collection->next()) {
-            $model = $collection->current();
-            assert($model instanceof StepModel);
+        foreach ($collection as $model) {
             $step = new Step(
                 'step_' . $model->id,
                 $model->label,
@@ -152,7 +130,7 @@ final class WorkflowBuilder
 
             $step->setFinal((bool) $model->final);
 
-            if ($model->limitPermission && $model->permission !== '') {
+            if ((bool) $model->limitPermission && $model->permission !== '') {
                 $step->setPermission(Permission::fromString($model->permission));
             }
 
@@ -166,7 +144,7 @@ final class WorkflowBuilder
     }
 
     /**
-     * Create transitions from database.
+     * Create transitions from a database.
      *
      * @param Workflow        $workflow        The current workflow.
      * @param EventDispatcher $eventDispatcher The event dispatcher.
@@ -257,7 +235,7 @@ final class WorkflowBuilder
             ),
         );
 
-        if ($model->limitPermission && $model->permission !== '') {
+        if ((bool) $model->limitPermission && $model->permission !== '') {
             $transition->setPermission(Permission::fromString($model->permission));
         }
 

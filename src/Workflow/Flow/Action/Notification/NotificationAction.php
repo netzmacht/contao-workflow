@@ -90,9 +90,7 @@ final class NotificationAction extends AbstractAction
         $this->eventDispatcher   = $eventDispatcher;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {
@@ -167,7 +165,7 @@ final class NotificationAction extends AbstractAction
             $tokens['transition_' . $name] = StringUtil::deserialize($value);
         }
 
-        if ($currentStepName && $workflow->hasStep($currentStepName)) {
+        if ($currentStepName !== null && $workflow->hasStep($currentStepName)) {
             $step                = $workflow->getStep($currentStepName);
             $tokens['step_name'] = $step->getName();
 

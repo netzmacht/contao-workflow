@@ -17,52 +17,30 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use function assert;
 use function count;
 
 /**
  * The step voter is a security voter to evaluate access to a step for a given workflow item.
  *
+ * @extends Voter<string, Item>
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 final class StepVoter extends Voter
 {
-    /**
-     * The workflow user.
-     */
-    private User $workflowUser;
-
-    /**
-     * The property access manager.
-     */
-    private PropertyAccessManager $propertyAccessManager;
-
-    /**
-     * The provider configuration.
-     *
-     * @var array<string,array<string,mixed>>
-     */
-    private array $providerConfiguration;
-
     /**
      * @param User                              $workflowUser          The workflow user.
      * @param PropertyAccessManager             $propertyAccessManager The property access manager.
      * @param array<string,array<string,mixed>> $providerConfiguration The provider configuration.
      */
     public function __construct(
-        User $workflowUser,
-        PropertyAccessManager $propertyAccessManager,
-        private WorkflowManager $workflowManager,
-        array $providerConfiguration,
+        private readonly User $workflowUser,
+        private readonly PropertyAccessManager $propertyAccessManager,
+        private readonly WorkflowManager $workflowManager,
+        private readonly array $providerConfiguration,
     ) {
-        $this->workflowUser          = $workflowUser;
-        $this->propertyAccessManager = $propertyAccessManager;
-        $this->providerConfiguration = $providerConfiguration;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function supports(string $attribute, $subject): bool
     {
@@ -83,8 +61,6 @@ final class StepVoter extends Voter
     #[Override]
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-        assert($subject instanceof Item);
-
         $step = WorkflowPermissions::extractStepName($attribute);
 
         try {

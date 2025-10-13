@@ -53,9 +53,7 @@ final class TeaserRenderer extends AbstractRenderer
             || $view->getContext() instanceof Step;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {
@@ -66,7 +64,7 @@ final class TeaserRenderer extends AbstractRenderer
         $item        = $view->getItem();
         $currentStep = null;
 
-        if ($stepName && $workflow->hasStep($stepName)) {
+        if ($stepName !== null && $workflow->hasStep($stepName)) {
             $currentStep = $workflow->getStep($stepName);
         }
 
@@ -107,7 +105,7 @@ final class TeaserRenderer extends AbstractRenderer
             }
         }
 
-        if (! $label) {
+        if ($label === null) {
             $label = 'ID ' . $entityId->getIdentifier();
         } else {
             $label = sprintf('%s (ID %s)', $label, $entityId->getIdentifier());

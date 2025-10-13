@@ -10,16 +10,16 @@ namespace Netzmacht\ContaoWorkflowBundle\PropertyAccess;
 interface PropertyAccessorFactory
 {
     /**
-     * Check if entity supports property access.
+     * Check if the entity supports property access.
      *
      * @param mixed $object Given object.
      */
-    public function supports($object): bool;
+    public function supports(mixed $object): bool;
 
     /**
-     * Create property accessor for a given object.
+     * Create a property accessor for a given object.
      *
      * @param mixed $object Given object.
      */
-    public function create($object): PropertyAccessor;
+    public function create(mixed $object): PropertyAccessor;
 }

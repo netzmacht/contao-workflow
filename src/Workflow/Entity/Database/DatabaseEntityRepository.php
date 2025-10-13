@@ -14,8 +14,6 @@ use Override;
 use RuntimeException;
 
 use function is_array;
-use function is_int;
-use function is_string;
 use function sprintf;
 
 final class DatabaseEntityRepository implements EntityRepository
@@ -44,20 +42,20 @@ final class DatabaseEntityRepository implements EntityRepository
      * @throws InvalidArgumentException When an entity could not be found.
      */
     #[Override]
-    public function find($entityId): ArrayObject
+    public function find(mixed $entityId): ArrayObject
     {
-        $statement = $this->connection->createQueryBuilder()
+        $result = $this->connection->createQueryBuilder()
             ->select('*')
             ->from($this->providerName)
             ->where('id=:id')
             ->setParameter('id', $entityId)
-            ->execute();
+            ->executeQuery();
 
-        if (is_int($statement) || is_string($statement)) {
+        if ($result->rowCount() !== 1) {
             throw new InvalidArgumentException(sprintf('Could not find entity "%s"', $entityId));
         }
 
-        $row = $statement->fetchAssociative();
+        $row = $result->fetchAssociative();
         if (is_array($row)) {
             return new ArrayObject($row);
         }
@@ -82,7 +80,7 @@ final class DatabaseEntityRepository implements EntityRepository
      * @throws UnsupportedEntity When an entity could not be found.
      */
     #[Override]
-    public function add($entity): void
+    public function add(mixed $entity): void
     {
         if (! $entity instanceof ArrayObject) {
             throw UnsupportedEntity::forEntity($entity);
@@ -101,7 +99,7 @@ final class DatabaseEntityRepository implements EntityRepository
      * @throws UnsupportedEntity When an entity could not be found.
      */
     #[Override]
-    public function remove($entity): void
+    public function remove(mixed $entity): void
     {
         if (! $entity instanceof ArrayObject) {
             throw UnsupportedEntity::forEntity($entity);

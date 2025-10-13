@@ -5,34 +5,28 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
-use Contao\Model\Collection;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
 
-use function assert;
-
 /**
  * Class Permission initialize permission fields for the workflows for frontend and backend users.
  */
-final class PermissionCallbackListener
+final readonly class PermissionCallbackListener
 {
-    /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
     /** @param RepositoryManager $repositoryManager Repository manager. */
-    public function __construct(RepositoryManager $repositoryManager)
+    public function __construct(private RepositoryManager $repositoryManager)
     {
-        $this->repositoryManager = $repositoryManager;
     }
 
     /**
      * Get all permissions.
      *
      * @return array<string,array<string,string>>
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
      */
     public function getAllPermissions(): array
     {
@@ -41,8 +35,6 @@ final class PermissionCallbackListener
         $collection = $repository->findAll();
 
         if ($collection) {
-            assert($collection instanceof Collection);
-
             foreach ($collection as $workflow) {
                 $permissions = StringUtil::deserialize($workflow->permissions, true);
 
@@ -69,12 +61,13 @@ final class PermissionCallbackListener
      */
     public function getWorkflowPermissions(DataContainer $dataContainer): array
     {
-        if (! $dataContainer->activeRecord || ! $dataContainer->activeRecord->pid) {
+        $currentRecord = $dataContainer->getCurrentRecord();
+        if ($currentRecord === null || ! $currentRecord['pid']) {
             return [];
         }
 
         $repository = $this->repositoryManager->getRepository(WorkflowModel::class);
-        $workflow   = $repository->find((int) $dataContainer->activeRecord->pid);
+        $workflow   = $repository->find((int) $currentRecord['pid']);
         $options    = [];
 
         if ($workflow) {

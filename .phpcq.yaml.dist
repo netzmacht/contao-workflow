@@ -81,6 +81,11 @@ tasks:
   composer-require-checker:
     config:
       config_file: .composer-require-checker.json
+  phpcpd:
+    config:
+      exclude:
+        - spec/PropertyAccess/ArrayPropertyAccessorSpec.php
+        - spec/PropertyAccess/ContaoModelPropertyAccessorSpec.php
   phpcs:
     config:
       standard: ~

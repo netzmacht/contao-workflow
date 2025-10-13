@@ -87,9 +87,7 @@ final class UpdatePropertyAction extends AbstractPropertyAccessAction
         $this->user               = $user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

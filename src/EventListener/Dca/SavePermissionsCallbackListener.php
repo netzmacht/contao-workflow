@@ -6,7 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 
 use Contao\DataContainer;
 use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Permission\PermissionModel;
 
@@ -25,18 +25,12 @@ final class SavePermissionsCallbackListener
     private array $permissions = [];
 
     /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
      * Construct.
      *
      * @param RepositoryManager $repositoryManager Repository manager.
      */
-    public function __construct(RepositoryManager $repositoryManager)
+    public function __construct(private readonly RepositoryManager $repositoryManager)
     {
-        $this->repositoryManager = $repositoryManager;
     }
 
     /**
@@ -45,8 +39,9 @@ final class SavePermissionsCallbackListener
      * @param mixed         $permissions   The value.
      * @param DataContainer $dataContainer The data container driver.
      */
-    public function onSaveCallback($permissions, DataContainer $dataContainer): mixed
+    public function onSaveCallback(mixed $permissions, DataContainer $dataContainer): mixed
     {
+        /** @psalm-var list<string> $permissions */
         $permissions = StringUtil::deserialize($permissions, true);
 
         $this->loadPermissions($dataContainer->table, (int) $dataContainer->id);
@@ -94,10 +89,10 @@ final class SavePermissionsCallbackListener
 
         if ($values) {
             $queryBuilder->andWhere('permission NOT IN (:permissions)');
-            $queryBuilder->setParameter('permissions', $values, Connection::PARAM_STR_ARRAY);
+            $queryBuilder->setParameter('permissions', $values, ArrayParameterType::STRING);
         }
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 
     /**

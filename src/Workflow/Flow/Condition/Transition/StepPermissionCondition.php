@@ -87,7 +87,7 @@ final class StepPermissionCondition implements Condition
         $context->addError(
             'transition.condition.step_permission.failed',
             [
-                '%step%'       => $item->getCurrentStepName(),
+                '%step%'       => (string) $item->getCurrentStepName(),
                 '%permission%' => $permission ? ((string) $permission) : '-',
             ],
         );

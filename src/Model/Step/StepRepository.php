@@ -7,11 +7,9 @@ namespace Netzmacht\ContaoWorkflowBundle\Model\Step;
 use Contao\Model\Collection;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 
+/** @extends ContaoRepository<StepModel> */
 final class StepRepository extends ContaoRepository
 {
-    /**
-     * {@inheritDoc}
-     */
     public function __construct()
     {
         parent::__construct(StepModel::class);
@@ -23,10 +21,9 @@ final class StepRepository extends ContaoRepository
      * @param int                 $workflowId The workflow id.
      * @param array<string,mixed> $options    Query options.
      *
-     * @return Collection|StepModel[]|null
-     * @psalm-return Collection|null
+     * @return Collection<StepModel>|null
      */
-    public function findByWorkflow(int $workflowId, array $options = ['order' => 'label']): Collection|array|null
+    public function findByWorkflow(int $workflowId, array $options = ['order' => 'label']): Collection|null
     {
         return $this->findBy(
             ['.pid=?'],

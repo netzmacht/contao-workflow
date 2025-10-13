@@ -18,8 +18,7 @@ use Contao\Model;
  */
 final class WorkflowModel extends Model
 {
-    /**
-     * Table name.
-     */
-    protected static string $strTable = 'tl_workflow';
+    /** @var string  */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    protected static $strTable = 'tl_workflow';
 }

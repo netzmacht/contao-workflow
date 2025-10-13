@@ -36,8 +36,10 @@ final class StateHistoryRenderer extends AbstractStepRenderer
 
     /**
      * Config adapter.
+     *
+     * @var Adapter<Config>
      */
-    private Adapter|Config $configAdapter;
+    private Adapter $configAdapter;
 
     /**
      * Entity manager.
@@ -46,7 +48,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
 
     /**
      * @param Translator           $translator    Translator.
-     * @param Config|Adapter       $configAdapter Config adapter.
+     * @param Adapter<Config>      $configAdapter Config adapter.
      * @param EntityManager        $entityManager Entity manager.
      * @param array<string,string> $templates     Mapping between the content type and the default template.
      *
@@ -55,7 +57,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
     public function __construct(
         Manager $manager,
         Translator $translator,
-        $configAdapter,
+        Adapter $configAdapter,
         EntityManager $entityManager,
         array $templates = [],
     ) {
@@ -66,9 +68,7 @@ final class StateHistoryRenderer extends AbstractStepRenderer
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function renderParameters(View $view): array
     {

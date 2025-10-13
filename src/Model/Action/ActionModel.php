@@ -17,8 +17,7 @@ use Contao\Model;
  */
 final class ActionModel extends Model
 {
-    /**
-     * Action model table name.
-     */
-    protected static string $strTable = 'tl_workflow_action';
+    /** @var string  */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    protected static $strTable = 'tl_workflow_action';
 }

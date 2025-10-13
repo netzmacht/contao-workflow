@@ -10,9 +10,8 @@ use Netzmacht\Contao\Toolkit\Assertion\AssertionFailed;
 use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification\BuildNotificationTokensEvent;
+use ReflectionMethod;
 use Throwable;
-
-use function iterator_to_array;
 
 /**
  * Class AddFormattedEntityNotificationTokensListener enriches the notifications with formatted values.
@@ -64,9 +63,10 @@ final class AddFormattedEntityNotificationTokensListener
         $accessor = $this->propertyAccessManager->provideAccess($entity);
 
         if ($entity instanceof Model) {
-            $context = new DC_Table($event->getItem()->getEntityId()->getProviderName());
+            $context    = new DC_Table($event->getItem()->getEntityId()->getProviderName());
+            $reflection = new ReflectionMethod($context, 'setCurrentRecordCache');
 
-            $context->activeRecord = (object) iterator_to_array($accessor->getIterator());
+            $reflection->invoke($context, $entity->id, $entity::getTable(), $entity->row());
         }
 
         foreach ($accessor as $key => $value) {

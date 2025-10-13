@@ -15,8 +15,7 @@ use Contao\Model;
  */
 final class PermissionModel extends Model
 {
-    /**
-     * The database table.
-     */
-    protected static string $strTable = 'tl_workflow_permission';
+    /** @var string  */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    protected static $strTable = 'tl_workflow_permission';
 }

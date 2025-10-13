@@ -12,7 +12,7 @@ use Override;
 use Symfony\Component\Form\FormBuilderInterface as FormBuilder;
 
 /** @SuppressWarnings(PHPMD.LongVariable) */
-class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
+final class WorkflowChangeTransitionFormBuilder implements TransitionFormBuilder
 {
     /**
      * Transition form builder.

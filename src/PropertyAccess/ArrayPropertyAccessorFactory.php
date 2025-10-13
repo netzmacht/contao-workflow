@@ -15,20 +15,16 @@ use function is_array;
  */
 final class ArrayPropertyAccessorFactory implements PropertyAccessorFactory
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function supports($object): bool
+    public function supports(mixed $object): bool
     {
         return is_array($object) || $object instanceof ArrayAccess;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function create($object): PropertyAccessor
+    public function create(mixed $object): PropertyAccessor
     {
         assert(is_array($object) || $object instanceof ArrayAccess);
 

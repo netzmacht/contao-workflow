@@ -24,9 +24,7 @@ abstract class AbstractPermissionVoter extends Voter
         $this->user = $user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     protected function supports($attribute, $subject): bool
     {
@@ -55,7 +53,7 @@ abstract class AbstractPermissionVoter extends Voter
      * @psalm-suppress MissingParamType
      */
     #[Override]
-    protected function voteOnAttribute($attribute, $subject, Token $token)
+    protected function voteOnAttribute($attribute, $subject, Token $token): bool
     {
         /** @psalm-suppress RedundantConditionGivenDocblockType - TODO: Do we need to fix the attribute type */
         if (! $attribute instanceof Permission) {

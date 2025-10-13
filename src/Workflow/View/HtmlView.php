@@ -91,18 +91,16 @@ final class HtmlView implements View
         $this->options  = $options;
         $this->renderer = $renderer;
 
-        if (! $template) {
+        if ($template === null) {
             return;
         }
 
         $this->template = $template;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function getContext()
+    public function getContext(): Step|State|Transition
     {
         return $this->context;
     }
@@ -125,11 +123,9 @@ final class HtmlView implements View
         return self::CONTENT_TYPE_HTML;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function getOption(string $name, $default = null)
+    public function getOption(string $name, $default = null): mixed
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
@@ -138,9 +134,7 @@ final class HtmlView implements View
         return $default;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function addSection(string $name, array $parameters, string|null $defaultTemplate = null): View
     {

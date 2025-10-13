@@ -15,20 +15,11 @@ use function sort;
 
 final class ActionFactory
 {
-    /**
-     * Action factories.
-     *
-     * @var iterable|ActionTypeFactory[]
-     */
-    private iterable $factories;
-
-    /** @param iterable|ActionTypeFactory[] $factories Action factories. */
-    public function __construct(iterable $factories)
+    /** @param iterable<ActionTypeFactory> $factories Action factories. */
+    public function __construct(private iterable $factories)
     {
         /** @psalm-suppress PossiblyInvalidArgument  */
         Assertion::allImplementsInterface($factories, ActionTypeFactory::class);
-
-        $this->factories = $factories;
     }
 
     /**
@@ -91,7 +82,7 @@ final class ActionFactory
      *
      * @param Workflow $workflow The workflow.
      *
-     * @return array|ActionTypeFactory[]
+     * @return list<ActionTypeFactory>
      */
     public function getSupportedTypes(Workflow $workflow): array
     {

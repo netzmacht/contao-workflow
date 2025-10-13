@@ -16,44 +16,20 @@ use Symfony\Component\Routing\RouterInterface as Router;
 
 use function sprintf;
 
-final class SubmitButtonsListener
+final readonly class SubmitButtonsListener
 {
-    /**
-     * Workflow manager.
-     */
-    private WorkflowManager $workflowManager;
-
-    /**
-     * Entity manager.
-     */
-    private EntityManager $entityManager;
-
-    /**
-     * Router.
-     */
-    private Router $router;
-
-    /**
-     * Input adapter.
-     */
-    private Adapter|Input $inputAdapter;
-
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param EntityManager   $entityManager   Entity manager.
      * @param Router          $router          Router.
-     * @param Adapter|Input   $inputAdapter    Input adapter.
+     * @param Adapter<Input>  $inputAdapter    Input adapter.
      */
     public function __construct(
-        WorkflowManager $workflowManager,
-        EntityManager $entityManager,
-        Router $router,
-        $inputAdapter,
+        private WorkflowManager $workflowManager,
+        private EntityManager $entityManager,
+        private Router $router,
+        private Adapter $inputAdapter,
     ) {
-        $this->workflowManager = $workflowManager;
-        $this->entityManager   = $entityManager;
-        $this->router          = $router;
-        $this->inputAdapter    = $inputAdapter;
     }
 
     /**
@@ -66,7 +42,7 @@ final class SubmitButtonsListener
      */
     public function addTransitionButtons(array $buttons, DataContainer $dataContainer): array
     {
-        if (! $dataContainer->activeRecord) {
+        if ($dataContainer->getCurrentRecord() === null) {
             return $buttons;
         }
 
@@ -103,6 +79,7 @@ final class SubmitButtonsListener
     public function redirectToTransition(DataContainer $dataContainer): void
     {
         $transition = Input::post('workflowTransition');
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         if (! $transition) {
             return;
         }
@@ -115,15 +92,17 @@ final class SubmitButtonsListener
             return;
         }
 
-        $workflow = $this->workflowManager->getWorkflow($entityId, $entity);
-        $route    = $this->router->generate(
+        $workflow      = $this->workflowManager->getWorkflow($entityId, $entity);
+        $currentRecord = $dataContainer->getCurrentRecord();
+        $route         = $this->router->generate(
             'netzmacht.contao_workflow.backend.transition',
             [
                 'entityId'   => $entityId,
                 'transition' => $transition,
                 'module'     => $this->inputAdapter->get('do'),
-                'detach'     => $dataContainer->activeRecord
-                    && $workflow->getName() !== $dataContainer->activeRecord->workflow ? '1' : '',
+                'detach'     => $currentRecord !== null && $workflow->getName() !== $currentRecord['workflow']
+                    ? '1'
+                    : '',
             ],
         );
 

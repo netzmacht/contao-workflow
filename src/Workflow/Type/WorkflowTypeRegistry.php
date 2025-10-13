@@ -22,7 +22,7 @@ final class WorkflowTypeRegistry
     /**
      * Get all workflow type names.
      *
-     * @return string[]
+     * @return list<string>
      */
     public function getTypeNames(): array
     {

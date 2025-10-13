@@ -17,25 +17,13 @@ use function is_array;
 
 final class ArrayPropertyAccessor implements PropertyAccessor
 {
-    /**
-     * Data array.
-     *
-     * @var array<mixed,mixed>|ArrayAccess<mixed,mixed>
-     */
-    private array|ArrayAccess $array;
-
-    /** @param array<mixed,mixed>|ArrayAccess<mixed,mixed> $array Data array. */
-    public function __construct($array)
+    /** @param ArrayAccess<mixed,mixed>|array<mixed,mixed> $array Data array. */
+    public function __construct(private array|ArrayAccess $array)
     {
-        $this->array = $array;
     }
 
-    /**
-     * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
-     *
-     * @param mixed $object
-     */
-    public static function supports($object): bool
+    /** @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead. */
+    public static function supports(mixed $object): bool
     {
         return is_array($object) || $object instanceof ArrayAccess;
     }
@@ -43,11 +31,9 @@ final class ArrayPropertyAccessor implements PropertyAccessor
     /**
      * @deprecated Will be removed in the next major release. use ArrayPropertyAccessorFactory instead.
      *
-     * @param mixed $object
-     *
      * @throws PropertyAccessFailed When data structure is not supported.
      */
-    public static function create($object): PropertyAccessor
+    public static function create(mixed $object): PropertyAccessor
     {
         /** @psalm-suppress DeprecatedMethod */
         if (self::supports($object)) {
@@ -57,20 +43,16 @@ final class ArrayPropertyAccessor implements PropertyAccessor
         throw new PropertyAccessFailed('Unsupported data structure.');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->array[$name] = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         return $this->array[$name] ?? null;
     }
@@ -85,7 +67,7 @@ final class ArrayPropertyAccessor implements PropertyAccessor
         return array_key_exists($name, $this->array);
     }
 
-    /** @return Traversable<mixed,mixed> */
+    /** {@inheritDoc} */
     #[Override]
     public function getIterator(): Traversable
     {

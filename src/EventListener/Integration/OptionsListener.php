@@ -13,35 +13,22 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Netzmacht\Workflow\Manager\Manager as WorkflowManager;
 
 use function array_merge;
+use function array_values;
 use function asort;
 use function count;
-use function is_int;
-use function is_string;
 use function sprintf;
 
 /**
  * Class OptionsListener handles the options callback for the default workflow integration.
  */
-final class OptionsListener
+final readonly class OptionsListener
 {
-    /**
-     * Workflow manager.
-     */
-    private WorkflowManager $workflowManager;
-
-    /**
-     * Database connection.
-     */
-    private Connection $connection;
-
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param Connection      $connection      Database connection.
      */
-    public function __construct(WorkflowManager $workflowManager, Connection $connection)
+    public function __construct(private WorkflowManager $workflowManager, private Connection $connection)
     {
-        $this->workflowManager = $workflowManager;
-        $this->connection      = $connection;
     }
 
     /**
@@ -81,7 +68,7 @@ final class OptionsListener
         if ($dataContainer && $dataContainer->id) {
             try {
                 $selectedWorkflow = $this->getSelectedWorkflow($dataContainer);
-                if (! $selectedWorkflow) {
+                if ($selectedWorkflow === null) {
                     return [];
                 }
 
@@ -109,7 +96,7 @@ final class OptionsListener
         }
 
         if ($dataContainer && count($options) > 0) {
-            $options = array_merge(...$options);
+            $options = array_merge(...array_values($options));
             asort($options);
         }
 
@@ -125,13 +112,18 @@ final class OptionsListener
      */
     public function stepPermissionOptions(DataContainer|null $dataContainer = null): array
     {
-        if (! $dataContainer || ! $dataContainer->activeRecord || $dataContainer->activeRecord->workflowStep) {
+        if (! $dataContainer) {
+            return [];
+        }
+
+        $stepName = $dataContainer->getCurrentRecord()['workflowStep'] ?? null;
+        if ($stepName === null) {
             return [];
         }
 
         try {
             $selectedWorkflow = $this->getSelectedWorkflow($dataContainer);
-            if (! $selectedWorkflow) {
+            if ($selectedWorkflow === null) {
                 return [];
             }
 
@@ -140,7 +132,6 @@ final class OptionsListener
             return [];
         }
 
-        $stepName = $dataContainer->activeRecord->workflowStep;
         if (! $workflow->hasStep($stepName)) {
             return [];
         }
@@ -160,20 +151,20 @@ final class OptionsListener
      */
     private function getSelectedWorkflow(DataContainer $dataContainer): string|null
     {
-        $statement = $this->connection
+        $result = $this->connection
             ->createQueryBuilder()
             ->select('workflow')
             ->from($dataContainer->table)
             ->where('id=:id')
             ->setParameter('id', $dataContainer->id)
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
 
-        if (is_int($statement) || is_string($statement)) {
+        if ($result->rowCount() !== 1) {
             return null;
         }
 
-        return (string) $statement->fetchOne();
+        return (string) $result->fetchOne();
     }
 
     /**

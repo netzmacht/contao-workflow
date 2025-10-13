@@ -22,28 +22,8 @@ use function array_merge;
 use function assert;
 use function sprintf;
 
-final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
+final readonly class DatabaseDrivenWorkflowLoader implements WorkflowLoader
 {
-    /**
-     * Contao model repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Event dispatcher.
-     */
-    private EventDispatcher $eventDispatcher;
-
-    /**
-     * Workflow type registry.
-     */
-    private WorkflowTypeRegistry $typeRegistry;
-
-    /**
-     * Logger.
-     */
-    private LoggerInterface $logger;
-
     /**
      * @param RepositoryManager    $repositoryManager Contao model repository manager.
      * @param WorkflowTypeRegistry $typeRegistry      Workflow type registry.
@@ -51,20 +31,14 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
      * @param LoggerInterface      $logger            Logger.
      */
     public function __construct(
-        RepositoryManager $repositoryManager,
-        WorkflowTypeRegistry $typeRegistry,
-        EventDispatcher $eventDispatcher,
-        LoggerInterface $logger,
+        private RepositoryManager $repositoryManager,
+        private WorkflowTypeRegistry $typeRegistry,
+        private EventDispatcher $eventDispatcher,
+        private LoggerInterface $logger,
     ) {
-        $this->repositoryManager = $repositoryManager;
-        $this->eventDispatcher   = $eventDispatcher;
-        $this->typeRegistry      = $typeRegistry;
-        $this->logger            = $logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function load(): array
     {
@@ -73,7 +47,7 @@ final class DatabaseDrivenWorkflowLoader implements WorkflowLoader
         $collection = $workflowRepository->findActive();
         $workflows  = [];
 
-        if ($collection) {
+        if ($collection !== null) {
             foreach ($collection as $model) {
                 try {
                     $workflows[] = $this->createWorkflow($model);

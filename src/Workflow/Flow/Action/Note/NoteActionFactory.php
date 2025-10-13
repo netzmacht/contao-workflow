@@ -36,9 +36,7 @@ final class NoteActionFactory implements ActionTypeFactory
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function create(array $config, Transition $transition): Action
     {

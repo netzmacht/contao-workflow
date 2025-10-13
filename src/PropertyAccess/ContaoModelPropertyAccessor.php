@@ -66,11 +66,9 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         throw new PropertyAccessFailed('Unsupported data structure.');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $path     = explode('.', $name);
         $property = array_pop($path);
@@ -88,9 +86,7 @@ final class ContaoModelPropertyAccessor implements PropertyAccessor
         $this->changesRegistry->track($this->model, $model);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function get(string $name)
     {

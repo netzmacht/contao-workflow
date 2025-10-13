@@ -23,10 +23,9 @@ use Contao\Model\Collection;
  */
 final class TransitionModel extends Model
 {
-    /**
-     * Table name.
-     */
-    protected static string $strTable = 'tl_workflow_transition';
+    /** @var string  */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    protected static $strTable = 'tl_workflow_transition';
 
     /**
      * Find transition by workflow id.

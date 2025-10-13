@@ -8,7 +8,7 @@ use Netzmacht\Contao\Toolkit\Routing\RequestScopeMatcher;
 use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-class AssetListener
+final readonly class AssetListener
 {
     public function __construct(private AssetsManager $assetsManager, private RequestScopeMatcher $scopeMatcher)
     {
@@ -23,6 +23,6 @@ class AssetListener
             return;
         }
 
-        $this->assetsManager->addStylesheet('bundles/netzmachtcontaoworkflow/css/backend.css');
+        $this->assetsManager->addStylesheet('netzmacht_contao_workflow::css/backend.css');
     }
 }

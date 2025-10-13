@@ -49,9 +49,7 @@ final class UpdateEntityAction extends AbstractPropertyAccessAction
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

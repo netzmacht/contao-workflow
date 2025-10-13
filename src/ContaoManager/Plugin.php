@@ -9,7 +9,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
-use Netzmacht\Contao\Toolkit\Bundle\NetzmachtContaoToolkitBundle;
+use Netzmacht\Contao\Toolkit\NetzmachtContaoToolkitBundle;
 use Netzmacht\ContaoWorkflowBundle\NetzmachtContaoWorkflowBundle;
 use Override;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -19,9 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getBundles(ParserInterface $parser): array
     {

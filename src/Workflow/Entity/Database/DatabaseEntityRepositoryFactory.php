@@ -26,7 +26,7 @@ final class DatabaseEntityRepositoryFactory implements RepositoryFactory
     #[Override]
     public function supports(string $providerName): bool
     {
-        return $this->connection->getSchemaManager()->tablesExist([$providerName]);
+        return $this->connection->createSchemaManager()->tablesExist([$providerName]);
     }
 
     /**

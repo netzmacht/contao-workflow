@@ -11,6 +11,7 @@ use RuntimeException;
 
 use function array_key_exists;
 
+/** @implements IteratorAggregate<string, array<string, string>> */
 final class Sections implements IteratorAggregate
 {
     /**

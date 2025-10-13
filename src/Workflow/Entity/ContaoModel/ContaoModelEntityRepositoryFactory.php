@@ -11,40 +11,23 @@ use Netzmacht\ContaoWorkflowBundle\Workflow\Entity\RepositoryFactory;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\Workflow\Data\EntityRepository;
 use Override;
+use RuntimeException;
 
 use function class_exists;
 use function is_a;
 
-final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
+final readonly class ContaoModelEntityRepositoryFactory implements RepositoryFactory
 {
     /**
-     * Contao model repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Model adapter.
-     */
-    private Adapter|Model $modelAdapter;
-
-    /**
-     * Related changes.
-     */
-    private ContaoModelRelatedModelChangeTracker $changeTracker;
-
-    /**
      * @param RepositoryManager                    $repositoryManager Repository manager.
-     * @param Adapter|Model                        $modelAdapter      Model adapter.
+     * @param Adapter<Model>                       $modelAdapter      Model adapter.
      * @param ContaoModelRelatedModelChangeTracker $changeTracker     Related model change tracker.
      */
     public function __construct(
-        RepositoryManager $repositoryManager,
-        $modelAdapter,
-        ContaoModelRelatedModelChangeTracker $changeTracker,
+        private RepositoryManager $repositoryManager,
+        private Adapter $modelAdapter,
+        private ContaoModelRelatedModelChangeTracker $changeTracker,
     ) {
-        $this->repositoryManager = $repositoryManager;
-        $this->modelAdapter      = $modelAdapter;
-        $this->changeTracker     = $changeTracker;
     }
 
     #[Override]
@@ -52,7 +35,7 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
     {
         $modelClass = $this->modelAdapter->getClassFromTable($providerName);
 
-        return $modelClass && class_exists($modelClass) && is_a($modelClass, Model::class, true);
+        return class_exists($modelClass) && is_a($modelClass, Model::class, true);
     }
 
     /**
@@ -63,9 +46,10 @@ final class ContaoModelEntityRepositoryFactory implements RepositoryFactory
     #[Override]
     public function create(string $providerName): EntityRepository
     {
-        $modelClass = $this->modelAdapter->getClassFromTable($providerName);
-        if (! $modelClass) {
-            throw UnsupportedEntity::withProviderName($providerName);
+        try {
+            $modelClass = $this->modelAdapter->getClassFromTable($providerName);
+        } catch (RuntimeException $exception) {
+            throw UnsupportedEntity::withProviderName($providerName, previous: $exception);
         }
 
         $repository = $this->repositoryManager->getRepository($modelClass);

@@ -2,51 +2,15 @@
 <psalm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" errorLevel="3" resolveFromConfigFile="true" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd" findUnusedCode="false" findUnusedBaselineEntry="false" hideExternalErrors="true">
     <projectFiles>
         <directory name="src"/>
-        <directory name="spec"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <file name="src/DependencyInjection/Configuration.php"/>
         </ignoreFiles>
     </projectFiles>
-    <issueHandlers>
-        <InvalidCatch>
-            <errorLevel type="suppress">
-                <referencedClass name="Netzmacht\Workflow\Exception\WorkflowException"/>
-            </errorLevel>
-        </InvalidCatch>
-        <UndefinedFunction>
-            <errorLevel type="suppress">
-                <referencedFunction name="array_insert"/>
-            </errorLevel>
-        </UndefinedFunction>
-        <InternalMethod>
-            <errorLevel type="suppress">
-                <referencedMethod name="Contao\CoreBundle\Framework\Adapter::__call"/>
-            </errorLevel>
-        </InternalMethod>
-        <TooManyArguments>
-            <errorLevel type="suppress">
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch"/>
-            </errorLevel>
-        </TooManyArguments>
-        <DeprecatedMethod>
-            <errorLevel type="suppress">
-                <referencedMethod name="Doctrine\DBAL\Connection::getSchemaManager"/>
-                <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::execute"/>
-                <referencedMethod name="Doctrine\DBAL\Schema\Schema::getMigrateToSql"/>
-            </errorLevel>
-        </DeprecatedMethod>
-        <UndefinedDocblockClass>
-            <errorLevel type="suppress">
-                <referencedClass name="UnitEnum"/>
-            </errorLevel>
-        </UndefinedDocblockClass>
-    </issueHandlers>
     <universalObjectCrates>
         <!-- allow magic property access -->
         <class name="Contao\BackendUser"/>
         <class name="Contao\Model"/>
         <class name="Contao\ModuleModel"/>
     </universalObjectCrates>
-
 </psalm>

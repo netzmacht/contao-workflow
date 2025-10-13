@@ -34,9 +34,7 @@ final class MetadataAction implements Action
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function getRequiredPayloadProperties(Item $item): array
     {

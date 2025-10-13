@@ -272,7 +272,7 @@ services:
       - '@netzmacht.contao_workflow.view.factory'
       - '@netzmacht.contao_toolkit.contao.input_adapter'
       - '@netzmacht.contao_toolkit.contao.config_adapter'
-      - '@netzmacht.contao_toolkit.routing.scope_matcher'
+      - '@contao.routing.content_url_generator'
 
   Netzmacht\ContaoWorkflowBundle\Form\Choice\UserChoices:
     arguments:

@@ -7,11 +7,9 @@ namespace Netzmacht\ContaoWorkflowBundle\Model\Transition;
 use Contao\Model\Collection;
 use Netzmacht\Contao\Toolkit\Data\Model\ContaoRepository;
 
+/** @extends ContaoRepository<TransitionModel> */
 final class TransitionRepository extends ContaoRepository
 {
-    /**
-     * {@inheritDoc}
-     */
     public function __construct()
     {
         parent::__construct(TransitionModel::class);
@@ -23,9 +21,9 @@ final class TransitionRepository extends ContaoRepository
      * @param int                 $workflowId The workflow id.
      * @param array<string,mixed> $options    Query options.
      *
-     * @return Collection|TransitionModel[]|null
+     * @return Collection<TransitionModel>|null
      */
-    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting']): Collection|array|null
+    public function findByWorkflow(int $workflowId, array $options = ['order' => '.sorting']): Collection|null
     {
         return $this->findBy(
             ['.pid=?'],
@@ -40,9 +38,9 @@ final class TransitionRepository extends ContaoRepository
      * @param int                 $workflowId The workflow id.
      * @param array<string,mixed> $options    Query options.
      *
-     * @return Collection|TransitionModel[]|null
+     * @return Collection<TransitionModel>|null
      */
-    public function findActiveByTransition(int $workflowId, array $options = ['order' => '.sorting']): Collection|array|null
+    public function findActiveByTransition(int $workflowId, array $options = ['order' => '.sorting']): Collection|null
     {
         return $this->findBy(
             ['.active=1', '.pid=?'],

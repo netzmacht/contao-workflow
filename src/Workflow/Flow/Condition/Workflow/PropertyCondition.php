@@ -56,9 +56,7 @@ final class PropertyCondition implements Condition
         $this->propertyAccessManager = $propertyAccessManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+     /** {@inheritDoc} */
     #[Override]
     public function match(Workflow $workflow, EntityId $entityId, $entity): bool
     {

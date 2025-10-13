@@ -14,7 +14,7 @@ use function sprintf;
 /**
  * Class creates the conditional transition action for transition of type conditional
  */
-class CreateConditionalTransitionsListener
+final class CreateConditionalTransitionsListener
 {
     /**
      * Database connection.
@@ -56,7 +56,7 @@ class CreateConditionalTransitionsListener
      *
      * @param int $transitionId The id of the parent transition.
      *
-     * @return string[]
+     * @return list<string>
      */
     private function getConditionalTransitionNames(int $transitionId): array
     {
@@ -65,11 +65,7 @@ class CreateConditionalTransitionsListener
         $result    = $statement->executeQuery(['pid' => $transitionId]);
 
         return array_map(
-            // @codingStandardsIgnoreStart
-            static function ($transitionId) : string {
-                return 'transition_' . $transitionId;
-            },
-            // @codingStandardsIgnoreEnd
+            static fn ($transitionId): string => 'transition_' . $transitionId,
             $result->fetchFirstColumn(),
         );
     }

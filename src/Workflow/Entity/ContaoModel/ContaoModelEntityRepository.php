@@ -16,9 +16,7 @@ use Netzmacht\Workflow\Data\Specification;
 use Override;
 
 use function array_filter;
-use function assert;
 use function get_class;
-use function is_array;
 use function sprintf;
 
 /**
@@ -106,42 +104,42 @@ final class ContaoModelEntityRepository implements WorkflowEntityRepository
     /**
      * Find by a specification.
      *
-     * It is highly recommend to pass a QuerySpecification. Otherwise all items have to be loaded!.
+     * It is highly recommended to pass a QuerySpecification. Otherwise, all items have to be loaded!.
      *
      * @param Specification $specification The specification.
      *
-     * @return Model[]|iterable
+     * @return iterable<Model>
      */
     #[Override]
     public function findBySpecification(Specification $specification): iterable
     {
         if ($specification instanceof ContaoModelSpecificationAwareSpecification) {
-            $models   = $this->repository->findBySpecification($specification->asModelSpecification()) ?: [];
+            $models   = $this->repository->findBySpecification($specification->asModelSpecification());
             $entities = [];
 
-            assert($models instanceof Collection || is_array($models));
-            foreach ($models as $model) {
-                $entities[] = $model;
+            if ($models instanceof Collection) {
+                foreach ($models as $model) {
+                    $entities[] = $model;
+                }
             }
 
             return $entities;
         }
 
-        $models   = $this->repository->findAll() ?: [];
+        $models   = $this->repository->findAll() ?? [];
         $entities = [];
 
-        assert($models instanceof Collection || is_array($models));
-        foreach ($models as $model) {
-            $entities[] = $model;
+        if ($models instanceof Collection) {
+            foreach ($models as $model) {
+                $entities[] = $model;
+            }
         }
 
         return array_filter(
             $entities,
-            // @codingStandardsIgnoreStart
             static function (Model $entity) use ($specification) {
                 return $specification->isSatisfiedBy($entity);
-            }
-            // @codingStandardsIgnoreEnd
+            },
         );
     }
 

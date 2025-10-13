@@ -21,8 +21,7 @@ use Contao\Model;
  */
 final class StateModel extends Model
 {
-    /**
-     * The workflow state table.
-     */
-    protected static string $strTable = 'tl_workflow_state';
+    /** @var string  */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    protected static $strTable = 'tl_workflow_state';
 }

@@ -7,6 +7,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Dca;
 use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Contao\StringUtil;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
@@ -14,17 +15,14 @@ use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\Workflow\Flow\Security\Permission;
 
 use function array_keys;
-use function assert;
 use function current;
-use function is_int;
-use function is_string;
 use function next;
 use function serialize;
 
 /** @Callback(table="tl_workflow", target="config.oncopy") */
 final class CopyWorkflowCallbackListener
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
@@ -41,7 +39,12 @@ final class CopyWorkflowCallbackListener
         $this->copyConditionalTransitions($transitionMapping);
     }
 
-    /** @return array<string,string> */
+    /**
+     * @return array<string,string>
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     */
     private function generateTransitionMapping(int $newWorkflowId, int $oldWorkflowId): array
     {
         $oldTransitionIds = $this->fetchTransitionIds($oldWorkflowId);
@@ -56,7 +59,12 @@ final class CopyWorkflowCallbackListener
         return $mapping;
     }
 
-    /** @return array<string,string> */
+    /**
+     * @return array<string,string>
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     */
     private function generateStepMapping(int $newWorkflowId, int $oldWorkflowId): array
     {
         $oldStepIds = $this->fetchStepIds($oldWorkflowId);
@@ -163,15 +171,12 @@ SQL;
             ->where('pid = :workflow')
             ->andWhere($column . ' != \'\'')
             ->setParameter('workflow', $newWorkflowId)
-            ->execute();
-
-        assert(! is_int($result) && ! is_string($result));
+            ->executeQuery();
 
         $this->fixPermissionsForResult($result, $table, $column, $newWorkflowId);
     }
 
-    /** @param Result $result */
-    private function fixPermissionsForResult($result, string $table, string $column, int $newWorkflowId): void
+    private function fixPermissionsForResult(Result $result, string $table, string $column, int $newWorkflowId): void
     {
         while ($row = $result->fetchAssociative()) {
             $permission = Permission::fromString($row[$column]);
@@ -187,7 +192,7 @@ SQL;
         $result = $this->connection->executeQuery(
             'SELECT * FROM tl_workflow_transition_conditional_transition WHERE pid IN (:transitions)',
             ['transitions' => array_keys($transitionMapping)],
-            ['transitions' => Connection::PARAM_STR_ARRAY],
+            ['transitions' => ArrayParameterType::STRING],
         );
 
         while ($row = $result->fetchAssociative()) {
