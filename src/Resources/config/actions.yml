@@ -43,10 +43,10 @@ services:
   netzmacht.contao.workflow.action_factory.notification:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification\NotificationActionFactory
     arguments:
-      - '@netzmacht.contao_toolkit.repository_manager'
       - '@netzmacht.contao_workflow.property_access_manager'
       - '@translator'
       - '@event_dispatcher'
+      - '@Terminal42\NotificationCenterBundle\NotificationCenter'
     tags:
       - { name: 'netzmacht.contao_workflow.action' }
 

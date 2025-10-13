@@ -10,7 +10,6 @@ use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
 use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
-use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;
@@ -18,8 +17,8 @@ use Netzmacht\ContaoWorkflowBundle\Model\Workflow\WorkflowModel;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Definition\Loader\DatabaseDrivenWorkflowLoader;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\ActionFactory;
 use Netzmacht\Workflow\Flow\Security\Permission as WorkflowPermission;
-use NotificationCenter\Model\Notification;
 use Override;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Throwable;
 
 use function array_merge;
@@ -48,6 +47,7 @@ final class ActionCallbackListener extends AbstractListener
         private readonly DatabaseDrivenWorkflowLoader $workflowLoader,
         private readonly ActionFactory $actionFactory,
         private readonly array $providerConfiguration,
+        private readonly NotificationCenter $notificationCenter,
     ) {
         parent::__construct($dcaManager);
     }
@@ -129,20 +129,11 @@ final class ActionCallbackListener extends AbstractListener
     /**
      * Get all notifications as options.
      *
-     * @return array<string,string|array<string,string>>
+     * @return array<int, string>
      */
     public function notificationOptions(): array
     {
-        $notifications = $this->repositoryManager
-            ->getRepository(Notification::class)
-            ->findBy(['.type=?'], ['workflow_transition'], ['order' => '.title']);
-
-        return OptionsBuilder::fromCollection(
-            $notifications,
-            static function (array $row) {
-                return sprintf('%s [ID %s]', $row['title'], $row['id']);
-            },
-        )->getOptions();
+        return $this->notificationCenter->getNotificationsForNotificationType('workflow_transition');
     }
 
     /**

@@ -14,6 +14,7 @@ use Netzmacht\Workflow\Flow\Workflow;
 use Override;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 use function in_array;
 
@@ -21,41 +22,17 @@ use function in_array;
 final class NotificationActionFactory implements ActionTypeFactory
 {
     /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Property access manager.
-     */
-    private PropertyAccessManager $propertyAccessManager;
-
-    /**
-     * The event dispatcher.
-     */
-    private EventDispatcher $eventDispatcher;
-
-    /**
-     * Translator.
-     */
-    private Translator $translator;
-
-    /**
      * @param RepositoryManager     $repositoryManager     Repository manager.
      * @param PropertyAccessManager $propertyAccessManager Property access manager.
      * @param Translator            $translator            Translator.
      * @param EventDispatcher       $eventDispatcher       The event dispatcher.
      */
     public function __construct(
-        RepositoryManager $repositoryManager,
-        PropertyAccessManager $propertyAccessManager,
-        Translator $translator,
-        EventDispatcher $eventDispatcher,
+        private readonly PropertyAccessManager $propertyAccessManager,
+        private readonly Translator $translator,
+        private readonly EventDispatcher $eventDispatcher,
+        private readonly NotificationCenter $notificationCenter,
     ) {
-        $this->repositoryManager     = $repositoryManager;
-        $this->propertyAccessManager = $propertyAccessManager;
-        $this->translator            = $translator;
-        $this->eventDispatcher       = $eventDispatcher;
     }
 
     #[Override]
@@ -88,9 +65,9 @@ final class NotificationActionFactory implements ActionTypeFactory
     {
         return new NotificationAction(
             $this->propertyAccessManager,
-            $this->repositoryManager,
             $this->translator,
             $this->eventDispatcher,
+            $this->notificationCenter,
             'action_' . $config['id'],
             $config['label'],
             (int) $config['notification_id'],
@@ -103,7 +80,7 @@ final class NotificationActionFactory implements ActionTypeFactory
      *
      * @param mixed $states Raw success state value.
      */
-    private function determineSuccessStates($states): int
+    private function determineSuccessStates(mixed $states): int
     {
         $value  = 0;
         $states = StringUtil::deserialize($states, true);

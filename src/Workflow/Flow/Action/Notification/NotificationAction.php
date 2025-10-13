@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Notification;
 
 use Contao\StringUtil;
-use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\ContaoWorkflowBundle\PropertyAccess\PropertyAccessManager;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\AbstractAction;
 use Netzmacht\Workflow\Flow\Context;
 use Netzmacht\Workflow\Flow\Item;
 use Netzmacht\Workflow\Flow\State;
 use Netzmacht\Workflow\Flow\Transition;
-use NotificationCenter\Model\Notification;
 use Override;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 /**
  * Class NotificationAction send an notification as post action.
@@ -27,67 +26,29 @@ final class NotificationAction extends AbstractAction
     public const int STATE_FAILED  = 2;
 
     /**
-     * Property access manager.
-     */
-    private PropertyAccessManager $propertyAccess;
-
-    /**
-     * Repository manager.
-     */
-    private RepositoryManager $repositoryManager;
-
-    /**
-     * Translator.
-     */
-    private Translator $translator;
-
-    /**
-     * The event dispatcher.
-     */
-    private EventDispatcher $eventDispatcher;
-
-    /**
-     * Success states.
-     */
-    private int $successStates;
-
-    /**
-     * Notification ids.
-     */
-    private int $notificationId;
-
-    /**
      * Construct.
      *
-     * @param PropertyAccessManager $propertyAccess    Property access manager.
-     * @param RepositoryManager     $repositoryManager Repository manager.
-     * @param Translator            $translator        Translator.
-     * @param EventDispatcher       $eventDispatcher   The event dispatcher.
-     * @param string                $name              Name of the element.
-     * @param string                $label             Label of the element.
-     * @param int                   $notificationId    Notification id.
-     * @param int                   $successStates     Success states.
-     * @param array<string,mixed>   $config            Configuration values.
+     * @param PropertyAccessManager $propertyAccess  Property access manager.
+     * @param Translator            $translator      Translator.
+     * @param EventDispatcher       $eventDispatcher The event dispatcher.
+     * @param string                $name            Name of the element.
+     * @param string                $label           Label of the element.
+     * @param int                   $notificationId  Notification id.
+     * @param int                   $successStates   Success states.
+     * @param array<string,mixed>   $config          Configuration values.
      */
     public function __construct(
-        PropertyAccessManager $propertyAccess,
-        RepositoryManager $repositoryManager,
-        Translator $translator,
-        EventDispatcher $eventDispatcher,
+        private readonly PropertyAccessManager $propertyAccess,
+        private readonly Translator $translator,
+        private readonly EventDispatcher $eventDispatcher,
+        private readonly NotificationCenter $notificationCenter,
         string $name,
         string $label,
-        int $notificationId,
-        int $successStates = self::STATE_ALL,
+        private readonly int $notificationId,
+        private readonly int $successStates = self::STATE_ALL,
         array $config = [],
     ) {
         parent::__construct($name, $label, $config);
-
-        $this->repositoryManager = $repositoryManager;
-        $this->propertyAccess    = $propertyAccess;
-        $this->translator        = $translator;
-        $this->notificationId    = $notificationId;
-        $this->successStates     = $successStates;
-        $this->eventDispatcher   = $eventDispatcher;
     }
 
      /** {@inheritDoc} */
@@ -113,12 +74,10 @@ final class NotificationAction extends AbstractAction
             return;
         }
 
-        $notification = $this->repositoryManager->getRepository(Notification::class)->find($this->notificationId);
-        if (! $notification instanceof Notification) {
-            return;
-        }
-
-        $notification->send($this->buildNotificationTokens($transition, $item, $context));
+        $this->notificationCenter->sendNotification(
+            $this->notificationId,
+            $this->buildNotificationTokens($transition, $item, $context),
+        );
     }
 
     /**
