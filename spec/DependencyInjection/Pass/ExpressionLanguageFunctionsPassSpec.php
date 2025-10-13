@@ -26,20 +26,20 @@ final class ExpressionLanguageFunctionsPassSpec extends ObjectBehavior
         Definition $bazDefinition,
     ): void {
         $container->hasDefinition('netzmacht.contao_workflow.expression_language')
-            ->shouldBeCalledOnce()
-            ->willReturn(true);
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
 
         $container->getDefinition('netzmacht.contao_workflow.expression_language')
-            ->shouldBeCalledOnce()
-            ->willReturn($definition);
+            ->willReturn($definition)
+            ->shouldBeCalledOnce();
 
         $container->getDefinition('foo.bar')
-            ->shouldBeCalledOnce()
-            ->willReturn($barDefinition);
+            ->willReturn($barDefinition)
+            ->shouldBeCalledOnce();
 
         $container->getDefinition('foo.baz')
-            ->shouldBeCalledOnce()
-            ->willReturn($bazDefinition);
+            ->willReturn($bazDefinition)
+            ->shouldBeCalledOnce();
 
         $this->describeTaggedService($barDefinition, 'Foo\Bar');
         $this->describeTaggedService($bazDefinition, 'Foo\Baz');
@@ -65,6 +65,7 @@ final class ExpressionLanguageFunctionsPassSpec extends ObjectBehavior
             );
 
         $definition->setArgument(1, $references)
+            ->willReturn($definition)
             ->shouldBeCalledOnce();
 
         $this->process($container);

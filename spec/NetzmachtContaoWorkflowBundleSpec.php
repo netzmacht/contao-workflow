@@ -21,9 +21,17 @@ final class NetzmachtContaoWorkflowBundleSpec extends ObjectBehavior
 
     public function it_registers_compiler_passes(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(Argument::type(ViewFactoryPass::class))->shouldBeCalledOnce();
-        $container->addCompilerPass(Argument::type(TransitionFormBuilderPass::class))->shouldBeCalledOnce();
-        $container->addCompilerPass(Argument::type(ExpressionLanguageFunctionsPass::class))->shouldBeCalledOnce();
+        $container->addCompilerPass(Argument::type(ViewFactoryPass::class))
+            ->willReturn($container)
+            ->shouldBeCalledOnce();
+
+        $container->addCompilerPass(Argument::type(TransitionFormBuilderPass::class))
+            ->willReturn($container)
+            ->shouldBeCalledOnce();
+
+        $container->addCompilerPass(Argument::type(ExpressionLanguageFunctionsPass::class))
+            ->willReturn($container)
+            ->shouldBeCalledOnce();
 
         $this->build($container);
     }
