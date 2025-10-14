@@ -38,29 +38,19 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
         ],
 
         'operations' => [
-            'edit'    => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
-                'href'  => 'act=edit',
-                'icon'  => 'edit.svg',
-            ],
+            'edit',
+            // phpcs:ignore Squiz.Arrays.ArrayDeclaration.KeySpecified
             'actions' => [
-                'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
                 'href'            => 'table=tl_workflow_action',
-                'icon'            => 'bundles/netzmachtcontaoworkflow/img/action.png',
+                'icon'            => 'bundles/netzmachtcontaoworkflow/img/action.svg',
                 'button_callback' => [
                     'netzmacht.contao_workflow.listeners.dca.transition',
                     'generateActionButton',
                 ],
+                'primary' => true,
             ],
-            'delete'  => [
-                'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
-                'href'       => 'act=delete',
-                'icon'       => 'delete.svg',
-                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '')
-                    . '\'))return false;Backend.getScrollOffset()"',
-            ],
+            'delete',
             'toggle'  => [
-                'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
                 'icon'            => 'visible.svg',
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
@@ -70,12 +60,9 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
                 'toolkit'         => [
                     'state_button' => ['stateColumn' => 'active'],
                 ],
+                'primary' => true,
             ],
-            'show'    => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
-                'href'  => 'act=show',
-                'icon'  => 'show.svg',
-            ],
+            'show',
         ],
     ],
 

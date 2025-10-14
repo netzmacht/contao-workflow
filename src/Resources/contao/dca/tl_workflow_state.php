@@ -27,14 +27,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
             'label_callback' => ['netzmacht.contao_workflow.listeners.dca.state', 'generateRow'],
             'group_callback' => ['netzmacht.contao_workflow.listeners.dca.state', 'generateGroupHeader'],
         ],
-
-        'operations' => [
-            'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_state']['show'],
-                'href'  => 'act=show',
-                'icon'  => 'show.svg',
-            ],
-        ],
+        'operations' => ['show'],
     ],
 
     'fields' => [
