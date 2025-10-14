@@ -31,6 +31,10 @@ final class HeadlineRenderer extends AbstractRenderer
     {
         $context = $view->getContext();
 
+        if ($context === null) {
+            return ['headline' => $view->getWorkflow()->getLabel()];
+        }
+
         switch (get_class($context)) {
             case Step::class:
                 $headline = $this->renderStepHeadline($view, $context);
