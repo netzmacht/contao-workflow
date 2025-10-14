@@ -24,6 +24,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 use function sprintf;
 use function urldecode;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 #[Route(
     '%contao.backend.route_prefix%/workflow/{module}/{entityId}/{transition}',
     name: 'netzmacht.contao_workflow.backend.transition',
@@ -33,7 +34,7 @@ use function urldecode;
         '_custom_backend_view' => true,
         '_backend_module'      => 'workflow',
     ],
-    methods: ['POST']
+    methods: ['POST'],
 )]
 final class TransitionController extends AbstractController
 {
@@ -59,7 +60,6 @@ final class TransitionController extends AbstractController
         $this->formFactory = $formFactory;
     }
 
-    // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     /**
      * Execute the transition.
      *
@@ -69,9 +69,7 @@ final class TransitionController extends AbstractController
      * @param Request  $request    The web request.
      *
      * @psalm-suppress InvalidThrow - Needs to be fixed upstream
-     * @throws WorkflowException When the workflow handling fails.
      */
-    // phpcs:enable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectAnnotationsGroup
     public function __invoke(EntityId $entityId, string $transition, string $module, Request $request): Response
     {
         $item      = $this->createItem($entityId);

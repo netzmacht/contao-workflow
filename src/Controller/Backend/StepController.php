@@ -17,11 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface as Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-use function dd;
-
-/**
- * The step controller handles the view of a step.
- */
+/** @psalm-suppress PropertyNotSetInConstructor */
 #[Route(
     '%contao.backend.route_prefix%/workflow/{module}/{entityId}',
     name: 'netzmacht.contao_workflow.backend.step',
@@ -31,7 +27,7 @@ use function dd;
         '_custom_backend_view' => true,
         '_backend_module'      => 'workflow',
     ],
-    methods: ['GET']
+    methods: ['GET'],
 )]
 final class StepController extends AbstractController
 {

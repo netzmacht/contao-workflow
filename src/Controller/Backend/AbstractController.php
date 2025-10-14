@@ -16,6 +16,7 @@ use Symfony\Component\Routing\RouterInterface as Router;
 
 use function sprintf;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 abstract class AbstractController extends AbstractBackendController
 {
     /**
