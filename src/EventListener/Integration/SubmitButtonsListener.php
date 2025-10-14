@@ -70,7 +70,7 @@ final readonly class SubmitButtonsListener
     }
 
     /**
-     * Handle the onsubmit_callback and redirect to a workflow transition view if transition button was used.
+     * Handle the onsubmit_callback and redirect to a workflow transition view if the transition button was used.
      *
      * @param DataContainer $dataContainer Data container driver.
      *
