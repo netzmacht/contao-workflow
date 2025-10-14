@@ -166,7 +166,7 @@ final class HtmlView implements View
                 'item'      => $this->item,
                 'workflow'  => $this->workflow,
                 'sections'  => new Sections($this->sections, $this->sectionTemplates),
-            ]
+            ],
         );
     }
 
@@ -174,7 +174,7 @@ final class HtmlView implements View
     private function twigRenderer(): callable
     {
         return function (string $template, array $parameters): Response {
-            $buffer   = $this->twig->render($this->template, $parameters);
+            $buffer   = $this->twig->render($template, $parameters);
             $response = new Response($buffer);
             $response->headers->set('Content-Type', $this->getContentType());
 
