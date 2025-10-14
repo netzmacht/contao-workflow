@@ -66,4 +66,6 @@ interface View
      * @param (callable(string, array<string, mixed>): Response)|null $viewRenderer
      */
     public function render(callable|null $viewRenderer = null): Response;
+
+    public function __toString(): string;
 }

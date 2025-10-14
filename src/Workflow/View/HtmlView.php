@@ -170,6 +170,11 @@ final class HtmlView implements View
         );
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->render()->getContent();
+    }
+
     /** @return callable(string, array<string, mixed>): Response */
     private function twigRenderer(): callable
     {
