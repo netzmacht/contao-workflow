@@ -49,7 +49,7 @@ final class ButtonRenderer extends AbstractRenderer
     #[Override]
     public function supports(View $view): bool
     {
-        return $view->getContext() instanceof Step;
+        return $view->getContext() instanceof Step || $view->getContext() === null;
     }
 
      /** {@inheritDoc} */
@@ -57,7 +57,7 @@ final class ButtonRenderer extends AbstractRenderer
     protected function renderParameters(View $view): array
     {
         $step = $view->getContext();
-        assert($step instanceof Step);
+        assert($step instanceof Step || $step === null);
         $workflow = $view->getWorkflow();
         $params   = [];
         $request  = $this->requestStack->getCurrentRequest();
