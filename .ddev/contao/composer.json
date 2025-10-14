@@ -5,8 +5,8 @@
   "type": "project",
   "require": {
     "contao/conflicts": "@dev",
-    "contao/manager-bundle": "5.3.*",
-    "contao/news-bundle": "^5.3",
+    "contao/manager-bundle": "5.6.*",
+    "contao/news-bundle": "^5.6",
     "netzmacht/contao-workflow": "*",
     "netzmacht/workflow": "dev-develop",
     "friends-of-contao/contao-associategroups": "dev-develop"

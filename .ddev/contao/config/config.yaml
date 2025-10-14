@@ -2,5 +2,4 @@ netzmacht_contao_workflow:
   default_type:
     tl_news:
       palettes: ['default']
-      operation: first
       submit_buttons: true
