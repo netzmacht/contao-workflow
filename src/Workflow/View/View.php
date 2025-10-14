@@ -19,7 +19,7 @@ interface View
     /**
      * Get workflow context.
      */
-    public function getContext(): Transition|Step|State;
+    public function getContext(): Transition|Step|State|null;
 
     /**
      * Get the workflow item.
@@ -62,6 +62,8 @@ interface View
 
     /**
      * Render the response.
+     *
+     * @param null|callable(string, array<string, mixed>): Response $customRenderer
      */
-    public function render(): Response;
+    public function render(callable|null $customRenderer = null): Response;
 }

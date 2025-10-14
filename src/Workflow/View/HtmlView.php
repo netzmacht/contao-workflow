@@ -52,7 +52,7 @@ final class HtmlView implements View
     /**
      * Workflow context.
      */
-    private Transition|Step|State $context;
+    private Transition|Step|State|null $context;
 
     /**
      * Options.
@@ -67,18 +67,18 @@ final class HtmlView implements View
     private Renderer $renderer;
 
     /**
-     * @param Item                  $item     The workflow item.
-     * @param Workflow              $workflow The workflow definition.
-     * @param Transition|Step|State $context  Current context.
-     * @param Renderer              $renderer View renderer.
-     * @param Twig                  $twig     The twig template engine.
-     * @param string|null           $template The view template.
-     * @param array<string,mixed>   $options  Options.
+     * @param Item                       $item     The workflow item.
+     * @param Workflow                   $workflow The workflow definition.
+     * @param Transition|Step|State|null $context  Current context.
+     * @param Renderer                   $renderer View renderer.
+     * @param Twig                       $twig     The twig template engine.
+     * @param string|null                $template The view template.
+     * @param array<string,mixed>        $options  Options.
      */
     public function __construct(
         Item $item,
         Workflow $workflow,
-        $context,
+        Transition|Step|State|null $context,
         Renderer $renderer,
         Twig $twig,
         string|null $template = null,
@@ -100,7 +100,7 @@ final class HtmlView implements View
 
      /** {@inheritDoc} */
     #[Override]
-    public function getContext(): Step|State|Transition
+    public function getContext(): Transition|Step|State|null
     {
         return $this->context;
     }
@@ -150,25 +150,35 @@ final class HtmlView implements View
         return isset($this->sections[$name]);
     }
 
+    /** {@inheritDoc} */
     #[Override]
-    public function render(): Response
+    public function render(callable|null $customRenderer = null): Response
     {
         if ($this->renderer->supports($this)) {
             $this->renderer->render($this);
         }
 
-        $buffer = $this->twig->render(
+        $renderer = $customRenderer ?? $this->twigRenderer();
+
+        return $renderer(
             $this->template,
             [
-                'item'      => $this->item,
-                'workflow'  => $this->workflow,
-                'sections'  => new Sections($this->sections, $this->sectionTemplates),
-            ],
+            'item'      => $this->item,
+            'workflow'  => $this->workflow,
+            'sections'  => new Sections($this->sections, $this->sectionTemplates),
+            ]
         );
+    }
 
-        $response = new Response($buffer);
-        $response->headers->set('Content-Type', $this->getContentType());
+    /** @return callable(string, array<string, mixed>): Response */
+    private function twigRenderer(): callable
+    {
+        return function (string $template, array $parameters): Response {
+            $buffer   = $this->twig->render($this->template, $parameters);
+            $response = new Response($buffer);
+            $response->headers->set('Content-Type', $this->getContentType());
 
-        return $response;
+            return $response;
+        };
     }
 }
