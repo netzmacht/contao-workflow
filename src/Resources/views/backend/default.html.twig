@@ -1,23 +1,23 @@
-{% extends "@NetzmachtContaoWorkflow/backend/backend.html.twig" %}
-
-{% block headline %}
-    {% include sections.template('headline') with sections.get('headline') only %}
-{% endblock %}
+{% extends '@Contao/be_main' %}
+{% set headline = include(sections.template('headline'), sections.get('headline'))|trim %}
 
 {%- block error -%}
+
 {%- endblock -%}
 
-{% block main %}
+{% block main_content %}
     <div id="tl_buttons">
-        <a href="javascript:history.back();" class="header_back" title="">Zurück</a>
+        <a href="javascript:history.back();" class="header_back" title="">{{ 'MSC.backBT'|trans({}, 'contao_default') }}</a>
     </div>
 
     {% for name, section in sections %}
-        {% set content = include(sections.template(name), section )|trim %}
-        {% if content|length %}
-            <div class="workflow-section">
-                {{ content|raw }}
-            </div>
+        {% if name != 'headline' %}
+            {% set content = include(sections.template(name), section)|trim %}
+            {% if content|length %}
+                <div class="workflow-section">
+                    {{ content|raw }}
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
 
