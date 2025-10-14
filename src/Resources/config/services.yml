@@ -6,7 +6,7 @@ services:
   _defaults:
     public: false
     autowire: false
-    autoconfigure: false
+    autoconfigure: true
 
   netzmacht.contao_workflow.type_registry:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Type\WorkflowTypeRegistry

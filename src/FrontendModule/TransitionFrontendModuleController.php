@@ -147,10 +147,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
     private function getEntityId(ModuleModel $model): EntityId
     {
         try {
-            $entityId = $this->configAdapter->get('useAutoItem')
-                ? $this->inputAdapter->get('auto_item')
-                : $this->inputAdapter->get('entityId');
-
+            $entityId = $this->inputAdapter->get('auto_item');
             /** @psalm-suppress PossiblyInvalidCast */
             $entityId = EntityId::fromString((string) $entityId);
         } catch (AssertionFailed $exception) {
@@ -170,7 +167,7 @@ final class TransitionFrontendModuleController extends AbstractFrontendModuleCon
      *
      * @param EntityId $entityId The entity id.
      *
-     * @throws PageNotFoundException If entity is not found.
+     * @throws PageNotFoundException If an entity is not found.
      */
     protected function createItem(EntityId $entityId): Item
     {
