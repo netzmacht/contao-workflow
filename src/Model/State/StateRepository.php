@@ -70,7 +70,7 @@ final class StateRepository implements WorkflowStateRepository
     public function add(State $state): void
     {
         // state is immutable. only store new states.
-        if ($state->getStateId() === null) {
+        if ($state->getStateId() !== null) {
             return;
         }
 
