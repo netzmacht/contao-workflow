@@ -26,10 +26,10 @@
                 <td><span class="tl_label">{{ 'currentStep'|trans }}</span></td>
                 <td>{{ currentStep != null ? currentStep.label : '-' }}</td>
             </tr>
-            {% if item.latestState %}
+            {% if item.latestStateOccurred %}
                 <tr>
                     <td><span class="tl_label">{{ 'reachedAt'|trans }}</span></td>
-                    <td>{{ item.latestState.reachedAt.format('d.m.Y H:i') }}</td>
+                    <td>{{ item.latestStateOccurred.reachedAt.format('d.m.Y H:i') }}</td>
                 </tr>
             {% endif %}
             </tbody>
