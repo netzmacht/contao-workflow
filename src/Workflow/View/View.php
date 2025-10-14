@@ -63,7 +63,7 @@ interface View
     /**
      * Render the response.
      *
-     * @param null|callable(string, array<string, mixed>): Response $customRenderer
+     * @param null|callable(string, array<string, mixed>): Response $viewRenderer
      */
-    public function render(callable|null $customRenderer = null): Response;
+    public function render(callable|null $viewRenderer = null): Response;
 }

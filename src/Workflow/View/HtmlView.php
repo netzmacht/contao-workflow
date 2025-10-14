@@ -152,20 +152,20 @@ final class HtmlView implements View
 
     /** {@inheritDoc} */
     #[Override]
-    public function render(callable|null $customRenderer = null): Response
+    public function render(callable|null $viewRenderer = null): Response
     {
         if ($this->renderer->supports($this)) {
             $this->renderer->render($this);
         }
 
-        $renderer = $customRenderer ?? $this->twigRenderer();
+        $renderer = $viewRenderer ?? $this->twigRenderer();
 
         return $renderer(
             $this->template,
             [
-            'item'      => $this->item,
-            'workflow'  => $this->workflow,
-            'sections'  => new Sections($this->sections, $this->sectionTemplates),
+                'item'      => $this->item,
+                'workflow'  => $this->workflow,
+                'sections'  => new Sections($this->sections, $this->sectionTemplates),
             ]
         );
     }
