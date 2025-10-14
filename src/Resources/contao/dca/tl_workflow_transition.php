@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'edit'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['edit'],
                 'href'  => 'act=edit',
-                'icon'  => 'edit.gif',
+                'icon'  => 'edit.svg',
             ],
             'actions' => [
                 'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['actions'],
@@ -55,13 +55,13 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'delete'  => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_transition']['delete'],
                 'href'       => 'act=delete',
-                'icon'       => 'delete.gif',
+                'icon'       => 'delete.svg',
                 'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '')
                     . '\'))return false;Backend.getScrollOffset()"',
             ],
             'toggle'  => [
                 'label'           => &$GLOBALS['TL_LANG']['tl_workflow_transition']['toggle'],
-                'icon'            => 'visible.gif',
+                'icon'            => 'visible.svg',
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
                     'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_workflow_transition'] = [
             'show'    => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_transition']['show'],
                 'href'  => 'act=show',
-                'icon'  => 'show.gif',
+                'icon'  => 'show.svg',
             ],
         ],
     ],

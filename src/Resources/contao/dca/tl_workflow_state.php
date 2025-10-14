@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_workflow_state'] = [
             'show' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_state']['show'],
                 'href'  => 'act=show',
-                'icon'  => 'show.gif',
+                'icon'  => 'show.svg',
             ],
         ],
     ],

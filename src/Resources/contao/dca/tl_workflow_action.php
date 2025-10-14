@@ -34,21 +34,18 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
         ],
 
         'operations' => [
-            'edit'   => [
-                'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['edit'],
-                'href'  => 'act=edit',
-                'icon'  => 'edit.gif',
-            ],
+            'edit',
             'delete' => [
                 'label'      => &$GLOBALS['TL_LANG']['tl_workflow_action']['delete'],
                 'href'       => 'act=delete',
-                'icon'       => 'delete.gif',
+                'icon'       => 'delete.svg',
                 'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '')
                     . '\'))return false;Backend.getScrollOffset()"',
             ],
             'toggle' => [
                 'label'           => &$GLOBALS['TL_LANG']['tl_workflow_action']['toggle'],
-                'icon'            => 'visible.gif',
+                'primary' => true,
+                'icon'            => 'visible.svg',
                 'attributes'      => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => [
                     'netzmacht.contao_toolkit.dca.listeners.state_button_callback',
@@ -61,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_workflow_action'] = [
             'show'   => [
                 'label' => &$GLOBALS['TL_LANG']['tl_workflow_action']['show'],
                 'href'  => 'act=show',
-                'icon'  => 'show.gif',
+                'icon'  => 'show.svg',
             ],
         ],
     ],
