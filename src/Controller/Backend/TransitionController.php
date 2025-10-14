@@ -112,7 +112,12 @@ final class TransitionController extends AbstractController
             ['form' => $form, 'errors' => $handler->getContext()->getErrorCollection(), 'module' => $module],
         );
 
-        return $view->render();
+        $response = $view->render($this->render(...));
+        if ($form && ! $validForm) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return $response;
     }
 
     /**
