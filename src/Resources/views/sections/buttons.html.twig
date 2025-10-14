@@ -1,7 +1,7 @@
 {% if actions|length %}
 <div class="workflow-content-box">
 {% for action in actions %}
-    <form action="{{ path(action.route, action.params) }}" method="post" class="workflow-transition-form">
+    <form action="{{ path(action.route, action.params) }}" method="post" class="workflow-transition-form" data-turbo="false">
         <input type="hidden" name="REQUEST_TOKEN" value="{{ contao_request_token() }}">
         <button type="submit" class="tl_submit" title="{{ action.title }}">
             {% if action.icon %}
