@@ -1,18 +1,3 @@
-netzmacht.contao_workflow.backend.step:
-  path: /contao/workflow/{module}/{entityId}
-  defaults:
-    _controller: netzmacht.contao_workflow.backend.step_controller
-    _scope: "backend"
-    _token_check: true
-    _custom_backend_view: true
-    _backend_module: workflow
-
-netzmacht.contao_workflow.backend.transition:
-  path: /contao/workflow/{module}/{entityId}/{transition}
-  methods: POST
-  defaults:
-    _controller: netzmacht.contao_workflow.backend.transition_controller
-    _scope: "backend"
-    _token_check: false
-    _custom_backend_view: true
-    _backend_module: workflow
+netzmacht.contao_workflow.backend:
+  resource: ../../Controller/Backend
+  type: attribute

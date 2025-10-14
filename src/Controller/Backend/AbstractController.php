@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netzmacht\ContaoWorkflowBundle\Controller\Backend;
 
+use Contao\CoreBundle\Controller\AbstractBackendController;
 use Netzmacht\ContaoWorkflowBundle\Workflow\Exception\UnsupportedEntity;
 use Netzmacht\ContaoWorkflowBundle\Workflow\View\ViewFactory;
 use Netzmacht\Workflow\Data\EntityId;
@@ -15,28 +16,8 @@ use Symfony\Component\Routing\RouterInterface as Router;
 
 use function sprintf;
 
-abstract class AbstractController
+abstract class AbstractController extends AbstractBackendController
 {
-    /**
-     * Workflow manager.
-     */
-    protected WorkflowManager $workflowManager;
-
-    /**
-     * The entity manager.
-     */
-    protected EntityManager $entityManager;
-
-    /**
-     * The router.
-     */
-    protected Router $router;
-
-    /**
-     * View factory.
-     */
-    protected ViewFactory $viewFactory;
-
     /**
      * @param WorkflowManager $workflowManager Workflow manager.
      * @param EntityManager   $entityManager   Entity manager.
@@ -44,15 +25,11 @@ abstract class AbstractController
      * @param Router          $router          Router.
      */
     public function __construct(
-        WorkflowManager $workflowManager,
-        EntityManager $entityManager,
-        ViewFactory $viewFactory,
-        Router $router,
+        protected WorkflowManager $workflowManager,
+        protected EntityManager $entityManager,
+        protected ViewFactory $viewFactory,
+        protected Router $router,
     ) {
-        $this->workflowManager = $workflowManager;
-        $this->entityManager   = $entityManager;
-        $this->viewFactory     = $viewFactory;
-        $this->router          = $router;
     }
 
     /**

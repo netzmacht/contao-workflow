@@ -18,11 +18,23 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface as Router;
 
 use function sprintf;
 use function urldecode;
 
+#[Route(
+    '%contao.backend.route_prefix%/workflow/{module}/{entityId}/{transition}',
+    name: 'netzmacht.contao_workflow.backend.transition',
+    defaults: [
+        '_scope'               => 'backend',
+        '_token_check'         => true,
+        '_custom_backend_view' => true,
+        '_backend_module'      => 'workflow',
+    ],
+    methods: ['POST']
+)]
 final class TransitionController extends AbstractController
 {
     /**

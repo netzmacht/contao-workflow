@@ -13,12 +13,26 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface as Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+use function dd;
 
 /**
  * The step controller handles the view of a step.
  */
+#[Route(
+    '%contao.backend.route_prefix%/workflow/{module}/{entityId}',
+    name: 'netzmacht.contao_workflow.backend.step',
+    defaults: [
+        '_scope'               => 'backend',
+        '_token_check'         => true,
+        '_custom_backend_view' => true,
+        '_backend_module'      => 'workflow',
+    ],
+    methods: ['GET']
+)]
 final class StepController extends AbstractController
 {
     /**
@@ -62,7 +76,7 @@ final class StepController extends AbstractController
         if (! $item->isWorkflowStarted()) {
             $view = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
 
-            return $view->render();
+            return $view->render($this->render(...));
         }
 
         if ($workflow->getName() !== $item->getWorkflowName()) {
@@ -91,6 +105,6 @@ final class StepController extends AbstractController
 
         $view = $this->viewFactory->create($item, $currentStep, ['module' => $module]);
 
-        return $view->render();
+        return $view->render($this->render(...));
     }
 }
