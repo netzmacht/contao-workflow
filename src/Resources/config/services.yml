@@ -243,6 +243,12 @@ services:
     tags:
       - 'contao.migration'
 
+  Netzmacht\ContaoWorkflowBundle\NotificationCenter\WorkflowTransitionNotificationType:
+    arguments:
+      - '@Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory'
+    tags:
+      - notification_center.notification_type
+
   Netzmacht\ContaoWorkflowBundle\FrontendModule\TransitionFrontendModuleController:
     arguments:
       - '@netzmacht.contao_toolkit.template_renderer'
