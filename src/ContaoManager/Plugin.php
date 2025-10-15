@@ -12,7 +12,6 @@ use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Netzmacht\Contao\Toolkit\NetzmachtContaoToolkitBundle;
 use Netzmacht\ContaoWorkflowBundle\NetzmachtContaoWorkflowBundle;
 use Override;
-use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouteCollection;
@@ -24,12 +23,10 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
     public function getBundles(ParserInterface $parser): array
     {
         return [
-            BundleConfig::create(SensioFrameworkExtraBundle::class),
             BundleConfig::create(NetzmachtContaoWorkflowBundle::class)
                 ->setLoadAfter(
                     [
                         ContaoCoreBundle::class,
-                        SensioFrameworkExtraBundle::class,
                         NetzmachtContaoToolkitBundle::class,
                     ],
                 )

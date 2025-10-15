@@ -156,10 +156,11 @@ services:
     tags:
       - { name: netzmacht.contao_workflow.expression_language.function_provider }
 
-  netzmacht.contao_workflow.request.param_converter.entity_id:
-    class: Netzmacht\ContaoWorkflowBundle\Request\EntityIdParamConverter
+  Netzmacht\ContaoWorkflowBundle\Request\ValueResolver\EntityIdValueResolver:
     tags:
-      - { name: 'request.param_converter', converter: 'entity_id' }
+      - controller.argument_value_resolver:
+          name: entity_id
+          priority: 150
 
   netzmacht.contao_workflow.action.metadata_action:
     class: Netzmacht\ContaoWorkflowBundle\Workflow\Flow\Action\Metadata\MetadataAction
