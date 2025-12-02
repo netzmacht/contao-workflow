@@ -9,7 +9,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
-use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
+use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionRepository;
 use Netzmacht\ContaoWorkflowBundle\Model\Transition\TransitionModel;

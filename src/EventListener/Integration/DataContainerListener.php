@@ -6,7 +6,7 @@ namespace Netzmacht\ContaoWorkflowBundle\EventListener\Integration;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Netzmacht\Contao\Toolkit\Dca\Definition;
-use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
+use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 use Netzmacht\ContaoWorkflowBundle\Exception\DataContainer\FieldAlreadyExists;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 

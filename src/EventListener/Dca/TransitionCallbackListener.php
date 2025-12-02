@@ -13,7 +13,7 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Netzmacht\Contao\Toolkit\Data\Model\RepositoryManager;
 use Netzmacht\Contao\Toolkit\Dca\Listener\AbstractListener;
-use Netzmacht\Contao\Toolkit\Dca\Manager as DcaManager;
+use Netzmacht\Contao\Toolkit\Dca\DcaManager;
 use Netzmacht\Contao\Toolkit\Dca\Options\OptionsBuilder;
 use Netzmacht\Contao\Toolkit\View\Assets\AssetsManager;
 use Netzmacht\ContaoWorkflowBundle\Model\Action\ActionModel;
